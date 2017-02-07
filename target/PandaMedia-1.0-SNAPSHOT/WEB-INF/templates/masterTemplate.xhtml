@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- This is a template page that is used for every page displayed -->
+<!-- What is not overridden in pages that use this template then the ui:insert in the template are used -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <h:head>
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title><ui:insert name="windowTitle"/></title>
+    </h:head>
+
+    <h:body>        
+        <div id="menu">
+            <ui:insert name="menu">
+                <ui:include src="../sections/menu.xhtml" />
+            </ui:insert>
+        </div>
+        <div class="container">
+            <ui:insert name="content">
+                <ui:include src="../content/home.xhtml" />
+            </ui:insert>
+        </div>
+
+
+        <!-- load js at bottom for faster loading-->
+    </h:body>
+</html>

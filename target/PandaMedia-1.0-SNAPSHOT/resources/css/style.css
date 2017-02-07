@@ -1,48 +1,60 @@
-.bodyClass{
-    background-color: #fff /*#43bdc9*/;
+.homeContent{
+    margin: 0;
+    border: 0;
+    text-align: center;
+    margin-top: 40%;
+    background-color: #fff;
+    background-image: url("#{resource['/images/background.jpg']}");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
 }
 
-.navbar-default, .dropdown-menu{
-    background-color: /* #fc4e1b */ #303030;
-    border-color: #303030;
-    border-bottom: 1px solid #303030;
+.slogan{
+    color: #FFF;
+}
+
+.navbar-default, .dropdown-menu{    
+    background-color:  #303030;
     color:#fff;
     margin-bottom:0;
     border-radius: 0;
+    border: 0px;
+
 }
 
-
-.navbar-brand,
+.navbar-brand,.dropdown-menu > li > a,
 .navbar-default .navbar-nav > li > a,
 a.navbar-brand,
 .navbar-default .navbar-brand{
-    color: #DDD; /* color of the letters on the navbar */
+    color: #FFF; /* color of the letters on the navbar */
     transition: background-color 0.4s;
 }
 
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-brand:hover{
-    background-color: #333333;
-    color:#DDD;
+    background-color: #777;
+    color:#EEE;
 }
 
 .navbar-default .navbar-nav > li > a:visited,
 .navbar-default .navbar-brand:visited,
 .dropdown-menu > li > a:visited{
-    background-color: #333333;
-    color:#DDD;
+    background-color: #777;
+    color:#EEE;
 }
 
 .navbar-default .navbar-toggle:hover,
 .navbar-default .navbar-toggle:focus{
-    background-color: #333333;
-    color:#BBB;
+    background-color: #777;
+    color:#EEE;
 }
 .navbar-default .navbar-toggle .icon-bar{
     background-color: #fff;
 }
 
-.page-heading {position: relative;padding: 60px 15px;color: rgba(255, 255, 255, 0.7);margin-bottom: 0;font-size: 20px;background-image: url("#{resource['/images/bg.jpg']}");background-color: rgba(0,0,0,0.8);}
+.page-heading {position: relative;padding: 60px 15px;color: rgba(255, 255, 255, 0.7);margin-bottom: 0;font-size: 20px;;background-color: rgba(0,0,0,0.8);}
 .page-heading h1 { margin-top: 0; color: white; }
 .page-heading p { margin-bottom: 0; line-height: 1.4; }
 .page-heading .container { position: relative; }
@@ -59,7 +71,6 @@ about-heading{
     color: rgba(255, 255, 255, 0.7);
     margin-bottom: 0;
     font-size: 20px;
-    background-image: url("#{resource['/images/bg.jpg']}");
     background-color: rgba(0,0,0,0.8);
 }
 

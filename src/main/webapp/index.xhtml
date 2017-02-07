@@ -1,33 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:b="http://bootsfaces.net/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
-        <title>Home</title>
-        <h:outputStylesheet name="css/bootstrap.css"/>
-    </h:head>
-    <h:body styleClass="bodyClass">
-        <b:navBar brand="PandaMedia" brandHref="#" styleClass="navbar navbar-default" style="width:100%;">
-            <b:navbarLinks pull="right">
-                <b:navLink value="Help" href="#"></b:navLink>
-                <b:navLink value="Sign In" href="#"></b:navLink>
-               <b:dropMenu value="Language" styleClass="dropdown">
-                     <b:navLink value="English" href="#"></b:navLink>
-                     <b:navLink value="French" href="#"></b:navLink>
-                 </b:dropMenu>
-            </b:navbarLinks>
-        </b:navBar>
-       
-         <h:outputStylesheet library="css" name="style.css"  />
-    </h:body>
-   
-</html>
+<ui:composition
+    template="/WEB-INF/templates/masterTemplate.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:define name="windowTitle">
+        Home
+    </ui:define>
+        <!--Home content-->
+    <ui:define name="content">
+        <ui:include src="/WEB-INF/content/home.xhtml" />
+    </ui:define>
+</ui:composition>
+
+
+
