@@ -9,6 +9,7 @@ and open the template in the editor.
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>album test</title>
@@ -18,6 +19,21 @@ and open the template in the editor.
         <!-- this will retreive the album with an id of 1. with the name 'album' -->
         <ui:param name ="album" value="#{albumJpaController.findAlbum(1)}"/>
         <h:outputText value="#{album.title}"/>
+        
+        <b:container>
+            <b:row>
+                <b:column medium-screen="1">
+                    <h:outputText value="Album tite:"/>
+                </b:column>
+                <b:column medium-screen="2">
+                    <h:outputText value="#{album.title}"/>
+                </b:column>
+            </b:row>
+            <!-- Navbar from mastertemplate will go here -->
+            
+            
+            
+        </b:container>
         
         
     </body>
