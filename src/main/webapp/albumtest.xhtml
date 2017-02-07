@@ -8,109 +8,16 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>album test</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <body>
-        <f:view>
-<!--            <h:outputText value ="gfdsgsdgs"/>
-            <h:outputText value ="#{albumJpaController.findAlbum(1).id}"/>-->
-
-
-            <h:form>
-                <h1><h:outputText value="List"/></h1>
-                <p:dataTable value="#{albumJpaController.all}" var="item">
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Id"/>
-                        </f:facet>
-                        <h:outputText value="#{item.id}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Title"/>
-                        </f:facet>
-                        <h:outputText value="#{item.title}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="ReleaseDate"/>
-                        </f:facet>
-                        <h:outputText value="#{item.releaseDate}">
-                            <f:convertDateTime pattern="MM/dd/yyyy" />
-                        </h:outputText>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="NumTracks"/>
-                        </f:facet>
-                        <h:outputText value="#{item.numTracks}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="DateEntered"/>
-                        </f:facet>
-                        <h:outputText value="#{item.dateEntered}">
-                            <f:convertDateTime pattern="MM/dd/yyyy" />
-                        </h:outputText>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="CostPrice"/>
-                        </f:facet>
-                        <h:outputText value="#{item.costPrice}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="ListPrice"/>
-                        </f:facet>
-                        <h:outputText value="#{item.listPrice}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="SalePrice"/>
-                        </f:facet>
-                        <h:outputText value="#{item.salePrice}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="RemovalStatus"/>
-                        </f:facet>
-                        <h:outputText value="#{item.removalStatus}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="RemovalDate"/>
-                        </f:facet>
-                        <h:outputText value="#{item.removalDate}">
-                            <f:convertDateTime pattern="MM/dd/yyyy" />
-                        </h:outputText>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="ArtistId"/>
-                        </f:facet>
-                        <h:outputText value="#{item.artistId}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="GenreId"/>
-                        </f:facet>
-                        <h:outputText value="#{item.genreId}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="RecordingLabelId"/>
-                        </f:facet>
-                        <h:outputText value="#{item.recordingLabelId}"/>
-                    </p:column>
-                </p:dataTable>
-            </h:form>
-        </f:view>
-
-
+        <!-- this will retreive the album with an id of 1. with the name 'album' -->
+        <ui:param name ="album" value="#{albumJpaController.findAlbum(1)}"/>
+        <h:outputText value="#{album.title}"/>
         
         
     </body>

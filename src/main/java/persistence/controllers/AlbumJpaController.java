@@ -270,7 +270,6 @@ public class AlbumJpaController implements Serializable {
     }
 
     private List<Album> findAlbumEntities(boolean all, int maxResults, int firstResult) {
-        System.out.println("entered findAlbudmfgdsg");
         
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Album.class));
@@ -285,7 +284,6 @@ public class AlbumJpaController implements Serializable {
     }
 
     public Album findAlbum(Integer id) {
-        System.out.println("fdhsfgdhfgdhfgdhfgdhd");
             return em.find(Album.class, id);
         
     }
