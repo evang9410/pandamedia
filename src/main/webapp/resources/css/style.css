@@ -1,5 +1,7 @@
 .bodyClass{
-    background-color: #fff /*#43bdc9*/;
+    background-color: #fff;
+    background-image: url("#{resource['/images/background.jpg']}");
+    background-repeat: no-repeat;
 }
 
 .navbar-default, .dropdown-menu{
@@ -12,7 +14,7 @@
 }
 
 
-.navbar-brand,
+.navbar-brand,.dropdown-menu > li > a,
 .navbar-default .navbar-nav > li > a,
 a.navbar-brand,
 .navbar-default .navbar-brand{
