@@ -21,6 +21,11 @@
             <name>Thai Vu</name>
             <email>thaivu22@gmail.com</email>
         </developer>
+        <developer>
+            <id>2</id>
+            <name>Evangelo Glicakis</name>
+            <email>evang9410@gmail.com</email>
+        </developer>
     </developers>
     <!-- The company or organization that the programmer(s) work for -->
     <organization>

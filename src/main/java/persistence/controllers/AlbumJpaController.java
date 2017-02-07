@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.annotation.Resource;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -34,16 +34,14 @@ import persistence.controllers.exceptions.RollbackFailureException;
  * @author Evang
  */
 @Named
-@RequestScoped
+@SessionScoped
 public class AlbumJpaController implements Serializable {
-    
-    public AlbumJpaController(){} // default constructor.
-    
+
+    //   public AlbumJpaController(){} // default constructor.
     @Resource
     private UserTransaction utx;
     @PersistenceContext
     private EntityManager em;
-
 
     public void create(Album album) throws RollbackFailureException, Exception {
         if (album.getTrackCollection() == null) {
@@ -263,7 +261,7 @@ public class AlbumJpaController implements Serializable {
         }
     }
 
-    public List<Album> findAlbumEntities() {
+    public List<Album> getAll() {
         return findAlbumEntities(true, -1, -1);
     }
 
@@ -272,39 +270,32 @@ public class AlbumJpaController implements Serializable {
     }
 
     private List<Album> findAlbumEntities(boolean all, int maxResults, int firstResult) {
+        System.out.println("entered findAlbudmfgdsg");
         
-        try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Album.class));
             Query q = em.createQuery(cq);
+
             if (!all) {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);
             }
+            System.out.println("list length = " + q.getResultList().size());
             return q.getResultList();
-        } finally {
-            em.close();
-        }
     }
 
     public Album findAlbum(Integer id) {
-        try {
+        System.out.println("fdhsfgdhfgdhfgdhfgdhd");
             return em.find(Album.class, id);
-        } finally {
-            em.close();
-        }
+        
     }
 
     public int getAlbumCount() {
-        try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             Root<Album> rt = cq.from(Album.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
+        
     }
-    
 }
