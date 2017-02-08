@@ -13,25 +13,17 @@ and open the template in the editor.
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>album test</title>
+        <h:outputStylesheet name="css/style.css"/>
+        <h:outputStylesheet name="css/bootstrap.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
-    <body>
+    <body class = "bodyClass">
         <!-- this will retreive the album with an id of 1. with the name 'album' -->
         <ui:param name ="album" value="#{albumJpaController.findAlbum(1)}"/>
         <h:outputText value="#{album.title}"/>
         
-        <div class="container">
-            <div class="row">
-                <div class="col-4">
-                    <img src="resources/images/bg.png"/>
-                </div>
-                <div class="col-8">
-                    
-
-
-                </div>
-            </div>
-        </div>
+        <div>
+        
         
         
     </body>

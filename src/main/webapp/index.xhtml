@@ -13,6 +13,7 @@ and open the template in the editor.
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Home</title>
+        <link rel="stylesheet" type="text/css" href="/pandamedia/jsfcrud.xhtml" />
         <h:outputStylesheet name="css/bootstrap.css"/>
     </h:head>
     <h:body styleClass="bodyClass">
@@ -28,6 +29,10 @@ and open the template in the editor.
         </b:navBar>
         <h:outputStylesheet library="css" name="style.css"  />
 
+        <h:form>
+            <h:commandLink action="#{album.listSetup}" value="Show All Album Items"/>
+        </h:form>
     </h:body>
+
 
 </html>
