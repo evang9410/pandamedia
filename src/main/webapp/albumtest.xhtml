@@ -20,20 +20,13 @@ and open the template in the editor.
         <ui:param name ="album" value="#{albumJpaController.findAlbum(1)}"/>
         <h:outputText value="#{album.title}"/>
         
-        <b:container>
-            <b:row>
-                <b:column medium-screen="1">
-                    <h:outputText value="Album tite:"/>
-                </b:column>
-                <b:column medium-screen="2">
-                    <h:outputText value="#{album.title}"/>
-                </b:column>
-            </b:row>
-            <!-- Navbar from mastertemplate will go here -->
-            
-            
-            
-        </b:container>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <img src="resources/images/bg.png"/>
+                </div>
+            </div>
+        </div>
         
         
     </body>
