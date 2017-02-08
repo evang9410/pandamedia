@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package persistence.beans;
+package persistence.entities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -24,13 +24,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author 1432581
  */
 @Entity
-@Table(name = "genre")
+@Table(name = "province")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Genre.findAll", query = "SELECT g FROM Genre g")
-    , @NamedQuery(name = "Genre.findById", query = "SELECT g FROM Genre g WHERE g.id = :id")
-    , @NamedQuery(name = "Genre.findByName", query = "SELECT g FROM Genre g WHERE g.name = :name")})
-public class Genre implements Serializable {
+    @NamedQuery(name = "Province.findAll", query = "SELECT p FROM Province p")
+    , @NamedQuery(name = "Province.findById", query = "SELECT p FROM Province p WHERE p.id = :id")
+    , @NamedQuery(name = "Province.findByName", query = "SELECT p FROM Province p WHERE p.name = :name")
+    , @NamedQuery(name = "Province.findByPstRate", query = "SELECT p FROM Province p WHERE p.pstRate = :pstRate")
+    , @NamedQuery(name = "Province.findByGstRate", query = "SELECT p FROM Province p WHERE p.gstRate = :gstRate")
+    , @NamedQuery(name = "Province.findByHstRate", query = "SELECT p FROM Province p WHERE p.hstRate = :hstRate")})
+public class Province implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -43,17 +46,32 @@ public class Genre implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "pst_rate")
+    private double pstRate;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "gst_rate")
+    private double gstRate;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "hst_rate")
+    private double hstRate;
 
-    public Genre() {
+    public Province() {
     }
 
-    public Genre(Integer id) {
+    public Province(Integer id) {
         this.id = id;
     }
 
-    public Genre(Integer id, String name) {
+    public Province(Integer id, String name, double pstRate, double gstRate, double hstRate) {
         this.id = id;
         this.name = name;
+        this.pstRate = pstRate;
+        this.gstRate = gstRate;
+        this.hstRate = hstRate;
     }
 
     public Integer getId() {
@@ -72,6 +90,30 @@ public class Genre implements Serializable {
         this.name = name;
     }
 
+    public double getPstRate() {
+        return pstRate;
+    }
+
+    public void setPstRate(double pstRate) {
+        this.pstRate = pstRate;
+    }
+
+    public double getGstRate() {
+        return gstRate;
+    }
+
+    public void setGstRate(double gstRate) {
+        this.gstRate = gstRate;
+    }
+
+    public double getHstRate() {
+        return hstRate;
+    }
+
+    public void setHstRate(double hstRate) {
+        this.hstRate = hstRate;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -82,10 +124,10 @@ public class Genre implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Genre)) {
+        if (!(object instanceof Province)) {
             return false;
         }
-        Genre other = (Genre) object;
+        Province other = (Province) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -94,7 +136,7 @@ public class Genre implements Serializable {
 
     @Override
     public String toString() {
-        return "persistance.beans.Genre[ id=" + id + " ]";
+        return "persistance.beans.Province[ id=" + id + " ]";
     }
     
 }

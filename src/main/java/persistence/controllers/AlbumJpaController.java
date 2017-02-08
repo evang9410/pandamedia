@@ -18,7 +18,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
-import persistence.beans.Album;
+import persistence.entities.Album;
 import persistence.controllers.exceptions.NonexistentEntityException;
 import persistence.controllers.exceptions.RollbackFailureException;
 
