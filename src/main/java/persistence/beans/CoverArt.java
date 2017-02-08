@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package persistence;
+package persistence.beans;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,25 +14,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Evang
+ * @author 1432581
  */
 @Entity
-@Table(name = "songwriter")
+@Table(name = "cover_art")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Songwriter.findAll", query = "SELECT s FROM Songwriter s")
-    , @NamedQuery(name = "Songwriter.findById", query = "SELECT s FROM Songwriter s WHERE s.id = :id")
-    , @NamedQuery(name = "Songwriter.findByName", query = "SELECT s FROM Songwriter s WHERE s.name = :name")})
-public class Songwriter implements Serializable {
+    @NamedQuery(name = "CoverArt.findAll", query = "SELECT c FROM CoverArt c")
+    , @NamedQuery(name = "CoverArt.findById", query = "SELECT c FROM CoverArt c WHERE c.id = :id")
+    , @NamedQuery(name = "CoverArt.findByImagePath", query = "SELECT c FROM CoverArt c WHERE c.imagePath = :imagePath")})
+public class CoverArt implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,21 +41,19 @@ public class Songwriter implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "name")
-    private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "songwriterId")
-    private Collection<Track> trackCollection;
+    @Column(name = "image_path")
+    private String imagePath;
 
-    public Songwriter() {
+    public CoverArt() {
     }
 
-    public Songwriter(Integer id) {
+    public CoverArt(Integer id) {
         this.id = id;
     }
 
-    public Songwriter(Integer id, String name) {
+    public CoverArt(Integer id, String imagePath) {
         this.id = id;
-        this.name = name;
+        this.imagePath = imagePath;
     }
 
     public Integer getId() {
@@ -70,21 +64,12 @@ public class Songwriter implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @XmlTransient
-    public Collection<Track> getTrackCollection() {
-        return trackCollection;
-    }
-
-    public void setTrackCollection(Collection<Track> trackCollection) {
-        this.trackCollection = trackCollection;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     @Override
@@ -97,10 +82,10 @@ public class Songwriter implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Songwriter)) {
+        if (!(object instanceof CoverArt)) {
             return false;
         }
-        Songwriter other = (Songwriter) object;
+        CoverArt other = (CoverArt) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -109,7 +94,7 @@ public class Songwriter implements Serializable {
 
     @Override
     public String toString() {
-        return "persistence.Songwriter[ id=" + id + " ]";
+        return "persistance.beans.CoverArt[ id=" + id + " ]";
     }
     
 }

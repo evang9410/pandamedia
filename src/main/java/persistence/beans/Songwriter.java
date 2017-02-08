@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package persistence;
+package persistence.beans;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,25 +14,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Evang
+ * @author 1432581
  */
 @Entity
-@Table(name = "recording_label")
+@Table(name = "songwriter")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "RecordingLabel.findAll", query = "SELECT r FROM RecordingLabel r")
-    , @NamedQuery(name = "RecordingLabel.findById", query = "SELECT r FROM RecordingLabel r WHERE r.id = :id")
-    , @NamedQuery(name = "RecordingLabel.findByName", query = "SELECT r FROM RecordingLabel r WHERE r.name = :name")})
-public class RecordingLabel implements Serializable {
+    @NamedQuery(name = "Songwriter.findAll", query = "SELECT s FROM Songwriter s")
+    , @NamedQuery(name = "Songwriter.findById", query = "SELECT s FROM Songwriter s WHERE s.id = :id")
+    , @NamedQuery(name = "Songwriter.findByName", query = "SELECT s FROM Songwriter s WHERE s.name = :name")})
+public class Songwriter implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -47,17 +43,15 @@ public class RecordingLabel implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recordingLabelId")
-    private Collection<Album> albumCollection;
 
-    public RecordingLabel() {
+    public Songwriter() {
     }
 
-    public RecordingLabel(Integer id) {
+    public Songwriter(Integer id) {
         this.id = id;
     }
 
-    public RecordingLabel(Integer id, String name) {
+    public Songwriter(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -78,15 +72,6 @@ public class RecordingLabel implements Serializable {
         this.name = name;
     }
 
-    @XmlTransient
-    public Collection<Album> getAlbumCollection() {
-        return albumCollection;
-    }
-
-    public void setAlbumCollection(Collection<Album> albumCollection) {
-        this.albumCollection = albumCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -97,10 +82,10 @@ public class RecordingLabel implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof RecordingLabel)) {
+        if (!(object instanceof Songwriter)) {
             return false;
         }
-        RecordingLabel other = (RecordingLabel) object;
+        Songwriter other = (Songwriter) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -109,7 +94,7 @@ public class RecordingLabel implements Serializable {
 
     @Override
     public String toString() {
-        return "persistence.RecordingLabel[ id=" + id + " ]";
+        return "persistance.beans.Songwriter[ id=" + id + " ]";
     }
     
 }

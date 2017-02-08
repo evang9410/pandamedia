@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package persistence;
+package persistence.beans;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,8 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -26,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Evang
+ * @author 1432581
  */
 @Entity
 @Table(name = "track")
@@ -35,10 +33,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Track.findAll", query = "SELECT t FROM Track t")
     , @NamedQuery(name = "Track.findById", query = "SELECT t FROM Track t WHERE t.id = :id")
     , @NamedQuery(name = "Track.findByTitle", query = "SELECT t FROM Track t WHERE t.title = :title")
+    , @NamedQuery(name = "Track.findByAlbumId", query = "SELECT t FROM Track t WHERE t.albumId = :albumId")
+    , @NamedQuery(name = "Track.findByArtistId", query = "SELECT t FROM Track t WHERE t.artistId = :artistId")
+    , @NamedQuery(name = "Track.findBySongwriterId", query = "SELECT t FROM Track t WHERE t.songwriterId = :songwriterId")
+    , @NamedQuery(name = "Track.findByGenreId", query = "SELECT t FROM Track t WHERE t.genreId = :genreId")
     , @NamedQuery(name = "Track.findByReleaseDate", query = "SELECT t FROM Track t WHERE t.releaseDate = :releaseDate")
     , @NamedQuery(name = "Track.findByPlayLength", query = "SELECT t FROM Track t WHERE t.playLength = :playLength")
     , @NamedQuery(name = "Track.findByAlbumTrackNumber", query = "SELECT t FROM Track t WHERE t.albumTrackNumber = :albumTrackNumber")
-    , @NamedQuery(name = "Track.findByCoverImagePath", query = "SELECT t FROM Track t WHERE t.coverImagePath = :coverImagePath")
+    , @NamedQuery(name = "Track.findByCoverArtId", query = "SELECT t FROM Track t WHERE t.coverArtId = :coverArtId")
     , @NamedQuery(name = "Track.findByDateEntered", query = "SELECT t FROM Track t WHERE t.dateEntered = :dateEntered")
     , @NamedQuery(name = "Track.findByPartOfAlbum", query = "SELECT t FROM Track t WHERE t.partOfAlbum = :partOfAlbum")
     , @NamedQuery(name = "Track.findByCostPrice", query = "SELECT t FROM Track t WHERE t.costPrice = :costPrice")
@@ -61,6 +63,22 @@ public class Track implements Serializable {
     private String title;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "album_id")
+    private int albumId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "artist_id")
+    private int artistId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "songwriter_id")
+    private int songwriterId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "genre_id")
+    private int genreId;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "release_date")
     @Temporal(TemporalType.DATE)
     private Date releaseDate;
@@ -75,9 +93,8 @@ public class Track implements Serializable {
     private int albumTrackNumber;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "cover_image_path")
-    private String coverImagePath;
+    @Column(name = "cover_art_id")
+    private int coverArtId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "date_entered")
@@ -106,18 +123,6 @@ public class Track implements Serializable {
     @Column(name = "removal_date")
     @Temporal(TemporalType.DATE)
     private Date removalDate;
-    @JoinColumn(name = "album_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Album albumId;
-    @JoinColumn(name = "artist_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Artist artistId;
-    @JoinColumn(name = "songwriter_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Songwriter songwriterId;
-    @JoinColumn(name = "genre_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Genre genreId;
 
     public Track() {
     }
@@ -126,13 +131,17 @@ public class Track implements Serializable {
         this.id = id;
     }
 
-    public Track(Integer id, String title, Date releaseDate, String playLength, int albumTrackNumber, String coverImagePath, Date dateEntered, short partOfAlbum, double costPrice, double listPrice, double salePrice, short removalStatus) {
+    public Track(Integer id, String title, int albumId, int artistId, int songwriterId, int genreId, Date releaseDate, String playLength, int albumTrackNumber, int coverArtId, Date dateEntered, short partOfAlbum, double costPrice, double listPrice, double salePrice, short removalStatus) {
         this.id = id;
         this.title = title;
+        this.albumId = albumId;
+        this.artistId = artistId;
+        this.songwriterId = songwriterId;
+        this.genreId = genreId;
         this.releaseDate = releaseDate;
         this.playLength = playLength;
         this.albumTrackNumber = albumTrackNumber;
-        this.coverImagePath = coverImagePath;
+        this.coverArtId = coverArtId;
         this.dateEntered = dateEntered;
         this.partOfAlbum = partOfAlbum;
         this.costPrice = costPrice;
@@ -155,6 +164,38 @@ public class Track implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getAlbumId() {
+        return albumId;
+    }
+
+    public void setAlbumId(int albumId) {
+        this.albumId = albumId;
+    }
+
+    public int getArtistId() {
+        return artistId;
+    }
+
+    public void setArtistId(int artistId) {
+        this.artistId = artistId;
+    }
+
+    public int getSongwriterId() {
+        return songwriterId;
+    }
+
+    public void setSongwriterId(int songwriterId) {
+        this.songwriterId = songwriterId;
+    }
+
+    public int getGenreId() {
+        return genreId;
+    }
+
+    public void setGenreId(int genreId) {
+        this.genreId = genreId;
     }
 
     public Date getReleaseDate() {
@@ -181,12 +222,12 @@ public class Track implements Serializable {
         this.albumTrackNumber = albumTrackNumber;
     }
 
-    public String getCoverImagePath() {
-        return coverImagePath;
+    public int getCoverArtId() {
+        return coverArtId;
     }
 
-    public void setCoverImagePath(String coverImagePath) {
-        this.coverImagePath = coverImagePath;
+    public void setCoverArtId(int coverArtId) {
+        this.coverArtId = coverArtId;
     }
 
     public Date getDateEntered() {
@@ -245,38 +286,6 @@ public class Track implements Serializable {
         this.removalDate = removalDate;
     }
 
-    public Album getAlbumId() {
-        return albumId;
-    }
-
-    public void setAlbumId(Album albumId) {
-        this.albumId = albumId;
-    }
-
-    public Artist getArtistId() {
-        return artistId;
-    }
-
-    public void setArtistId(Artist artistId) {
-        this.artistId = artistId;
-    }
-
-    public Songwriter getSongwriterId() {
-        return songwriterId;
-    }
-
-    public void setSongwriterId(Songwriter songwriterId) {
-        this.songwriterId = songwriterId;
-    }
-
-    public Genre getGenreId() {
-        return genreId;
-    }
-
-    public void setGenreId(Genre genreId) {
-        this.genreId = genreId;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -299,7 +308,7 @@ public class Track implements Serializable {
 
     @Override
     public String toString() {
-        return "persistence.Track[ id=" + id + " ]";
+        return "persistance.beans.Track[ id=" + id + " ]";
     }
     
 }

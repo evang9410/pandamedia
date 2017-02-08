@@ -3,34 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package persistence;
+package persistence.beans;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Evang
+ * @author 1432581
  */
 @Entity
 @Table(name = "album")
@@ -40,6 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Album.findById", query = "SELECT a FROM Album a WHERE a.id = :id")
     , @NamedQuery(name = "Album.findByTitle", query = "SELECT a FROM Album a WHERE a.title = :title")
     , @NamedQuery(name = "Album.findByReleaseDate", query = "SELECT a FROM Album a WHERE a.releaseDate = :releaseDate")
+    , @NamedQuery(name = "Album.findByArtistId", query = "SELECT a FROM Album a WHERE a.artistId = :artistId")
+    , @NamedQuery(name = "Album.findByGenreId", query = "SELECT a FROM Album a WHERE a.genreId = :genreId")
+    , @NamedQuery(name = "Album.findByRecordingLabelId", query = "SELECT a FROM Album a WHERE a.recordingLabelId = :recordingLabelId")
     , @NamedQuery(name = "Album.findByNumTracks", query = "SELECT a FROM Album a WHERE a.numTracks = :numTracks")
     , @NamedQuery(name = "Album.findByDateEntered", query = "SELECT a FROM Album a WHERE a.dateEntered = :dateEntered")
     , @NamedQuery(name = "Album.findByCostPrice", query = "SELECT a FROM Album a WHERE a.costPrice = :costPrice")
@@ -65,6 +62,18 @@ public class Album implements Serializable {
     @Column(name = "release_date")
     @Temporal(TemporalType.DATE)
     private Date releaseDate;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "artist_id")
+    private int artistId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "genre_id")
+    private int genreId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "recording_label_id")
+    private int recordingLabelId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "num_tracks")
@@ -93,17 +102,6 @@ public class Album implements Serializable {
     @Column(name = "removal_date")
     @Temporal(TemporalType.DATE)
     private Date removalDate;
-    @JoinColumn(name = "artist_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Artist artistId;
-    @JoinColumn(name = "genre_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Genre genreId;
-    @JoinColumn(name = "recording_label_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private RecordingLabel recordingLabelId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "albumId")
-    private Collection<Track> trackCollection;
 
     public Album() {
     }
@@ -112,10 +110,13 @@ public class Album implements Serializable {
         this.id = id;
     }
 
-    public Album(Integer id, String title, Date releaseDate, int numTracks, Date dateEntered, double costPrice, double listPrice, double salePrice, short removalStatus) {
+    public Album(Integer id, String title, Date releaseDate, int artistId, int genreId, int recordingLabelId, int numTracks, Date dateEntered, double costPrice, double listPrice, double salePrice, short removalStatus) {
         this.id = id;
         this.title = title;
         this.releaseDate = releaseDate;
+        this.artistId = artistId;
+        this.genreId = genreId;
+        this.recordingLabelId = recordingLabelId;
         this.numTracks = numTracks;
         this.dateEntered = dateEntered;
         this.costPrice = costPrice;
@@ -146,6 +147,30 @@ public class Album implements Serializable {
 
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public int getArtistId() {
+        return artistId;
+    }
+
+    public void setArtistId(int artistId) {
+        this.artistId = artistId;
+    }
+
+    public int getGenreId() {
+        return genreId;
+    }
+
+    public void setGenreId(int genreId) {
+        this.genreId = genreId;
+    }
+
+    public int getRecordingLabelId() {
+        return recordingLabelId;
+    }
+
+    public void setRecordingLabelId(int recordingLabelId) {
+        this.recordingLabelId = recordingLabelId;
     }
 
     public int getNumTracks() {
@@ -204,39 +229,6 @@ public class Album implements Serializable {
         this.removalDate = removalDate;
     }
 
-    public Artist getArtistId() {
-        return artistId;
-    }
-
-    public void setArtistId(Artist artistId) {
-        this.artistId = artistId;
-    }
-
-    public Genre getGenreId() {
-        return genreId;
-    }
-
-    public void setGenreId(Genre genreId) {
-        this.genreId = genreId;
-    }
-
-    public RecordingLabel getRecordingLabelId() {
-        return recordingLabelId;
-    }
-
-    public void setRecordingLabelId(RecordingLabel recordingLabelId) {
-        this.recordingLabelId = recordingLabelId;
-    }
-
-    @XmlTransient
-    public Collection<Track> getTrackCollection() {
-        return trackCollection;
-    }
-
-    public void setTrackCollection(Collection<Track> trackCollection) {
-        this.trackCollection = trackCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -259,7 +251,7 @@ public class Album implements Serializable {
 
     @Override
     public String toString() {
-        return "persistence.Album[ id=" + id + " ]";
+        return "persistance.beans.Album[ id=" + id + " ]";
     }
     
 }

@@ -6,25 +6,21 @@
 package persistence.controllers;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import persistence.Track;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
-import persistence.Songwriter;
-import persistence.controllers.exceptions.IllegalOrphanException;
+import persistence.beans.Songwriter;
 import persistence.controllers.exceptions.NonexistentEntityException;
 import persistence.controllers.exceptions.RollbackFailureException;
 
 /**
  *
- * @author Evang
+ * @author 1432581
  */
 public class SongwriterJpaController implements Serializable {
 
@@ -40,29 +36,11 @@ public class SongwriterJpaController implements Serializable {
     }
 
     public void create(Songwriter songwriter) throws RollbackFailureException, Exception {
-        if (songwriter.getTrackCollection() == null) {
-            songwriter.setTrackCollection(new ArrayList<Track>());
-        }
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Collection<Track> attachedTrackCollection = new ArrayList<Track>();
-            for (Track trackCollectionTrackToAttach : songwriter.getTrackCollection()) {
-                trackCollectionTrackToAttach = em.getReference(trackCollectionTrackToAttach.getClass(), trackCollectionTrackToAttach.getId());
-                attachedTrackCollection.add(trackCollectionTrackToAttach);
-            }
-            songwriter.setTrackCollection(attachedTrackCollection);
             em.persist(songwriter);
-            for (Track trackCollectionTrack : songwriter.getTrackCollection()) {
-                Songwriter oldSongwriterIdOfTrackCollectionTrack = trackCollectionTrack.getSongwriterId();
-                trackCollectionTrack.setSongwriterId(songwriter);
-                trackCollectionTrack = em.merge(trackCollectionTrack);
-                if (oldSongwriterIdOfTrackCollectionTrack != null) {
-                    oldSongwriterIdOfTrackCollectionTrack.getTrackCollection().remove(trackCollectionTrack);
-                    oldSongwriterIdOfTrackCollectionTrack = em.merge(oldSongwriterIdOfTrackCollectionTrack);
-                }
-            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -78,45 +56,12 @@ public class SongwriterJpaController implements Serializable {
         }
     }
 
-    public void edit(Songwriter songwriter) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(Songwriter songwriter) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Songwriter persistentSongwriter = em.find(Songwriter.class, songwriter.getId());
-            Collection<Track> trackCollectionOld = persistentSongwriter.getTrackCollection();
-            Collection<Track> trackCollectionNew = songwriter.getTrackCollection();
-            List<String> illegalOrphanMessages = null;
-            for (Track trackCollectionOldTrack : trackCollectionOld) {
-                if (!trackCollectionNew.contains(trackCollectionOldTrack)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Track " + trackCollectionOldTrack + " since its songwriterId field is not nullable.");
-                }
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
-            Collection<Track> attachedTrackCollectionNew = new ArrayList<Track>();
-            for (Track trackCollectionNewTrackToAttach : trackCollectionNew) {
-                trackCollectionNewTrackToAttach = em.getReference(trackCollectionNewTrackToAttach.getClass(), trackCollectionNewTrackToAttach.getId());
-                attachedTrackCollectionNew.add(trackCollectionNewTrackToAttach);
-            }
-            trackCollectionNew = attachedTrackCollectionNew;
-            songwriter.setTrackCollection(trackCollectionNew);
             songwriter = em.merge(songwriter);
-            for (Track trackCollectionNewTrack : trackCollectionNew) {
-                if (!trackCollectionOld.contains(trackCollectionNewTrack)) {
-                    Songwriter oldSongwriterIdOfTrackCollectionNewTrack = trackCollectionNewTrack.getSongwriterId();
-                    trackCollectionNewTrack.setSongwriterId(songwriter);
-                    trackCollectionNewTrack = em.merge(trackCollectionNewTrack);
-                    if (oldSongwriterIdOfTrackCollectionNewTrack != null && !oldSongwriterIdOfTrackCollectionNewTrack.equals(songwriter)) {
-                        oldSongwriterIdOfTrackCollectionNewTrack.getTrackCollection().remove(trackCollectionNewTrack);
-                        oldSongwriterIdOfTrackCollectionNewTrack = em.merge(oldSongwriterIdOfTrackCollectionNewTrack);
-                    }
-                }
-            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -139,7 +84,7 @@ public class SongwriterJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -150,17 +95,6 @@ public class SongwriterJpaController implements Serializable {
                 songwriter.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The songwriter with id " + id + " no longer exists.", enfe);
-            }
-            List<String> illegalOrphanMessages = null;
-            Collection<Track> trackCollectionOrphanCheck = songwriter.getTrackCollection();
-            for (Track trackCollectionOrphanCheckTrack : trackCollectionOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Songwriter (" + songwriter + ") cannot be destroyed since the Track " + trackCollectionOrphanCheckTrack + " in its trackCollection field has a non-nullable songwriterId field.");
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
             }
             em.remove(songwriter);
             utx.commit();

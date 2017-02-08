@@ -14,7 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
-import persistence.beans.Track;
+import persistence.beans.CoverArt;
 import persistence.controllers.exceptions.NonexistentEntityException;
 import persistence.controllers.exceptions.RollbackFailureException;
 
@@ -22,9 +22,9 @@ import persistence.controllers.exceptions.RollbackFailureException;
  *
  * @author 1432581
  */
-public class TrackJpaController implements Serializable {
+public class CoverArtJpaController implements Serializable {
 
-    public TrackJpaController(UserTransaction utx, EntityManagerFactory emf) {
+    public CoverArtJpaController(UserTransaction utx, EntityManagerFactory emf) {
         this.utx = utx;
         this.emf = emf;
     }
@@ -35,12 +35,12 @@ public class TrackJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Track track) throws RollbackFailureException, Exception {
+    public void create(CoverArt coverArt) throws RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            em.persist(track);
+            em.persist(coverArt);
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -56,12 +56,12 @@ public class TrackJpaController implements Serializable {
         }
     }
 
-    public void edit(Track track) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(CoverArt coverArt) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            track = em.merge(track);
+            coverArt = em.merge(coverArt);
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -71,9 +71,9 @@ public class TrackJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = track.getId();
-                if (findTrack(id) == null) {
-                    throw new NonexistentEntityException("The track with id " + id + " no longer exists.");
+                Integer id = coverArt.getId();
+                if (findCoverArt(id) == null) {
+                    throw new NonexistentEntityException("The coverArt with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -89,14 +89,14 @@ public class TrackJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
-            Track track;
+            CoverArt coverArt;
             try {
-                track = em.getReference(Track.class, id);
-                track.getId();
+                coverArt = em.getReference(CoverArt.class, id);
+                coverArt.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The track with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The coverArt with id " + id + " no longer exists.", enfe);
             }
-            em.remove(track);
+            em.remove(coverArt);
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -112,19 +112,19 @@ public class TrackJpaController implements Serializable {
         }
     }
 
-    public List<Track> findTrackEntities() {
-        return findTrackEntities(true, -1, -1);
+    public List<CoverArt> findCoverArtEntities() {
+        return findCoverArtEntities(true, -1, -1);
     }
 
-    public List<Track> findTrackEntities(int maxResults, int firstResult) {
-        return findTrackEntities(false, maxResults, firstResult);
+    public List<CoverArt> findCoverArtEntities(int maxResults, int firstResult) {
+        return findCoverArtEntities(false, maxResults, firstResult);
     }
 
-    private List<Track> findTrackEntities(boolean all, int maxResults, int firstResult) {
+    private List<CoverArt> findCoverArtEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Track.class));
+            cq.select(cq.from(CoverArt.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -136,20 +136,20 @@ public class TrackJpaController implements Serializable {
         }
     }
 
-    public Track findTrack(Integer id) {
+    public CoverArt findCoverArt(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Track.class, id);
+            return em.find(CoverArt.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getTrackCount() {
+    public int getCoverArtCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Track> rt = cq.from(Track.class);
+            Root<CoverArt> rt = cq.from(CoverArt.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
