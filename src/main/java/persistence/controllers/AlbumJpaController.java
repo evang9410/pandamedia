@@ -15,12 +15,14 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
 import persistence.entities.Album;
 import persistence.controllers.exceptions.NonexistentEntityException;
 import persistence.controllers.exceptions.RollbackFailureException;
+import persistence.entities.Artist;
 
 /**
  *

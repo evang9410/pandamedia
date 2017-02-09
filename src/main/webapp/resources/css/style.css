@@ -1,5 +1,5 @@
 .bodyClass{
-    background-color: #fff /*#43bdc9*/;
+    background-color: #3f3f3f;
 }
 
 .navbar-default, .dropdown-menu{
@@ -97,11 +97,10 @@ about-heading{
     text-decoration: underline;
 }
 
-.albumArtWrapper{
-    height:50%;
-    width: 20%;
+#albumArtWrapper{
+    height:30%;
+    width: 30%;
     background-color: red;
-    margin:10%;
 }
 
 #albumArt{
@@ -109,7 +108,11 @@ about-heading{
     height: 100%;
 }
 
-body{
-    height:100%;
-    width:100%;
+#album_info{
+    margin-left: 5%;
+    color: white;
+}
+
+.track_list{
+    color: white;
 }

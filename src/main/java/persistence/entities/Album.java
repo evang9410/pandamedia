@@ -43,7 +43,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Album.findByListPrice", query = "SELECT a FROM Album a WHERE a.listPrice = :listPrice")
     , @NamedQuery(name = "Album.findBySalePrice", query = "SELECT a FROM Album a WHERE a.salePrice = :salePrice")
     , @NamedQuery(name = "Album.findByRemovalStatus", query = "SELECT a FROM Album a WHERE a.removalStatus = :removalStatus")
-    , @NamedQuery(name = "Album.findByRemovalDate", query = "SELECT a FROM Album a WHERE a.removalDate = :removalDate")})
+    , @NamedQuery(name = "Album.findByRemovalDate", query = "SELECT a FROM Album a WHERE a.removalDate = :removalDate")
+    })
 public class Album implements Serializable {
 
     private static final long serialVersionUID = 1L;
