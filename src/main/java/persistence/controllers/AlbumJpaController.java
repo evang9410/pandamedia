@@ -23,6 +23,7 @@ import persistence.entities.Album;
 import persistence.controllers.exceptions.NonexistentEntityException;
 import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.Artist;
+import persistence.entities.Track;
 
 /**
  *
@@ -134,5 +135,11 @@ public class AlbumJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
 
     }
+    
+    public List<Track> getTracks(int id){
+        TypedQuery<Track> query = em.createNamedQuery("Album.findTracks", Track.class);
+        query.setParameter("id", id);
+        return query.getResultList();
+    } 
 
 }

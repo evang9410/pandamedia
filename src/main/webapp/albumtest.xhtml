@@ -45,36 +45,15 @@ and open the template in the editor.
                 </div>
             </div>
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>SONG</th>
-                        <th><i class="fa fa-circle-o-notch" aria-hidden="true"></i></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td><i class="fa fa-ellipsis-v" aria-hidden="true"></i></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        
-                    </tr>
-                </tbody>
-            </table>
 
+            <b:dataTable value="#{albumJpaController.getTracks(id)}" var="tracks">
+                <b:dataTableColumn value="#{tracks.title}" />
+                <b:dataTableColumn value="#{tracks.}" />
+                <b:dataTableColumn value="#{car.color}" />
+                <b:dataTableColumn value="#{car.year}"  order="asc"/>
+                <b:dataTableColumn value="&num:{car.price}" />
+                <b:dataTableColumn value="#{car.enginePower}" label="Engine Power (hp)" />
+            </b:dataTable>
 
         </div>
 
