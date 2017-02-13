@@ -13,21 +13,31 @@ and open the template in the editor.
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Home</title>
+        <link rel="stylesheet" type="text/css" href="/pandamedia/jsfcrud.xhtml" />
         <h:outputStylesheet name="css/bootstrap.css"/>
     </h:head>
     <h:body styleClass="bodyClass">
         <b:navBar brand="PandaMedia" brandHref="#" styleClass="navbar navbar-default" style="width:100%;">
             <b:navbarLinks pull="right">
-                <b:navLink value="Help" href="#"></b:navLink>
+                <b:navLink value="Help" href="./albumtest.xhtml"></b:navLink>
                 <b:navLink value="Sign In" href="#"></b:navLink>
-               <b:dropMenu value="Language" styleClass="dropdown">
-                     <b:navLink value="English" href="#"></b:navLink>
-                     <b:navLink value="French" href="#"></b:navLink>
-                 </b:dropMenu>
+                <b:dropMenu value="Language" styleClass="dropdown">
+                    <b:navLink value="English" href="#"></b:navLink>
+                    <b:navLink value="French" href="#"></b:navLink>
+                </b:dropMenu>
             </b:navbarLinks>
         </b:navBar>
+<<<<<<< HEAD
        
          <h:outputStylesheet library="css" name="style.css"  />
+=======
+        <h:outputStylesheet library="css" name="style.css"  />
+
+        <h:form>
+            <h:commandLink action="#{album.listSetup}" value="Show All Album Items"/>
+        </h:form>
+>>>>>>> 02909b020b41cd85f644514583f5f660ea317742
     </h:body>
-   
+
+
 </html>
