@@ -6,7 +6,9 @@
 package persistence.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,14 +16,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 1432581
+ * @author Evang
  */
 @Entity
 @Table(name = "artist")
@@ -43,6 +47,10 @@ public class Artist implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artistId")
+    private List<Album> albumList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artistId")
+    private List<Track> trackList;
 
     public Artist() {
     }
@@ -72,6 +80,24 @@ public class Artist implements Serializable {
         this.name = name;
     }
 
+    @XmlTransient
+    public List<Album> getAlbumList() {
+        return albumList;
+    }
+
+    public void setAlbumList(List<Album> albumList) {
+        this.albumList = albumList;
+    }
+
+    @XmlTransient
+    public List<Track> getTrackList() {
+        return trackList;
+    }
+
+    public void setTrackList(List<Track> trackList) {
+        this.trackList = trackList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -94,7 +120,7 @@ public class Artist implements Serializable {
 
     @Override
     public String toString() {
-        return "persistance.beans.Artist[ id=" + id + " ]";
+        return "persistence.entities.Artist[ id=" + id + " ]";
     }
     
 }

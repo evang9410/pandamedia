@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -23,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author 1432581
+ * @author Evang
  */
 @Entity
 @Table(name = "invoice")
@@ -31,7 +33,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Invoice.findAll", query = "SELECT i FROM Invoice i")
     , @NamedQuery(name = "Invoice.findById", query = "SELECT i FROM Invoice i WHERE i.id = :id")
-    , @NamedQuery(name = "Invoice.findByUserId", query = "SELECT i FROM Invoice i WHERE i.userId = :userId")
     , @NamedQuery(name = "Invoice.findBySaleDate", query = "SELECT i FROM Invoice i WHERE i.saleDate = :saleDate")
     , @NamedQuery(name = "Invoice.findByTotalNetValue", query = "SELECT i FROM Invoice i WHERE i.totalNetValue = :totalNetValue")
     , @NamedQuery(name = "Invoice.findByPstTax", query = "SELECT i FROM Invoice i WHERE i.pstTax = :pstTax")
@@ -46,10 +47,6 @@ public class Invoice implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "user_id")
-    private int userId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "sale_date")
@@ -75,6 +72,9 @@ public class Invoice implements Serializable {
     @NotNull
     @Column(name = "total_gross_value")
     private double totalGrossValue;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private ShopUser userId;
 
     public Invoice() {
     }
@@ -83,9 +83,8 @@ public class Invoice implements Serializable {
         this.id = id;
     }
 
-    public Invoice(Integer id, int userId, Date saleDate, double totalNetValue, double pstTax, double gstTax, double hstTax, double totalGrossValue) {
+    public Invoice(Integer id, Date saleDate, double totalNetValue, double pstTax, double gstTax, double hstTax, double totalGrossValue) {
         this.id = id;
-        this.userId = userId;
         this.saleDate = saleDate;
         this.totalNetValue = totalNetValue;
         this.pstTax = pstTax;
@@ -100,14 +99,6 @@ public class Invoice implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public Date getSaleDate() {
@@ -158,6 +149,14 @@ public class Invoice implements Serializable {
         this.totalGrossValue = totalGrossValue;
     }
 
+    public ShopUser getUserId() {
+        return userId;
+    }
+
+    public void setUserId(ShopUser userId) {
+        this.userId = userId;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -180,7 +179,7 @@ public class Invoice implements Serializable {
 
     @Override
     public String toString() {
-        return "persistance.beans.Invoice[ id=" + id + " ]";
+        return "persistence.entities.Invoice[ id=" + id + " ]";
     }
     
 }

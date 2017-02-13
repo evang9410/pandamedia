@@ -6,22 +6,28 @@
 package persistence.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 1432581
+ * @author Evang
  */
 @Entity
 @Table(name = "shop_user")
@@ -35,7 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "ShopUser.findByCompanyName", query = "SELECT s FROM ShopUser s WHERE s.companyName = :companyName")
     , @NamedQuery(name = "ShopUser.findByStreetAddress", query = "SELECT s FROM ShopUser s WHERE s.streetAddress = :streetAddress")
     , @NamedQuery(name = "ShopUser.findByCity", query = "SELECT s FROM ShopUser s WHERE s.city = :city")
-    , @NamedQuery(name = "ShopUser.findByProvinceId", query = "SELECT s FROM ShopUser s WHERE s.provinceId = :provinceId")
+    , @NamedQuery(name = "ShopUser.findByProvince", query = "SELECT s FROM ShopUser s WHERE s.province = :province")
     , @NamedQuery(name = "ShopUser.findByCountry", query = "SELECT s FROM ShopUser s WHERE s.country = :country")
     , @NamedQuery(name = "ShopUser.findByPostalCode", query = "SELECT s FROM ShopUser s WHERE s.postalCode = :postalCode")
     , @NamedQuery(name = "ShopUser.findByHomePhone", query = "SELECT s FROM ShopUser s WHERE s.homePhone = :homePhone")
@@ -43,7 +49,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "ShopUser.findByEmail", query = "SELECT s FROM ShopUser s WHERE s.email = :email")
     , @NamedQuery(name = "ShopUser.findByPassword", query = "SELECT s FROM ShopUser s WHERE s.password = :password")
     , @NamedQuery(name = "ShopUser.findBySalt", query = "SELECT s FROM ShopUser s WHERE s.salt = :salt")
-    , @NamedQuery(name = "ShopUser.findByLastGenreSearched", query = "SELECT s FROM ShopUser s WHERE s.lastGenreSearched = :lastGenreSearched")
     , @NamedQuery(name = "ShopUser.findByIsManager", query = "SELECT s FROM ShopUser s WHERE s.isManager = :isManager")})
 public class ShopUser implements Serializable {
 
@@ -83,8 +88,9 @@ public class ShopUser implements Serializable {
     private String city;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "province_id")
-    private int provinceId;
+    @Size(min = 1, max = 255)
+    @Column(name = "province")
+    private String province;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -119,12 +125,17 @@ public class ShopUser implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "salt")
     private String salt;
-    @Column(name = "last_genre_searched")
-    private Integer lastGenreSearched;
     @Basic(optional = false)
     @NotNull
     @Column(name = "is_manager")
     private short isManager;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private List<Review> reviewList;
+    @JoinColumn(name = "last_genre_searched", referencedColumnName = "id")
+    @ManyToOne
+    private Genre lastGenreSearched;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private List<Invoice> invoiceList;
 
     public ShopUser() {
     }
@@ -133,14 +144,14 @@ public class ShopUser implements Serializable {
         this.id = id;
     }
 
-    public ShopUser(Integer id, String title, String lastName, String firstName, String streetAddress, String city, int provinceId, String country, String postalCode, String homePhone, String email, String password, String salt, short isManager) {
+    public ShopUser(Integer id, String title, String lastName, String firstName, String streetAddress, String city, String province, String country, String postalCode, String homePhone, String email, String password, String salt, short isManager) {
         this.id = id;
         this.title = title;
         this.lastName = lastName;
         this.firstName = firstName;
         this.streetAddress = streetAddress;
         this.city = city;
-        this.provinceId = provinceId;
+        this.province = province;
         this.country = country;
         this.postalCode = postalCode;
         this.homePhone = homePhone;
@@ -206,12 +217,12 @@ public class ShopUser implements Serializable {
         this.city = city;
     }
 
-    public int getProvinceId() {
-        return provinceId;
+    public String getProvince() {
+        return province;
     }
 
-    public void setProvinceId(int provinceId) {
-        this.provinceId = provinceId;
+    public void setProvince(String province) {
+        this.province = province;
     }
 
     public String getCountry() {
@@ -270,20 +281,38 @@ public class ShopUser implements Serializable {
         this.salt = salt;
     }
 
-    public Integer getLastGenreSearched() {
-        return lastGenreSearched;
-    }
-
-    public void setLastGenreSearched(Integer lastGenreSearched) {
-        this.lastGenreSearched = lastGenreSearched;
-    }
-
     public short getIsManager() {
         return isManager;
     }
 
     public void setIsManager(short isManager) {
         this.isManager = isManager;
+    }
+
+    @XmlTransient
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
+    }
+
+    public Genre getLastGenreSearched() {
+        return lastGenreSearched;
+    }
+
+    public void setLastGenreSearched(Genre lastGenreSearched) {
+        this.lastGenreSearched = lastGenreSearched;
+    }
+
+    @XmlTransient
+    public List<Invoice> getInvoiceList() {
+        return invoiceList;
+    }
+
+    public void setInvoiceList(List<Invoice> invoiceList) {
+        this.invoiceList = invoiceList;
     }
 
     @Override
@@ -308,7 +337,7 @@ public class ShopUser implements Serializable {
 
     @Override
     public String toString() {
-        return "persistance.beans.ShopUser[ id=" + id + " ]";
+        return "persistence.entities.ShopUser[ id=" + id + " ]";
     }
     
 }

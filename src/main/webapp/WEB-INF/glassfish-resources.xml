@@ -30,7 +30,7 @@
                           steady-pool-size="8"
                           validate-atmost-once-period-in-seconds="0"
                           wrap-jdbc-objects="false">
-        <property name="URL" value="jdbc:mysql://localhost:3306/g4w17?zeroDateTimeBehavior=convertToNull"/>
+        <property name="URL" value="jdbc:mysql://waldo2.dawsoncollege.qc.ca:3306/g4w17?zeroDateTimeBehavior=convertToNull"/>
         <property name="User" value="g4w17"/>
         <property name="Password" value="dG6D3EEk"/>
     </jdbc-connection-pool>

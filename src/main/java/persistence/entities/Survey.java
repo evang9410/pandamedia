@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author 1432581
+ * @author Evang
  */
 @Entity
 @Table(name = "survey")
@@ -210,7 +210,7 @@ public class Survey implements Serializable {
 
     @Override
     public String toString() {
-        return "persistance.beans.Survey[ id=" + id + " ]";
+        return "persistence.entities.Survey[ id=" + id + " ]";
     }
     
 }
