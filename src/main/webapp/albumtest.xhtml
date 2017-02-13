@@ -38,22 +38,14 @@ and open the template in the editor.
                 <div class="col-md-6">
                     <div id ="album_info">
                         <h2>#{album.title}</h2><br/>
-                        <h4>by #{album.artistId}</h4>
-                        <h4> #{album.genreId}</h4>
+                        <h4>by #{album.artistId.name}</h4>
+                        <h4> #{album.genreId.name}</h4>
                         <h4> #{album.numTracks} Tracks</h4>
                     </div>
                 </div>
             </div>
 
 
-            <b:dataTable value="#{albumJpaController.getTracks(id)}" var="tracks">
-                <b:dataTableColumn value="#{tracks.title}" />
-                <b:dataTableColumn value="" />
-                <b:dataTableColumn value="#{car.color}" />
-                <b:dataTableColumn value="#{car.year}"  order="asc"/>
-                <b:dataTableColumn value="&num:{car.price}" />
-                <b:dataTableColumn value="#{car.enginePower}" label="Engine Power (hp)" />
-            </b:dataTable>
 
         </div>
 
