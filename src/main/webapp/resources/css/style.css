@@ -97,6 +97,12 @@ about-heading{
     text-decoration: underline;
 }
 
+
+.album{
+    height: 45vh;
+    margin: 2%;
+}
+
 #albumArtWrapper{
     height:30%;
     width: 30%;
@@ -114,5 +120,6 @@ about-heading{
 }
 
 .track_list{
-    color: white;
+    margin: 0px auto;
 }
+
