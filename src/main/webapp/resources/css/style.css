@@ -1,11 +1,8 @@
 .bodyClass{
-<<<<<<< HEAD
     background-color: #fff;
     background-image: url("#{resource['/images/background.jpg']}");
     background-repeat: no-repeat;
-=======
     background-color: #3f3f3f;
->>>>>>> 02909b020b41cd85f644514583f5f660ea317742
 }
 
 .navbar-default, .dropdown-menu{
