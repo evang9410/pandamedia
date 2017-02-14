@@ -30,6 +30,7 @@ h1{
 
 .homeContainer{
     width: 100%;
+    /*FIX ME*/
     height: 90%;
     padding: 0;
     padding-bottom: 0;
@@ -41,7 +42,6 @@ h1{
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    background-attachment: fixed;
 }
 
 .homeContent{
@@ -53,9 +53,67 @@ h1{
    
 }
 
-.slogan{
-    color: #FFF;
+/*div containing button*/
+.accessButton{
+    width: auto;
+    background-color: transparent;
+    margin-top: 3%;
 }
+
+.button{
+    /*applying custom style*/
+    
+    background-color: #fff;
+    color: #000;
+    border: none;
+    padding: 12px 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 30px;
+    cursor: pointer;    
+}
+
+.button:hover{
+    background-color: #303030;
+    color: #fff;    
+    transition: background-color 0.5s;
+}
+
+.slogan{
+    /*CHANGE MY FONT*/
+    color: #000;
+    padding-top: 35%;
+}
+
+#j_idt12 a, #j_idt13 a, #j_idt14 a {
+    height: 86px;
+    display: flex;
+    align-items: center;
+}
+
+/*#j_idt12 a, #j_idt13 a, #j_idt14 a [aria-expanded="true"]{
+    height: 43px;
+    display: flex;
+    align-items: center;
+   
+}*/
+
+#j_idt15 a, #j_idt16 a {
+    height: 43px;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+    color: #fff;
+}
+.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover {
+    color: #fff;
+    background-color: #777;
+    transition: ease-in-out 0.4s;
+}
+
 
 .container{
     height: 100%;
@@ -64,6 +122,7 @@ h1{
 
 .navbar-toggle{
     border: 0;
+    background-color: #303030; 
     margin-top: 27px;
     margin-bottom: 27px;
 }
@@ -78,8 +137,26 @@ h1{
     padding-bottom: 56px;
 }
 
+.navbar-nav{
+    margin: 0 -15px;
+    /*padding-top: 18px;
+    padding-bottom: 18px;*/
+}
+
+.navbar-nav .dropdown-menu{
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+    border: 0;
+}
+
+.navbar-collapse{
+    background-color: #303030;
+}
+
 .navbar-default, .dropdown-menu{
-    height: 100%;
     min-height: 100%;
     background-color: #303030;
     color:#fff;
@@ -93,7 +170,7 @@ h1{
 a.navbar-brand,
 .navbar-default .navbar-brand{
     color: #FFF; /* color of the letters on the navbar */
-    transition: background-color 0.4s;
+    transition: ease-in-out background-color 0.4s;
 }
 
 .navbar-default .navbar-nav > li > a:hover,
@@ -108,14 +185,24 @@ a.navbar-brand,
     background-color: #777;
     color:#EEE;
 }
-
 .navbar-default .navbar-toggle:hover,
 .navbar-default .navbar-toggle:focus{
-    background-color: #777;
+    background-color: #303030;
     color:#EEE;
 }
+
+.navbar-default .navbar-toggle:focus{
+    outline: none;
+    background-color: #303030;
+    transition: background-color 0.4s;
+}
+
 .navbar-default .navbar-toggle .icon-bar{
     background-color: #fff;
+}
+.navbar-default .navbar-toggle:hover .icon-bar{
+    background-color: #777;
+    transition: background-color 0.4s;
 }
 
 .page-heading {position: relative;padding: 60px 15px;color: rgba(255, 255, 255, 0.7);margin-bottom: 0;font-size: 20px;;background-color: rgba(0,0,0,0.8);}
