@@ -197,7 +197,7 @@ public class AlbumJpaController implements Serializable {
                 }
             }
             throw ex;
-        } 
+        }
     }
 
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
@@ -258,30 +258,30 @@ public class AlbumJpaController implements Serializable {
 
     private List<Album> findAlbumEntities(boolean all, int maxResults, int firstResult) {
         
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Album.class));
-        Query q = em.createQuery(cq);
-        if (!all) {
-            q.setMaxResults(maxResults);
-            q.setFirstResult(firstResult);
-        }
-        return q.getResultList();
-       
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Album.class));
+            Query q = em.createQuery(cq);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        
     }
 
     public Album findAlbum(Integer id) {
-        
-        return em.find(Album.class, id);
        
+            return em.find(Album.class, id);
+        
     }
 
     public int getAlbumCount() {
         
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        Root<Album> rt = cq.from(Album.class);
-        cq.select(em.getCriteriaBuilder().count(rt));
-        Query q = em.createQuery(cq);
-        return ((Long) q.getSingleResult()).intValue();
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            Root<Album> rt = cq.from(Album.class);
+            cq.select(em.getCriteriaBuilder().count(rt));
+            Query q = em.createQuery(cq);
+            return ((Long) q.getSingleResult()).intValue();
         
     }
     

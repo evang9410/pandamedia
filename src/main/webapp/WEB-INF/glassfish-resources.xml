@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
 <resources>
+    
     <jdbc-resource enabled="true" jndi-name="jdbc/pandamediadb" object-type="user" pool-name="mysql_g4w17_g4w17Pool">
         <description/>
     </jdbc-resource>
@@ -18,5 +19,5 @@
         <property name="URL" value="jdbc:mysql://localhost:3306/g4w17?zeroDateTimeBehavior=convertToNull"/>
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
     </jdbc-connection-pool>
-    <jdbc-resource enabled="true" jndi-name="java:app/localpanda" object-type="user" pool-name="mysql_g4w17_rootPool"/>
+    <jdbc-resource enabled="true" jndi-name="java:app/pandamedialocal" object-type="user" pool-name="mysql_g4w17_rootPool"/>
 </resources>
