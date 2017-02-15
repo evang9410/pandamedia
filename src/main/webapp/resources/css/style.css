@@ -154,6 +154,9 @@ h1{
 
 .navbar-collapse{
     background-color: #303030;
+
+.bodyClass{
+    background-color: #3f3f3f;
 }
 
 .navbar-default, .dropdown-menu{
@@ -166,6 +169,9 @@ h1{
 }
 
 .navbar-brand,.dropdown-menu > li > a,
+
+
+.navbar-brand,
 .navbar-default .navbar-nav > li > a,
 a.navbar-brand,
 .navbar-default .navbar-brand{
@@ -257,4 +263,30 @@ about-heading{
     color:#222;
     font-size: 27px;
     text-decoration: underline;
+}
+
+
+.album{
+    height: 45vh;
+    margin: 2%;
+}
+
+#albumArtWrapper{
+    height:30%;
+    width: 30%;
+    background-color: red;
+}
+
+#albumArt{
+    width: 100%;
+    height: 100%;
+}
+
+#album_info{
+    margin-left: 5%;
+    color: white;
+}
+
+.track_list{
+    margin: 0px auto;
 }
