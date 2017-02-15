@@ -23,6 +23,7 @@ html, body {
     padding: 0;
 }
 h1{
+    font-size: 40px;
     border:0;
     margin:0;
     padding:0;
@@ -53,6 +54,10 @@ h1{
    
 }
 
+.dropdown dropdowm{
+    color: #fff;
+}
+
 /*div containing button*/
 .accessButton{
     width: auto;
@@ -79,11 +84,12 @@ h1{
 .button:hover{
     background-color: #303030;
     color: #fff;    
-    transition: background-color 0.5s;
+    transition: background-color 0.5s, color 0.5s ease-in-out;
 }
 
 .slogan{
     /*CHANGE MY FONT*/
+    font-family: "Raleway", sans-serif;
     color: #000;
     padding-top: 35%;
 }
@@ -103,6 +109,10 @@ h1{
 
 #j_idt15 a, #j_idt16 a {
     height: 43px;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    color: #fff;
 }
 
 .navbar-default .navbar-nav .open .dropdown-menu > li > a {
@@ -154,9 +164,6 @@ h1{
 
 .navbar-collapse{
     background-color: #303030;
-
-.bodyClass{
-    background-color: #3f3f3f;
 }
 
 .navbar-default, .dropdown-menu{
@@ -169,9 +176,6 @@ h1{
 }
 
 .navbar-brand,.dropdown-menu > li > a,
-
-
-.navbar-brand,
 .navbar-default .navbar-nav > li > a,
 a.navbar-brand,
 .navbar-default .navbar-brand{
@@ -182,19 +186,20 @@ a.navbar-brand,
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-brand:hover{
     background-color: #777;
-    color:#EEE;
+    color:#fff;
 }
 
 .navbar-default .navbar-nav > li > a:visited,
 .navbar-default .navbar-brand:visited,
 .dropdown-menu > li > a:visited{
     background-color: #777;
-    color:#EEE;
+    color:#fff;
 }
+
 .navbar-default .navbar-toggle:hover,
 .navbar-default .navbar-toggle:focus{
     background-color: #303030;
-    color:#EEE;
+    color:#fff;
 }
 
 .navbar-default .navbar-toggle:focus{
@@ -264,8 +269,6 @@ about-heading{
     font-size: 27px;
     text-decoration: underline;
 }
-
-
 .album{
     height: 45vh;
     margin: 2%;
@@ -289,4 +292,8 @@ about-heading{
 
 .track_list{
     margin: 0px auto;
+}
+
+.bodyClass{
+    background-color: #3f3f3f
 }

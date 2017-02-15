@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 C:\Users\1432581\Desktop\pandamedia\src\main\java\persistence\controllers\exceptions\RollbackFailureException.java
 C:\Users\1432581\Desktop\pandamedia\src\main\java\persistence\controllers\SurveyJpaController.java
 C:\Users\1432581\Desktop\pandamedia\src\main\java\persistence\entities\Survey.java
@@ -36,4 +34,3 @@ C:\Users\1432581\Desktop\pandamedia\src\main\java\persistence\controllers\AlbumJ
 C:\Users\1432581\Desktop\pandamedia\src\main\java\persistence\controllers\exceptions\PreexistingEntityException.java
 C:\Users\1432581\Desktop\pandamedia\src\main\java\persistence\controllers\CoverArtJpaController.java
 C:\Users\1432581\Desktop\pandamedia\src\main\java\persistence\controllers\ReviewJpaController.java
->>>>>>> master
