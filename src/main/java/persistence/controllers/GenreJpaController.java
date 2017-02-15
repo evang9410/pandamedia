@@ -13,8 +13,12 @@ import javax.persistence.criteria.Root;
 import persistence.entities.Album;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
 import persistence.controllers.exceptions.IllegalOrphanException;
 import persistence.controllers.exceptions.NonexistentEntityException;
@@ -27,18 +31,14 @@ import persistence.entities.Track;
  *
  * @author Evang
  */
+@Named
+@RequestScoped
 public class GenreJpaController implements Serializable {
 
-    public GenreJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
-        this.emf = emf;
-    }
-    private UserTransaction utx = null;
-    private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @Resource
+    private UserTransaction utx;
+    @PersistenceContext
+    private EntityManager em;
 
     public void create(Genre genre) throws RollbackFailureException, Exception {
         if (genre.getAlbumList() == null) {
@@ -50,10 +50,10 @@ public class GenreJpaController implements Serializable {
         if (genre.getTrackList() == null) {
             genre.setTrackList(new ArrayList<Track>());
         }
-        EntityManager em = null;
+
         try {
             utx.begin();
-            em = getEntityManager();
+
             List<Album> attachedAlbumList = new ArrayList<Album>();
             for (Album albumListAlbumToAttach : genre.getAlbumList()) {
                 albumListAlbumToAttach = em.getReference(albumListAlbumToAttach.getClass(), albumListAlbumToAttach.getId());
@@ -108,18 +108,14 @@ public class GenreJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
     public void edit(Genre genre) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+
         try {
             utx.begin();
-            em = getEntityManager();
+
             Genre persistentGenre = em.find(Genre.class, genre.getId());
             List<Album> albumListOld = persistentGenre.getAlbumList();
             List<Album> albumListNew = genre.getAlbumList();
@@ -223,18 +219,14 @@ public class GenreJpaController implements Serializable {
                 }
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+
         try {
             utx.begin();
-            em = getEntityManager();
+
             Genre genre;
             try {
                 genre = em.getReference(Genre.class, id);
@@ -274,10 +266,6 @@ public class GenreJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
@@ -290,41 +278,32 @@ public class GenreJpaController implements Serializable {
     }
 
     private List<Genre> findGenreEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Genre.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
+
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Genre.class));
+        Query q = em.createQuery(cq);
+        if (!all) {
+            q.setMaxResults(maxResults);
+            q.setFirstResult(firstResult);
         }
+        return q.getResultList();
+
     }
 
     public Genre findGenre(Integer id) {
-        EntityManager em = getEntityManager();
-        try {
-            return em.find(Genre.class, id);
-        } finally {
-            em.close();
-        }
+
+        return em.find(Genre.class, id);
+
     }
 
     public int getGenreCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Genre> rt = cq.from(Genre.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
+
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        Root<Genre> rt = cq.from(Genre.class);
+        cq.select(em.getCriteriaBuilder().count(rt));
+        Query q = em.createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
+
     }
-    
+
 }

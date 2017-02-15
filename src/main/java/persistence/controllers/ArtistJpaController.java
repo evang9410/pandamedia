@@ -13,8 +13,12 @@ import javax.persistence.criteria.Root;
 import persistence.entities.Album;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
 import persistence.controllers.exceptions.IllegalOrphanException;
 import persistence.controllers.exceptions.NonexistentEntityException;
@@ -26,18 +30,14 @@ import persistence.entities.Track;
  *
  * @author Evang
  */
+@Named
+@RequestScoped
 public class ArtistJpaController implements Serializable {
 
-    public ArtistJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
-        this.emf = emf;
-    }
-    private UserTransaction utx = null;
-    private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @Resource
+    private UserTransaction utx;
+    @PersistenceContext
+    private EntityManager em;
 
     public void create(Artist artist) throws RollbackFailureException, Exception {
         if (artist.getAlbumList() == null) {
@@ -46,10 +46,10 @@ public class ArtistJpaController implements Serializable {
         if (artist.getTrackList() == null) {
             artist.setTrackList(new ArrayList<Track>());
         }
-        EntityManager em = null;
+
         try {
             utx.begin();
-            em = getEntityManager();
+
             List<Album> attachedAlbumList = new ArrayList<Album>();
             for (Album albumListAlbumToAttach : artist.getAlbumList()) {
                 albumListAlbumToAttach = em.getReference(albumListAlbumToAttach.getClass(), albumListAlbumToAttach.getId());
@@ -89,18 +89,14 @@ public class ArtistJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
     public void edit(Artist artist) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+
         try {
             utx.begin();
-            em = getEntityManager();
+
             Artist persistentArtist = em.find(Artist.class, artist.getId());
             List<Album> albumListOld = persistentArtist.getAlbumList();
             List<Album> albumListNew = artist.getAlbumList();
@@ -178,18 +174,14 @@ public class ArtistJpaController implements Serializable {
                 }
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+
         try {
             utx.begin();
-            em = getEntityManager();
+
             Artist artist;
             try {
                 artist = em.getReference(Artist.class, id);
@@ -224,10 +216,6 @@ public class ArtistJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
@@ -240,41 +228,32 @@ public class ArtistJpaController implements Serializable {
     }
 
     private List<Artist> findArtistEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Artist.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
+
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Artist.class));
+        Query q = em.createQuery(cq);
+        if (!all) {
+            q.setMaxResults(maxResults);
+            q.setFirstResult(firstResult);
         }
+        return q.getResultList();
+
     }
 
     public Artist findArtist(Integer id) {
-        EntityManager em = getEntityManager();
-        try {
-            return em.find(Artist.class, id);
-        } finally {
-            em.close();
-        }
+
+        return em.find(Artist.class, id);
+
     }
 
     public int getArtistCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Artist> rt = cq.from(Artist.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
+
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        Root<Artist> rt = cq.from(Artist.class);
+        cq.select(em.getCriteriaBuilder().count(rt));
+        Query q = em.createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
+
     }
-    
+
 }

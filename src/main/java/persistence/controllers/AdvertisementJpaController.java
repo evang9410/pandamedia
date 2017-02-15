@@ -7,10 +7,14 @@ package persistence.controllers;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
@@ -22,24 +26,20 @@ import persistence.entities.Advertisement;
  *
  * @author Evang
  */
+@Named
+@RequestScoped
 public class AdvertisementJpaController implements Serializable {
 
-    public AdvertisementJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
-        this.emf = emf;
-    }
-    private UserTransaction utx = null;
-    private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @Resource
+    private UserTransaction utx;
+    @PersistenceContext
+    private EntityManager em;
 
     public void create(Advertisement advertisement) throws RollbackFailureException, Exception {
-        EntityManager em = null;
+
         try {
             utx.begin();
-            em = getEntityManager();
+
             em.persist(advertisement);
             utx.commit();
         } catch (Exception ex) {
@@ -49,18 +49,14 @@ public class AdvertisementJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
     public void edit(Advertisement advertisement) throws NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+
         try {
             utx.begin();
-            em = getEntityManager();
+
             advertisement = em.merge(advertisement);
             utx.commit();
         } catch (Exception ex) {
@@ -77,18 +73,14 @@ public class AdvertisementJpaController implements Serializable {
                 }
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+
         try {
             utx.begin();
-            em = getEntityManager();
+
             Advertisement advertisement;
             try {
                 advertisement = em.getReference(Advertisement.class, id);
@@ -105,10 +97,6 @@ public class AdvertisementJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
@@ -121,41 +109,31 @@ public class AdvertisementJpaController implements Serializable {
     }
 
     private List<Advertisement> findAdvertisementEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Advertisement.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
+
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Advertisement.class));
+        Query q = em.createQuery(cq);
+        if (!all) {
+            q.setMaxResults(maxResults);
+            q.setFirstResult(firstResult);
         }
+        return q.getResultList();
+
     }
 
     public Advertisement findAdvertisement(Integer id) {
-        EntityManager em = getEntityManager();
-        try {
-            return em.find(Advertisement.class, id);
-        } finally {
-            em.close();
-        }
+
+        return em.find(Advertisement.class, id);
     }
 
     public int getAdvertisementCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Advertisement> rt = cq.from(Advertisement.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
+
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        Root<Advertisement> rt = cq.from(Advertisement.class);
+        cq.select(em.getCriteriaBuilder().count(rt));
+        Query q = em.createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
+
     }
-    
+
 }

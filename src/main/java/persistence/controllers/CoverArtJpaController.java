@@ -13,8 +13,12 @@ import javax.persistence.criteria.Root;
 import persistence.entities.Track;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
 import persistence.controllers.exceptions.IllegalOrphanException;
 import persistence.controllers.exceptions.NonexistentEntityException;
@@ -25,27 +29,23 @@ import persistence.entities.CoverArt;
  *
  * @author Evang
  */
+@Named
+@RequestScoped
 public class CoverArtJpaController implements Serializable {
 
-    public CoverArtJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
-        this.emf = emf;
-    }
-    private UserTransaction utx = null;
-    private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @Resource
+    private UserTransaction utx;
+    @PersistenceContext
+    private EntityManager em;
 
     public void create(CoverArt coverArt) throws RollbackFailureException, Exception {
         if (coverArt.getTrackList() == null) {
             coverArt.setTrackList(new ArrayList<Track>());
         }
-        EntityManager em = null;
+
         try {
             utx.begin();
-            em = getEntityManager();
+
             List<Track> attachedTrackList = new ArrayList<Track>();
             for (Track trackListTrackToAttach : coverArt.getTrackList()) {
                 trackListTrackToAttach = em.getReference(trackListTrackToAttach.getClass(), trackListTrackToAttach.getId());
@@ -70,18 +70,14 @@ public class CoverArtJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
     public void edit(CoverArt coverArt) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+
         try {
             utx.begin();
-            em = getEntityManager();
+
             CoverArt persistentCoverArt = em.find(CoverArt.class, coverArt.getId());
             List<Track> trackListOld = persistentCoverArt.getTrackList();
             List<Track> trackListNew = coverArt.getTrackList();
@@ -131,18 +127,14 @@ public class CoverArtJpaController implements Serializable {
                 }
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+
         try {
             utx.begin();
-            em = getEntityManager();
+
             CoverArt coverArt;
             try {
                 coverArt = em.getReference(CoverArt.class, id);
@@ -170,10 +162,6 @@ public class CoverArtJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
@@ -186,41 +174,32 @@ public class CoverArtJpaController implements Serializable {
     }
 
     private List<CoverArt> findCoverArtEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(CoverArt.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
+
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(CoverArt.class));
+        Query q = em.createQuery(cq);
+        if (!all) {
+            q.setMaxResults(maxResults);
+            q.setFirstResult(firstResult);
         }
+        return q.getResultList();
+
     }
 
     public CoverArt findCoverArt(Integer id) {
-        EntityManager em = getEntityManager();
-        try {
-            return em.find(CoverArt.class, id);
-        } finally {
-            em.close();
-        }
+
+        return em.find(CoverArt.class, id);
+
     }
 
     public int getCoverArtCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<CoverArt> rt = cq.from(CoverArt.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
+
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        Root<CoverArt> rt = cq.from(CoverArt.class);
+        cq.select(em.getCriteriaBuilder().count(rt));
+        Query q = em.createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
+
     }
-    
+
 }
