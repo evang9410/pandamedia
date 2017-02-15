@@ -25,16 +25,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Evang
  */
 @Entity
-@Table(name = "track")
-@XmlRootElement
+@Table(name = "track", catalog = "g4w17", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Track.findAll", query = "SELECT t FROM Track t")
     , @NamedQuery(name = "Track.findById", query = "SELECT t FROM Track t WHERE t.id = :id")
@@ -42,7 +39,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Track.findByReleaseDate", query = "SELECT t FROM Track t WHERE t.releaseDate = :releaseDate")
     , @NamedQuery(name = "Track.findByPlayLength", query = "SELECT t FROM Track t WHERE t.playLength = :playLength")
     , @NamedQuery(name = "Track.findByAlbumTrackNumber", query = "SELECT t FROM Track t WHERE t.albumTrackNumber = :albumTrackNumber")
-    , @NamedQuery(name = "Track.findByCoverImagePath", query = "SELECT t FROM Track t WHERE t.coverImagePath = :coverImagePath")
     , @NamedQuery(name = "Track.findByDateEntered", query = "SELECT t FROM Track t WHERE t.dateEntered = :dateEntered")
     , @NamedQuery(name = "Track.findByPartOfAlbum", query = "SELECT t FROM Track t WHERE t.partOfAlbum = :partOfAlbum")
     , @NamedQuery(name = "Track.findByCostPrice", query = "SELECT t FROM Track t WHERE t.costPrice = :costPrice")
@@ -77,11 +73,6 @@ public class Track implements Serializable {
     @NotNull
     @Column(name = "album_track_number")
     private int albumTrackNumber;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "cover_image_path")
-    private String coverImagePath;
     @Basic(optional = false)
     @NotNull
     @Column(name = "date_entered")
@@ -124,6 +115,9 @@ public class Track implements Serializable {
     @JoinColumn(name = "genre_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Genre genreId;
+    @JoinColumn(name = "cover_art_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private CoverArt coverArtId;
 
     public Track() {
     }
@@ -132,13 +126,12 @@ public class Track implements Serializable {
         this.id = id;
     }
 
-    public Track(Integer id, String title, Date releaseDate, String playLength, int albumTrackNumber, String coverImagePath, Date dateEntered, short partOfAlbum, double costPrice, double listPrice, double salePrice, short removalStatus) {
+    public Track(Integer id, String title, Date releaseDate, String playLength, int albumTrackNumber, Date dateEntered, short partOfAlbum, double costPrice, double listPrice, double salePrice, short removalStatus) {
         this.id = id;
         this.title = title;
         this.releaseDate = releaseDate;
         this.playLength = playLength;
         this.albumTrackNumber = albumTrackNumber;
-        this.coverImagePath = coverImagePath;
         this.dateEntered = dateEntered;
         this.partOfAlbum = partOfAlbum;
         this.costPrice = costPrice;
@@ -185,14 +178,6 @@ public class Track implements Serializable {
 
     public void setAlbumTrackNumber(int albumTrackNumber) {
         this.albumTrackNumber = albumTrackNumber;
-    }
-
-    public String getCoverImagePath() {
-        return coverImagePath;
-    }
-
-    public void setCoverImagePath(String coverImagePath) {
-        this.coverImagePath = coverImagePath;
     }
 
     public Date getDateEntered() {
@@ -251,7 +236,6 @@ public class Track implements Serializable {
         this.removalDate = removalDate;
     }
 
-    @XmlTransient
     public List<Review> getReviewList() {
         return reviewList;
     }
@@ -290,6 +274,14 @@ public class Track implements Serializable {
 
     public void setGenreId(Genre genreId) {
         this.genreId = genreId;
+    }
+
+    public CoverArt getCoverArtId() {
+        return coverArtId;
+    }
+
+    public void setCoverArtId(CoverArt coverArtId) {
+        this.coverArtId = coverArtId;
     }
 
     @Override

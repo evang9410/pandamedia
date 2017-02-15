@@ -25,16 +25,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Evang
  */
 @Entity
-@Table(name = "album")
-@XmlRootElement
+@Table(name = "album", catalog = "g4w17", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Album.findAll", query = "SELECT a FROM Album a")
     , @NamedQuery(name = "Album.findById", query = "SELECT a FROM Album a WHERE a.id = :id")
@@ -228,7 +225,6 @@ public class Album implements Serializable {
         this.recordingLabelId = recordingLabelId;
     }
 
-    @XmlTransient
     public List<Track> getTrackList() {
         return trackList;
     }

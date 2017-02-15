@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import persistence.entities.Province;
 import persistence.entities.Genre;
 import persistence.entities.Review;
 import java.util.ArrayList;
@@ -51,6 +52,11 @@ public class ShopUserJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
+            Province provinceId = shopUser.getProvinceId();
+            if (provinceId != null) {
+                provinceId = em.getReference(provinceId.getClass(), provinceId.getId());
+                shopUser.setProvinceId(provinceId);
+            }
             Genre lastGenreSearched = shopUser.getLastGenreSearched();
             if (lastGenreSearched != null) {
                 lastGenreSearched = em.getReference(lastGenreSearched.getClass(), lastGenreSearched.getId());
@@ -69,6 +75,10 @@ public class ShopUserJpaController implements Serializable {
             }
             shopUser.setInvoiceList(attachedInvoiceList);
             em.persist(shopUser);
+            if (provinceId != null) {
+                provinceId.getShopUserList().add(shopUser);
+                provinceId = em.merge(provinceId);
+            }
             if (lastGenreSearched != null) {
                 lastGenreSearched.getShopUserList().add(shopUser);
                 lastGenreSearched = em.merge(lastGenreSearched);
@@ -112,6 +122,8 @@ public class ShopUserJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             ShopUser persistentShopUser = em.find(ShopUser.class, shopUser.getId());
+            Province provinceIdOld = persistentShopUser.getProvinceId();
+            Province provinceIdNew = shopUser.getProvinceId();
             Genre lastGenreSearchedOld = persistentShopUser.getLastGenreSearched();
             Genre lastGenreSearchedNew = shopUser.getLastGenreSearched();
             List<Review> reviewListOld = persistentShopUser.getReviewList();
@@ -138,6 +150,10 @@ public class ShopUserJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
+            if (provinceIdNew != null) {
+                provinceIdNew = em.getReference(provinceIdNew.getClass(), provinceIdNew.getId());
+                shopUser.setProvinceId(provinceIdNew);
+            }
             if (lastGenreSearchedNew != null) {
                 lastGenreSearchedNew = em.getReference(lastGenreSearchedNew.getClass(), lastGenreSearchedNew.getId());
                 shopUser.setLastGenreSearched(lastGenreSearchedNew);
@@ -157,6 +173,14 @@ public class ShopUserJpaController implements Serializable {
             invoiceListNew = attachedInvoiceListNew;
             shopUser.setInvoiceList(invoiceListNew);
             shopUser = em.merge(shopUser);
+            if (provinceIdOld != null && !provinceIdOld.equals(provinceIdNew)) {
+                provinceIdOld.getShopUserList().remove(shopUser);
+                provinceIdOld = em.merge(provinceIdOld);
+            }
+            if (provinceIdNew != null && !provinceIdNew.equals(provinceIdOld)) {
+                provinceIdNew.getShopUserList().add(shopUser);
+                provinceIdNew = em.merge(provinceIdNew);
+            }
             if (lastGenreSearchedOld != null && !lastGenreSearchedOld.equals(lastGenreSearchedNew)) {
                 lastGenreSearchedOld.getShopUserList().remove(shopUser);
                 lastGenreSearchedOld = em.merge(lastGenreSearchedOld);
@@ -238,6 +262,11 @@ public class ShopUserJpaController implements Serializable {
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
+            }
+            Province provinceId = shopUser.getProvinceId();
+            if (provinceId != null) {
+                provinceId.getShopUserList().remove(shopUser);
+                provinceId = em.merge(provinceId);
             }
             Genre lastGenreSearched = shopUser.getLastGenreSearched();
             if (lastGenreSearched != null) {

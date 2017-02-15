@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -42,14 +41,14 @@ public class AlbumJpaController implements Serializable {
     @PersistenceContext
     private EntityManager em;
 
+
     public void create(Album album) throws RollbackFailureException, Exception {
         if (album.getTrackList() == null) {
             album.setTrackList(new ArrayList<Track>());
         }
-
         try {
             utx.begin();
-
+            
             Artist artistId = album.getArtistId();
             if (artistId != null) {
                 artistId = em.getReference(artistId.getClass(), artistId.getId());
@@ -105,10 +104,8 @@ public class AlbumJpaController implements Serializable {
     }
 
     public void edit(Album album) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-
         try {
             utx.begin();
-
             Album persistentAlbum = em.find(Album.class, album.getId());
             Artist artistIdOld = persistentAlbum.getArtistId();
             Artist artistIdNew = album.getArtistId();
@@ -200,14 +197,12 @@ public class AlbumJpaController implements Serializable {
                 }
             }
             throw ex;
-        }
+        } 
     }
 
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-
         try {
             utx.begin();
-
             Album album;
             try {
                 album = em.getReference(Album.class, id);
@@ -262,7 +257,7 @@ public class AlbumJpaController implements Serializable {
     }
 
     private List<Album> findAlbumEntities(boolean all, int maxResults, int firstResult) {
-
+        
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Album.class));
         Query q = em.createQuery(cq);
@@ -271,23 +266,23 @@ public class AlbumJpaController implements Serializable {
             q.setFirstResult(firstResult);
         }
         return q.getResultList();
-
+       
     }
 
     public Album findAlbum(Integer id) {
-
+        
         return em.find(Album.class, id);
-
+       
     }
 
     public int getAlbumCount() {
-
+        
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         Root<Album> rt = cq.from(Album.class);
         cq.select(em.getCriteriaBuilder().count(rt));
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
-
+        
     }
-
+    
 }

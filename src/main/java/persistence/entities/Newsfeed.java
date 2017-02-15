@@ -6,9 +6,7 @@
 package persistence.entities;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,12 +23,12 @@ import javax.validation.constraints.Size;
  * @author Evang
  */
 @Entity
-@Table(name = "artist", catalog = "g4w17", schema = "")
+@Table(name = "newsfeed", catalog = "g4w17", schema = "")
 @NamedQueries({
-    @NamedQuery(name = "Artist.findAll", query = "SELECT a FROM Artist a")
-    , @NamedQuery(name = "Artist.findById", query = "SELECT a FROM Artist a WHERE a.id = :id")
-    , @NamedQuery(name = "Artist.findByName", query = "SELECT a FROM Artist a WHERE a.name = :name")})
-public class Artist implements Serializable {
+    @NamedQuery(name = "Newsfeed.findAll", query = "SELECT n FROM Newsfeed n")
+    , @NamedQuery(name = "Newsfeed.findById", query = "SELECT n FROM Newsfeed n WHERE n.id = :id")
+    , @NamedQuery(name = "Newsfeed.findByUrl", query = "SELECT n FROM Newsfeed n WHERE n.url = :url")})
+public class Newsfeed implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,23 +39,19 @@ public class Artist implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "name")
-    private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artistId")
-    private List<Album> albumList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artistId")
-    private List<Track> trackList;
+    @Column(name = "url")
+    private String url;
 
-    public Artist() {
+    public Newsfeed() {
     }
 
-    public Artist(Integer id) {
+    public Newsfeed(Integer id) {
         this.id = id;
     }
 
-    public Artist(Integer id, String name) {
+    public Newsfeed(Integer id, String url) {
         this.id = id;
-        this.name = name;
+        this.url = url;
     }
 
     public Integer getId() {
@@ -69,28 +62,12 @@ public class Artist implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUrl() {
+        return url;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Album> getAlbumList() {
-        return albumList;
-    }
-
-    public void setAlbumList(List<Album> albumList) {
-        this.albumList = albumList;
-    }
-
-    public List<Track> getTrackList() {
-        return trackList;
-    }
-
-    public void setTrackList(List<Track> trackList) {
-        this.trackList = trackList;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override
@@ -103,10 +80,10 @@ public class Artist implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Artist)) {
+        if (!(object instanceof Newsfeed)) {
             return false;
         }
-        Artist other = (Artist) object;
+        Newsfeed other = (Newsfeed) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -115,7 +92,7 @@ public class Artist implements Serializable {
 
     @Override
     public String toString() {
-        return "persistence.entities.Artist[ id=" + id + " ]";
+        return "persistence.entities.Newsfeed[ id=" + id + " ]";
     }
     
 }

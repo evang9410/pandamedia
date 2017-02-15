@@ -20,16 +20,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Evang
  */
 @Entity
-@Table(name = "songwriter")
-@XmlRootElement
+@Table(name = "songwriter", catalog = "g4w17", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Songwriter.findAll", query = "SELECT s FROM Songwriter s")
     , @NamedQuery(name = "Songwriter.findById", query = "SELECT s FROM Songwriter s WHERE s.id = :id")
@@ -78,7 +75,6 @@ public class Songwriter implements Serializable {
         this.name = name;
     }
 
-    @XmlTransient
     public List<Track> getTrackList() {
         return trackList;
     }

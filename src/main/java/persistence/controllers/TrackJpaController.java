@@ -14,6 +14,7 @@ import persistence.entities.Album;
 import persistence.entities.Artist;
 import persistence.entities.Songwriter;
 import persistence.entities.Genre;
+import persistence.entities.CoverArt;
 import persistence.entities.Review;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +71,11 @@ public class TrackJpaController implements Serializable {
                 genreId = em.getReference(genreId.getClass(), genreId.getId());
                 track.setGenreId(genreId);
             }
+            CoverArt coverArtId = track.getCoverArtId();
+            if (coverArtId != null) {
+                coverArtId = em.getReference(coverArtId.getClass(), coverArtId.getId());
+                track.setCoverArtId(coverArtId);
+            }
             List<Review> attachedReviewList = new ArrayList<Review>();
             for (Review reviewListReviewToAttach : track.getReviewList()) {
                 reviewListReviewToAttach = em.getReference(reviewListReviewToAttach.getClass(), reviewListReviewToAttach.getId());
@@ -92,6 +98,10 @@ public class TrackJpaController implements Serializable {
             if (genreId != null) {
                 genreId.getTrackList().add(track);
                 genreId = em.merge(genreId);
+            }
+            if (coverArtId != null) {
+                coverArtId.getTrackList().add(track);
+                coverArtId = em.merge(coverArtId);
             }
             for (Review reviewListReview : track.getReviewList()) {
                 Track oldTrackIdOfReviewListReview = reviewListReview.getTrackId();
@@ -131,6 +141,8 @@ public class TrackJpaController implements Serializable {
             Songwriter songwriterIdNew = track.getSongwriterId();
             Genre genreIdOld = persistentTrack.getGenreId();
             Genre genreIdNew = track.getGenreId();
+            CoverArt coverArtIdOld = persistentTrack.getCoverArtId();
+            CoverArt coverArtIdNew = track.getCoverArtId();
             List<Review> reviewListOld = persistentTrack.getReviewList();
             List<Review> reviewListNew = track.getReviewList();
             List<String> illegalOrphanMessages = null;
@@ -160,6 +172,10 @@ public class TrackJpaController implements Serializable {
             if (genreIdNew != null) {
                 genreIdNew = em.getReference(genreIdNew.getClass(), genreIdNew.getId());
                 track.setGenreId(genreIdNew);
+            }
+            if (coverArtIdNew != null) {
+                coverArtIdNew = em.getReference(coverArtIdNew.getClass(), coverArtIdNew.getId());
+                track.setCoverArtId(coverArtIdNew);
             }
             List<Review> attachedReviewListNew = new ArrayList<Review>();
             for (Review reviewListNewReviewToAttach : reviewListNew) {
@@ -200,6 +216,14 @@ public class TrackJpaController implements Serializable {
             if (genreIdNew != null && !genreIdNew.equals(genreIdOld)) {
                 genreIdNew.getTrackList().add(track);
                 genreIdNew = em.merge(genreIdNew);
+            }
+            if (coverArtIdOld != null && !coverArtIdOld.equals(coverArtIdNew)) {
+                coverArtIdOld.getTrackList().remove(track);
+                coverArtIdOld = em.merge(coverArtIdOld);
+            }
+            if (coverArtIdNew != null && !coverArtIdNew.equals(coverArtIdOld)) {
+                coverArtIdNew.getTrackList().add(track);
+                coverArtIdNew = em.merge(coverArtIdNew);
             }
             for (Review reviewListNewReview : reviewListNew) {
                 if (!reviewListOld.contains(reviewListNewReview)) {
@@ -276,6 +300,11 @@ public class TrackJpaController implements Serializable {
             if (genreId != null) {
                 genreId.getTrackList().remove(track);
                 genreId = em.merge(genreId);
+            }
+            CoverArt coverArtId = track.getCoverArtId();
+            if (coverArtId != null) {
+                coverArtId.getTrackList().remove(track);
+                coverArtId = em.merge(coverArtId);
             }
             em.remove(track);
             utx.commit();

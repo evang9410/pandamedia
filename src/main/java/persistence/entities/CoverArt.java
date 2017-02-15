@@ -26,12 +26,12 @@ import javax.validation.constraints.Size;
  * @author Evang
  */
 @Entity
-@Table(name = "genre", catalog = "g4w17", schema = "")
+@Table(name = "cover_art", catalog = "g4w17", schema = "")
 @NamedQueries({
-    @NamedQuery(name = "Genre.findAll", query = "SELECT g FROM Genre g")
-    , @NamedQuery(name = "Genre.findById", query = "SELECT g FROM Genre g WHERE g.id = :id")
-    , @NamedQuery(name = "Genre.findByName", query = "SELECT g FROM Genre g WHERE g.name = :name")})
-public class Genre implements Serializable {
+    @NamedQuery(name = "CoverArt.findAll", query = "SELECT c FROM CoverArt c")
+    , @NamedQuery(name = "CoverArt.findById", query = "SELECT c FROM CoverArt c WHERE c.id = :id")
+    , @NamedQuery(name = "CoverArt.findByImagePath", query = "SELECT c FROM CoverArt c WHERE c.imagePath = :imagePath")})
+public class CoverArt implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,25 +42,21 @@ public class Genre implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "name")
-    private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genreId")
-    private List<Album> albumList;
-    @OneToMany(mappedBy = "lastGenreSearched")
-    private List<ShopUser> shopUserList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genreId")
+    @Column(name = "image_path")
+    private String imagePath;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "coverArtId")
     private List<Track> trackList;
 
-    public Genre() {
+    public CoverArt() {
     }
 
-    public Genre(Integer id) {
+    public CoverArt(Integer id) {
         this.id = id;
     }
 
-    public Genre(Integer id, String name) {
+    public CoverArt(Integer id, String imagePath) {
         this.id = id;
-        this.name = name;
+        this.imagePath = imagePath;
     }
 
     public Integer getId() {
@@ -71,28 +67,12 @@ public class Genre implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Album> getAlbumList() {
-        return albumList;
-    }
-
-    public void setAlbumList(List<Album> albumList) {
-        this.albumList = albumList;
-    }
-
-    public List<ShopUser> getShopUserList() {
-        return shopUserList;
-    }
-
-    public void setShopUserList(List<ShopUser> shopUserList) {
-        this.shopUserList = shopUserList;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public List<Track> getTrackList() {
@@ -113,10 +93,10 @@ public class Genre implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Genre)) {
+        if (!(object instanceof CoverArt)) {
             return false;
         }
-        Genre other = (Genre) object;
+        CoverArt other = (CoverArt) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -125,7 +105,7 @@ public class Genre implements Serializable {
 
     @Override
     public String toString() {
-        return "persistence.entities.Genre[ id=" + id + " ]";
+        return "persistence.entities.CoverArt[ id=" + id + " ]";
     }
     
 }

@@ -22,16 +22,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Evang
  */
 @Entity
-@Table(name = "shop_user")
-@XmlRootElement
+@Table(name = "shop_user", catalog = "g4w17", schema = "")
 @NamedQueries({
     @NamedQuery(name = "ShopUser.findAll", query = "SELECT s FROM ShopUser s")
     , @NamedQuery(name = "ShopUser.findById", query = "SELECT s FROM ShopUser s WHERE s.id = :id")
@@ -41,7 +38,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "ShopUser.findByCompanyName", query = "SELECT s FROM ShopUser s WHERE s.companyName = :companyName")
     , @NamedQuery(name = "ShopUser.findByStreetAddress", query = "SELECT s FROM ShopUser s WHERE s.streetAddress = :streetAddress")
     , @NamedQuery(name = "ShopUser.findByCity", query = "SELECT s FROM ShopUser s WHERE s.city = :city")
-    , @NamedQuery(name = "ShopUser.findByProvince", query = "SELECT s FROM ShopUser s WHERE s.province = :province")
     , @NamedQuery(name = "ShopUser.findByCountry", query = "SELECT s FROM ShopUser s WHERE s.country = :country")
     , @NamedQuery(name = "ShopUser.findByPostalCode", query = "SELECT s FROM ShopUser s WHERE s.postalCode = :postalCode")
     , @NamedQuery(name = "ShopUser.findByHomePhone", query = "SELECT s FROM ShopUser s WHERE s.homePhone = :homePhone")
@@ -89,11 +85,6 @@ public class ShopUser implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "province")
-    private String province;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
     @Column(name = "country")
     private String country;
     @Basic(optional = false)
@@ -129,11 +120,14 @@ public class ShopUser implements Serializable {
     @NotNull
     @Column(name = "is_manager")
     private short isManager;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private List<Review> reviewList;
+    @JoinColumn(name = "province_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Province provinceId;
     @JoinColumn(name = "last_genre_searched", referencedColumnName = "id")
     @ManyToOne
     private Genre lastGenreSearched;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private List<Review> reviewList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private List<Invoice> invoiceList;
 
@@ -144,14 +138,13 @@ public class ShopUser implements Serializable {
         this.id = id;
     }
 
-    public ShopUser(Integer id, String title, String lastName, String firstName, String streetAddress, String city, String province, String country, String postalCode, String homePhone, String email, String password, String salt, short isManager) {
+    public ShopUser(Integer id, String title, String lastName, String firstName, String streetAddress, String city, String country, String postalCode, String homePhone, String email, String password, String salt, short isManager) {
         this.id = id;
         this.title = title;
         this.lastName = lastName;
         this.firstName = firstName;
         this.streetAddress = streetAddress;
         this.city = city;
-        this.province = province;
         this.country = country;
         this.postalCode = postalCode;
         this.homePhone = homePhone;
@@ -215,14 +208,6 @@ public class ShopUser implements Serializable {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
     }
 
     public String getCountry() {
@@ -289,13 +274,12 @@ public class ShopUser implements Serializable {
         this.isManager = isManager;
     }
 
-    @XmlTransient
-    public List<Review> getReviewList() {
-        return reviewList;
+    public Province getProvinceId() {
+        return provinceId;
     }
 
-    public void setReviewList(List<Review> reviewList) {
-        this.reviewList = reviewList;
+    public void setProvinceId(Province provinceId) {
+        this.provinceId = provinceId;
     }
 
     public Genre getLastGenreSearched() {
@@ -306,7 +290,14 @@ public class ShopUser implements Serializable {
         this.lastGenreSearched = lastGenreSearched;
     }
 
-    @XmlTransient
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
+    }
+
     public List<Invoice> getInvoiceList() {
         return invoiceList;
     }

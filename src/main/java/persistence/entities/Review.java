@@ -22,15 +22,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Evang
  */
 @Entity
-@Table(name = "review")
-@XmlRootElement
+@Table(name = "review", catalog = "g4w17", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Review.findAll", query = "SELECT r FROM Review r")
     , @NamedQuery(name = "Review.findById", query = "SELECT r FROM Review r WHERE r.id = :id")
