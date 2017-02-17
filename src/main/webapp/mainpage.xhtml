@@ -15,12 +15,21 @@ and open the template in the editor.
         <h:outputStylesheet library="css" name="style.css" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
-    <h:body>
-        <ui:insert name ="menu">
-            <ui:include src="./WEB-INF/sections/menu.xhtml"/>
-        </ui:insert>
+    <h:body class="parallax">
+        <div>
+            <ui:insert name ="menu">
+                <ui:include src="./WEB-INF/sections/menu.xhtml"/>
+            </ui:insert>
+        </div>
         <!-- latest releases -->
         <!-- content flow of latest albums get their album art in a list -->
-        <div class="contentflow_container">gdgf</div>
+        <div class="horizontal-ad">ad banner</div>
+        <div class="contentflow_container">
+            content-flow/carrasol
+        </div>
+        
+        <div class = "content">
+            content
+        </div>
     </h:body>
 </html>
