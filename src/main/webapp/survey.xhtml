@@ -3,15 +3,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui">
      <h:head>
         <h:outputStylesheet library="css" name="style.css"/>
     </h:head>
     <h:body>
-        <h3>Survey</h3>
-        <h:panelGrid columns="2" style="margin-bottom: 10px" cellpadding="5">
-            <p:outputLabel for="genre" value="Genre:"/>
-            <p:selectOneRadio id="genre" value=""
-        </h:panelGrid>
+       
+        <h:form>
+            <h3>Survey</h3>
+
+            <p:outputLabel for="survey" value="#{surveyActionBeanController.last.question}"/>
+            <p:selectOneRadio id="survey" value="#{surveyBean.userChoice}" layout="responsive" columns="1">
+                <f:selectItems value="#{surveyBean.answers}" var="a" itemLabel="#{answer}" itemValue="#{answer}"/>
+            </p:selectOneRadio>
+            <p:commandButton value="Submit" id="submitBtn" action="#{surveyBean.incrementVoteCount()}"/>
+        </h:form>
+        <h:outputText value="#{surveyBean.userChoice}"/>
     </h:body>
 </html>
