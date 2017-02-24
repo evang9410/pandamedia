@@ -27,9 +27,12 @@ and open the template in the editor.
         <div class="contentflow_container">
             content-flow/carrasol
         </div>
-        
+
         <div class = "content">
             content
+            <ui:repeat value="#{albumBacking.latestAlbums}" var="album">
+                <p>#{album.title} | #{album.releaseDate}</p>
+            </ui:repeat>
         </div>
     </h:body>
 </html>
