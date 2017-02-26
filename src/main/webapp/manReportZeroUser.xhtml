@@ -9,7 +9,15 @@
     </h:head>
     <h:body>
         #{msgs.manReportZeroUserTitle}
-        Hello from Facelets
+        <h:dataTable value="#{}" var="name">
+                <h:column>
+                    #{name.last},
+                </h:column>
+
+                <h:column>
+                    #{name.first}
+                </h:column>
+            </h:dataTable>
     </h:body>
 </html>
 

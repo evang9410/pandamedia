@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.UserTransaction;
 import persistence.controllers.exceptions.IllegalOrphanException;
@@ -24,6 +25,8 @@ import persistence.controllers.exceptions.NonexistentEntityException;
 import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.Invoice;
 import persistence.entities.ShopUser;
+import javax.persistence.criteria.Subquery;
+import persistence.entities.Invoice_;
 
 /**
  *
@@ -341,13 +344,23 @@ public class ShopUserJpaController implements Serializable {
         EntityManager em = getEntityManager();
         
         try{
+            // Query
             CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaQuery<ShopUser> cq = cb.createQuery(ShopUser.class);
-            Root<ShopUser> rt = cq.from(ShopUser.class);
-            cq.select(rt);
-//            cq.where(cb.equal());
+            CriteriaQuery<ShopUser> query = cb.createQuery(ShopUser.class);
+            Root<ShopUser> userRoot = query.from(ShopUser.class);
+            query.select(userRoot);
             
-            return null;
+            // Subquery
+            Subquery<Invoice> subquery = query.subquery(Invoice.class);
+            Root<Invoice> invoiceRoot = subquery.from(Invoice.class);
+            subquery.select(invoiceRoot);
+            subquery.where(cb.equal(invoiceRoot.get(Invoice_.userId), userRoot));
+            
+            // Putting them together
+            query.where(cb.not(cb.exists(subquery)));
+            TypedQuery<ShopUser> typedQuery = em.createQuery(query);
+            
+            return typedQuery.getResultList();
         }
         finally
         {

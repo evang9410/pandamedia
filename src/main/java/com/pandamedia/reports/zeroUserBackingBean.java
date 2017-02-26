@@ -6,6 +6,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import persistence.controllers.ShopUserJpaController;
 import persistence.entities.ShopUser;
 
 /**
@@ -19,5 +20,11 @@ public class zeroUserBackingBean implements Serializable {
     public zeroUserBackingBean()
     {
         
+    }
+    
+    public List<ShopUser> getShopUser()
+    {
+        ShopUserJpaController controller = new ShopUserJpaController();
+        return 
     }
 }
