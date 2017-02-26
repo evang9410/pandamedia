@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.UserTransaction;
 import persistence.controllers.exceptions.IllegalOrphanException;
 import persistence.controllers.exceptions.NonexistentEntityException;
@@ -331,6 +332,25 @@ public class ShopUserJpaController implements Serializable {
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
         } finally {
+            em.close();
+        }
+    }
+    
+    public List<ShopUser> getZeroUsers()
+    {
+        EntityManager em = getEntityManager();
+        
+        try{
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<ShopUser> cq = cb.createQuery(ShopUser.class);
+            Root<ShopUser> rt = cq.from(ShopUser.class);
+            cq.select(rt);
+//            cq.where(cb.equal());
+            
+            return null;
+        }
+        finally
+        {
             em.close();
         }
     }
