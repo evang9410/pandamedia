@@ -6,6 +6,7 @@ com\mycompany\pandamedia\views\util\JsfCrudELResolver$JsfCrudMethod.class
 persistence\entities\Invoice.class
 com\mycompany\pandamedia\views\util\JsfUtil.class
 persistence\controllers\InvoiceJpaController.class
+backingbeans\AlbumBackingBean.class
 persistence\controllers\exceptions\PreexistingEntityException.class
 persistence\entities\Songwriter.class
 persistence\controllers\AdvertisementJpaController.class

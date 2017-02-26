@@ -7,9 +7,11 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui">
     <h:head>
         <title>Pandamedia</title>
+        
         <h:outputStylesheet library="css" name="bootstrap.css" />
         <h:outputStylesheet library="css" name="mainpage.css" />
         <h:outputStylesheet library="css" name="style.css" />
@@ -17,22 +19,39 @@ and open the template in the editor.
     </h:head>
     <h:body class="parallax">
         <div>
-            <ui:insert name ="menu">
-                <ui:include src="./WEB-INF/sections/menu.xhtml"/>
-            </ui:insert>
+            
+            <ui:include src="./WEB-INF/sections/menu.xhtml"/>
         </div>
         <!-- latest releases -->
         <!-- content flow of latest albums get their album art in a list -->
         <div class="horizontal-ad">ad banner</div>
         <div class="contentflow_container">
             content-flow/carrasol
+            <div class="row"> 
+                <ui:repeat value="#{albumBacking.latestAlbums}" var="album">
+
+                        <div class="col-sm-2">
+                            <div class = "card_album">
+                                <img class="card_album_art" src="./resources/images/bg.jpg" alt="Card image cap"/>
+                                <h2>#{album.title}</h2>
+                            </div>                                          
+                        </div>
+
+                </ui:repeat>
+            </div>
         </div>
 
-        <div class = "content">
-            content
-            <ui:repeat value="#{albumBacking.latestAlbums}" var="album">
-                <p>#{album.title} | #{album.releaseDate}</p>
-            </ui:repeat>
+        <div class = "content">            
+            <div class="row">               
+                <div class="col-sm-2">
+                    <div class = "card_album">
+                        <img class="card_album_art" src="./resources/images/bg.jpg" alt="Card image cap"/>
+                        <h2>album info</h2>
+                    </div>                                          
+                </div>
+            </div>
+            
+                        
         </div>
     </h:body>
 </html>

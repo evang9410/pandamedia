@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import persistence.controllers.AlbumJpaController;
 import persistence.entities.Album;
+import persistence.entities.CoverArt;
 
 /**
  *
@@ -56,5 +57,7 @@ public class AlbumBackingBean implements Serializable{
         String q = "SELECT a FROM Album a ORDER BY a.releaseDate DESC";
         TypedQuery<Album> query =  em.createQuery(q, Album.class).setMaxResults(5);
         return query.getResultList();
+        
     }
+    
 }

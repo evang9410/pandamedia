@@ -1,6 +1,7 @@
 C:\Users\Evang\Desktop\pandamedia\src\main\java\com\mycompany\pandamedia\views\util\JsfCrudELResolver.java
 C:\Users\Evang\Desktop\pandamedia\src\main\java\persistence\controllers\ProvinceJpaController.java
 C:\Users\Evang\Desktop\pandamedia\src\main\java\persistence\controllers\SurveyJpaController.java
+C:\Users\Evang\Desktop\pandamedia\src\main\java\backingbeans\AlbumBackingBean.java
 C:\Users\Evang\Desktop\pandamedia\src\main\java\persistence\controllers\exceptions\NonexistentEntityException.java
 C:\Users\Evang\Desktop\pandamedia\src\main\java\persistence\entities\Survey.java
 C:\Users\Evang\Desktop\pandamedia\src\main\java\persistence\controllers\InvoiceJpaController.java
