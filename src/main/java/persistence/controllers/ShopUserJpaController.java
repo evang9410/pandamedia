@@ -15,8 +15,12 @@ import persistence.entities.Genre;
 import persistence.entities.Review;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.UserTransaction;
@@ -32,18 +36,14 @@ import persistence.entities.Invoice_;
  *
  * @author Evang
  */
+@Named
+@RequestScoped
 public class ShopUserJpaController implements Serializable {
 
-    public ShopUserJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
-        this.emf = emf;
-    }
-    private UserTransaction utx = null;
-    private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @Resource
+    private UserTransaction utx;
+    @PersistenceContext
+    private EntityManager em;
 
     public void create(ShopUser shopUser) throws RollbackFailureException, Exception {
         if (shopUser.getReviewList() == null) {
@@ -52,10 +52,8 @@ public class ShopUserJpaController implements Serializable {
         if (shopUser.getInvoiceList() == null) {
             shopUser.setInvoiceList(new ArrayList<Invoice>());
         }
-        EntityManager em = null;
         try {
             utx.begin();
-            em = getEntityManager();
             Province provinceId = shopUser.getProvinceId();
             if (provinceId != null) {
                 provinceId = em.getReference(provinceId.getClass(), provinceId.getId());
@@ -113,10 +111,6 @@ public class ShopUserJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
@@ -124,7 +118,6 @@ public class ShopUserJpaController implements Serializable {
         EntityManager em = null;
         try {
             utx.begin();
-            em = getEntityManager();
             ShopUser persistentShopUser = em.find(ShopUser.class, shopUser.getId());
             Province provinceIdOld = persistentShopUser.getProvinceId();
             Province provinceIdNew = shopUser.getProvinceId();
@@ -230,18 +223,12 @@ public class ShopUserJpaController implements Serializable {
                 }
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
         try {
             utx.begin();
-            em = getEntityManager();
             ShopUser shopUser;
             try {
                 shopUser = em.getReference(ShopUser.class, id);
@@ -286,10 +273,6 @@ public class ShopUserJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
@@ -302,9 +285,7 @@ public class ShopUserJpaController implements Serializable {
     }
 
     private List<ShopUser> findShopUserEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(ShopUser.class));
             Query q = em.createQuery(cq);
             if (!all) {
@@ -312,60 +293,47 @@ public class ShopUserJpaController implements Serializable {
                 q.setFirstResult(firstResult);
             }
             return q.getResultList();
-        } finally {
-            em.close();
-        }
     }
 
     public ShopUser findShopUser(Integer id) {
-        EntityManager em = getEntityManager();
-        try {
-            return em.find(ShopUser.class, id);
-        } finally {
-            em.close();
-        }
+        return em.find(ShopUser.class, id);
     }
 
     public int getShopUserCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             Root<ShopUser> rt = cq.from(ShopUser.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
     }
     
+    /**
+     * This method returns a list of all the shop users that
+     * did not make any purchases in the time frame specified.
+     * 
+     * @author  Erika Bourque
+     * @return  The list of shop users
+     */
     public List<ShopUser> getZeroUsers()
-    {
-        EntityManager em = getEntityManager();
-        
-        try{
-            // Query
-            CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaQuery<ShopUser> query = cb.createQuery(ShopUser.class);
-            Root<ShopUser> userRoot = query.from(ShopUser.class);
-            query.select(userRoot);
-            
-            // Subquery
-            Subquery<Invoice> subquery = query.subquery(Invoice.class);
-            Root<Invoice> invoiceRoot = subquery.from(Invoice.class);
-            subquery.select(invoiceRoot);
-            subquery.where(cb.equal(invoiceRoot.get(Invoice_.userId), userRoot));
-            
-            // Putting them together
-            query.where(cb.not(cb.exists(subquery)));
-            TypedQuery<ShopUser> typedQuery = em.createQuery(query);
-            
-            return typedQuery.getResultList();
-        }
-        finally
-        {
-            em.close();
-        }
+    {        
+        // Query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<ShopUser> query = cb.createQuery(ShopUser.class);
+        Root<ShopUser> userRoot = query.from(ShopUser.class);
+        query.select(userRoot);
+
+        // Subquery
+        Subquery<Invoice> subquery = query.subquery(Invoice.class);
+        Root<Invoice> invoiceRoot = subquery.from(Invoice.class);
+        subquery.select(invoiceRoot);
+        subquery.where(cb.equal(invoiceRoot.get(Invoice_.userId), userRoot));
+        // TODO: Missing timeframes, also in params 
+
+        // Putting them together
+        query.where(cb.not(cb.exists(subquery)));
+        TypedQuery<ShopUser> typedQuery = em.createQuery(query);
+
+        return typedQuery.getResultList();
     }
     
 }

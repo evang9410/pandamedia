@@ -9,15 +9,53 @@
     </h:head>
     <h:body>
         #{msgs.manReportZeroUserTitle}
-        <h:dataTable value="#{}" var="name">
-                <h:column>
-                    #{name.last},
-                </h:column>
-
-                <h:column>
-                    #{name.first}
-                </h:column>
-            </h:dataTable>
+        <h:dataTable value="#{shopUserJpaController.zeroUsers}" var="user">
+            <h:column>
+                #{user.id},
+            </h:column>
+            <h:column>
+                #{user.title},
+            </h:column>
+            <h:column>
+                #{user.lastName},
+            </h:column>
+            <h:column>
+                #{user.firstName},
+            </h:column>
+            <h:column>
+                #{user.companyName},
+            </h:column>
+            <h:column>
+                #{user.streetAddress},
+            </h:column>
+            <h:column>
+                #{user.city},
+            </h:column>
+            <h:column>
+                #{user.provinceId},
+            </h:column>
+            <h:column>
+                #{user.country},
+            </h:column>
+            <h:column>
+                #{user.postalCode},
+            </h:column>
+            <h:column>
+                #{user.homePhone},
+            </h:column>
+            <h:column>
+                #{user.cellPhone},
+            </h:column>
+            <h:column>
+                #{user.email},
+            </h:column>
+            <h:column>
+                #{user.lastGenreSearched},
+            </h:column>
+            <h:column>
+                #{user.isManager},
+            </h:column>
+        </h:dataTable>
     </h:body>
 </html>
 
