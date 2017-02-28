@@ -36,6 +36,7 @@ persistence\entities\Advertisement.class
 persistence\entities\Survey_.class
 persistence\entities\CoverArt.class
 persistence\controllers\ShopUserJpaController.class
+com\pandamedia\beans\reportBackingBean.class
 persistence\controllers\ProvinceJpaController.class
 persistence\entities\CoverArt_.class
 persistence\entities\ShopUser.class

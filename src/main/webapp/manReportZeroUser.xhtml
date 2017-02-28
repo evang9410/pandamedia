@@ -11,6 +11,7 @@
     <h:body>
         #{msgs.manReportZeroUserTitle}
         <!-- Add prime faces calendars here -->
+        <p:calendar></p:calendar>
         <h:dataTable value="#{shopUserJpaController.zeroUsers}" var="user">
             <h:column>
                 <f:facet name="header">#{msgs.idHeader}</f:facet>
