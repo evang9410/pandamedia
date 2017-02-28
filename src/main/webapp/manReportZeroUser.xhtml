@@ -11,49 +11,46 @@
         #{msgs.manReportZeroUserTitle}
         <h:dataTable value="#{shopUserJpaController.zeroUsers}" var="user">
             <h:column>
-                #{user.id},
+                #{user[0]},
             </h:column>
             <h:column>
-                #{user.title},
+                #{user[1]},
             </h:column>
             <h:column>
-                #{user.lastName},
+                #{user[2]},
             </h:column>
             <h:column>
-                #{user.firstName},
+                #{user[3]},
             </h:column>
             <h:column>
-                #{user.companyName},
+                #{user[4]},
             </h:column>
             <h:column>
-                #{user.streetAddress},
+                #{user[5]},
             </h:column>
             <h:column>
-                #{user.city},
+                #{user[6]},
             </h:column>
             <h:column>
-                #{user.provinceId},
+                #{user[7]},
             </h:column>
             <h:column>
-                #{user.country},
+                #{user[8]},
             </h:column>
             <h:column>
-                #{user.postalCode},
+                #{user[9]},
             </h:column>
             <h:column>
-                #{user.homePhone},
+                #{user[10]},
             </h:column>
             <h:column>
-                #{user.cellPhone},
+                #{user[11]},
             </h:column>
             <h:column>
-                #{user.email},
+                #{user[12]},
             </h:column>
             <h:column>
-                #{user.lastGenreSearched},
-            </h:column>
-            <h:column>
-                #{user.isManager},
+                #{user[13]},
             </h:column>
         </h:dataTable>
     </h:body>

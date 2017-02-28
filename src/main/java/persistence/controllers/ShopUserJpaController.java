@@ -23,6 +23,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
 import javax.transaction.UserTransaction;
 import persistence.controllers.exceptions.IllegalOrphanException;
 import persistence.controllers.exceptions.NonexistentEntityException;
@@ -30,7 +31,10 @@ import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.Invoice;
 import persistence.entities.ShopUser;
 import javax.persistence.criteria.Subquery;
+import persistence.entities.Genre_;
 import persistence.entities.Invoice_;
+import persistence.entities.Province_;
+import persistence.entities.ShopUser_;
 
 /**
  *
@@ -314,13 +318,19 @@ public class ShopUserJpaController implements Serializable {
      * @author  Erika Bourque
      * @return  The list of shop users
      */
-    public List<ShopUser> getZeroUsers()
+    public List<Object[]> getZeroUsers()
     {        
         // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<ShopUser> query = cb.createQuery(ShopUser.class);
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<ShopUser> userRoot = query.from(ShopUser.class);
-        query.select(userRoot);
+        Join userProvince = userRoot.join(ShopUser_.provinceId);
+        Join userGenre = userRoot.join(ShopUser_.lastGenreSearched);
+        query.multiselect(userRoot.get(ShopUser_.id), userRoot.get(ShopUser_.title), userRoot.get(ShopUser_.lastName), 
+                userRoot.get(ShopUser_.firstName), userRoot.get(ShopUser_.companyName), userRoot.get(ShopUser_.streetAddress), 
+                userRoot.get(ShopUser_.city), userProvince.get(Province_.name), userRoot.get(ShopUser_.country), 
+                userRoot.get(ShopUser_.postalCode), userRoot.get(ShopUser_.homePhone), userRoot.get(ShopUser_.cellPhone), 
+                userRoot.get(ShopUser_.email), userGenre.get(Genre_.name));
 
         // Subquery
         Subquery<Invoice> subquery = query.subquery(Invoice.class);
@@ -331,7 +341,7 @@ public class ShopUserJpaController implements Serializable {
 
         // Putting them together
         query.where(cb.not(cb.exists(subquery)));
-        TypedQuery<ShopUser> typedQuery = em.createQuery(query);
+        TypedQuery<Object[]> typedQuery = em.createQuery(query);
 
         return typedQuery.getResultList();
     }
