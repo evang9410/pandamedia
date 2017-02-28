@@ -330,7 +330,7 @@ public class ShopUserJpaController implements Serializable {
                 userRoot.get(ShopUser_.firstName), userRoot.get(ShopUser_.companyName), userRoot.get(ShopUser_.streetAddress), 
                 userRoot.get(ShopUser_.city), userProvince.get(Province_.name), userRoot.get(ShopUser_.country), 
                 userRoot.get(ShopUser_.postalCode), userRoot.get(ShopUser_.homePhone), userRoot.get(ShopUser_.cellPhone), 
-                userRoot.get(ShopUser_.email), userGenre.get(Genre_.name));
+                userRoot.get(ShopUser_.email), userGenre.get(Genre_.name), userRoot.get(ShopUser_.isManager));
 
         // Subquery
         Subquery<Invoice> subquery = query.subquery(Invoice.class);

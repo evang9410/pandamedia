@@ -3,54 +3,74 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>#{msgs.manReportZeroUserTitle}</title>
     </h:head>
     <h:body>
         #{msgs.manReportZeroUserTitle}
+        <!-- Add prime faces calendars here -->
         <h:dataTable value="#{shopUserJpaController.zeroUsers}" var="user">
             <h:column>
+                <f:facet name="header">#{msgs.idHeader}</f:facet>
                 #{user[0]},
             </h:column>
             <h:column>
+                <f:facet name="header">#{msgs.titleHeader}</f:facet>
                 #{user[1]},
             </h:column>
             <h:column>
+                <f:facet name="header">#{msgs.lastNameHeader}</f:facet>
                 #{user[2]},
             </h:column>
             <h:column>
+                <f:facet name="header">#{msgs.firstNameHeader}</f:facet>
                 #{user[3]},
             </h:column>
             <h:column>
+                <f:facet name="header">#{msgs.companyHeader}</f:facet>
                 #{user[4]},
             </h:column>
             <h:column>
+                <f:facet name="header">#{msgs.streetHeader}</f:facet>
                 #{user[5]},
             </h:column>
             <h:column>
+                <f:facet name="header">#{msgs.cityHeader}</f:facet>
                 #{user[6]},
             </h:column>
             <h:column>
+                <f:facet name="header">#{msgs.provinceHeader}</f:facet>
                 #{user[7]},
             </h:column>
             <h:column>
+                <f:facet name="header">#{msgs.countryHeader}</f:facet>
                 #{user[8]},
             </h:column>
             <h:column>
+                <f:facet name="header">#{msgs.postalCodeHeader}</f:facet>
                 #{user[9]},
             </h:column>
             <h:column>
+                <f:facet name="header">#{msgs.homePhoneHeader}</f:facet>
                 #{user[10]},
             </h:column>
             <h:column>
+                <f:facet name="header">#{msgs.cellPhoneHeader}</f:facet>
                 #{user[11]},
             </h:column>
             <h:column>
+                <f:facet name="header">#{msgs.emailHeader}</f:facet>
                 #{user[12]},
             </h:column>
             <h:column>
+                <f:facet name="header">#{msgs.lastGenreHeader}</f:facet>
                 #{user[13]},
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.isManagerHeader}</f:facet>
+                #{user[14]},
             </h:column>
         </h:dataTable>
     </h:body>
