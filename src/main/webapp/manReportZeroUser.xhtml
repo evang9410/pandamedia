@@ -11,7 +11,22 @@
     <h:body>
         #{msgs.manReportZeroUserTitle}
         <!-- Add prime faces calendars here -->
-        <p:calendar></p:calendar>
+        <p:calendar 
+            id="reportStartDate" 
+            mode="inline" 
+            pagedate="#{reportBackingBean.defaultStartDate}" 
+            navigator="true" 
+            maxdate="#{reportBackingBean.defaultEndDate}"
+            value="#{reportBackingBean.startDate}">
+        </p:calendar>
+        <p:calendar 
+            id="reportEndDate" 
+            mode="inline" 
+            pagedate="#{reportBackingBean.defaultEndDate}" 
+            navigator="true" 
+            maxdate="#{reportBackingBean.defaultEndDate}"
+            value="#{reportBackingBean.endDate}">
+        </p:calendar>
         <h:dataTable value="#{shopUserJpaController.zeroUsers}" var="user">
             <h:column>
                 <f:facet name="header">#{msgs.idHeader}</f:facet>
