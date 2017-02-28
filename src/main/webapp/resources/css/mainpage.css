@@ -31,12 +31,17 @@
 }
 
 .content{
-    height: 50vh;
-    background-color: limegreen;
+    margin: 0 auto;
+    width:90%;
+    text-align: center;  
+    background: rgba(119, 171, 255, 0.7);
 }
 
 .card_album{
-    margin-left: 10%;
+    display: inline-block;
+    max-height: 100%;
+    max-width: 100%;
+    margin-left: 5%;
     margin-top: 5%;
     border-radius: 10px;
     border: 2px solid white;
@@ -45,6 +50,16 @@
 
 .card_album_art{
     border-radius: 10px;
- max-height: 100%;
- max-width: 100%;
+   
+}
+
+#latest_header{
+    text-align: center;
+    color:white;
+    text-shadow: 2px 0 0 black, -2px 0 0 black, 0 2px 0 black, 0 -2px 0 black, 1px 1px black, -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black;
+}
+
+.center_content{
+    margin: 0 auto;
+    text-align: center;
 }

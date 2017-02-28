@@ -8,6 +8,7 @@ package backingbeans;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -43,10 +44,16 @@ public class AlbumBackingBean implements Serializable{
      * @param id
      * @return 
      */
-    public Album findAlbumById(int id){
-        album = albumController.findAlbum(id); // questionable, do I set just the album variable and return void?
+    public Album findAlbumById(){
+        //album = albumController.findAlbum(id); // questionable, do I set just the album variable and return void?
         // the purpose is to hold onto the ablum object so I don't have to keep htting the db everytime I want to use it.
-        return album;
+        FacesContext context = FacesContext.getCurrentInstance();
+        String album_id = context.getExternalContext().getRequestParameterMap()
+                .get("albumId");
+        int id = Integer.parseInt(album_id);
+        album = albumController.findAlbum(id);
+        return albumController.findAlbum(id);
+        
     }
     
     /**

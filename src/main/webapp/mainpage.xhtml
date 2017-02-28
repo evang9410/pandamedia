@@ -8,10 +8,12 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:b="http://bootsfaces.net/ui">
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Pandamedia</title>
-        
+
         <h:outputStylesheet library="css" name="bootstrap.css" />
         <h:outputStylesheet library="css" name="mainpage.css" />
         <h:outputStylesheet library="css" name="style.css" />
@@ -19,39 +21,39 @@ and open the template in the editor.
     </h:head>
     <h:body class="parallax">
         <div>
-            
+
             <ui:include src="./WEB-INF/sections/menu.xhtml"/>
         </div>
         <!-- latest releases -->
         <!-- content flow of latest albums get their album art in a list -->
-        <div class="horizontal-ad">ad banner</div>
-        <div class="contentflow_container">
-            content-flow/carrasol
-            <div class="row"> 
-                <ui:repeat value="#{albumBacking.latestAlbums}" var="album">
-
-                        <div class="col-sm-2">
-                            <div class = "card_album">
-                                <img class="card_album_art" src="./resources/images/bg.jpg" alt="Card image cap"/>
-                                <h2>#{album.title}</h2>
-                            </div>                                          
-                        </div>
-
-                </ui:repeat>
-            </div>
+        <div class="horizontal-ad">
+            ad banner
         </div>
 
-        <div class = "content">            
-            <div class="row">               
-                <div class="col-sm-2">
-                    <div class = "card_album">
-                        <img class="card_album_art" src="./resources/images/bg.jpg" alt="Card image cap"/>
-                        <h2>album info</h2>
-                    </div>                                          
+        <div class="contentflow_container">
+            content-flow/carrasol
+
+        </div>
+        <h2 id="latest_header">Latest Releases!</h2>
+        <div class = "container-fluid content well-lg">
+            <div class="row well-lg"> 
+                <div class="center_content">
+                    <ui:repeat value="#{albumBacking.latestAlbums}" var="album">
+
+                        <div class="col-sm-2">
+                            <div class = "card_album well-sm">
+                                <h:link outcome="albumtest">
+                                    <f:param name="albumId" value="#{album.id}"/>
+                                    <img class="card_album_art img-responsive" src="./resources/images/bg.jpg" alt="Card image cap"/>
+                                    <h3>#{album.title}</h3>
+                                </h:link>
+
+                                <h4>#{album.artistId.name}</h4>
+                            </div>                                          
+                        </div>
+                    </ui:repeat> 
                 </div>
             </div>
-            
-                        
         </div>
     </h:body>
 </html>
