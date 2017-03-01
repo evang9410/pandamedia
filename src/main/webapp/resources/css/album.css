@@ -2,8 +2,8 @@
     Created on : 1-Mar-2017, 5:56:52 PM
     Author     : Evang
 */
-.album{		
-    height: 45vh;		
+.album{
+    height: 55vh;		
     margin: 2%;		
 }		
 #albumArtWrapper{		
@@ -19,11 +19,19 @@
     margin-left: 5%;		
     color: white;		
 }		
-.track_list{		
-    width: 50%;		
-    margin: 0px auto;		
+.track_list{
+    width: 50%;
+    margin: 0px auto;
 }		
 .bodyClass{		
     background-color: #3f3f3f		
 }
 
+.tracklist_container{
+    width: 50vw;
+    margin: 0 auto; 
+}
+
+table th, td{
+    font-size: 20px;
+}
