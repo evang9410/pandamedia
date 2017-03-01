@@ -27,8 +27,10 @@
     </session-config>
     
     <welcome-file-list>
-        <welcome-file>faces/index.xhtml</welcome-file>
-        <welcome-file>index.xhtml</welcome-file>
+        <!--<welcome-file>albumtest.xhtml</welcome-file>-->
+        <!--<welcome-file>faces/index.xhtml</welcome-file>-->
+<!--        <welcome-file>index.xhtml</welcome-file>-->
+        <welcome-file>manReportZeroUser.xhtml</welcome-file>
     </welcome-file-list>
     
     <!-- web fonts -->
@@ -56,5 +58,10 @@
         <extension>woff2</extension>
         <mime-type>application/x-font-woff2</mime-type>
     </mime-mapping>
+    <!-- Custom taglib -->
+    <context-param>
+        <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+        <param-value>/WEB-INF/pandamedia.taglib.xml</param-value>
+    </context-param>
     
 </web-app>
