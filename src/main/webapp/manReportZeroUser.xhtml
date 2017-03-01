@@ -10,24 +10,28 @@
     </h:head>
     <h:body>
         #{msgs.manReportZeroUserTitle}
-        <!-- Add prime faces calendars here -->
-        <p:calendar 
+        <h:form>
+            <p:calendar 
             id="reportStartDate" 
             mode="inline" 
-            pagedate="#{reportBackingBean.defaultStartDate}" 
+            pagedate="#{reports.defaultStartDate}" 
             navigator="true" 
-            maxdate="#{reportBackingBean.defaultEndDate}"
-            value="#{reportBackingBean.startDate}">
-        </p:calendar>
-        <p:calendar 
-            id="reportEndDate" 
-            mode="inline" 
-            pagedate="#{reportBackingBean.defaultEndDate}" 
-            navigator="true" 
-            maxdate="#{reportBackingBean.defaultEndDate}"
-            value="#{reportBackingBean.endDate}">
-        </p:calendar>
-        <h:dataTable value="#{reportBackingBean.zeroUsers}" var="user">
+            maxdate="#{reports.defaultEndDate}"
+            value="#{reports.startDate}">
+                <p:ajax event="dateSelect"  update="reportTable"/> 
+            </p:calendar>
+            <p:calendar 
+                id="reportEndDate" 
+                mode="inline" 
+                pagedate="#{reports.defaultEndDate}" 
+                navigator="true" 
+                maxdate="#{reports.defaultEndDate}"
+                value="#{reports.endDate}">
+                <p:ajax event="dateSelect"  update="reportTable"/>
+            </p:calendar>
+        </h:form>
+        
+        <h:dataTable id="reportTable" value="#{reports.zeroUsers}" var="user">
             <h:column>
                 <f:facet name="header">#{msgs.idHeader}</f:facet>
                 #{user[0]},

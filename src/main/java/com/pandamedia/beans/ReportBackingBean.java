@@ -6,12 +6,15 @@ import javax.inject.Named;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 import persistence.entities.Genre_;
@@ -26,15 +29,27 @@ import persistence.entities.ShopUser_;
  * 
  * @author Erika Bourque
  */
-@Named
+@Named("reports")
 @RequestScoped
-public class reportBackingBean implements Serializable{
+public class ReportBackingBean implements Serializable{
+    // Try with ReportDateBean ?
+    private static final Logger LOG = Logger.getLogger("ReportBackingBean.class");
+    
     @PersistenceContext
     private EntityManager em;
     
     private Date startDate;
     private Date endDate;
     
+    public ReportBackingBean()
+    {
+        Calendar start = Calendar.getInstance();
+        start.add(Calendar.DAY_OF_YEAR, -30);
+        
+        startDate = start.getTime();
+        endDate = Calendar.getInstance().getTime();
+    }
+
     // TODO: should this be in a diff bean?
     public Date getDefaultEndDate()
     {               
@@ -65,6 +80,7 @@ public class reportBackingBean implements Serializable{
     // TODO: should this be in a diff bean?
     public void setStartDate(Date date)
     {
+        LOG.log(Level.INFO, "--- New start date: {0}", date.toString());
         startDate = date;
     }
     
@@ -83,6 +99,18 @@ public class reportBackingBean implements Serializable{
      */
     public List<Object[]> getZeroUsers()
     {        
+//        if (startDate == null)
+//        {
+//            startDate = getDefaultStartDate();
+//        }
+//        if (endDate == null)
+//        {
+//            endDate = getDefaultEndDate();
+//        }
+        
+        LOG.log(Level.INFO, "Zero Users start date: {0}", startDate.toString());
+        LOG.log(Level.INFO, "Zero Users end date: {0}", endDate.toString());
+        
         // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
@@ -106,7 +134,12 @@ public class reportBackingBean implements Serializable{
         Subquery<Invoice> subquery = query.subquery(Invoice.class);
         Root<Invoice> invoiceRoot = subquery.from(Invoice.class);
         subquery.select(invoiceRoot);
-        subquery.where(cb.equal(invoiceRoot.get(Invoice_.userId), userRoot));
+
+        // Using predicates to avoid compiler errors, does not like between method
+        Predicate p1 = cb.equal(invoiceRoot.get(Invoice_.userId), userRoot);
+        Predicate p2 = cb.between(invoiceRoot.get(Invoice_.saleDate).as(Date.class), startDate, endDate);
+        subquery.where(cb.and(p1, p2));
+        
 //        subquery.where(cb.equal(invoiceRoot.get("userId"), userRoot));
         // TODO: Missing timeframes, also in params 
 
