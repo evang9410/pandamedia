@@ -1,7 +1,7 @@
 package com.mycompany.pandamedia.beans;
 
-import com.pandamedia.controllers.SurveyJpaController;
-import com.pandamedia.controllers.exceptions.RollbackFailureException;
+import persistence.controllers.SurveyJpaController;
+import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.Survey;
 import java.io.Serializable;
 import java.util.ArrayList;
