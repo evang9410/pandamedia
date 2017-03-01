@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -16,7 +17,7 @@ import javax.inject.Named;
  * @author Hau Gilles Che
  */
 @Named("surveyBean")
-@SessionScoped
+@RequestScoped
 public class SurveyBean implements Serializable {
     private int surveyId=1;
     private String userChoice;
@@ -25,10 +26,12 @@ public class SurveyBean implements Serializable {
     
     @Inject
     private SurveyJpaController surveys;
+    @Inject
+    private SurveyChartBean surveyResults;
     
     @PostConstruct
     public void init(){
-        survey=surveys.findSurvey(surveyId);
+        survey=surveys.getLast();
         createAnswerList();
         
     }
@@ -64,9 +67,18 @@ public class SurveyBean implements Serializable {
         this.answers = answers;
     }
     
-    
+    public int getTotalVotes(){
+        int totalVotes=0;
+        totalVotes+=survey.getVotesA();
+        totalVotes+=survey.getVotesB();
+        totalVotes+=survey.getVotesC();
+        totalVotes+=survey.getVotesD();
+        
+        return totalVotes;
+    }
 
     public String incrementVoteCount() throws RollbackFailureException, Exception{
+        //surveyResults.setDisplayed(true);
       int voteNum=0;
       if(userChoice.equalsIgnoreCase(survey.getAnswerA())){
           voteNum=survey.getVotesA();
@@ -96,6 +108,5 @@ public class SurveyBean implements Serializable {
         answers.add(survey.getAnswerC());
         answers.add(survey.getAnswerD());
     }
-    
     
 }
