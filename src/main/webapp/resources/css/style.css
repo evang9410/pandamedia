@@ -81,6 +81,21 @@ html, body {
     color: #fff;
 }
 
+
+.searchBar{
+    height: 25%;
+    border-radius: 15px;
+    color: #000;
+    border: none;
+}
+
+.searchBar:focus{
+    outline: none;
+    text-decoration: none;
+    border: none;
+}
+
+
 /*div containing button*/
 .accessButton{
     margin-top: 80px;
@@ -105,15 +120,14 @@ html, body {
 }
 
 
-#j_idt12 a, #j_idt13 a, #j_idt14 a {
+
+.navbar-nav{
     height: 86px;
     display: flex;
     align-items: center;
 }
 
-#j_idt15 a, #j_idt16 a {
-    height: 43px;
-}
+
 
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
     color: #fff;
