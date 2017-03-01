@@ -58,5 +58,10 @@
         <extension>woff2</extension>
         <mime-type>application/x-font-woff2</mime-type>
     </mime-mapping>
+    <!-- Custom taglib -->
+    <context-param>
+        <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+        <param-value>/WEB-INF/pandamedia.taglib.xml</param-value>
+    </context-param>
     
 </web-app>

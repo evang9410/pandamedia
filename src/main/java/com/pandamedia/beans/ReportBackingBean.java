@@ -25,92 +25,79 @@ import persistence.entities.ShopUser;
 import persistence.entities.ShopUser_;
 
 /**
- * This class provides common methods for the report pages.
- * 
+ * This class provides common methods for the report pages, and
+ * keeps track of the desired start and end dates of the current report.
+ *
  * @author Erika Bourque
  */
 @Named("reports")
 @RequestScoped
-public class ReportBackingBean implements Serializable{
-    // Try with ReportDateBean ?
+public class ReportBackingBean implements Serializable {
     private static final Logger LOG = Logger.getLogger("ReportBackingBean.class");
-    
+
     @PersistenceContext
     private EntityManager em;
-    
+
     private Date startDate;
     private Date endDate;
-    
-    public ReportBackingBean()
-    {
-        Calendar start = Calendar.getInstance();
-        start.add(Calendar.DAY_OF_YEAR, -30);
-        
-        startDate = start.getTime();
-        endDate = Calendar.getInstance().getTime();
+
+    public ReportBackingBean() {
     }
 
     // TODO: should this be in a diff bean?
-    public Date getDefaultEndDate()
-    {               
+    public Date getDefaultEndDate() {
         return Calendar.getInstance().getTime();
     }
-    
+
     // TODO: should this be in a diff bean?
-    public Date getDefaultStartDate()
-    {
+    public Date getDefaultStartDate() {
         Calendar start = Calendar.getInstance();
         start.add(Calendar.DAY_OF_YEAR, -30);
-        
+
         return start.getTime();
     }
-    
+
     // TODO: should this be in a diff bean?
-    public Date getStartDate()
-    {
+    public Date getStartDate() {
+        if (startDate == null) {
+            startDate = getDefaultStartDate();
+        }
         return startDate;
     }
-    
+
     // TODO: should this be in a diff bean?
-    public Date getEndDate()
-    {
+    public Date getEndDate() {
+        if (endDate == null) {
+            endDate = getDefaultEndDate();
+        }
         return endDate;
     }
-    
+
     // TODO: should this be in a diff bean?
-    public void setStartDate(Date date)
-    {
-        LOG.log(Level.INFO, "--- New start date: {0}", date.toString());
+    public void setStartDate(Date date) {
+        LOG.log(Level.INFO, "--- New start date: {0}", date);
+        LOG.log(Level.INFO, "--- Current end date: {0}", endDate);
         startDate = date;
     }
-    
+
     // TODO: should this be in a diff bean?
-    public void setEndDate(Date date)
-    {
+    public void setEndDate(Date date) {
+        LOG.log(Level.INFO, "--- New end date: {0}", date);
+        LOG.log(Level.INFO, "--- Current start date: {0}", startDate);
         endDate = date;
     }
-    
+
     /**
-     * This method returns a list of all the shop users that
-     * did not make any purchases in the time frame specified.
-     * 
-     * @author  Erika Bourque
-     * @return  The list of shop users
+     * This method returns a list of all the shop users that did not make any
+     * purchases in the time frame specified.
+     *
+     * @author Erika Bourque
+     * @return The list of shop users
      */
-    public List<Object[]> getZeroUsers()
-    {        
-//        if (startDate == null)
-//        {
-//            startDate = getDefaultStartDate();
-//        }
-//        if (endDate == null)
-//        {
-//            endDate = getDefaultEndDate();
-//        }
-        
-        LOG.log(Level.INFO, "Zero Users start date: {0}", startDate.toString());
-        LOG.log(Level.INFO, "Zero Users end date: {0}", endDate.toString());
-        
+    public List<Object[]> getZeroUsers() {
+        LOG.log(Level.INFO, "Zero Users start date: {0}", startDate);
+        LOG.log(Level.INFO, "Zero Users end date: {0}", endDate);
+
         // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
@@ -119,10 +106,10 @@ public class ReportBackingBean implements Serializable{
         Join userGenre = userRoot.join(ShopUser_.lastGenreSearched);
 //        Join userProvince = userRoot.join("provinceId");
 //        Join userGenre = userRoot.join("lastGenreSearched");
-        query.multiselect(userRoot.get(ShopUser_.id), userRoot.get(ShopUser_.title), userRoot.get(ShopUser_.lastName), 
-                userRoot.get(ShopUser_.firstName), userRoot.get(ShopUser_.companyName), userRoot.get(ShopUser_.streetAddress), 
-                userRoot.get(ShopUser_.city), userProvince.get(Province_.name), userRoot.get(ShopUser_.country), 
-                userRoot.get(ShopUser_.postalCode), userRoot.get(ShopUser_.homePhone), userRoot.get(ShopUser_.cellPhone), 
+        query.multiselect(userRoot.get(ShopUser_.id), userRoot.get(ShopUser_.title), userRoot.get(ShopUser_.lastName),
+                userRoot.get(ShopUser_.firstName), userRoot.get(ShopUser_.companyName), userRoot.get(ShopUser_.streetAddress),
+                userRoot.get(ShopUser_.city), userProvince.get(Province_.name), userRoot.get(ShopUser_.country),
+                userRoot.get(ShopUser_.postalCode), userRoot.get(ShopUser_.homePhone), userRoot.get(ShopUser_.cellPhone),
                 userRoot.get(ShopUser_.email), userGenre.get(Genre_.name), userRoot.get(ShopUser_.isManager));
 //        query.multiselect(userRoot.get("id"), userRoot.get("title"), userRoot.get("lastName"), 
 //                userRoot.get("firstName"), userRoot.get("companyName"), userRoot.get("streetAddress"), 
@@ -135,13 +122,10 @@ public class ReportBackingBean implements Serializable{
         Root<Invoice> invoiceRoot = subquery.from(Invoice.class);
         subquery.select(invoiceRoot);
 
-        // Using predicates to avoid compiler errors, does not like between method
+        // Using predicates to avoid compiler errors, does not like CriteriaBuilder's between method
         Predicate p1 = cb.equal(invoiceRoot.get(Invoice_.userId), userRoot);
-        Predicate p2 = cb.between(invoiceRoot.get(Invoice_.saleDate).as(Date.class), startDate, endDate);
+        Predicate p2 = cb.between(invoiceRoot.get(Invoice_.saleDate).as(Date.class), getStartDate(), getEndDate());
         subquery.where(cb.and(p1, p2));
-        
-//        subquery.where(cb.equal(invoiceRoot.get("userId"), userRoot));
-        // TODO: Missing timeframes, also in params 
 
         // Putting them together
         query.where(cb.not(cb.exists(subquery)));

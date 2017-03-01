@@ -4,33 +4,40 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pm="http://pandamedia.com/facelets">
     <h:head>
         <title>#{msgs.manReportZeroUserTitle}</title>
     </h:head>
     <h:body>
         #{msgs.manReportZeroUserTitle}
-        <h:form>
+        <pm:reportcalendars 
+            max="#{reports.defaultEndDate}" 
+            start="#{reports.startDate}" 
+            end="#{reports.endDate}" 
+            updateTable="reportTable">
+        </pm:reportcalendars>
+<!--        <h:form id="calendars">
             <p:calendar 
             id="reportStartDate" 
             mode="inline" 
-            pagedate="#{reports.defaultStartDate}" 
             navigator="true" 
             maxdate="#{reports.defaultEndDate}"
             value="#{reports.startDate}">
-                <p:ajax event="dateSelect"  update="reportTable"/> 
+                <p:ajax event="dateSelect" process="reportStartDate reportEndDate" immediate="true" update="reportTable"/> 
             </p:calendar>
             <p:calendar 
                 id="reportEndDate" 
                 mode="inline" 
-                pagedate="#{reports.defaultEndDate}" 
                 navigator="true" 
                 maxdate="#{reports.defaultEndDate}"
                 value="#{reports.endDate}">
-                <p:ajax event="dateSelect"  update="reportTable"/>
+                <p:ajax event="dateSelect" process="reportStartDate reportEndDate" immediate="true" update="reportTable"/>
             </p:calendar>
-        </h:form>
-        
+        </h:form>-->
+<!--        <p>Start date: #{reports.startDate}</p>
+        <p>End date: #{reports.endDate}</p>-->
         <h:dataTable id="reportTable" value="#{reports.zeroUsers}" var="user">
             <h:column>
                 <f:facet name="header">#{msgs.idHeader}</f:facet>
