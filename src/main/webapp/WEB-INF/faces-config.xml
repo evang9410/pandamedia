@@ -1,62 +1,22 @@
 <?xml version='1.0' encoding='UTF-8'?>
+<!-- Required configuration file for JSF. The tools of the IDE fill in most
+     of this file. Here you can see a reference locale that will be used
+     to determine which message bundle to use.
+-->
 <faces-config version="2.2"
               xmlns="http://xmlns.jcp.org/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
     <application>
-        <el-resolver>com.mycompany.pandamedia.views.util.JsfCrudELResolver</el-resolver>
+        <locale-config>
+            <default-locale>en_CA</default-locale>
+            <supported-locale>en_CA</supported-locale>
+            <supported-locale>fr_CA</supported-locale>
+        </locale-config>
         <resource-bundle>
-            <base-name>bundles.msgs</base-name>
+            <base-name>bundles.messages</base-name>
             <var>msgs</var>
         </resource-bundle>
     </application>
-    <navigation-rule>
-        <from-view-id>*</from-view-id>
-        <navigation-case>
-            <from-outcome>welcome</from-outcome>
-            <to-view-id>/index.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    <managed-bean>
-        <managed-bean-name>album</managed-bean-name>
-        <managed-bean-class>com.mycompany.pandamedia.views.AlbumController</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>albumJpa</managed-bean-name>
-        <managed-bean-class>com.mycompany.pandamedia.views.AlbumFacade</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    <converter>
-        <converter-for-class>persistence.entities.Album</converter-for-class>
-        <converter-class>com.mycompany.pandamedia.views.AlbumConverter</converter-class>
-    </converter>
-    <navigation-rule>
-        <from-view-id>*</from-view-id>
-        <navigation-case>
-            <from-outcome>album_create</from-outcome>
-            <to-view-id>/album/New.jsp</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    <navigation-rule>
-        <from-view-id>*</from-view-id>
-        <navigation-case>
-            <from-outcome>album_list</from-outcome>
-            <to-view-id>/album/List.jsp</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    <navigation-rule>
-        <from-view-id>*</from-view-id>
-        <navigation-case>
-            <from-outcome>album_edit</from-outcome>
-            <to-view-id>/album/Edit.jsp</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    <navigation-rule>
-        <from-view-id>*</from-view-id>
-        <navigation-case>
-            <from-outcome>album_detail</from-outcome>
-            <to-view-id>/album/Detail.jsp</to-view-id>
-        </navigation-case>
-    </navigation-rule>
 </faces-config>

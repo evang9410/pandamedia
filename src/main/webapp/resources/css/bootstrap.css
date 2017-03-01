@@ -187,18 +187,6 @@ td,
 th {
   padding: 0;
 }
-
-.table-inverse {
-  color: #fff;
-  
-}
-
-.table-inverse th,
-.table-inverse td,
-.table-inverse thead th {
-  border-color: #fff;
-}
-
 /*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
 @media print {
   *,
