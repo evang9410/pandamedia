@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>album test</title>
+        <h:outputStylesheet name="css/style.css"/>
+        <h:outputStylesheet name="css/bootstrap.css"/>
+        <h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <body class = "bodyClass">
+        <!-- this will retreive the album with an id of 3. with the name 'album' -->
+        <ui:param name ="album" value="#{albumJpaController.findAlbum(3)}"/>
+
+        
+        <div class ="album">
+            <div class ="container">
+                <div class ="row">
+                    <div id="albumArtWrapper" class ="col-md-4">
+                        <div>
+                            <!-- should we be using a http uri to retreive the album art or is it stored?
+                                anyway, for testing it will just be a img from the resources -->
+                            <img id="albumArt" src="resources/images/bg.png"/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div id ="album_info">
+                            <h2>#{album.title}</h2><br/>
+                            <h4>#{msgs.by} #{album.artistId.name}, #{album.releaseDate.getYear()}</h4>
+                            <h4>#{album.genreId.name}</h4>
+                            <h4>#{album.numTracks} Tracks</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <table class="table table-inverse track_list">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>SONG</th>
+                        <th><i class="fa fa-circle-o-notch" aria-hidden="true"></i></th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <ui:repeat value="#{album.trackList}" var="track">
+                        <tr>
+                            <th scope="row">#{track.albumTrackNumber}</th>
+                            <td>#{track.title}</td>
+                            <td>#{track.playLength}</td>
+
+                        </tr>
+                    </ui:repeat>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
