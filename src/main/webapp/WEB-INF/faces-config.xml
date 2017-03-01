@@ -17,6 +17,10 @@
             <to-view-id>/index.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    <navigation-case>
+        <from-outcome>main</from-outcome>
+        <to-view-id>/mainpage.xhtml</to-view-id>
+    </navigation-case>
     <managed-bean>
         <managed-bean-name>album</managed-bean-name>
         <managed-bean-class>com.mycompany.pandamedia.views.AlbumController</managed-bean-class>

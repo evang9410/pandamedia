@@ -258,4 +258,15 @@ public class Album implements Serializable {
         return "persistence.entities.Album[ id=" + id + " ]";
     }
     
+    /**
+     * Returns the cover art object from the track in the album.
+     * to get the album art, we get the first element in the albums track list,
+     * a track object and then retrieve the album art from the track entity.
+     * 
+     * @return CoverArt 
+     */
+    public CoverArt getAlbumArt(){
+        return this.getTrackList().get(0).getCoverArtId();
+    }
+    
 }
