@@ -29,8 +29,8 @@ import javax.persistence.metamodel.Metamodel;
 @RequestScoped
 public class SearchFunction implements Serializable{
     private ArrayList resultsList;
-    @Inject
-    private EntityManager em;
+//    @Inject
+//    private EntityManager em;
     private String parameters;
     
     public ArrayList searchDefault(String str){
