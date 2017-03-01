@@ -8,7 +8,9 @@ com\mycompany\pandamedia\views\util\JsfUtil.class
 persistence\controllers\InvoiceJpaController.class
 persistence\controllers\exceptions\PreexistingEntityException.class
 persistence\entities\Songwriter.class
+persistence\controllers\AdvertisementJpaController.class
 com\mycompany\pandamedia\views\util\JsfCrudELResolver$JsfCrudParameterizedMethod.class
+persistence\entities\Advertisement.class
 persistence\entities\CoverArt.class
 persistence\entities\Review.class
 persistence\controllers\ShopUserJpaController.class
@@ -20,6 +22,8 @@ persistence\controllers\ReviewJpaController.class
 persistence\controllers\exceptions\NonexistentEntityException.class
 persistence\entities\Artist.class
 persistence\controllers\exceptions\RollbackFailureException.class
+persistence\controllers\NewsfeedJpaController.class
+persistence\entities\Newsfeed.class
 com\mycompany\pandamedia\views\util\JsfCrudELResolver$JsfCrudTransform.class
 com\mycompany\pandamedia\views\util\JsfCrudELResolver$1.class
 persistence\controllers\ArtistJpaController.class
@@ -32,5 +36,6 @@ persistence\entities\Survey.class
 persistence\entities\Track.class
 com\mycompany\pandamedia\views\util\JsfCrudELResolver.class
 persistence\entities\RecordingLabel.class
+com\pandamedia\rss\RSSFeedManager.class
 persistence\entities\Province.class
 com\mycompany\pandamedia\views\util\PagingInfo.class

@@ -5,6 +5,10 @@
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
     <application>
         <el-resolver>com.mycompany.pandamedia.views.util.JsfCrudELResolver</el-resolver>
+        <resource-bundle>
+            <base-name>bundles.msgs</base-name>
+            <var>msgs</var>
+        </resource-bundle>
     </application>
     <navigation-rule>
         <from-view-id>*</from-view-id>
