@@ -19,12 +19,12 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <body class = "bodyClass">
-        <!-- this will retreive the album with an id of 3. with the name 'album' -->
-        <ui:param name ="album" value="#{albumJpaController.findAlbum(3)}"/>
+        
+        <ui:param name ="album" value="#{albumBacking.findAlbumById()}"/>
 
         
         <div class ="album">
-            <div class ="container">
+            <div class ="container well-lg">
                 <div class ="row">
                     <div id="albumArtWrapper" class ="col-md-4">
                         <div>
@@ -46,7 +46,7 @@ and open the template in the editor.
             </div>
         </div>
         
-        <div class="container">
+        <div class="container-tracklist well-sm">
             <table class="table table-inverse track_list">
                 <thead>
                     <tr>
@@ -62,7 +62,7 @@ and open the template in the editor.
                             <th scope="row">#{track.albumTrackNumber}</th>
                             <td>#{track.title}</td>
                             <td>#{track.playLength}</td>
-
+                            <td width="50"><h:form><p:commandButton icon="fa fa-fw fa-cart-plus" type="button"/></h:form></td>
                         </tr>
                     </ui:repeat>
                 </tbody>
