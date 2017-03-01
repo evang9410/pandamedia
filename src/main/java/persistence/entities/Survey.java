@@ -17,13 +17,15 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Evang
+ * @author Hau Gilles Che
  */
 @Entity
 @Table(name = "survey", catalog = "g4w17", schema = "")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Survey.findAll", query = "SELECT s FROM Survey s")
     , @NamedQuery(name = "Survey.findById", query = "SELECT s FROM Survey s WHERE s.id = :id")
@@ -208,7 +210,7 @@ public class Survey implements Serializable {
 
     @Override
     public String toString() {
-        return "persistence.entities.Survey[ id=" + id + " ]";
+        return "com.mycompany.pandamedia.beans.Survey[ id=" + id + " ]";
     }
     
 }
