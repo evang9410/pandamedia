@@ -288,3 +288,29 @@ about-heading{
     font-size: 27px;
     text-decoration: underline;
 }
+
+	}		
+.album{		
+    height: 45vh;		
+    margin: 2%;		
+}		
+#albumArtWrapper{		
+    height:30%;		
+    width: 30%;		
+    background-color: red;		
+}		
+#albumArt{		
+    width: 100%;		
+    height: 100%;		
+}		
+#album_info{		
+    margin-left: 5%;		
+    color: white;		
+}		
+.track_list{		
+    width: 50%;		
+    margin: 0px auto;		
+}		
+.bodyClass{		
+    background-color: #3f3f3f		
+}
