@@ -27,7 +27,7 @@
             maxdate="#{reportBackingBean.defaultEndDate}"
             value="#{reportBackingBean.endDate}">
         </p:calendar>
-        <h:dataTable value="#{shopUserJpaController.zeroUsers}" var="user">
+        <h:dataTable value="#{reportBackingBean.zeroUsers}" var="user">
             <h:column>
                 <f:facet name="header">#{msgs.idHeader}</f:facet>
                 #{user[0]},

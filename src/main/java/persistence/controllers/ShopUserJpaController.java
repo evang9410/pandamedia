@@ -290,13 +290,13 @@ public class ShopUserJpaController implements Serializable {
 
     private List<ShopUser> findShopUserEntities(boolean all, int maxResults, int firstResult) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(ShopUser.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
+        cq.select(cq.from(ShopUser.class));
+        Query q = em.createQuery(cq);
+        if (!all) {
+            q.setMaxResults(maxResults);
+            q.setFirstResult(firstResult);
+        }
+        return q.getResultList();
     }
 
     public ShopUser findShopUser(Integer id) {
@@ -305,53 +305,9 @@ public class ShopUserJpaController implements Serializable {
 
     public int getShopUserCount() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<ShopUser> rt = cq.from(ShopUser.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
+        Root<ShopUser> rt = cq.from(ShopUser.class);
+        cq.select(em.getCriteriaBuilder().count(rt));
+        Query q = em.createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
     }
-    
-    /**
-     * This method returns a list of all the shop users that
-     * did not make any purchases in the time frame specified.
-     * 
-     * @author  Erika Bourque
-     * @return  The list of shop users
-     */
-    public List<Object[]> getZeroUsers()
-    {        
-        // Query
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
-        Root<ShopUser> userRoot = query.from(ShopUser.class);
-//        Join userProvince = userRoot.join(ShopUser_.provinceId);
-//        Join userGenre = userRoot.join(ShopUser_.lastGenreSearched);
-        Join userProvince = userRoot.join("provinceId");
-        Join userGenre = userRoot.join("lastGenreSearched");
-//        query.multiselect(userRoot.get(ShopUser_.id), userRoot.get(ShopUser_.title), userRoot.get(ShopUser_.lastName), 
-//                userRoot.get(ShopUser_.firstName), userRoot.get(ShopUser_.companyName), userRoot.get(ShopUser_.streetAddress), 
-//                userRoot.get(ShopUser_.city), userProvince.get(Province_.name), userRoot.get(ShopUser_.country), 
-//                userRoot.get(ShopUser_.postalCode), userRoot.get(ShopUser_.homePhone), userRoot.get(ShopUser_.cellPhone), 
-//                userRoot.get(ShopUser_.email), userGenre.get(Genre_.name), userRoot.get(ShopUser_.isManager));
-        query.multiselect(userRoot.get("id"), userRoot.get("title"), userRoot.get("lastName"), 
-                userRoot.get("firstName"), userRoot.get("companyName"), userRoot.get("streetAddress"), 
-                userRoot.get("city"), userProvince.get("name"), userRoot.get("country"), 
-                userRoot.get("postalCode"), userRoot.get("homePhone"), userRoot.get("cellPhone"), 
-                userRoot.get("email"), userGenre.get("name"), userRoot.get("isManager"));
-
-        // Subquery
-        Subquery<Invoice> subquery = query.subquery(Invoice.class);
-        Root<Invoice> invoiceRoot = subquery.from(Invoice.class);
-        subquery.select(invoiceRoot);
-//        subquery.where(cb.equal(invoiceRoot.get(Invoice_.userId), userRoot));
-        subquery.where(cb.equal(invoiceRoot.get("userId"), userRoot));
-        // TODO: Missing timeframes, also in params 
-
-        // Putting them together
-        query.where(cb.not(cb.exists(subquery)));
-        TypedQuery<Object[]> typedQuery = em.createQuery(query);
-
-        return typedQuery.getResultList();
-    }
-    
 }
