@@ -226,6 +226,21 @@
             <version>2.8</version>
             <scope>test</scope>
         </dependency>
+        
+        <!-- bootfaces dependencie -->
+        
+        <dependency>
+            <groupId>net.bootsfaces</groupId>
+            <artifactId>bootsfaces</artifactId>
+            <version>1.0.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- font awesome dependency -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>font-awesome</artifactId>
+            <version>4.7.0</version>
+        </dependency>
 
     </dependencies>
 
