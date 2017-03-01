@@ -6,7 +6,7 @@
     <application>
         <el-resolver>com.mycompany.pandamedia.views.util.JsfCrudELResolver</el-resolver>
         <resource-bundle>
-            <base-name>bundles.msgs</base-name>
+            <base-name>bundles.messages</base-name>
             <var>msgs</var>
         </resource-bundle>
     </application>

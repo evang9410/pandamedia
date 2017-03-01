@@ -7,15 +7,20 @@ and open the template in the editor.
 <ui:composition
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:b="http://bootsfaces.net/ui">
+    xmlns:b="http://bootsfaces.net/ui"
+    xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:form>
         <b:navBar brand="PandaMedia" brandHref="#" styleClass="navbar navbar-default" style="width:100%;">
             <b:navbarLinks pull="right">
-                <b:navLink value="Help" href="./mainpage.xhtml"></b:navLink>
-                <b:navLink value="Sign In" href="#"></b:navLink>
-                <b:dropMenu value="Language" styleClass="dropdown">
-                    <b:navLink value="English" href="#"></b:navLink>
-                    <b:navLink value="French" href="#"></b:navLink>
+                <h:inputText styleClass="searchBar"></h:inputText>
+<!--                <b:navCommandLink class="searchButton" id="searchButton" action="">GO</b:navCommandLink>-->
+                <b:navLink value="#{msgs.help}" href="mainpage.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.signIn}" href="#"></b:navLink>
+                <b:dropMenu value="#{msgs.selectLanguage}" styleClass="dropdown">
+                    <b:navCommandLink value="#{msgs.englishLanguage}" action="#{ChangeLanguage.englishAction}"></b:navCommandLink>
+                    <b:navCommandLink value="#{msgs.frenchLanguage}" action="#{ChangeLanguage.frenchAction}"></b:navCommandLink>
                 </b:dropMenu>
             </b:navbarLinks>
         </b:navBar>
+    </h:form>
 </ui:composition>
