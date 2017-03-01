@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.pandamedia.controllers;
 
 import com.pandamedia.controllers.exceptions.NonexistentEntityException;
@@ -18,6 +13,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
@@ -32,7 +29,7 @@ public class SurveyJpaController implements Serializable {
     
     @Resource
     private UserTransaction utx;
-    @PersistenceContext
+    @PersistenceContext(unitName = "surveysPU")
     private EntityManager em;
 
   
@@ -126,6 +123,16 @@ public class SurveyJpaController implements Serializable {
         cq.select(em.getCriteriaBuilder().count(rt));
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
+    }
+    public Survey getLast(){
+        CriteriaBuilder cb=em.getCriteriaBuilder();
+        CriteriaQuery<Survey> cq=cb.createQuery(Survey.class);
+        Root<Survey> survey=cq.from(Survey.class);
+        cq.select(survey);
+        TypedQuery<Survey> query=em.createQuery(cq);
+        Survey surv=query.getSingleResult();
+        
+        return surv;
     }
 
 }
