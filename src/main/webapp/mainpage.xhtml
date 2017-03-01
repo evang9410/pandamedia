@@ -29,12 +29,21 @@ and open the template in the editor.
         <div class="horizontal-ad">
             ad banner
         </div>
-
+        <h2 id="latest_header">Latest Releases!</h2>
         <div class="contentflow_container">
-            content-flow/carrasol
+            <p:contentFlow value="#{albumBacking.latestAlbums}" var="album" styleClass="contentflow">
+                <p:graphicImage url="./resources/images/bg.jpg" styleClass="content card_album_art" />                
+                <div class="caption">
+                    
+                    <h:link outcome="albumtest">
+                        <f:param name="albumId" value="#{album.id}"/>
+                        <h2>#{album.title}</h2>
+                    </h:link>                   
+                </div> 
+            </p:contentFlow>
 
         </div>
-        <h2 id="latest_header">Latest Releases!</h2>
+        
         <div class = "container-fluid content well-lg">
             <div class="row well-lg"> 
                 <div class="center_content">

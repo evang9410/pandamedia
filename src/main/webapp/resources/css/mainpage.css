@@ -4,8 +4,7 @@
 */
 .contentflow_container{
     width: 90vw;
-    height: 45vh;
-    background-color: red;
+    height: 60vh;
     margin-left: 5%;
     margin-right: 5%;
     margin-top:2%;
@@ -62,4 +61,14 @@
 .center_content{
     margin: 0 auto;
     text-align: center;
+}
+
+.contentflow_header{
+    font-size: 32em;
+}
+
+.contentflow{
+    margin: 0 auto;
+    width: 50%;
+    background: rgba(119, 171, 255, 0.7);
 }
