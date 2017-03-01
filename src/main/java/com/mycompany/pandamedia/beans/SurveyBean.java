@@ -24,14 +24,14 @@ public class SurveyBean implements Serializable {
     private Survey survey;
     private List<String> answers;
     
-    @Inject
-    private SurveyJpaController surveys;
-    @Inject
-    private SurveyChartBean surveyResults;
+//    @Inject
+//    private SurveyJpaController surveys;
+//    @Inject
+//    private SurveyChartBean surveyResults;
     
     @PostConstruct
     public void init(){
-        survey=surveys.getLast();
+//        survey=surveys.getLast();
         createAnswerList();
         
     }
@@ -97,7 +97,7 @@ public class SurveyBean implements Serializable {
           voteNum++;
           survey.setVotesD(voteNum);
       }
-      surveys.edit(survey);
+//      surveys.edit(survey);
       return null;
     }
     
