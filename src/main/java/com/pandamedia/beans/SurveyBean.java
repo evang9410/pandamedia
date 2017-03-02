@@ -23,16 +23,20 @@ public class SurveyBean implements Serializable {
     private String userChoice;
     private Survey survey;
     private List<String> answers;
+    private boolean userAnswered;
+    private boolean showOptions;
     
-//    @Inject
-//    private SurveyJpaController surveys;
-//    @Inject
-//    private SurveyChartBean surveyResults;
+    @Inject
+    private SurveyJpaController surveys;
+   
     
     @PostConstruct
     public void init(){
-//        survey=surveys.getLast();
+        survey=surveys.findSurvey(1);
+    
         createAnswerList();
+        userAnswered=false;
+        showOptions=true;
         
     }
     public String getUserChoice() {
@@ -66,6 +70,16 @@ public class SurveyBean implements Serializable {
     public void setAnswers(List<String> answers) {
         this.answers = answers;
     }
+
+    public boolean isShowOptions() {
+        return showOptions;
+    }
+
+    public void setShowOptions(boolean showOptions) {
+        this.showOptions = showOptions;
+    }
+    
+    
     
     public int getTotalVotes(){
         int totalVotes=0;
@@ -77,7 +91,24 @@ public class SurveyBean implements Serializable {
         return totalVotes;
     }
 
-    public String incrementVoteCount() throws RollbackFailureException, Exception{
+    public boolean isUserAnswered() {
+        return userAnswered;
+    }
+
+    public void setUserAnswered(boolean userAnswered) {
+        this.userAnswered = userAnswered;
+    }
+    
+    
+    
+    public String updateSurvey() throws Exception{
+        incrementVoteCount();
+        userAnswered=true;
+        showOptions=false;
+        return null;
+    }
+    
+    public void incrementVoteCount() throws RollbackFailureException, Exception{
         //surveyResults.setDisplayed(true);
       int voteNum=0;
       if(userChoice.equalsIgnoreCase(survey.getAnswerA())){
@@ -97,8 +128,7 @@ public class SurveyBean implements Serializable {
           voteNum++;
           survey.setVotesD(voteNum);
       }
-//      surveys.edit(survey);
-      return null;
+      surveys.edit(survey);
     }
     
     private void createAnswerList(){
