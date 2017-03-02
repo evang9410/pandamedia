@@ -20,13 +20,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Evang
+ * @author Panda
  */
 @Entity
-@Table(name = "cover_art", catalog = "g4w17", schema = "")
+@Table(name = "cover_art")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "CoverArt.findAll", query = "SELECT c FROM CoverArt c")
     , @NamedQuery(name = "CoverArt.findById", query = "SELECT c FROM CoverArt c WHERE c.id = :id")
@@ -75,6 +78,7 @@ public class CoverArt implements Serializable {
         this.imagePath = imagePath;
     }
 
+    @XmlTransient
     public List<Track> getTrackList() {
         return trackList;
     }

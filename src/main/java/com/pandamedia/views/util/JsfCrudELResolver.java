@@ -1,4 +1,4 @@
-package com.mycompany.pandamedia.views.util;
+package com.pandamedia.views.util;
 
 import java.beans.BeanInfo;
 import java.beans.FeatureDescriptor;

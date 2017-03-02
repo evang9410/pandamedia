@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package persistence.controllers;
 
 import java.io.Serializable;
@@ -17,7 +12,6 @@ import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
 import persistence.controllers.exceptions.IllegalOrphanException;
@@ -27,7 +21,7 @@ import persistence.entities.CoverArt;
 
 /**
  *
- * @author Evang
+ * @author Erika Bourque
  */
 @Named
 @RequestScoped
@@ -35,17 +29,19 @@ public class CoverArtJpaController implements Serializable {
 
     @Resource
     private UserTransaction utx;
+
     @PersistenceContext
     private EntityManager em;
+
+    public CoverArtJpaController() {
+    }
 
     public void create(CoverArt coverArt) throws RollbackFailureException, Exception {
         if (coverArt.getTrackList() == null) {
             coverArt.setTrackList(new ArrayList<Track>());
         }
-
         try {
             utx.begin();
-
             List<Track> attachedTrackList = new ArrayList<Track>();
             for (Track trackListTrackToAttach : coverArt.getTrackList()) {
                 trackListTrackToAttach = em.getReference(trackListTrackToAttach.getClass(), trackListTrackToAttach.getId());
@@ -74,10 +70,8 @@ public class CoverArtJpaController implements Serializable {
     }
 
     public void edit(CoverArt coverArt) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-
         try {
             utx.begin();
-
             CoverArt persistentCoverArt = em.find(CoverArt.class, coverArt.getId());
             List<Track> trackListOld = persistentCoverArt.getTrackList();
             List<Track> trackListNew = coverArt.getTrackList();
@@ -131,10 +125,8 @@ public class CoverArtJpaController implements Serializable {
     }
 
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-
         try {
             utx.begin();
-
             CoverArt coverArt;
             try {
                 coverArt = em.getReference(CoverArt.class, id);
@@ -174,7 +166,6 @@ public class CoverArtJpaController implements Serializable {
     }
 
     private List<CoverArt> findCoverArtEntities(boolean all, int maxResults, int firstResult) {
-
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(CoverArt.class));
         Query q = em.createQuery(cq);
@@ -183,23 +174,18 @@ public class CoverArtJpaController implements Serializable {
             q.setFirstResult(firstResult);
         }
         return q.getResultList();
-
     }
 
     public CoverArt findCoverArt(Integer id) {
-
         return em.find(CoverArt.class, id);
-
     }
 
     public int getCoverArtCount() {
-
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         Root<CoverArt> rt = cq.from(CoverArt.class);
         cq.select(em.getCriteriaBuilder().count(rt));
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
-
     }
 
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package persistence.controllers;
 
 import java.io.Serializable;
@@ -17,7 +12,6 @@ import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
 import persistence.controllers.exceptions.IllegalOrphanException;
@@ -28,7 +22,7 @@ import persistence.entities.Track;
 
 /**
  *
- * @author Evang
+ * @author Erika Bourque
  */
 @Named
 @RequestScoped
@@ -36,8 +30,12 @@ public class ArtistJpaController implements Serializable {
 
     @Resource
     private UserTransaction utx;
+
     @PersistenceContext
     private EntityManager em;
+
+    public ArtistJpaController() {
+    }
 
     public void create(Artist artist) throws RollbackFailureException, Exception {
         if (artist.getAlbumList() == null) {
@@ -46,10 +44,8 @@ public class ArtistJpaController implements Serializable {
         if (artist.getTrackList() == null) {
             artist.setTrackList(new ArrayList<Track>());
         }
-
         try {
             utx.begin();
-
             List<Album> attachedAlbumList = new ArrayList<Album>();
             for (Album albumListAlbumToAttach : artist.getAlbumList()) {
                 albumListAlbumToAttach = em.getReference(albumListAlbumToAttach.getClass(), albumListAlbumToAttach.getId());
@@ -93,10 +89,8 @@ public class ArtistJpaController implements Serializable {
     }
 
     public void edit(Artist artist) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-
         try {
             utx.begin();
-
             Artist persistentArtist = em.find(Artist.class, artist.getId());
             List<Album> albumListOld = persistentArtist.getAlbumList();
             List<Album> albumListNew = artist.getAlbumList();
@@ -178,10 +172,8 @@ public class ArtistJpaController implements Serializable {
     }
 
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-
         try {
             utx.begin();
-
             Artist artist;
             try {
                 artist = em.getReference(Artist.class, id);
@@ -228,7 +220,6 @@ public class ArtistJpaController implements Serializable {
     }
 
     private List<Artist> findArtistEntities(boolean all, int maxResults, int firstResult) {
-
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Artist.class));
         Query q = em.createQuery(cq);
@@ -237,23 +228,18 @@ public class ArtistJpaController implements Serializable {
             q.setFirstResult(firstResult);
         }
         return q.getResultList();
-
     }
 
     public Artist findArtist(Integer id) {
-
         return em.find(Artist.class, id);
-
     }
 
     public int getArtistCount() {
-
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         Root<Artist> rt = cq.from(Artist.class);
         cq.select(em.getCriteriaBuilder().count(rt));
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
-
     }
 
 }

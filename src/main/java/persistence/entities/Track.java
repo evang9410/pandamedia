@@ -25,13 +25,16 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Evang
+ * @author Panda
  */
 @Entity
-@Table(name = "track", catalog = "g4w17", schema = "")
+@Table(name = "track")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Track.findAll", query = "SELECT t FROM Track t")
     , @NamedQuery(name = "Track.findById", query = "SELECT t FROM Track t WHERE t.id = :id")
@@ -118,6 +121,8 @@ public class Track implements Serializable {
     @JoinColumn(name = "cover_art_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private CoverArt coverArtId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "track")
+    private List<InvoiceTrack> invoiceTrackList;
 
     public Track() {
     }
@@ -236,6 +241,7 @@ public class Track implements Serializable {
         this.removalDate = removalDate;
     }
 
+    @XmlTransient
     public List<Review> getReviewList() {
         return reviewList;
     }
@@ -282,6 +288,15 @@ public class Track implements Serializable {
 
     public void setCoverArtId(CoverArt coverArtId) {
         this.coverArtId = coverArtId;
+    }
+
+    @XmlTransient
+    public List<InvoiceTrack> getInvoiceTrackList() {
+        return invoiceTrackList;
+    }
+
+    public void setInvoiceTrackList(List<InvoiceTrack> invoiceTrackList) {
+        this.invoiceTrackList = invoiceTrackList;
     }
 
     @Override
