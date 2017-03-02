@@ -1,4 +1,4 @@
-package com.mycompany.pandamedia.beans;
+package com.pandamedia.beans;
 
 import persistence.controllers.SurveyJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
