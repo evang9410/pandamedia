@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package persistence.controllers;
 
 import java.io.Serializable;
@@ -11,7 +6,6 @@ import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
@@ -24,7 +18,7 @@ import persistence.entities.Advertisement;
 
 /**
  *
- * @author Evang
+ * @author Erika Bourque
  */
 @Named
 @RequestScoped
@@ -32,14 +26,16 @@ public class AdvertisementJpaController implements Serializable {
 
     @Resource
     private UserTransaction utx;
+
     @PersistenceContext
     private EntityManager em;
 
-    public void create(Advertisement advertisement) throws RollbackFailureException, Exception {
+    public AdvertisementJpaController() {
+    }
 
+    public void create(Advertisement advertisement) throws RollbackFailureException, Exception {
         try {
             utx.begin();
-
             em.persist(advertisement);
             utx.commit();
         } catch (Exception ex) {
@@ -53,10 +49,8 @@ public class AdvertisementJpaController implements Serializable {
     }
 
     public void edit(Advertisement advertisement) throws NonexistentEntityException, RollbackFailureException, Exception {
-
         try {
             utx.begin();
-
             advertisement = em.merge(advertisement);
             utx.commit();
         } catch (Exception ex) {
@@ -77,10 +71,8 @@ public class AdvertisementJpaController implements Serializable {
     }
 
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
-
         try {
             utx.begin();
-
             Advertisement advertisement;
             try {
                 advertisement = em.getReference(Advertisement.class, id);
@@ -109,7 +101,6 @@ public class AdvertisementJpaController implements Serializable {
     }
 
     private List<Advertisement> findAdvertisementEntities(boolean all, int maxResults, int firstResult) {
-
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Advertisement.class));
         Query q = em.createQuery(cq);
@@ -118,22 +109,18 @@ public class AdvertisementJpaController implements Serializable {
             q.setFirstResult(firstResult);
         }
         return q.getResultList();
-
     }
 
     public Advertisement findAdvertisement(Integer id) {
-
         return em.find(Advertisement.class, id);
     }
 
     public int getAdvertisementCount() {
-
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         Root<Advertisement> rt = cq.from(Advertisement.class);
         cq.select(em.getCriteriaBuilder().count(rt));
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
-
     }
 
 }

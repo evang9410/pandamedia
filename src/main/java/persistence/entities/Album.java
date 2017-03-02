@@ -25,13 +25,16 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Evang
+ * @author Panda
  */
 @Entity
-@Table(name = "album", catalog = "g4w17", schema = "")
+@Table(name = "album")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Album.findAll", query = "SELECT a FROM Album a")
     , @NamedQuery(name = "Album.findById", query = "SELECT a FROM Album a WHERE a.id = :id")
@@ -99,6 +102,8 @@ public class Album implements Serializable {
     @JoinColumn(name = "recording_label_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private RecordingLabel recordingLabelId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
+    private List<InvoiceAlbum> invoiceAlbumList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "albumId")
     private List<Track> trackList;
 
@@ -225,6 +230,16 @@ public class Album implements Serializable {
         this.recordingLabelId = recordingLabelId;
     }
 
+    @XmlTransient
+    public List<InvoiceAlbum> getInvoiceAlbumList() {
+        return invoiceAlbumList;
+    }
+
+    public void setInvoiceAlbumList(List<InvoiceAlbum> invoiceAlbumList) {
+        this.invoiceAlbumList = invoiceAlbumList;
+    }
+
+    @XmlTransient
     public List<Track> getTrackList() {
         return trackList;
     }
@@ -256,17 +271,6 @@ public class Album implements Serializable {
     @Override
     public String toString() {
         return "persistence.entities.Album[ id=" + id + " ]";
-    }
-    
-    /**
-     * Returns the cover art object from the track in the album.
-     * to get the album art, we get the first element in the albums track list,
-     * a track object and then retrieve the album art from the track entity.
-     * 
-     * @return CoverArt 
-     */
-    public CoverArt getAlbumArt(){
-        return this.getTrackList().get(0).getCoverArtId();
     }
     
 }

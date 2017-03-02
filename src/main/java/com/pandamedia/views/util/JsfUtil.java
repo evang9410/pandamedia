@@ -1,4 +1,4 @@
-package com.mycompany.pandamedia.views.util;
+package com.pandamedia.views.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;

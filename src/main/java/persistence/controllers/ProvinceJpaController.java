@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package persistence.controllers;
 
 import java.io.Serializable;
@@ -13,8 +8,11 @@ import javax.persistence.criteria.Root;
 import persistence.entities.ShopUser;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
 import persistence.controllers.exceptions.IllegalOrphanException;
 import persistence.controllers.exceptions.NonexistentEntityException;
@@ -23,29 +21,27 @@ import persistence.entities.Province;
 
 /**
  *
- * @author Evang
+ * @author Erika Bourque
  */
+@Named
+@RequestScoped
 public class ProvinceJpaController implements Serializable {
 
-    public ProvinceJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
-        this.emf = emf;
-    }
-    private UserTransaction utx = null;
-    private EntityManagerFactory emf = null;
+    @Resource
+    private UserTransaction utx;
 
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
+    @PersistenceContext
+    private EntityManager em;
+
+    public ProvinceJpaController() {
     }
 
     public void create(Province province) throws RollbackFailureException, Exception {
         if (province.getShopUserList() == null) {
             province.setShopUserList(new ArrayList<ShopUser>());
         }
-        EntityManager em = null;
         try {
             utx.begin();
-            em = getEntityManager();
             List<ShopUser> attachedShopUserList = new ArrayList<ShopUser>();
             for (ShopUser shopUserListShopUserToAttach : province.getShopUserList()) {
                 shopUserListShopUserToAttach = em.getReference(shopUserListShopUserToAttach.getClass(), shopUserListShopUserToAttach.getId());
@@ -70,18 +66,12 @@ public class ProvinceJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
     public void edit(Province province) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
         try {
             utx.begin();
-            em = getEntityManager();
             Province persistentProvince = em.find(Province.class, province.getId());
             List<ShopUser> shopUserListOld = persistentProvince.getShopUserList();
             List<ShopUser> shopUserListNew = province.getShopUserList();
@@ -131,18 +121,12 @@ public class ProvinceJpaController implements Serializable {
                 }
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
         try {
             utx.begin();
-            em = getEntityManager();
             Province province;
             try {
                 province = em.getReference(Province.class, id);
@@ -170,10 +154,6 @@ public class ProvinceJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
@@ -186,41 +166,26 @@ public class ProvinceJpaController implements Serializable {
     }
 
     private List<Province> findProvinceEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Province.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Province.class));
+        Query q = em.createQuery(cq);
+        if (!all) {
+            q.setMaxResults(maxResults);
+            q.setFirstResult(firstResult);
         }
+        return q.getResultList();
     }
 
     public Province findProvince(Integer id) {
-        EntityManager em = getEntityManager();
-        try {
-            return em.find(Province.class, id);
-        } finally {
-            em.close();
-        }
+        return em.find(Province.class, id);
     }
 
     public int getProvinceCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Province> rt = cq.from(Province.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        Root<Province> rt = cq.from(Province.class);
+        cq.select(em.getCriteriaBuilder().count(rt));
+        Query q = em.createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
     }
-    
+
 }

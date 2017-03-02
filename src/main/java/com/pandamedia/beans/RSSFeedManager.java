@@ -1,4 +1,4 @@
-package com.pandamedia.rss;
+package com.pandamedia.beans;
 
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package persistence.controllers;
 
 import java.io.Serializable;
@@ -18,39 +13,44 @@ import persistence.entities.CoverArt;
 import persistence.entities.Review;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
 import persistence.controllers.exceptions.IllegalOrphanException;
 import persistence.controllers.exceptions.NonexistentEntityException;
 import persistence.controllers.exceptions.RollbackFailureException;
+import persistence.entities.InvoiceTrack;
 import persistence.entities.Track;
 
 /**
  *
- * @author Evang
+ * @author Erika Bourque
  */
+@Named
+@RequestScoped
 public class TrackJpaController implements Serializable {
 
-    public TrackJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
-        this.emf = emf;
-    }
-    private UserTransaction utx = null;
-    private EntityManagerFactory emf = null;
+    @Resource
+    private UserTransaction utx;
 
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @PersistenceContext
+    private EntityManager em;
+    
+    public TrackJpaController() {
+    } 
 
     public void create(Track track) throws RollbackFailureException, Exception {
         if (track.getReviewList() == null) {
             track.setReviewList(new ArrayList<Review>());
         }
-        EntityManager em = null;
+        if (track.getInvoiceTrackList() == null) {
+            track.setInvoiceTrackList(new ArrayList<InvoiceTrack>());
+        }
         try {
             utx.begin();
-            em = getEntityManager();
             Album albumId = track.getAlbumId();
             if (albumId != null) {
                 albumId = em.getReference(albumId.getClass(), albumId.getId());
@@ -82,6 +82,12 @@ public class TrackJpaController implements Serializable {
                 attachedReviewList.add(reviewListReviewToAttach);
             }
             track.setReviewList(attachedReviewList);
+            List<InvoiceTrack> attachedInvoiceTrackList = new ArrayList<InvoiceTrack>();
+            for (InvoiceTrack invoiceTrackListInvoiceTrackToAttach : track.getInvoiceTrackList()) {
+                invoiceTrackListInvoiceTrackToAttach = em.getReference(invoiceTrackListInvoiceTrackToAttach.getClass(), invoiceTrackListInvoiceTrackToAttach.getInvoiceTrackPK());
+                attachedInvoiceTrackList.add(invoiceTrackListInvoiceTrackToAttach);
+            }
+            track.setInvoiceTrackList(attachedInvoiceTrackList);
             em.persist(track);
             if (albumId != null) {
                 albumId.getTrackList().add(track);
@@ -112,6 +118,15 @@ public class TrackJpaController implements Serializable {
                     oldTrackIdOfReviewListReview = em.merge(oldTrackIdOfReviewListReview);
                 }
             }
+            for (InvoiceTrack invoiceTrackListInvoiceTrack : track.getInvoiceTrackList()) {
+                Track oldTrackOfInvoiceTrackListInvoiceTrack = invoiceTrackListInvoiceTrack.getTrack();
+                invoiceTrackListInvoiceTrack.setTrack(track);
+                invoiceTrackListInvoiceTrack = em.merge(invoiceTrackListInvoiceTrack);
+                if (oldTrackOfInvoiceTrackListInvoiceTrack != null) {
+                    oldTrackOfInvoiceTrackListInvoiceTrack.getInvoiceTrackList().remove(invoiceTrackListInvoiceTrack);
+                    oldTrackOfInvoiceTrackListInvoiceTrack = em.merge(oldTrackOfInvoiceTrackListInvoiceTrack);
+                }
+            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -120,18 +135,12 @@ public class TrackJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
     public void edit(Track track) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
         try {
             utx.begin();
-            em = getEntityManager();
             Track persistentTrack = em.find(Track.class, track.getId());
             Album albumIdOld = persistentTrack.getAlbumId();
             Album albumIdNew = track.getAlbumId();
@@ -145,6 +154,8 @@ public class TrackJpaController implements Serializable {
             CoverArt coverArtIdNew = track.getCoverArtId();
             List<Review> reviewListOld = persistentTrack.getReviewList();
             List<Review> reviewListNew = track.getReviewList();
+            List<InvoiceTrack> invoiceTrackListOld = persistentTrack.getInvoiceTrackList();
+            List<InvoiceTrack> invoiceTrackListNew = track.getInvoiceTrackList();
             List<String> illegalOrphanMessages = null;
             for (Review reviewListOldReview : reviewListOld) {
                 if (!reviewListNew.contains(reviewListOldReview)) {
@@ -152,6 +163,14 @@ public class TrackJpaController implements Serializable {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
                     illegalOrphanMessages.add("You must retain Review " + reviewListOldReview + " since its trackId field is not nullable.");
+                }
+            }
+            for (InvoiceTrack invoiceTrackListOldInvoiceTrack : invoiceTrackListOld) {
+                if (!invoiceTrackListNew.contains(invoiceTrackListOldInvoiceTrack)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain InvoiceTrack " + invoiceTrackListOldInvoiceTrack + " since its track field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -184,6 +203,13 @@ public class TrackJpaController implements Serializable {
             }
             reviewListNew = attachedReviewListNew;
             track.setReviewList(reviewListNew);
+            List<InvoiceTrack> attachedInvoiceTrackListNew = new ArrayList<InvoiceTrack>();
+            for (InvoiceTrack invoiceTrackListNewInvoiceTrackToAttach : invoiceTrackListNew) {
+                invoiceTrackListNewInvoiceTrackToAttach = em.getReference(invoiceTrackListNewInvoiceTrackToAttach.getClass(), invoiceTrackListNewInvoiceTrackToAttach.getInvoiceTrackPK());
+                attachedInvoiceTrackListNew.add(invoiceTrackListNewInvoiceTrackToAttach);
+            }
+            invoiceTrackListNew = attachedInvoiceTrackListNew;
+            track.setInvoiceTrackList(invoiceTrackListNew);
             track = em.merge(track);
             if (albumIdOld != null && !albumIdOld.equals(albumIdNew)) {
                 albumIdOld.getTrackList().remove(track);
@@ -236,6 +262,17 @@ public class TrackJpaController implements Serializable {
                     }
                 }
             }
+            for (InvoiceTrack invoiceTrackListNewInvoiceTrack : invoiceTrackListNew) {
+                if (!invoiceTrackListOld.contains(invoiceTrackListNewInvoiceTrack)) {
+                    Track oldTrackOfInvoiceTrackListNewInvoiceTrack = invoiceTrackListNewInvoiceTrack.getTrack();
+                    invoiceTrackListNewInvoiceTrack.setTrack(track);
+                    invoiceTrackListNewInvoiceTrack = em.merge(invoiceTrackListNewInvoiceTrack);
+                    if (oldTrackOfInvoiceTrackListNewInvoiceTrack != null && !oldTrackOfInvoiceTrackListNewInvoiceTrack.equals(track)) {
+                        oldTrackOfInvoiceTrackListNewInvoiceTrack.getInvoiceTrackList().remove(invoiceTrackListNewInvoiceTrack);
+                        oldTrackOfInvoiceTrackListNewInvoiceTrack = em.merge(oldTrackOfInvoiceTrackListNewInvoiceTrack);
+                    }
+                }
+            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -251,18 +288,12 @@ public class TrackJpaController implements Serializable {
                 }
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
         try {
             utx.begin();
-            em = getEntityManager();
             Track track;
             try {
                 track = em.getReference(Track.class, id);
@@ -277,6 +308,13 @@ public class TrackJpaController implements Serializable {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This Track (" + track + ") cannot be destroyed since the Review " + reviewListOrphanCheckReview + " in its reviewList field has a non-nullable trackId field.");
+            }
+            List<InvoiceTrack> invoiceTrackListOrphanCheck = track.getInvoiceTrackList();
+            for (InvoiceTrack invoiceTrackListOrphanCheckInvoiceTrack : invoiceTrackListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Track (" + track + ") cannot be destroyed since the InvoiceTrack " + invoiceTrackListOrphanCheckInvoiceTrack + " in its invoiceTrackList field has a non-nullable track field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
@@ -315,10 +353,6 @@ public class TrackJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
@@ -331,41 +365,26 @@ public class TrackJpaController implements Serializable {
     }
 
     private List<Track> findTrackEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Track.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Track.class));
+        Query q = em.createQuery(cq);
+        if (!all) {
+            q.setMaxResults(maxResults);
+            q.setFirstResult(firstResult);
         }
+        return q.getResultList();
     }
 
     public Track findTrack(Integer id) {
-        EntityManager em = getEntityManager();
-        try {
-            return em.find(Track.class, id);
-        } finally {
-            em.close();
-        }
+        return em.find(Track.class, id);
     }
 
     public int getTrackCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Track> rt = cq.from(Track.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        Root<Track> rt = cq.from(Track.class);
+        cq.select(em.getCriteriaBuilder().count(rt));
+        Query q = em.createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
     }
-    
+
 }

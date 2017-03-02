@@ -1,4 +1,4 @@
-package com.mycompany.pandamedia.views.util;
+package com.pandamedia.views.util;
 
 public class PagingInfo {
     private int batchSize = 5;

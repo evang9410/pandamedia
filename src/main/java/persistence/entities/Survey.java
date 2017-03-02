@@ -21,10 +21,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Hau Gilles Che
+ * @author Panda
  */
 @Entity
-@Table(name = "survey", catalog = "g4w17", schema = "")
+@Table(name = "survey")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Survey.findAll", query = "SELECT s FROM Survey s")
@@ -210,7 +210,7 @@ public class Survey implements Serializable {
 
     @Override
     public String toString() {
-        return "com.mycompany.pandamedia.beans.Survey[ id=" + id + " ]";
+        return "persistence.entities.Survey[ id=" + id + " ]";
     }
     
 }
