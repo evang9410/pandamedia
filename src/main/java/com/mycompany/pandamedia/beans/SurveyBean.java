@@ -33,6 +33,7 @@ public class SurveyBean implements Serializable {
     @PostConstruct
     public void init(){
         survey=surveys.findSurvey(1);
+    
         createAnswerList();
         userAnswered=false;
         showOptions=true;

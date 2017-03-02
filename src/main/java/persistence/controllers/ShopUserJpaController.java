@@ -15,31 +15,39 @@ import persistence.entities.Genre;
 import persistence.entities.Review;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
 import javax.transaction.UserTransaction;
 import persistence.controllers.exceptions.IllegalOrphanException;
 import persistence.controllers.exceptions.NonexistentEntityException;
 import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.Invoice;
 import persistence.entities.ShopUser;
+import javax.persistence.criteria.Subquery;
+//import persistence.entities.Genre_;
+//import persistence.entities.Invoice_;
+//import persistence.entities.Province_;
+//import persistence.entities.ShopUser_;
 
 /**
  *
  * @author Evang
  */
+@Named
+@RequestScoped
 public class ShopUserJpaController implements Serializable {
 
-    public ShopUserJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
-        this.emf = emf;
-    }
-    private UserTransaction utx = null;
-    private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @Resource
+    private UserTransaction utx;
+    @PersistenceContext
+    private EntityManager em;
 
     public void create(ShopUser shopUser) throws RollbackFailureException, Exception {
         if (shopUser.getReviewList() == null) {
@@ -48,10 +56,8 @@ public class ShopUserJpaController implements Serializable {
         if (shopUser.getInvoiceList() == null) {
             shopUser.setInvoiceList(new ArrayList<Invoice>());
         }
-        EntityManager em = null;
         try {
             utx.begin();
-            em = getEntityManager();
             Province provinceId = shopUser.getProvinceId();
             if (provinceId != null) {
                 provinceId = em.getReference(provinceId.getClass(), provinceId.getId());
@@ -109,10 +115,6 @@ public class ShopUserJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
@@ -120,7 +122,6 @@ public class ShopUserJpaController implements Serializable {
         EntityManager em = null;
         try {
             utx.begin();
-            em = getEntityManager();
             ShopUser persistentShopUser = em.find(ShopUser.class, shopUser.getId());
             Province provinceIdOld = persistentShopUser.getProvinceId();
             Province provinceIdNew = shopUser.getProvinceId();
@@ -226,18 +227,12 @@ public class ShopUserJpaController implements Serializable {
                 }
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
         try {
             utx.begin();
-            em = getEntityManager();
             ShopUser shopUser;
             try {
                 shopUser = em.getReference(ShopUser.class, id);
@@ -282,10 +277,6 @@ public class ShopUserJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
@@ -298,41 +289,25 @@ public class ShopUserJpaController implements Serializable {
     }
 
     private List<ShopUser> findShopUserEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(ShopUser.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(ShopUser.class));
+        Query q = em.createQuery(cq);
+        if (!all) {
+            q.setMaxResults(maxResults);
+            q.setFirstResult(firstResult);
         }
+        return q.getResultList();
     }
 
     public ShopUser findShopUser(Integer id) {
-        EntityManager em = getEntityManager();
-        try {
-            return em.find(ShopUser.class, id);
-        } finally {
-            em.close();
-        }
+        return em.find(ShopUser.class, id);
     }
 
     public int getShopUserCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<ShopUser> rt = cq.from(ShopUser.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        Root<ShopUser> rt = cq.from(ShopUser.class);
+        cq.select(em.getCriteriaBuilder().count(rt));
+        Query q = em.createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
     }
-    
 }
