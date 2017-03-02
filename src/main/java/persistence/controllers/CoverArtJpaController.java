@@ -5,7 +5,7 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import persistence.entities.Track;
+import persistence.entities.Album;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
@@ -18,6 +18,7 @@ import persistence.controllers.exceptions.IllegalOrphanException;
 import persistence.controllers.exceptions.NonexistentEntityException;
 import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.CoverArt;
+import persistence.entities.Track;
 
 /**
  *
@@ -37,11 +38,20 @@ public class CoverArtJpaController implements Serializable {
     }
 
     public void create(CoverArt coverArt) throws RollbackFailureException, Exception {
+        if (coverArt.getAlbumList() == null) {
+            coverArt.setAlbumList(new ArrayList<Album>());
+        }
         if (coverArt.getTrackList() == null) {
             coverArt.setTrackList(new ArrayList<Track>());
         }
         try {
             utx.begin();
+            List<Album> attachedAlbumList = new ArrayList<Album>();
+            for (Album albumListAlbumToAttach : coverArt.getAlbumList()) {
+                albumListAlbumToAttach = em.getReference(albumListAlbumToAttach.getClass(), albumListAlbumToAttach.getId());
+                attachedAlbumList.add(albumListAlbumToAttach);
+            }
+            coverArt.setAlbumList(attachedAlbumList);
             List<Track> attachedTrackList = new ArrayList<Track>();
             for (Track trackListTrackToAttach : coverArt.getTrackList()) {
                 trackListTrackToAttach = em.getReference(trackListTrackToAttach.getClass(), trackListTrackToAttach.getId());
@@ -49,6 +59,15 @@ public class CoverArtJpaController implements Serializable {
             }
             coverArt.setTrackList(attachedTrackList);
             em.persist(coverArt);
+            for (Album albumListAlbum : coverArt.getAlbumList()) {
+                CoverArt oldCoverArtIdOfAlbumListAlbum = albumListAlbum.getCoverArtId();
+                albumListAlbum.setCoverArtId(coverArt);
+                albumListAlbum = em.merge(albumListAlbum);
+                if (oldCoverArtIdOfAlbumListAlbum != null) {
+                    oldCoverArtIdOfAlbumListAlbum.getAlbumList().remove(albumListAlbum);
+                    oldCoverArtIdOfAlbumListAlbum = em.merge(oldCoverArtIdOfAlbumListAlbum);
+                }
+            }
             for (Track trackListTrack : coverArt.getTrackList()) {
                 CoverArt oldCoverArtIdOfTrackListTrack = trackListTrack.getCoverArtId();
                 trackListTrack.setCoverArtId(coverArt);
@@ -73,9 +92,19 @@ public class CoverArtJpaController implements Serializable {
         try {
             utx.begin();
             CoverArt persistentCoverArt = em.find(CoverArt.class, coverArt.getId());
+            List<Album> albumListOld = persistentCoverArt.getAlbumList();
+            List<Album> albumListNew = coverArt.getAlbumList();
             List<Track> trackListOld = persistentCoverArt.getTrackList();
             List<Track> trackListNew = coverArt.getTrackList();
             List<String> illegalOrphanMessages = null;
+            for (Album albumListOldAlbum : albumListOld) {
+                if (!albumListNew.contains(albumListOldAlbum)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Album " + albumListOldAlbum + " since its coverArtId field is not nullable.");
+                }
+            }
             for (Track trackListOldTrack : trackListOld) {
                 if (!trackListNew.contains(trackListOldTrack)) {
                     if (illegalOrphanMessages == null) {
@@ -87,6 +116,13 @@ public class CoverArtJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
+            List<Album> attachedAlbumListNew = new ArrayList<Album>();
+            for (Album albumListNewAlbumToAttach : albumListNew) {
+                albumListNewAlbumToAttach = em.getReference(albumListNewAlbumToAttach.getClass(), albumListNewAlbumToAttach.getId());
+                attachedAlbumListNew.add(albumListNewAlbumToAttach);
+            }
+            albumListNew = attachedAlbumListNew;
+            coverArt.setAlbumList(albumListNew);
             List<Track> attachedTrackListNew = new ArrayList<Track>();
             for (Track trackListNewTrackToAttach : trackListNew) {
                 trackListNewTrackToAttach = em.getReference(trackListNewTrackToAttach.getClass(), trackListNewTrackToAttach.getId());
@@ -95,6 +131,17 @@ public class CoverArtJpaController implements Serializable {
             trackListNew = attachedTrackListNew;
             coverArt.setTrackList(trackListNew);
             coverArt = em.merge(coverArt);
+            for (Album albumListNewAlbum : albumListNew) {
+                if (!albumListOld.contains(albumListNewAlbum)) {
+                    CoverArt oldCoverArtIdOfAlbumListNewAlbum = albumListNewAlbum.getCoverArtId();
+                    albumListNewAlbum.setCoverArtId(coverArt);
+                    albumListNewAlbum = em.merge(albumListNewAlbum);
+                    if (oldCoverArtIdOfAlbumListNewAlbum != null && !oldCoverArtIdOfAlbumListNewAlbum.equals(coverArt)) {
+                        oldCoverArtIdOfAlbumListNewAlbum.getAlbumList().remove(albumListNewAlbum);
+                        oldCoverArtIdOfAlbumListNewAlbum = em.merge(oldCoverArtIdOfAlbumListNewAlbum);
+                    }
+                }
+            }
             for (Track trackListNewTrack : trackListNew) {
                 if (!trackListOld.contains(trackListNewTrack)) {
                     CoverArt oldCoverArtIdOfTrackListNewTrack = trackListNewTrack.getCoverArtId();
@@ -135,6 +182,13 @@ public class CoverArtJpaController implements Serializable {
                 throw new NonexistentEntityException("The coverArt with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
+            List<Album> albumListOrphanCheck = coverArt.getAlbumList();
+            for (Album albumListOrphanCheckAlbum : albumListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This CoverArt (" + coverArt + ") cannot be destroyed since the Album " + albumListOrphanCheckAlbum + " in its albumList field has a non-nullable coverArtId field.");
+            }
             List<Track> trackListOrphanCheck = coverArt.getTrackList();
             for (Track trackListOrphanCheckTrack : trackListOrphanCheck) {
                 if (illegalOrphanMessages == null) {

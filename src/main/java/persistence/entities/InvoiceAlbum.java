@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package persistence.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -15,12 +11,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Panda
+ * @author Erika Bourque
  */
 @Entity
 @Table(name = "invoice_album")
@@ -29,7 +27,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "InvoiceAlbum.findAll", query = "SELECT i FROM InvoiceAlbum i")
     , @NamedQuery(name = "InvoiceAlbum.findByInvoiceId", query = "SELECT i FROM InvoiceAlbum i WHERE i.invoiceAlbumPK.invoiceId = :invoiceId")
     , @NamedQuery(name = "InvoiceAlbum.findByAlbumId", query = "SELECT i FROM InvoiceAlbum i WHERE i.invoiceAlbumPK.albumId = :albumId")
-    , @NamedQuery(name = "InvoiceAlbum.findByFinalPrice", query = "SELECT i FROM InvoiceAlbum i WHERE i.finalPrice = :finalPrice")})
+    , @NamedQuery(name = "InvoiceAlbum.findByFinalPrice", query = "SELECT i FROM InvoiceAlbum i WHERE i.finalPrice = :finalPrice")
+    , @NamedQuery(name = "InvoiceAlbum.findByRemovalStatus", query = "SELECT i FROM InvoiceAlbum i WHERE i.removalStatus = :removalStatus")
+    , @NamedQuery(name = "InvoiceAlbum.findByRemovalDate", query = "SELECT i FROM InvoiceAlbum i WHERE i.removalDate = :removalDate")})
 public class InvoiceAlbum implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,6 +39,13 @@ public class InvoiceAlbum implements Serializable {
     @NotNull
     @Column(name = "final_price")
     private double finalPrice;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "removal_status")
+    private short removalStatus;
+    @Column(name = "removal_date")
+    @Temporal(TemporalType.DATE)
+    private Date removalDate;
     @JoinColumn(name = "invoice_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Invoice invoice;
@@ -53,9 +60,10 @@ public class InvoiceAlbum implements Serializable {
         this.invoiceAlbumPK = invoiceAlbumPK;
     }
 
-    public InvoiceAlbum(InvoiceAlbumPK invoiceAlbumPK, double finalPrice) {
+    public InvoiceAlbum(InvoiceAlbumPK invoiceAlbumPK, double finalPrice, short removalStatus) {
         this.invoiceAlbumPK = invoiceAlbumPK;
         this.finalPrice = finalPrice;
+        this.removalStatus = removalStatus;
     }
 
     public InvoiceAlbum(int invoiceId, int albumId) {
@@ -76,6 +84,22 @@ public class InvoiceAlbum implements Serializable {
 
     public void setFinalPrice(double finalPrice) {
         this.finalPrice = finalPrice;
+    }
+
+    public short getRemovalStatus() {
+        return removalStatus;
+    }
+
+    public void setRemovalStatus(short removalStatus) {
+        this.removalStatus = removalStatus;
+    }
+
+    public Date getRemovalDate() {
+        return removalDate;
+    }
+
+    public void setRemovalDate(Date removalDate) {
+        this.removalDate = removalDate;
     }
 
     public Invoice getInvoice() {
