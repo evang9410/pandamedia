@@ -7,7 +7,9 @@ package persistence.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,17 +19,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Evang
+ * @author Panda
  */
 @Entity
-@Table(name = "invoice", catalog = "g4w17", schema = "")
+@Table(name = "invoice")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Invoice.findAll", query = "SELECT i FROM Invoice i")
     , @NamedQuery(name = "Invoice.findById", query = "SELECT i FROM Invoice i WHERE i.id = :id")
@@ -70,9 +76,13 @@ public class Invoice implements Serializable {
     @NotNull
     @Column(name = "total_gross_value")
     private double totalGrossValue;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "invoice")
+    private List<InvoiceAlbum> invoiceAlbumList;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ShopUser userId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "invoice")
+    private List<InvoiceTrack> invoiceTrackList;
 
     public Invoice() {
     }
@@ -147,12 +157,30 @@ public class Invoice implements Serializable {
         this.totalGrossValue = totalGrossValue;
     }
 
+    @XmlTransient
+    public List<InvoiceAlbum> getInvoiceAlbumList() {
+        return invoiceAlbumList;
+    }
+
+    public void setInvoiceAlbumList(List<InvoiceAlbum> invoiceAlbumList) {
+        this.invoiceAlbumList = invoiceAlbumList;
+    }
+
     public ShopUser getUserId() {
         return userId;
     }
 
     public void setUserId(ShopUser userId) {
         this.userId = userId;
+    }
+
+    @XmlTransient
+    public List<InvoiceTrack> getInvoiceTrackList() {
+        return invoiceTrackList;
+    }
+
+    public void setInvoiceTrackList(List<InvoiceTrack> invoiceTrackList) {
+        this.invoiceTrackList = invoiceTrackList;
     }
 
     @Override

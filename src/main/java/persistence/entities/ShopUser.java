@@ -22,13 +22,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Evang
+ * @author Panda
  */
 @Entity
-@Table(name = "shop_user", catalog = "g4w17", schema = "")
+@Table(name = "shop_user")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ShopUser.findAll", query = "SELECT s FROM ShopUser s")
     , @NamedQuery(name = "ShopUser.findById", query = "SELECT s FROM ShopUser s WHERE s.id = :id")
@@ -290,6 +293,7 @@ public class ShopUser implements Serializable {
         this.lastGenreSearched = lastGenreSearched;
     }
 
+    @XmlTransient
     public List<Review> getReviewList() {
         return reviewList;
     }
@@ -298,6 +302,7 @@ public class ShopUser implements Serializable {
         this.reviewList = reviewList;
     }
 
+    @XmlTransient
     public List<Invoice> getInvoiceList() {
         return invoiceList;
     }
