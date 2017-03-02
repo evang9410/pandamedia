@@ -13,7 +13,7 @@ and open the template in the editor.
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>album test</title>
-        <h:outputStylesheet name="css/style.css"/>
+        <h:outputStylesheet name="css/album.css"/>
         <h:outputStylesheet name="css/bootstrap.css"/>
         <h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -46,13 +46,14 @@ and open the template in the editor.
             </div>
         </div>
         
-        <div class="container-tracklist well-sm">
+        <div class="tracklist_container well-sm">
             <table class="table table-inverse track_list">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>SONG</th>
                         <th><i class="fa fa-circle-o-notch" aria-hidden="true"></i></th>
+                        <th></th>
                     </tr>
                 </thead>
                 
@@ -62,7 +63,7 @@ and open the template in the editor.
                             <th scope="row">#{track.albumTrackNumber}</th>
                             <td>#{track.title}</td>
                             <td>#{track.playLength}</td>
-                            <td width="50"><h:form><p:commandButton icon="fa fa-fw fa-cart-plus" type="button"/></h:form></td>
+                            <td width="50"><h:form><i class="fa fa-cart-plus" aria-hidden="true"></i></h:form></td>
                         </tr>
                     </ui:repeat>
                 </tbody>
