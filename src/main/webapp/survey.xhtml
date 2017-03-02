@@ -15,27 +15,31 @@
             <h3>Survey</h3>
             <p:outputLabel for="survey" value="#{surveyBean.survey.question}" id="surveyQuestionLbl"/>
             <div id="surveyFormDiv">
-                <p:selectOneRadio id="survey" value="#{surveyBean.userChoice}" layout="responsive" columns="1">
-                    <f:selectItems value="#{surveyBean.answers}" var="a" itemLabel="#{answer}" itemValue="#{answer}"/>
-                </p:selectOneRadio>
-                <p:commandButton value="Submit" id="submitBtn" action="#{surveyBean.incrementVoteCount()}" update="votesA votesB votesC votesD"/>
+                <p:panel id="surveyOptionsPanel" rendered="#{surveyBean.showOptions}">
+                    <p:selectOneRadio id="survey" value="#{surveyBean.userChoice}" layout="responsive" columns="1">
+                        <f:selectItems value="#{surveyBean.answers}" var="a" itemLabel="#{answer}" itemValue="#{answer}"/>
+                    </p:selectOneRadio>
+                    <p:commandButton value="Submit" id="submitBtn" action="#{surveyBean.updateSurvey()}" update="@form"/>
+                </p:panel>
             </div>
             <div id="resultsDiv">
-                <h4>Results</h4>
-                <p:outputLabel for="votesA" value="#{surveyBean.survey.answerA}" id="answerALbl"/>
-                <p:progressBar value="#{surveyBean.survey.votesA}" labelTemplate="{value}" displayOnly="true" id="votesA"/>
+                <p:panel id="resultsPanel" rendered="#{surveyBean.userAnswered}">
+                    <h4>Results</h4>
+                    <p:outputLabel for="votesA" value="#{surveyBean.survey.answerA}" id="answerALbl"/>
+                    <p:progressBar value="#{surveyBean.survey.votesA}" labelTemplate="{value}" displayOnly="true" id="votesA"/>
 
-                <p:outputLabel for="votesB" value="#{surveyBean.survey.answerB}" id="answerBLbl"/>
-                <p:progressBar value="#{surveyBean.survey.votesB}" labelTemplate="{value}" displayOnly="true" id="votesB"/>
+                    <p:outputLabel for="votesB" value="#{surveyBean.survey.answerB}" id="answerBLbl"/>
+                    <p:progressBar value="#{surveyBean.survey.votesB}" labelTemplate="{value}" displayOnly="true" id="votesB"/>
 
-                <p:outputLabel for="votesC" value="#{surveyBean.survey.answerC}" id="answerCLbl"/>
-                <p:progressBar value="#{surveyBean.survey.votesC}" labelTemplate="{value}" displayOnly="true" id="votesC"/>
+                    <p:outputLabel for="votesC" value="#{surveyBean.survey.answerC}" id="answerCLbl"/>
+                    <p:progressBar value="#{surveyBean.survey.votesC}" labelTemplate="{value}" displayOnly="true" id="votesC"/>
 
-                <p:outputLabel for="votesD" value="#{surveyBean.survey.answerD}" id="answerDLbl"/>
-                <p:progressBar value="#{surveyBean.survey.votesD}" labelTemplate="{value}" displayOnly="true" id="votesD"/>
+                    <p:outputLabel for="votesD" value="#{surveyBean.survey.answerD}" id="answerDLbl"/>
+                    <p:progressBar value="#{surveyBean.survey.votesD}" labelTemplate="{value}" displayOnly="true" id="votesD"/>
+                </p:panel>
             </div>
         </h:form>
-        <h:outputScript library="javascript" name="myJs.js"/>
+        <!--<h:outputScript library="javascript" name="myJs.js"/> -->
     </h:body>
 </html>
 
