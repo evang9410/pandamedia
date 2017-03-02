@@ -15,5 +15,14 @@ import persistence.entities.ShopUser;
 public class userBean implements Serializable {
     @Inject
     private ShopUser shopUser;
+
+    public ShopUser getShopUser() {
+        return shopUser;
+    }
+
+    public void setShopUser(ShopUser shopUser) {
+        this.shopUser = shopUser;
+    }
+    
     
 }
