@@ -94,28 +94,15 @@ public class ReportBackingBean implements Serializable {
      * @author Erika Bourque
      * @return The list of shop users
      */
-    public List<Object[]> getZeroUsers() {
+    public List<ShopUser> getZeroUsers() {
         LOG.log(Level.INFO, "Zero Users start date: {0}", startDate);
         LOG.log(Level.INFO, "Zero Users end date: {0}", endDate);
 
         // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        CriteriaQuery<ShopUser> query = cb.createQuery(ShopUser.class);
         Root<ShopUser> userRoot = query.from(ShopUser.class);
-        Join userProvince = userRoot.join(ShopUser_.provinceId);
-        Join userGenre = userRoot.join(ShopUser_.lastGenreSearched);
-//        Join userProvince = userRoot.join("provinceId");
-//        Join userGenre = userRoot.join("lastGenreSearched");
-        query.multiselect(userRoot.get(ShopUser_.id), userRoot.get(ShopUser_.title), userRoot.get(ShopUser_.lastName),
-                userRoot.get(ShopUser_.firstName), userRoot.get(ShopUser_.companyName), userRoot.get(ShopUser_.streetAddress),
-                userRoot.get(ShopUser_.city), userProvince.get(Province_.name), userRoot.get(ShopUser_.country),
-                userRoot.get(ShopUser_.postalCode), userRoot.get(ShopUser_.homePhone), userRoot.get(ShopUser_.cellPhone),
-                userRoot.get(ShopUser_.email), userGenre.get(Genre_.name), userRoot.get(ShopUser_.isManager));
-//        query.multiselect(userRoot.get("id"), userRoot.get("title"), userRoot.get("lastName"), 
-//                userRoot.get("firstName"), userRoot.get("companyName"), userRoot.get("streetAddress"), 
-//                userRoot.get("city"), userProvince.get("name"), userRoot.get("country"), 
-//                userRoot.get("postalCode"), userRoot.get("homePhone"), userRoot.get("cellPhone"), 
-//                userRoot.get("email"), userGenre.get("name"), userRoot.get("isManager"));
+        query.select(userRoot);
 
         // Subquery
         Subquery<Invoice> subquery = query.subquery(Invoice.class);
@@ -129,7 +116,7 @@ public class ReportBackingBean implements Serializable {
 
         // Putting them together
         query.where(cb.not(cb.exists(subquery)));
-        TypedQuery<Object[]> typedQuery = em.createQuery(query);
+        TypedQuery<ShopUser> typedQuery = em.createQuery(query);
 
         return typedQuery.getResultList();
     }
