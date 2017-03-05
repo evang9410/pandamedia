@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package persistence.controllers;
 
 import java.io.Serializable;
@@ -19,26 +14,17 @@ import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Join;
 import javax.transaction.UserTransaction;
 import persistence.controllers.exceptions.IllegalOrphanException;
 import persistence.controllers.exceptions.NonexistentEntityException;
 import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.Invoice;
 import persistence.entities.ShopUser;
-import javax.persistence.criteria.Subquery;
-//import persistence.entities.Genre_;
-//import persistence.entities.Invoice_;
-//import persistence.entities.Province_;
-//import persistence.entities.ShopUser_;
 
 /**
  *
- * @author Evang
+ * @author Erika Bourque
  */
 @Named
 @RequestScoped
@@ -46,8 +32,12 @@ public class ShopUserJpaController implements Serializable {
 
     @Resource
     private UserTransaction utx;
+
     @PersistenceContext
     private EntityManager em;
+
+    public ShopUserJpaController() {
+    }
 
     public void create(ShopUser shopUser) throws RollbackFailureException, Exception {
         if (shopUser.getReviewList() == null) {
@@ -119,7 +109,6 @@ public class ShopUserJpaController implements Serializable {
     }
 
     public void edit(ShopUser shopUser) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
         try {
             utx.begin();
             ShopUser persistentShopUser = em.find(ShopUser.class, shopUser.getId());
@@ -310,4 +299,5 @@ public class ShopUserJpaController implements Serializable {
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
+
 }

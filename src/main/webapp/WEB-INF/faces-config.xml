@@ -4,9 +4,9 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
     <application>
-        <el-resolver>com.mycompany.pandamedia.views.util.JsfCrudELResolver</el-resolver>
+        <el-resolver>com.pandamedia.views.util.JsfCrudELResolver</el-resolver>
         <resource-bundle>
-            <base-name>bundles.msgs</base-name>
+            <base-name>bundles.messages</base-name>
             <var>msgs</var>
         </resource-bundle>
     </application>
@@ -17,19 +17,23 @@
             <to-view-id>/index.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    <navigation-case>
+        <from-outcome>main</from-outcome>
+        <to-view-id>/mainpage.xhtml</to-view-id>
+    </navigation-case>
     <managed-bean>
         <managed-bean-name>album</managed-bean-name>
-        <managed-bean-class>com.mycompany.pandamedia.views.AlbumController</managed-bean-class>
+        <managed-bean-class>com.pandamedia.views.AlbumController</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     <managed-bean>
         <managed-bean-name>albumJpa</managed-bean-name>
-        <managed-bean-class>com.mycompany.pandamedia.views.AlbumFacade</managed-bean-class>
+        <managed-bean-class>com.pandamedia.views.AlbumFacade</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     <converter>
         <converter-for-class>persistence.entities.Album</converter-for-class>
-        <converter-class>com.mycompany.pandamedia.views.AlbumConverter</converter-class>
+        <converter-class>com.pandamedia.views.AlbumConverter</converter-class>
     </converter>
     <navigation-rule>
         <from-view-id>*</from-view-id>

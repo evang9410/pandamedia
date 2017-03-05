@@ -20,13 +20,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Evang
+ * @author Panda
  */
 @Entity
-@Table(name = "artist", catalog = "g4w17", schema = "")
+@Table(name = "artist")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Artist.findAll", query = "SELECT a FROM Artist a")
     , @NamedQuery(name = "Artist.findById", query = "SELECT a FROM Artist a WHERE a.id = :id")
@@ -77,6 +80,7 @@ public class Artist implements Serializable {
         this.name = name;
     }
 
+    @XmlTransient
     public List<Album> getAlbumList() {
         return albumList;
     }
@@ -85,6 +89,7 @@ public class Artist implements Serializable {
         this.albumList = albumList;
     }
 
+    @XmlTransient
     public List<Track> getTrackList() {
         return trackList;
     }

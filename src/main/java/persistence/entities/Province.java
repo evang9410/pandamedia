@@ -20,13 +20,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Evang
+ * @author Panda
  */
 @Entity
-@Table(name = "province", catalog = "g4w17", schema = "")
+@Table(name = "province")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Province.findAll", query = "SELECT p FROM Province p")
     , @NamedQuery(name = "Province.findById", query = "SELECT p FROM Province p WHERE p.id = :id")
@@ -117,6 +120,7 @@ public class Province implements Serializable {
         this.hstRate = hstRate;
     }
 
+    @XmlTransient
     public List<ShopUser> getShopUserList() {
         return shopUserList;
     }
