@@ -41,8 +41,8 @@ public class InvoiceAlbumJpaController implements Serializable {
         if (invoiceAlbum.getInvoiceAlbumPK() == null) {
             invoiceAlbum.setInvoiceAlbumPK(new InvoiceAlbumPK());
         }
-        invoiceAlbum.getInvoiceAlbumPK().setInvoiceId(invoiceAlbum.getInvoice().getId());
         invoiceAlbum.getInvoiceAlbumPK().setAlbumId(invoiceAlbum.getAlbum().getId());
+        invoiceAlbum.getInvoiceAlbumPK().setInvoiceId(invoiceAlbum.getInvoice().getId());
         try {
             utx.begin();
             Invoice invoice = invoiceAlbum.getInvoice();
@@ -79,8 +79,8 @@ public class InvoiceAlbumJpaController implements Serializable {
     }
 
     public void edit(InvoiceAlbum invoiceAlbum) throws NonexistentEntityException, RollbackFailureException, Exception {
-        invoiceAlbum.getInvoiceAlbumPK().setInvoiceId(invoiceAlbum.getInvoice().getId());
         invoiceAlbum.getInvoiceAlbumPK().setAlbumId(invoiceAlbum.getAlbum().getId());
+        invoiceAlbum.getInvoiceAlbumPK().setInvoiceId(invoiceAlbum.getInvoice().getId());
         try {
             utx.begin();
             InvoiceAlbum persistentInvoiceAlbum = em.find(InvoiceAlbum.class, invoiceAlbum.getInvoiceAlbumPK());

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package persistence.entities;
 
 import java.io.Serializable;
@@ -25,7 +20,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Panda
+ * @author Erika Bourque
  */
 @Entity
 @Table(name = "cover_art")
@@ -47,6 +42,8 @@ public class CoverArt implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "image_path")
     private String imagePath;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "coverArtId")
+    private List<Album> albumList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "coverArtId")
     private List<Track> trackList;
 
@@ -76,6 +73,15 @@ public class CoverArt implements Serializable {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    @XmlTransient
+    public List<Album> getAlbumList() {
+        return albumList;
+    }
+
+    public void setAlbumList(List<Album> albumList) {
+        this.albumList = albumList;
     }
 
     @XmlTransient

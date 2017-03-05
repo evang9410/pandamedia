@@ -41,8 +41,8 @@ public class InvoiceTrackJpaController implements Serializable {
         if (invoiceTrack.getInvoiceTrackPK() == null) {
             invoiceTrack.setInvoiceTrackPK(new InvoiceTrackPK());
         }
-        invoiceTrack.getInvoiceTrackPK().setTrackId(invoiceTrack.getTrack().getId());
         invoiceTrack.getInvoiceTrackPK().setInvoiceId(invoiceTrack.getInvoice().getId());
+        invoiceTrack.getInvoiceTrackPK().setTrackId(invoiceTrack.getTrack().getId());
         try {
             utx.begin();
             Invoice invoice = invoiceTrack.getInvoice();
@@ -79,8 +79,8 @@ public class InvoiceTrackJpaController implements Serializable {
     }
 
     public void edit(InvoiceTrack invoiceTrack) throws NonexistentEntityException, RollbackFailureException, Exception {
-        invoiceTrack.getInvoiceTrackPK().setTrackId(invoiceTrack.getTrack().getId());
         invoiceTrack.getInvoiceTrackPK().setInvoiceId(invoiceTrack.getInvoice().getId());
+        invoiceTrack.getInvoiceTrackPK().setTrackId(invoiceTrack.getTrack().getId());
         try {
             utx.begin();
             InvoiceTrack persistentInvoiceTrack = em.find(InvoiceTrack.class, invoiceTrack.getInvoiceTrackPK());

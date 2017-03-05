@@ -1,17 +1,20 @@
 package persistence.controllers;
 
 import java.io.Serializable;
+import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import persistence.entities.FrontPageSettings;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
+import persistence.controllers.exceptions.IllegalOrphanException;
 import persistence.controllers.exceptions.NonexistentEntityException;
 import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.Advertisement;
@@ -34,9 +37,27 @@ public class AdvertisementJpaController implements Serializable {
     }
 
     public void create(Advertisement advertisement) throws RollbackFailureException, Exception {
+        if (advertisement.getFrontPageSettingsList() == null) {
+            advertisement.setFrontPageSettingsList(new ArrayList<FrontPageSettings>());
+        }
         try {
             utx.begin();
+            List<FrontPageSettings> attachedFrontPageSettingsList = new ArrayList<FrontPageSettings>();
+            for (FrontPageSettings frontPageSettingsListFrontPageSettingsToAttach : advertisement.getFrontPageSettingsList()) {
+                frontPageSettingsListFrontPageSettingsToAttach = em.getReference(frontPageSettingsListFrontPageSettingsToAttach.getClass(), frontPageSettingsListFrontPageSettingsToAttach.getId());
+                attachedFrontPageSettingsList.add(frontPageSettingsListFrontPageSettingsToAttach);
+            }
+            advertisement.setFrontPageSettingsList(attachedFrontPageSettingsList);
             em.persist(advertisement);
+            for (FrontPageSettings frontPageSettingsListFrontPageSettings : advertisement.getFrontPageSettingsList()) {
+                Advertisement oldAdvertAIdOfFrontPageSettingsListFrontPageSettings = frontPageSettingsListFrontPageSettings.getAdvertAId();
+                frontPageSettingsListFrontPageSettings.setAdvertAId(advertisement);
+                frontPageSettingsListFrontPageSettings = em.merge(frontPageSettingsListFrontPageSettings);
+                if (oldAdvertAIdOfFrontPageSettingsListFrontPageSettings != null) {
+                    oldAdvertAIdOfFrontPageSettingsListFrontPageSettings.getFrontPageSettingsList().remove(frontPageSettingsListFrontPageSettings);
+                    oldAdvertAIdOfFrontPageSettingsListFrontPageSettings = em.merge(oldAdvertAIdOfFrontPageSettingsListFrontPageSettings);
+                }
+            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -48,10 +69,43 @@ public class AdvertisementJpaController implements Serializable {
         }
     }
 
-    public void edit(Advertisement advertisement) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(Advertisement advertisement) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         try {
             utx.begin();
+            Advertisement persistentAdvertisement = em.find(Advertisement.class, advertisement.getId());
+            List<FrontPageSettings> frontPageSettingsListOld = persistentAdvertisement.getFrontPageSettingsList();
+            List<FrontPageSettings> frontPageSettingsListNew = advertisement.getFrontPageSettingsList();
+            List<String> illegalOrphanMessages = null;
+            for (FrontPageSettings frontPageSettingsListOldFrontPageSettings : frontPageSettingsListOld) {
+                if (!frontPageSettingsListNew.contains(frontPageSettingsListOldFrontPageSettings)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain FrontPageSettings " + frontPageSettingsListOldFrontPageSettings + " since its advertAId field is not nullable.");
+                }
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
+            List<FrontPageSettings> attachedFrontPageSettingsListNew = new ArrayList<FrontPageSettings>();
+            for (FrontPageSettings frontPageSettingsListNewFrontPageSettingsToAttach : frontPageSettingsListNew) {
+                frontPageSettingsListNewFrontPageSettingsToAttach = em.getReference(frontPageSettingsListNewFrontPageSettingsToAttach.getClass(), frontPageSettingsListNewFrontPageSettingsToAttach.getId());
+                attachedFrontPageSettingsListNew.add(frontPageSettingsListNewFrontPageSettingsToAttach);
+            }
+            frontPageSettingsListNew = attachedFrontPageSettingsListNew;
+            advertisement.setFrontPageSettingsList(frontPageSettingsListNew);
             advertisement = em.merge(advertisement);
+            for (FrontPageSettings frontPageSettingsListNewFrontPageSettings : frontPageSettingsListNew) {
+                if (!frontPageSettingsListOld.contains(frontPageSettingsListNewFrontPageSettings)) {
+                    Advertisement oldAdvertAIdOfFrontPageSettingsListNewFrontPageSettings = frontPageSettingsListNewFrontPageSettings.getAdvertAId();
+                    frontPageSettingsListNewFrontPageSettings.setAdvertAId(advertisement);
+                    frontPageSettingsListNewFrontPageSettings = em.merge(frontPageSettingsListNewFrontPageSettings);
+                    if (oldAdvertAIdOfFrontPageSettingsListNewFrontPageSettings != null && !oldAdvertAIdOfFrontPageSettingsListNewFrontPageSettings.equals(advertisement)) {
+                        oldAdvertAIdOfFrontPageSettingsListNewFrontPageSettings.getFrontPageSettingsList().remove(frontPageSettingsListNewFrontPageSettings);
+                        oldAdvertAIdOfFrontPageSettingsListNewFrontPageSettings = em.merge(oldAdvertAIdOfFrontPageSettingsListNewFrontPageSettings);
+                    }
+                }
+            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -70,7 +124,7 @@ public class AdvertisementJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         try {
             utx.begin();
             Advertisement advertisement;
@@ -79,6 +133,17 @@ public class AdvertisementJpaController implements Serializable {
                 advertisement.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The advertisement with id " + id + " no longer exists.", enfe);
+            }
+            List<String> illegalOrphanMessages = null;
+            List<FrontPageSettings> frontPageSettingsListOrphanCheck = advertisement.getFrontPageSettingsList();
+            for (FrontPageSettings frontPageSettingsListOrphanCheckFrontPageSettings : frontPageSettingsListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Advertisement (" + advertisement + ") cannot be destroyed since the FrontPageSettings " + frontPageSettingsListOrphanCheckFrontPageSettings + " in its frontPageSettingsList field has a non-nullable advertAId field.");
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
             }
             em.remove(advertisement);
             utx.commit();

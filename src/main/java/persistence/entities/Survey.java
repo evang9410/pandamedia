@@ -1,12 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package persistence.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,14 +11,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Panda
+ * @author Erika Bourque
  */
 @Entity
 @Table(name = "survey")
@@ -54,39 +53,41 @@ public class Survey implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "answer_A")
+    @Column(name = "answer_a")
     private String answerA;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "answer_B")
+    @Column(name = "answer_b")
     private String answerB;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "answer_C")
+    @Column(name = "answer_c")
     private String answerC;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "answer_D")
+    @Column(name = "answer_d")
     private String answerD;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "votes_A")
+    @Column(name = "votes_a")
     private int votesA;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "votes_B")
+    @Column(name = "votes_b")
     private int votesB;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "votes_C")
+    @Column(name = "votes_c")
     private int votesC;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "votes_D")
+    @Column(name = "votes_d")
     private int votesD;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "surveyId")
+    private List<FrontPageSettings> frontPageSettingsList;
 
     public Survey() {
     }
@@ -186,6 +187,15 @@ public class Survey implements Serializable {
 
     public void setVotesD(int votesD) {
         this.votesD = votesD;
+    }
+
+    @XmlTransient
+    public List<FrontPageSettings> getFrontPageSettingsList() {
+        return frontPageSettingsList;
+    }
+
+    public void setFrontPageSettingsList(List<FrontPageSettings> frontPageSettingsList) {
+        this.frontPageSettingsList = frontPageSettingsList;
     }
 
     @Override
