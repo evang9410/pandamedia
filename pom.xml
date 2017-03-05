@@ -241,7 +241,13 @@
             <artifactId>font-awesome</artifactId>
             <version>4.7.0</version>
         </dependency>
-
+        
+         <!-- ROME Reader for XML -->
+        <dependency>
+            <groupId>rome</groupId>
+            <artifactId>rome</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <!-- Information for compiling, testing and packaging are define here -->
