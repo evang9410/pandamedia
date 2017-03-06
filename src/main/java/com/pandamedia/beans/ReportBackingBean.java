@@ -19,10 +19,15 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 import persistence.entities.Genre_;
 import persistence.entities.Invoice;
+import persistence.entities.InvoiceTrack;
+import persistence.entities.InvoiceTrackPK;
+import persistence.entities.InvoiceTrackPK_;
+import persistence.entities.InvoiceTrack_;
 import persistence.entities.Invoice_;
 import persistence.entities.Province_;
 import persistence.entities.ShopUser;
 import persistence.entities.ShopUser_;
+import persistence.entities.Track;
 
 /**
  * This class provides common methods for the report pages, and
@@ -113,10 +118,43 @@ public class ReportBackingBean implements Serializable {
         Predicate p1 = cb.equal(invoiceRoot.get(Invoice_.userId), userRoot);
         Predicate p2 = cb.between(invoiceRoot.get(Invoice_.saleDate).as(Date.class), getStartDate(), getEndDate());
         subquery.where(cb.and(p1, p2));
+        // TODO: and invoice not removed
 
         // Putting them together
         query.where(cb.not(cb.exists(subquery)));
         TypedQuery<ShopUser> typedQuery = em.createQuery(query);
+
+        return typedQuery.getResultList();
+    }
+    
+    public List<Track> getZeroTracks()
+    {
+        LOG.log(Level.INFO, "Zero tracks start date: {0}", startDate);
+        LOG.log(Level.INFO, "Zero tracks end date: {0}", endDate);
+
+        // Query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Track> query = cb.createQuery(Track.class);
+        Root<Track> trackRoot = query.from(Track.class);
+        query.select(trackRoot).distinct(true);
+
+        // Subquery
+        Subquery<InvoiceTrack> subquery = query.subquery(InvoiceTrack.class);
+        Root<InvoiceTrack> invoiceTrackRoot = subquery.from(InvoiceTrack.class);
+        subquery.select(invoiceTrackRoot);
+        Join invoiceJoin = invoiceTrackRoot.join(InvoiceTrack_.invoice);
+
+        // Using predicates to avoid compiler errors, does not like CriteriaBuilder's between method
+        Predicate p1 = cb.equal(invoiceTrackRoot.get(InvoiceTrack_.invoiceTrackPK).get(InvoiceTrackPK_.trackId), trackRoot);
+        Predicate p2 = cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), getStartDate(), getEndDate());
+        subquery.where(cb.and(p1, p2));
+//        subquery.where(p2);
+        // TODO: and invoice not removed
+        // TODO: and track not removed
+
+        // Putting them together
+        query.where(cb.not(cb.exists(subquery)));
+        TypedQuery<Track> typedQuery = em.createQuery(query);
 
         return typedQuery.getResultList();
     }
