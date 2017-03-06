@@ -8,6 +8,7 @@ import javax.persistence.criteria.Root;
 import persistence.entities.Artist;
 import persistence.entities.Genre;
 import persistence.entities.RecordingLabel;
+import persistence.entities.CoverArt;
 import persistence.entities.InvoiceAlbum;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
 import persistence.controllers.exceptions.IllegalOrphanException;
@@ -64,6 +66,11 @@ public class AlbumJpaController implements Serializable {
                 recordingLabelId = em.getReference(recordingLabelId.getClass(), recordingLabelId.getId());
                 album.setRecordingLabelId(recordingLabelId);
             }
+            CoverArt coverArtId = album.getCoverArtId();
+            if (coverArtId != null) {
+                coverArtId = em.getReference(coverArtId.getClass(), coverArtId.getId());
+                album.setCoverArtId(coverArtId);
+            }
             List<InvoiceAlbum> attachedInvoiceAlbumList = new ArrayList<InvoiceAlbum>();
             for (InvoiceAlbum invoiceAlbumListInvoiceAlbumToAttach : album.getInvoiceAlbumList()) {
                 invoiceAlbumListInvoiceAlbumToAttach = em.getReference(invoiceAlbumListInvoiceAlbumToAttach.getClass(), invoiceAlbumListInvoiceAlbumToAttach.getInvoiceAlbumPK());
@@ -88,6 +95,10 @@ public class AlbumJpaController implements Serializable {
             if (recordingLabelId != null) {
                 recordingLabelId.getAlbumList().add(album);
                 recordingLabelId = em.merge(recordingLabelId);
+            }
+            if (coverArtId != null) {
+                coverArtId.getAlbumList().add(album);
+                coverArtId = em.merge(coverArtId);
             }
             for (InvoiceAlbum invoiceAlbumListInvoiceAlbum : album.getInvoiceAlbumList()) {
                 Album oldAlbumOfInvoiceAlbumListInvoiceAlbum = invoiceAlbumListInvoiceAlbum.getAlbum();
@@ -128,6 +139,8 @@ public class AlbumJpaController implements Serializable {
             Genre genreIdNew = album.getGenreId();
             RecordingLabel recordingLabelIdOld = persistentAlbum.getRecordingLabelId();
             RecordingLabel recordingLabelIdNew = album.getRecordingLabelId();
+            CoverArt coverArtIdOld = persistentAlbum.getCoverArtId();
+            CoverArt coverArtIdNew = album.getCoverArtId();
             List<InvoiceAlbum> invoiceAlbumListOld = persistentAlbum.getInvoiceAlbumList();
             List<InvoiceAlbum> invoiceAlbumListNew = album.getInvoiceAlbumList();
             List<Track> trackListOld = persistentAlbum.getTrackList();
@@ -163,6 +176,10 @@ public class AlbumJpaController implements Serializable {
             if (recordingLabelIdNew != null) {
                 recordingLabelIdNew = em.getReference(recordingLabelIdNew.getClass(), recordingLabelIdNew.getId());
                 album.setRecordingLabelId(recordingLabelIdNew);
+            }
+            if (coverArtIdNew != null) {
+                coverArtIdNew = em.getReference(coverArtIdNew.getClass(), coverArtIdNew.getId());
+                album.setCoverArtId(coverArtIdNew);
             }
             List<InvoiceAlbum> attachedInvoiceAlbumListNew = new ArrayList<InvoiceAlbum>();
             for (InvoiceAlbum invoiceAlbumListNewInvoiceAlbumToAttach : invoiceAlbumListNew) {
@@ -202,6 +219,14 @@ public class AlbumJpaController implements Serializable {
             if (recordingLabelIdNew != null && !recordingLabelIdNew.equals(recordingLabelIdOld)) {
                 recordingLabelIdNew.getAlbumList().add(album);
                 recordingLabelIdNew = em.merge(recordingLabelIdNew);
+            }
+            if (coverArtIdOld != null && !coverArtIdOld.equals(coverArtIdNew)) {
+                coverArtIdOld.getAlbumList().remove(album);
+                coverArtIdOld = em.merge(coverArtIdOld);
+            }
+            if (coverArtIdNew != null && !coverArtIdNew.equals(coverArtIdOld)) {
+                coverArtIdNew.getAlbumList().add(album);
+                coverArtIdNew = em.merge(coverArtIdNew);
             }
             for (InvoiceAlbum invoiceAlbumListNewInvoiceAlbum : invoiceAlbumListNew) {
                 if (!invoiceAlbumListOld.contains(invoiceAlbumListNewInvoiceAlbum)) {
@@ -285,6 +310,11 @@ public class AlbumJpaController implements Serializable {
             if (recordingLabelId != null) {
                 recordingLabelId.getAlbumList().remove(album);
                 recordingLabelId = em.merge(recordingLabelId);
+            }
+            CoverArt coverArtId = album.getCoverArtId();
+            if (coverArtId != null) {
+                coverArtId.getAlbumList().remove(album);
+                coverArtId = em.merge(coverArtId);
             }
             em.remove(album);
             utx.commit();
