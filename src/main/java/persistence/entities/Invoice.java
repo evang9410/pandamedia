@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package persistence.entities;
 
 import java.io.Serializable;
@@ -29,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Panda
+ * @author Erika Bourque
  */
 @Entity
 @Table(name = "invoice")
@@ -42,7 +37,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Invoice.findByPstTax", query = "SELECT i FROM Invoice i WHERE i.pstTax = :pstTax")
     , @NamedQuery(name = "Invoice.findByGstTax", query = "SELECT i FROM Invoice i WHERE i.gstTax = :gstTax")
     , @NamedQuery(name = "Invoice.findByHstTax", query = "SELECT i FROM Invoice i WHERE i.hstTax = :hstTax")
-    , @NamedQuery(name = "Invoice.findByTotalGrossValue", query = "SELECT i FROM Invoice i WHERE i.totalGrossValue = :totalGrossValue")})
+    , @NamedQuery(name = "Invoice.findByTotalGrossValue", query = "SELECT i FROM Invoice i WHERE i.totalGrossValue = :totalGrossValue")
+    , @NamedQuery(name = "Invoice.findByRemovalStatus", query = "SELECT i FROM Invoice i WHERE i.removalStatus = :removalStatus")
+    , @NamedQuery(name = "Invoice.findByRemovalDate", query = "SELECT i FROM Invoice i WHERE i.removalDate = :removalDate")})
 public class Invoice implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -76,6 +73,13 @@ public class Invoice implements Serializable {
     @NotNull
     @Column(name = "total_gross_value")
     private double totalGrossValue;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "removal_status")
+    private short removalStatus;
+    @Column(name = "removal_date")
+    @Temporal(TemporalType.DATE)
+    private Date removalDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "invoice")
     private List<InvoiceAlbum> invoiceAlbumList;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -91,7 +95,7 @@ public class Invoice implements Serializable {
         this.id = id;
     }
 
-    public Invoice(Integer id, Date saleDate, double totalNetValue, double pstTax, double gstTax, double hstTax, double totalGrossValue) {
+    public Invoice(Integer id, Date saleDate, double totalNetValue, double pstTax, double gstTax, double hstTax, double totalGrossValue, short removalStatus) {
         this.id = id;
         this.saleDate = saleDate;
         this.totalNetValue = totalNetValue;
@@ -99,6 +103,7 @@ public class Invoice implements Serializable {
         this.gstTax = gstTax;
         this.hstTax = hstTax;
         this.totalGrossValue = totalGrossValue;
+        this.removalStatus = removalStatus;
     }
 
     public Integer getId() {
@@ -155,6 +160,22 @@ public class Invoice implements Serializable {
 
     public void setTotalGrossValue(double totalGrossValue) {
         this.totalGrossValue = totalGrossValue;
+    }
+
+    public short getRemovalStatus() {
+        return removalStatus;
+    }
+
+    public void setRemovalStatus(short removalStatus) {
+        this.removalStatus = removalStatus;
+    }
+
+    public Date getRemovalDate() {
+        return removalDate;
+    }
+
+    public void setRemovalDate(Date removalDate) {
+        this.removalDate = removalDate;
     }
 
     @XmlTransient
