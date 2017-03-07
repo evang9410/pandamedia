@@ -7,6 +7,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body>
-        <h:inputText id="emailInput" value="#{userBean.shopUser.email}"/>
+        <h:form>
+            <h:outputLabel for="emailInput" value="Email"/>
+            <h:inputText id="emailInput" value="#{userBean.shopUser.email}"/>
+            <br/>
+            <h:outputLabel for="password" value="Password"/>
+            <h:inputSecret id="password" value="#{userBean.shopUser.password}"/>
+            <h:commandButton value="submit" />
+        </h:form>
     </h:body>
 </html>
