@@ -29,7 +29,7 @@ and open the template in the editor.
         <div class="horizontal-ad">
             ad banner
         </div>
-        <h2 id="latest_header">Latest Releases!</h2>
+        <h2 id="latest_header">#{msgs.newReleases}</h2>
         <div class="contentflow_container">
             <p:contentFlow value="#{albumBacking.latestAlbums}" var="album" styleClass="contentflow">
                 <p:graphicImage url="./resources/images/bg.jpg" styleClass="content card_album_art" />                
@@ -43,7 +43,7 @@ and open the template in the editor.
             </p:contentFlow>
 
         </div>
-        
+        <!-- Content Block -->
         <div class = "container-fluid content well-lg">
             <div class="row well-lg"> 
                 <div class="center_content">
@@ -64,5 +64,8 @@ and open the template in the editor.
                 </div>
             </div>
         </div>
+        <!-- Genres -->
+        
+        
     </h:body>
 </html>
