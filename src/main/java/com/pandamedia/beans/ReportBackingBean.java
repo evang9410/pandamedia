@@ -14,6 +14,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
@@ -24,6 +25,7 @@ import persistence.entities.InvoiceTrack_;
 import persistence.entities.Invoice_;
 import persistence.entities.ShopUser;
 import persistence.entities.Track;
+import persistence.entities.Track_;
 
 /**
  * This class provides common methods for the report pages, and
@@ -132,7 +134,7 @@ public class ReportBackingBean implements Serializable {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Track> query = cb.createQuery(Track.class);
         Root<Track> trackRoot = query.from(Track.class);
-        query.select(trackRoot).distinct(true);
+        query.select(trackRoot);
 
         // Subquery
         Subquery<InvoiceTrack> subquery = query.subquery(InvoiceTrack.class);
@@ -141,7 +143,7 @@ public class ReportBackingBean implements Serializable {
         Join invoiceJoin = invoiceTrackRoot.join(InvoiceTrack_.invoice);
 
         // Using predicates to avoid compiler errors, does not like CriteriaBuilder's between method
-        Predicate p1 = cb.equal(invoiceTrackRoot.get(InvoiceTrack_.invoiceTrackPK).get(InvoiceTrackPK_.trackId), trackRoot);
+        Predicate p1 = cb.equal(invoiceTrackRoot.get(InvoiceTrack_.invoiceTrackPK).get(InvoiceTrackPK_.trackId), trackRoot.get(Track_.id));
         Predicate p2 = cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), getStartDate(), getEndDate());
         subquery.where(cb.and(p1, p2));
 //        subquery.where(p2);
