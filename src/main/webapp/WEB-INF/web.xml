@@ -30,9 +30,9 @@
 <!--        <welcome-file>mainpage.xhtml</welcome-file>
         <welcome-file>albumtest.xhtml</welcome-file>
         <welcome-file>faces/index.xhtml</welcome-file>
-        <welcome-file>index.xhtml</welcome-file>
-        <welcome-file>manReportZeroUser.xhtml</welcome-file>-->
-        <welcome-file>manReportZeroTrack.xhtml</welcome-file>
+        <welcome-file>index.xhtml</welcome-file>-->
+        <welcome-file>manReportZeroUser.xhtml</welcome-file>
+        <!--<welcome-file>manReportZeroTrack.xhtml</welcome-file>-->
     </welcome-file-list>
     
     <!-- web fonts -->

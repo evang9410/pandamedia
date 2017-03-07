@@ -17,16 +17,12 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
-import persistence.entities.Genre_;
 import persistence.entities.Invoice;
 import persistence.entities.InvoiceTrack;
-import persistence.entities.InvoiceTrackPK;
 import persistence.entities.InvoiceTrackPK_;
 import persistence.entities.InvoiceTrack_;
 import persistence.entities.Invoice_;
-import persistence.entities.Province_;
 import persistence.entities.ShopUser;
-import persistence.entities.ShopUser_;
 import persistence.entities.Track;
 
 /**
