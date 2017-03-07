@@ -3,6 +3,10 @@
   <persistence-unit name="com.mycompany_PandaMedia_war_1.0-SNAPSHOTPU" transaction-type="JTA">
     <jta-data-source>java:app/pandamedialocal</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties/>
+    <properties>
+        <property name="eclipselink.logging.level.sql" value="FINE"/>
+        <property name="eclipselink.logging.parameters" value="true"/>
+    </properties>
+        
   </persistence-unit>
 </persistence>

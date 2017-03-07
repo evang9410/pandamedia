@@ -9,6 +9,7 @@
       xmlns:pm="http://pandamedia.com/facelets">
     <h:head>
         <title>#{msgs.manReportZeroUserTitle}</title>
+        <meta name="author" content="Erika Bourque"></meta>
     </h:head>
     <h:body>
         #{msgs.manReportZeroUserTitle}
@@ -18,86 +19,66 @@
             end="#{reports.endDate}" 
             updateTable="reportTable">
         </pm:reportcalendars>
-<!--        <h:form id="calendars">
-            <p:calendar 
-            id="reportStartDate" 
-            mode="inline" 
-            navigator="true" 
-            maxdate="#{reports.defaultEndDate}"
-            value="#{reports.startDate}">
-                <p:ajax event="dateSelect" process="reportStartDate reportEndDate" immediate="true" update="reportTable"/> 
-            </p:calendar>
-            <p:calendar 
-                id="reportEndDate" 
-                mode="inline" 
-                navigator="true" 
-                maxdate="#{reports.defaultEndDate}"
-                value="#{reports.endDate}">
-                <p:ajax event="dateSelect" process="reportStartDate reportEndDate" immediate="true" update="reportTable"/>
-            </p:calendar>
-        </h:form>-->
-<!--        <p>Start date: #{reports.startDate}</p>
-        <p>End date: #{reports.endDate}</p>-->
         <h:dataTable id="reportTable" value="#{reports.zeroUsers}" var="user">
             <h:column>
                 <f:facet name="header">#{msgs.idHeader}</f:facet>
-                #{user[0]},
+                #{user.id}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.titleHeader}</f:facet>
-                #{user[1]},
+                #{user.title}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.lastNameHeader}</f:facet>
-                #{user[2]},
+                #{user.lastName}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.firstNameHeader}</f:facet>
-                #{user[3]},
+                #{user.firstName}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.companyHeader}</f:facet>
-                #{user[4]},
+                #{user.companyName}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.streetHeader}</f:facet>
-                #{user[5]},
+                #{user.streetAddress}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.cityHeader}</f:facet>
-                #{user[6]},
+                #{user.city}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.provinceHeader}</f:facet>
-                #{user[7]},
+                #{user.provinceId.name}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.countryHeader}</f:facet>
-                #{user[8]},
+                #{user.country}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.postalCodeHeader}</f:facet>
-                #{user[9]},
+                #{user.postalCode}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.homePhoneHeader}</f:facet>
-                #{user[10]},
+                #{user.homePhone}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.cellPhoneHeader}</f:facet>
-                #{user[11]},
+                #{user.cellPhone}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.emailHeader}</f:facet>
-                #{user[12]},
+                #{user.email}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.lastGenreHeader}</f:facet>
-                #{user[13]},
+                #{user.lastGenreSearched.name}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.isManagerHeader}</f:facet>
-                #{user[14]},
+                #{user.isManager}
             </h:column>
         </h:dataTable>
     </h:body>
