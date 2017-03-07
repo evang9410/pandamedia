@@ -7,41 +7,51 @@ package commands;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Map;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.Cache;
-import javax.persistence.EntityGraph;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnitUtil;
-import javax.persistence.Query;
-import javax.persistence.SynchronizationType;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.metamodel.Metamodel;
+import persistence.controllers.TrackJpaController;
 
 /**
  *
- * @author 1710026
+ * @author Pierre Azelart
  */
-@Named("SearchFunction")
+@Named("Search")
 @RequestScoped
-public class SearchFunction implements Serializable{
+public class UserSearch implements Serializable{
     private ArrayList resultsList;
-//    @Inject
+    @Inject
+    private TrackJpaController tjpac;
 //    private EntityManager em;
+    
     private String parameters;
     
-    public ArrayList searchDefault(String str){
+    
+    /**
+    public ArrayList searchAll(String str){
         //JPA queries
         //set resultsList
         //returns it
-       
+              
+        return resultsList;
+     * @return }**/
+    
+    //Default Search Criteria    
+    public ArrayList searchTracks(){
+        
         
         return resultsList;
     }
     
+    
+    public ArrayList searchAlbums(){
+        return resultsList;
+    }
+
+    public ArrayList searchArtists(){
+        return resultsList;
+    }
+  
     public void setParameters(String key){
         this.parameters = key;
     }
