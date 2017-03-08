@@ -35,7 +35,7 @@ and open the template in the editor.
                 <p:graphicImage url="./resources/images/bg.jpg" styleClass="content card_album_art" />                
                 <div class="caption">
 
-                    <h:link outcome="albumtest">
+                    <h:link outcome="album">
                         <f:param name="albumId" value="#{album.id}"/>
                         <h2>#{album.title}</h2>
                     </h:link>                   
@@ -63,7 +63,7 @@ and open the template in the editor.
                         <ui:repeat value="#{albumBacking.albumFromGenre}" var="album">
                             <div class="col-sm-2">
                                 <div class = "card_album well-sm">
-                                    <h:link outcome="albumtest">
+                                    <h:link outcome="album">
                                         <f:param name="albumId" value="#{album.id}"/>
                                         <img class="card_album_art img-responsive" src="./resources/images/bg.jpg" alt="Card image cap"/>
                                         <h3>#{album.title}</h3>
