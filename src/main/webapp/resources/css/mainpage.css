@@ -88,8 +88,11 @@
     color: black;
 }
 .client-tracking{
-    margin: 0 auto;
-    margin-top: 5%;
+    margin-left: 5%;
     margin-bottom: 5%;
     width:90vh;
+}
+
+.sug_containter{
+    margin-left: 5%;
 }
