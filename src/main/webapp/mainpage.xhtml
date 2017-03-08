@@ -17,6 +17,7 @@ and open the template in the editor.
         <h:outputStylesheet library="css" name="bootstrap.css" />
         <h:outputStylesheet library="css" name="mainpage.css" />
         <h:outputStylesheet library="css" name="style.css" />
+        <h:outputStylesheet library="css" name="carousel.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body class="parallax">
@@ -29,13 +30,13 @@ and open the template in the editor.
         <div class="horizontal-ad">
             ad banner
         </div>
-        <h2 id="latest_header">Latest Releases!</h2>
+        <h2 id="latest_header">#{msgs.newReleases}</h2>
         <div class="contentflow_container">
             <p:contentFlow value="#{albumBacking.latestAlbums}" var="album" styleClass="contentflow">
                 <p:graphicImage url="./resources/images/bg.jpg" styleClass="content card_album_art" />                
                 <div class="caption">
-                    
-                    <h:link outcome="albumtest">
+
+                    <h:link outcome="album">
                         <f:param name="albumId" value="#{album.id}"/>
                         <h2>#{album.title}</h2>
                     </h:link>                   
@@ -43,26 +44,55 @@ and open the template in the editor.
             </p:contentFlow>
 
         </div>
-        
+
+        <!-- Content Block -->
         <div class = "container-fluid content well-lg">
+            <div class = "genre">
+                <h2 id="genre_header">#{msgs.genres}</h2>
+                <h:form>
+                    <ui:repeat value="#{genreBacking.allGenresNames}" var="genre">
+                        <h:commandLink value="#{genre}" action="#{albumBacking.setGenreString(genre)}" styleClass="genre_links">
+                            <f:ajax render="album_content"/>
+                        </h:commandLink>
+                    </ui:repeat>
+                </h:form>
+
+            </div>
             <div class="row well-lg"> 
                 <div class="center_content">
-                    <ui:repeat value="#{albumBacking.latestAlbums}" var="album">
+                    <h:panelGroup id="album_content">
+                        <ui:repeat value="#{albumBacking.albumFromGenre}" var="album">
+                            <div class="col-sm-2">
+                                <div class = "card_album well-sm">
+                                    <h:link outcome="album">
+                                        <f:param name="albumId" value="#{album.id}"/>
+                                        <img class="card_album_art img-responsive" src="./resources/images/bg.jpg" alt="Card image cap"/>
+                                        <h3>#{album.title}</h3>
+                                    </h:link>
 
-                        <div class="col-sm-2">
-                            <div class = "card_album well-sm">
-                                <h:link outcome="albumtest">
-                                    <f:param name="albumId" value="#{album.id}"/>
-                                    <img class="card_album_art img-responsive" src="./resources/images/bg.jpg" alt="Card image cap"/>
-                                    <h3>#{album.title}</h3>
-                                </h:link>
-
-                                <h4>#{album.artistId.name}</h4>
-                            </div>                                          
-                        </div>
-                    </ui:repeat> 
+                                    <h4>#{album.artistId.name}</h4>
+                                </div>                                          
+                            </div>
+                        </ui:repeat>
+                    </h:panelGroup>
                 </div>
             </div>
+        </div> <!-- end container -->
+        <div class="sug_containter">
+            <h2 id="genre_header">#{msgs.suggested}</h2>
         </div>
+        <b:carousel styleClass="client-tracking">
+            <b:carouselItem>
+                <img src="./resources/images/bg.jpg" alt="Valladolid" />
+            </b:carouselItem>
+            <b:carouselItem>
+                <img src="./resources/images/bg.jpg" alt="Valladolid" />
+            </b:carouselItem>
+            <b:carouselItem>
+                <img src="./resources/images/bg.jpg" alt="Valladolid" />
+            </b:carouselItem>
+        </b:carousel>
+
+
     </h:body>
 </html>

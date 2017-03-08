@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -6,8 +6,10 @@
 package com.pandamedia.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -17,20 +19,23 @@ import javax.persistence.TypedQuery;
 import persistence.controllers.AlbumJpaController;
 import persistence.entities.Album;
 import persistence.entities.CoverArt;
+import persistence.entities.Genre;
 
 /**
  *
  * @author Evang
  */
 @Named("albumBacking")
-@RequestScoped
+@SessionScoped
 public class AlbumBackingBean implements Serializable{
+    
     @Inject
     private AlbumJpaController albumController;
     private Album album;
     @PersistenceContext
     private EntityManager em;
-    
+    private String genreString;
+    private List<Album> genrelist;
     
     public Album getAlbum(){
         if(album == null){
@@ -38,6 +43,30 @@ public class AlbumBackingBean implements Serializable{
         }
         return album;
     }
+    
+    public AlbumBackingBean(){
+        genrelist = new ArrayList();
+    }
+
+    public List<Album> getGenrelist() {
+        return genrelist;
+    }
+
+    public void setGenrelist(List<Album> genrelist) {
+        this.genrelist = genrelist;
+    }
+    
+    
+
+    public String getGenreString() {
+        return genreString;
+    }
+
+    public void setGenreString(String genreString) {
+        this.genreString = genreString;
+    }
+    
+    
     
     /**
      * Finds the album from its id.
@@ -65,6 +94,28 @@ public class AlbumBackingBean implements Serializable{
         TypedQuery<Album> query =  em.createQuery(q, Album.class).setMaxResults(5);
         return query.getResultList();
         
+    }
+    /**
+     * Searches the database with the genre key term returns a list of albums.
+     * @return 
+     */
+    public List<Album> getAlbumFromGenre(){
+        if(genreString == null){
+            return null;
+        }
+        int genre_id = getGenreId(genreString);
+        String q = "SELECT a FROM Album a WHERE a.genreId.id = :genre_id";
+        TypedQuery<Album> query = em.createQuery(q, Album.class).setMaxResults(5);
+        query.setParameter("genre_id", genre_id);
+        return query.getResultList();
+    }
+    
+    private int getGenreId(String genre){
+        String q = "SELECT g FROM Genre g WHERE g.name = :name";
+        TypedQuery<Genre> query = em.createQuery(q, Genre.class);
+        query.setParameter("name", genre);
+        return query.getResultList().get(0).getId();//this should be query.getSingleResult, however, since we have like 5 genres with the same name with the 
+        // test data, we get a list and get the first result, test data should have been sanitized.
     }
     
 }
