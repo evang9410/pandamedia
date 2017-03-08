@@ -14,12 +14,12 @@
     <h:body>
         #{msgs.manReportZeroTrackTitle}
         <pm:reportcalendars 
-            max="#{reports.defaultEndDate}" 
-            start="#{reports.startDate}" 
-            end="#{reports.endDate}" 
+            max="#{reportDates.defaultEndDate}" 
+            start="#{reportDates.startDate}" 
+            end="#{reportDates.endDate}" 
             updateTable="reportTable">
         </pm:reportcalendars>
-        <h:dataTable id="reportTable" value="#{reports.zeroTracks}" var="track">
+        <h:dataTable id="reportTable" value="#{reports.getZeroTracks(reportDates.startDate, reportDates.endDate)}" var="track">
             <h:column>
                 <f:facet name="header">#{msgs.idHeader}</f:facet>
                 #{track.id}

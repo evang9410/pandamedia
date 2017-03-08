@@ -41,53 +41,7 @@ public class ReportBackingBean implements Serializable {
     @PersistenceContext
     private EntityManager em;
 
-    private Date startDate;
-    private Date endDate;
-
     public ReportBackingBean() {
-    }
-
-    // TODO: should this be in a diff bean?
-    public Date getDefaultEndDate() {
-        return Calendar.getInstance().getTime();
-    }
-
-    // TODO: should this be in a diff bean?
-    public Date getDefaultStartDate() {
-        Calendar start = Calendar.getInstance();
-        start.add(Calendar.DAY_OF_YEAR, -30);
-
-        return start.getTime();
-    }
-
-    // TODO: should this be in a diff bean?
-    public Date getStartDate() {
-        if (startDate == null) {
-            startDate = getDefaultStartDate();
-        }
-        return startDate;
-    }
-
-    // TODO: should this be in a diff bean?
-    public Date getEndDate() {
-        if (endDate == null) {
-            endDate = getDefaultEndDate();
-        }
-        return endDate;
-    }
-
-    // TODO: should this be in a diff bean?
-    public void setStartDate(Date date) {
-        LOG.log(Level.INFO, "--- New start date: {0}", date);
-        LOG.log(Level.INFO, "--- Current end date: {0}", endDate);
-        startDate = date;
-    }
-
-    // TODO: should this be in a diff bean?
-    public void setEndDate(Date date) {
-        LOG.log(Level.INFO, "--- New end date: {0}", date);
-        LOG.log(Level.INFO, "--- Current start date: {0}", startDate);
-        endDate = date;
     }
 
     /**
@@ -95,9 +49,11 @@ public class ReportBackingBean implements Serializable {
      * purchases in the time frame specified.
      *
      * @author Erika Bourque
-     * @return The list of shop users
+     * @param startDate         The report's start date
+     * @param endDate           The report's end date
+     * @return                  The list of shop users
      */
-    public List<ShopUser> getZeroUsers() {
+    public List<ShopUser> getZeroUsers(Date startDate, Date endDate) {
         LOG.log(Level.INFO, "Zero Users start date: {0}", startDate);
         LOG.log(Level.INFO, "Zero Users end date: {0}", endDate);
 
@@ -114,7 +70,7 @@ public class ReportBackingBean implements Serializable {
 
         // Using predicates to avoid compiler errors, does not like CriteriaBuilder's between method
         Predicate p1 = cb.equal(invoiceRoot.get(Invoice_.userId), userRoot);
-        Predicate p2 = cb.between(invoiceRoot.get(Invoice_.saleDate).as(Date.class), getStartDate(), getEndDate());
+        Predicate p2 = cb.between(invoiceRoot.get(Invoice_.saleDate).as(Date.class), startDate, endDate);
         subquery.where(cb.and(p1, p2));
         // TODO: and invoice not removed
 
@@ -125,7 +81,7 @@ public class ReportBackingBean implements Serializable {
         return typedQuery.getResultList();
     }
     
-    public List<Track> getZeroTracks()
+    public List<Track> getZeroTracks(Date startDate, Date endDate)
     {
         LOG.log(Level.INFO, "Zero tracks start date: {0}", startDate);
         LOG.log(Level.INFO, "Zero tracks end date: {0}", endDate);
@@ -144,9 +100,8 @@ public class ReportBackingBean implements Serializable {
 
         // Using predicates to avoid compiler errors, does not like CriteriaBuilder's between method
         Predicate p1 = cb.equal(invoiceTrackRoot.get(InvoiceTrack_.invoiceTrackPK).get(InvoiceTrackPK_.trackId), trackRoot.get(Track_.id));
-        Predicate p2 = cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), getStartDate(), getEndDate());
+        Predicate p2 = cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate);
         subquery.where(cb.and(p1, p2));
-//        subquery.where(p2);
         // TODO: and invoice not removed
         // TODO: and track not removed
 
