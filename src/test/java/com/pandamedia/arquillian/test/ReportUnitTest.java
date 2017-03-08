@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -26,8 +27,11 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import persistence.controllers.InvoiceJpaController;
+import persistence.controllers.ProvinceJpaController;
 import persistence.controllers.ShopUserJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
+import persistence.entities.Invoice;
 import persistence.entities.ShopUser;
 import persistence.entities.Track;
 
@@ -48,6 +52,12 @@ public class ReportUnitTest {
     
     @Inject
     private ShopUserJpaController userJpa;
+    
+    @Inject
+    private ProvinceJpaController provinceJpa;
+    
+    @Inject
+    private InvoiceJpaController invoiceJpa;
     
     @Deployment
     public static WebArchive deploy() {
@@ -86,9 +96,15 @@ public class ReportUnitTest {
      */
     @Before
     public void seedDatabase() {
-        final String seedDataScript = loadAsString("createtables.sql");
+        final String seedCreateScript = loadAsString("createtables.sql");
+        final String seedDataScript = loadAsString("inserttestingdata.sql");
 
         try (Connection connection = ds.getConnection()) {
+            for (String statement : splitStatements(new StringReader(
+                    seedCreateScript), ";")) {
+                connection.prepareStatement(statement).execute();
+            }
+            
             for (String statement : splitStatements(new StringReader(
                     seedDataScript), ";")) {
                 connection.prepareStatement(statement).execute();
@@ -146,11 +162,43 @@ public class ReportUnitTest {
      * @throws SQLException
      */
     @Test
-    public void findZeroShopUser() throws SQLException {
+    public void findZeroShopUser() throws SQLException, Exception {
         // Set Up
-        ShopUser bob = new ShopUser();
-        
+        ShopUser test = createNewUser("Mr", "Marley", "Bob", "cat", "catcity", 
+                "Canada", "A1A1A1", "1234567890", "bob@cat.com", "kitty", "cat");        
+        userJpa.create(test);
 //        List<ShopUser> users = fab.getAll();
 //        assertThat(lfd).hasSize(200);
+    }
+    
+    private ShopUser createNewUser(String title, String lastName, String firstName, 
+            String streetAddress, String city, String country, String postalCode, 
+            String homePhone, String email, String password, String salt)
+    {
+        ShopUser user = new ShopUser();
+        
+        user.setTitle(title);
+        user.setLastName(lastName);
+        user.setFirstName(firstName);
+        user.setStreetAddress(streetAddress);
+        user.setCity(city);
+        user.setCountry(country);
+        user.setPostalCode(postalCode);
+        user.setHomePhone(homePhone);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setSalt(salt);
+        user.setProvinceId(provinceJpa.findProvince(1));
+        
+        return user;
+    }
+    
+    private Invoice createNewInvoice(Date saleDate, double totalNetValue, double totalGrossValue)
+    {
+        Invoice invoice = new Invoice();
+        
+        // add invoice fields
+        
+        return invoice;
     }
 }
