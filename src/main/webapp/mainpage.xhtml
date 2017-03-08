@@ -34,7 +34,7 @@ and open the template in the editor.
             <p:contentFlow value="#{albumBacking.latestAlbums}" var="album" styleClass="contentflow">
                 <p:graphicImage url="./resources/images/bg.jpg" styleClass="content card_album_art" />                
                 <div class="caption">
-                    
+
                     <h:link outcome="albumtest">
                         <f:param name="albumId" value="#{album.id}"/>
                         <h2>#{album.title}</h2>
@@ -43,29 +43,44 @@ and open the template in the editor.
             </p:contentFlow>
 
         </div>
+        <div>
+            <h2>genres</h2>
+            <h:form>
+                <ui:repeat value="#{genreBacking.allGenresNames}" var="genre">
+                    <h:commandLink value="#{genre}" action="#{albumBacking.setGenreString(genre)}">
+                        <f:ajax render="album_content"/>
+                    </h:commandLink>
+                </ui:repeat>
+            </h:form>
+
+        </div>
+        <div>
+
+        </div>
         <!-- Content Block -->
         <div class = "container-fluid content well-lg">
             <div class="row well-lg"> 
                 <div class="center_content">
-                    <ui:repeat value="#{albumBacking.latestAlbums}" var="album">
+                    <h:panelGroup id="album_content">
+                        <ui:repeat value="#{albumBacking.albumFromGenre}" var="album">
+                            <div class="col-sm-2">
+                                <div class = "card_album well-sm">
+                                    <h:link outcome="albumtest">
+                                        <f:param name="albumId" value="#{album.id}"/>
+                                        <img class="card_album_art img-responsive" src="./resources/images/bg.jpg" alt="Card image cap"/>
+                                        <h3>#{album.title}</h3>
+                                    </h:link>
 
-                        <div class="col-sm-2">
-                            <div class = "card_album well-sm">
-                                <h:link outcome="albumtest">
-                                    <f:param name="albumId" value="#{album.id}"/>
-                                    <img class="card_album_art img-responsive" src="./resources/images/bg.jpg" alt="Card image cap"/>
-                                    <h3>#{album.title}</h3>
-                                </h:link>
-
-                                <h4>#{album.artistId.name}</h4>
-                            </div>                                          
-                        </div>
-                    </ui:repeat> 
+                                    <h4>#{album.artistId.name}</h4>
+                                </div>                                          
+                            </div>
+                        </ui:repeat>
+                    </h:panelGroup>
                 </div>
             </div>
         </div>
-        <!-- Genres -->
-        
-        
+
+
+
     </h:body>
 </html>
