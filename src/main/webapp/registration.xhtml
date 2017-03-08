@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>TODO supply a title</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -9,10 +10,22 @@
     <h:body>
         <h:form>
             <h:outputLabel for="emailInput" value="Email"/>
-            <h:inputText id="emailInput" value="#{userBean.shopUser.email}"/>
+            <h:inputText id="emailInput" value="#{userBean.shopUser.email}"
+                         validator="#{userBean.validateEmail}">
+                <f:ajax event="valueChange" render="emailError"/>
+            </h:inputText>
+                <h:message id="emailError" for="emailInput" style="color:red"/>
             <br/>
             <h:outputLabel for="password" value="Password"/>
             <h:inputSecret id="password" value="#{userBean.shopUser.password}"/>
+            <br/>
+            <h:outputLabel for="confirmPwd" value="Confirm Password"/>
+            <h:inputSecret id="confirmPwd" value="#{userBean.confirmPasswd}"
+                           validator="#{userBean.validatePassword}">
+                <f:ajax event="valueChange" render="passwordError"/>
+            </h:inputSecret>
+            <h:message id="passwordError" for="confirmPwd" style="color:red"/>
+            <br/>
             <h:commandButton value="submit" />
         </h:form>
     </h:body>
