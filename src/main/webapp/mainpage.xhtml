@@ -17,6 +17,7 @@ and open the template in the editor.
         <h:outputStylesheet library="css" name="bootstrap.css" />
         <h:outputStylesheet library="css" name="mainpage.css" />
         <h:outputStylesheet library="css" name="style.css" />
+        <h:outputStylesheet library="css" name="carousel.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body class="parallax">
@@ -76,8 +77,18 @@ and open the template in the editor.
                     </h:panelGroup>
                 </div>
             </div>
-        </div>
-
+        </div> <!-- end container -->
+        <b:carousel id="parque" styleClass="client-tracking">
+            <b:carouselItem>
+                <img src="./resources/images/bg.jpg" alt="Valladolid" />
+            </b:carouselItem>
+            <b:carouselItem>
+                <img src="./resources/images/bg.jpg" alt="Valladolid" />
+            </b:carouselItem>
+            <b:carouselItem>
+                <img src="./resources/images/bg.jpg" alt="Valladolid" />
+            </b:carouselItem>
+        </b:carousel>
 
 
     </h:body>

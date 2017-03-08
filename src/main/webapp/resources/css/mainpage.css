@@ -87,3 +87,9 @@
     margin: 1%;
     color: black;
 }
+.client-tracking{
+    margin: 0 auto;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    width:90vh;
+}
