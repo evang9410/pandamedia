@@ -72,3 +72,18 @@
     width: 50%;
     background: rgba(119, 171, 255, 0.7);
 }
+
+.genre{
+    text-align: left;
+}
+
+#genre_header{
+    text-align: left;
+    color:white;
+    text-shadow: 2px 0 0 black, -2px 0 0 black, 0 2px 0 black, 0 -2px 0 black, 1px 1px black, -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black;
+}
+
+.genre_links{
+    margin: 1%;
+    color: black;
+}

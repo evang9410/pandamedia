@@ -43,22 +43,20 @@ and open the template in the editor.
             </p:contentFlow>
 
         </div>
-        <div>
-            <h2>genres</h2>
-            <h:form>
-                <ui:repeat value="#{genreBacking.allGenresNames}" var="genre">
-                    <h:commandLink value="#{genre}" action="#{albumBacking.setGenreString(genre)}">
-                        <f:ajax render="album_content"/>
-                    </h:commandLink>
-                </ui:repeat>
-            </h:form>
 
-        </div>
-        <div>
-
-        </div>
         <!-- Content Block -->
         <div class = "container-fluid content well-lg">
+            <div class = "genre">
+                <h2 id="genre_header">#{msgs.genres}</h2>
+                <h:form>
+                    <ui:repeat value="#{genreBacking.allGenresNames}" var="genre">
+                        <h:commandLink value="#{genre}" action="#{albumBacking.setGenreString(genre)}" styleClass="genre_links">
+                            <f:ajax render="album_content"/>
+                        </h:commandLink>
+                    </ui:repeat>
+                </h:form>
+
+            </div>
             <div class="row well-lg"> 
                 <div class="center_content">
                     <h:panelGroup id="album_content">
