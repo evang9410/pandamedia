@@ -248,6 +248,13 @@
             <artifactId>rome</artifactId>
             <version>1.0</version>
         </dependency>
+        
+         <!-- Jodd Mail Dependency -->
+        <dependency>
+            <groupId>org.jodd</groupId>
+            <artifactId>jodd-mail</artifactId>
+            <version>3.7.1</version>
+        </dependency>
     </dependencies>
 
     <!-- Information for compiling, testing and packaging are define here -->
