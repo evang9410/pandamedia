@@ -23,7 +23,7 @@ import persistence.entities.Genre;
 
 /**
  *
- * @author Evang
+ * @author Evan Glicakis
  */
 @Named("albumBacking")
 @SessionScoped

@@ -10,7 +10,8 @@ and open the template in the editor.
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>Pandamedia</title>
 
@@ -74,6 +75,7 @@ and open the template in the editor.
                                 </div>                                          
                             </div>
                         </ui:repeat>
+
                     </h:panelGroup>
                 </div>
             </div>
@@ -82,15 +84,26 @@ and open the template in the editor.
             <h2 id="genre_header">#{msgs.suggested}</h2>
         </div>
         <b:carousel styleClass="client-tracking">
-            <b:carouselItem>
-                <img src="./resources/images/bg.jpg" alt="Valladolid" />
-            </b:carouselItem>
-            <b:carouselItem>
-                <img src="./resources/images/bg.jpg" alt="Valladolid" />
-            </b:carouselItem>
-            <b:carouselItem>
-                <img src="./resources/images/bg.jpg" alt="Valladolid" />
-            </b:carouselItem>
+            <c:forEach items="#{user.findUser(44).lastGenreSearched.albumList}" var="albums">
+                <b:carouselItem>
+                    <img src="./resources/images/bg.jpg" alt="Valladolid" />
+                    <b:carouselCaption>
+                        <h:link outcome="album">
+                            <f:param name="albumId" value="#{albums.id}"/>
+                            <h3>#{albums.title}</h3>
+                        </h:link>
+                        
+                    </b:carouselCaption>
+                </b:carouselItem>
+            </c:forEach>
+<!--            <c:forEach items="#{user.findUser(44).lastGenreSearched.trackList}" var="tracks">
+                <b:carouselItem>
+                    <img src="./resources/images/bg.jpg" alt="Valladolid" />
+                    <b:carouselCaption>
+                        <h3>#{tracks.title}</h3>
+                    </b:carouselCaption>
+                </b:carouselItem>
+            </c:forEach>-->
         </b:carousel>
 
 

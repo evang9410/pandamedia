@@ -24,7 +24,7 @@ and open the template in the editor.
 
         
         <div class ="album">
-            <div class ="container well-lg">
+            <div class ="container">
                 <div class ="row">
                     <div id="albumArtWrapper" class ="col-md-4">
                         <div>
@@ -58,12 +58,15 @@ and open the template in the editor.
                 </thead>
                 
                 <tbody>
-                    <ui:repeat value="#{album.trackList}" var="track">
+                    <ui:repeat value="#{album.trackList}" var="tracks">
                         <tr>
-                            <th scope="row">#{track.albumTrackNumber}</th>
-                            <td>#{track.title}</td>
-                            <td>#{track.playLength}</td>
-                            <td width="50"><h:form><i class="fa fa-cart-plus" aria-hidden="true"></i></h:form></td>
+                            <th scope="row">#{tracks.albumTrackNumber}</th>
+                            <td>#{tracks.title}</td>
+                            <td>#{tracks.playLength}</td>
+                            <td width="50">
+                                <h:form>
+                                    <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                                </h:form></td>
                         </tr>
                     </ui:repeat>
                 </tbody>
