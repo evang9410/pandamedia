@@ -1,6 +1,7 @@
 package com.pandamedia.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import java.util.Date;
@@ -19,6 +20,8 @@ import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
+import persistence.entities.Album;
+import persistence.entities.Album_;
 import persistence.entities.Invoice;
 import persistence.entities.InvoiceTrack;
 import persistence.entities.InvoiceTrackPK_;
@@ -142,8 +145,67 @@ public class ReportBackingBean implements Serializable {
         return typedQuery.getResultList();
     }
     
-//    public List<Object[]> getTopSellers(Date startDate, Date endDate)
-//    {
-//        
-//    }
+    public List<Object[]> getTopTrackSellers(Date startDate, Date endDate)
+    {
+        String logMsg = "Top Track Sellers\tStart: " + startDate + "\tEnd: " + endDate;
+        LOG.log(Level.INFO, logMsg);
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<Track> trackRoot = query.from(Track.class);
+        
+        // Joins
+        ListJoin invoiceTrackJoin = trackRoot.join(Track_.invoiceTrackList, JoinType.LEFT);
+        Join invoiceJoin = invoiceTrackJoin.join(InvoiceTrack_.invoice);
+        
+        // Select
+        query.multiselect(cb.count(invoiceTrackJoin), trackRoot);
+        query.groupBy(trackRoot.get(Track_.id));
+        
+        // Where
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+        predicates.add(cb.equal(invoiceTrackJoin.get(InvoiceTrack_.removalStatus), 0));
+        predicates.add(cb.equal(trackRoot.get(Track_.removalStatus), 0));
+        query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+        
+        // Order by
+        query.orderBy(cb.desc(cb.count(invoiceTrackJoin)));
+        
+        TypedQuery<Object[]> typedQuery = em.createQuery(query);
+        return typedQuery.getResultList();
+    }
+    
+    public List<Object[]> getTopAlbumSellers(Date startDate, Date endDate)
+    {
+        String logMsg = "Top Album Sellers\tStart: " + startDate + "\tEnd: " + endDate;
+        LOG.log(Level.INFO, logMsg);
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<Album> albumRoot = query.from(Album.class);
+        
+        // Joins
+        ListJoin invoiceAlbumJoin = albumRoot.join(Album_.invoiceAlbumList, JoinType.LEFT);
+        Join invoiceJoin = invoiceAlbumJoin.join(InvoiceTrack_.invoice);
+        
+        // Select
+        query.multiselect(cb.count(invoiceAlbumJoin), albumRoot);
+        query.groupBy(albumRoot.get(Album_.id));
+        
+        // Where
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+        predicates.add(cb.equal(invoiceAlbumJoin.get(InvoiceTrack_.removalStatus), 0));
+        predicates.add(cb.equal(albumRoot.get(Album_.removalStatus), 0));
+        query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+        
+        // Order by
+        query.orderBy(cb.desc(cb.count(invoiceAlbumJoin)));
+        
+        TypedQuery<Object[]> typedQuery = em.createQuery(query);
+        return typedQuery.getResultList();
+    }
 }
