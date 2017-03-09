@@ -1,12 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.pandamedia.beans;
 
 import java.io.Serializable;
-
+import persistence.controllers.TrackJpaController;
+import persistence.entities.Track;
+import java.io.Serializable;
+import java.util.Calendar;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -17,9 +15,9 @@ import persistence.entities.Track;
 
 /**
  *
- * @author Evang
+ * @author Naasir, Evan
  */
-@Named("track")
+@Named("trackBacking")
 @SessionScoped
 public class TrackBackingBean implements Serializable{
     @Inject
@@ -44,4 +42,48 @@ public class TrackBackingBean implements Serializable{
         track = t;
         return "track";
     }
+
+    /**
+     * Finds the Track from its id.
+     * @param id
+     * @return 
+     */
+    public Track findTrackById(int id){
+        track = trackController.findTrack(id); 
+        return track;
+    }
+    
+    public String addItem(Integer id) throws Exception
+    {
+        track = trackController.findTrack(id);
+        if(track.getRemovalStatus() != 0)
+        {
+            short i = 0;
+            track.setRemovalStatus(i);
+            track.setRemovalDate(null);
+
+            trackController.edit(track);
+
+            
+        }
+        
+        return null; 
+    }
+    
+    public String removeItem(Integer id) throws Exception
+    {
+        track = trackController.findTrack(id);
+        if(track.getRemovalStatus() != 1)
+        {
+            short i = 1;
+            track.setRemovalStatus(i);
+            track.setRemovalDate(Calendar.getInstance().getTime());
+
+            trackController.edit(track);
+        }
+        
+        return null; 
+    }
+    
+    
 }
