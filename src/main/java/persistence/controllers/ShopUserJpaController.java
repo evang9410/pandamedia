@@ -10,6 +10,7 @@ import persistence.entities.Genre;
 import persistence.entities.Review;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -29,7 +30,8 @@ import persistence.entities.ShopUser;
 @Named
 @RequestScoped
 public class ShopUserJpaController implements Serializable {
-
+    private static final Logger LOG = Logger.getLogger("ShopUserJpaController.class");
+    
     @Resource
     private UserTransaction utx;
 
@@ -99,6 +101,7 @@ public class ShopUserJpaController implements Serializable {
             }
             utx.commit();
         } catch (Exception ex) {
+            LOG.info(ex.getMessage());
             try {
                 utx.rollback();
             } catch (Exception re) {

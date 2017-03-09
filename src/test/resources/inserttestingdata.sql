@@ -1,8 +1,4 @@
-/**
- * Author:  Erika Bourque
- * Created: 7-Mar-2017
- */
-
+-- Author: Erika Bourque
 -- Readonly values required to build other entities
 INSERT INTO cover_art (image_path) VALUES ("bob.png");
 INSERT INTO songwriter (name) VALUES ("Bob Marley");

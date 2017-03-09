@@ -10,10 +10,13 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -41,6 +44,8 @@ import persistence.entities.Track;
  */
 @RunWith(Arquillian.class)
 public class ReportUnitTest {
+    private static final Logger LOG = Logger.getLogger("ShopUserJpaController.class");
+    
     @Resource(name = "java:app/g4w17test")
     private DataSource ds;
     
@@ -81,12 +86,17 @@ public class ReportUnitTest {
                 .addPackage(ReportBackingBean.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(Track.class.getPackage())
+                .addPackage(ShopUserJpaController.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/glassfish-resources.xml"), "glassfish-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
                 .addAsResource("createtables.sql")
+                .addAsResource("inserttestingdata.sql")
+                .addAsResource("test/genre.csv")
                 .addAsLibraries(dependencies);
 
+//        System.out.println(webArchive.toString(true));
+        
         return webArchive;
     }
     
@@ -146,6 +156,7 @@ public class ReportUnitTest {
                     sqlStatement.setLength(0);
                 }
             }
+            System.out.println(statements);
             return statements;
         } catch (IOException e) {
             throw new RuntimeException("Failed parsing sql", e);
@@ -164,11 +175,22 @@ public class ReportUnitTest {
     @Test
     public void findZeroShopUser() throws SQLException, Exception {
         // Set Up
-        ShopUser test = createNewUser("Mr", "Marley", "Bob", "cat", "catcity", 
-                "Canada", "A1A1A1", "1234567890", "bob@cat.com", "kitty", "cat");        
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        Date saleDate = format.parse("2017/02/20");
+        
+        ShopUser test = new ShopUser(0, "Mr", "Marley", "Bob", "cats avenue", "catcity", 
+                "Canada", "A1A1A1", "1234567890", "bob@cat.com", "kitty", "cat", (short)0);        
         userJpa.create(test);
-//        List<ShopUser> users = fab.getAll();
-//        assertThat(lfd).hasSize(200);
+        
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        invoiceJpa.create(invoice);
+        
+        List<ShopUser> list = reports.getZeroUsers(start, end);
+
+        assertThat(list.contains(test));
+//        assertThat(true);
     }
     
     private ShopUser createNewUser(String title, String lastName, String firstName, 
@@ -188,16 +210,20 @@ public class ReportUnitTest {
         user.setEmail(email);
         user.setPassword(password);
         user.setSalt(salt);
-        user.setProvinceId(provinceJpa.findProvince(1));
+        LOG.info(provinceJpa.findProvinceEntities().toString());
+        user.setProvinceId(provinceJpa.findProvinceEntities().get(0));
         
         return user;
     }
     
-    private Invoice createNewInvoice(Date saleDate, double totalNetValue, double totalGrossValue)
+    private Invoice createNewInvoice(Date saleDate, double totalNetValue, double totalGrossValue, ShopUser user)
     {
         Invoice invoice = new Invoice();
         
-        // add invoice fields
+        invoice.setSaleDate(saleDate);
+        invoice.setTotalNetValue(totalNetValue);
+        invoice.setTotalGrossValue(totalGrossValue);
+        invoice.setUserId(user);
         
         return invoice;
     }
