@@ -50,9 +50,9 @@
             <email>tdb</email>
         </developer>
         <developer>
-            <id>tdb</id>
+            <id>1433545</id>
             <name>Naasir Jusab</name>
-            <email>tdb</email>
+            <email>nasjuice7@gmail.com</email>
         </developer>
     </developers>
 
@@ -276,7 +276,7 @@
                 <version>2.19.1</version>
                 <configuration>
                     <argLine>-Dfile.encoding=${project.build.sourceEncoding}</argLine>
-                    <skipTests>false</skipTests>
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
 
