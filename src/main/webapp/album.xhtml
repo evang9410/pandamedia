@@ -19,8 +19,6 @@ and open the template in the editor.
     </h:head>
     <body class = "bodyClass">
 
-        <ui:param name ="album" value="#{albumBacking.findAlbumById()}"/>
-
         <div class="album-info-wrapper">
             <div class="container-fluid">
                 <div class="row">
@@ -28,9 +26,9 @@ and open the template in the editor.
                         <img class="albumArt" src="resources/images/bg.jpg"/>
                     </div>
                     <div class="col-md-3 album-info">
-                        <h1>#{album.title}</h1>
-                        <h3>#{msgs.from} #{album.artistId.name}, 
-                            <h:outputText value="#{album.releaseDate.time}">
+                        <h1>#{albumBacking.album.title}</h1>
+                        <h3>#{msgs.from} #{albumBaking.album.artistId.name}, 
+                            <h:outputText value="#{albumBacking.album.releaseDate.time}">
                                 <f:convertDateTime pattern="yyyy"/>
                             </h:outputText>
                         </h3>
@@ -52,19 +50,28 @@ and open the template in the editor.
                 </thead>
 
                 <tbody>
-                    <ui:repeat value="#{album.trackList}" var="tracks">
+                    <ui:repeat value="#{albumBacking.album.trackList}" var="tracks">
                         <tr>
                             <th scope="row">#{tracks.albumTrackNumber}</th>
                             <td>#{tracks.title}</td>
                             <td>#{tracks.playLength}</td>
                             <td width="50">
                                 <h:form>
-                                    <b:commandButton ajax="true" icon-awesome="cart-plus" value="" look="primary"/>                                    
-                                </h:form></td>
+                                    <b:commandButton ajax="true" icon-awesome="cart-plus" value="" look="primary" onclick="changeIcon(this)"/>
+                                    
+                                </h:form>
+                            </td>
                         </tr>
                     </ui:repeat>
                 </tbody>
             </table>
         </div>
     </body>
+    <script type="text/javascript" language="javascript">
+        function changeIcon(icon){
+            icon.icon-awesome="fa-coffee";
+            alert("hello");
+            
+        }
+    </script>
 </html>
