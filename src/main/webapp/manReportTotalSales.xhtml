@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pm="http://pandamedia.com/facelets">
+    <h:head>
+        <title>#{msgs.manReportTopSellersTitle}</title>
+        <meta name="author" content="Erika Bourque"/>
+    </h:head>
+    <h:body>
+        #{msgs.manReportTopSellersTitle}
+        <pm:reportcalendars 
+            max="#{reportDates.defaultEndDate}" 
+            start="#{reportDates.startDate}" 
+            end="#{reportDates.endDate}" 
+            updateTable="trackTable">
+        </pm:reportcalendars>
+        <h:dataTable id="trackTable" value="#{reports.getTotalTrackSalesByDate(reportDates.startDate, reportDates.endDate)}" var="track">
+            <h:column>
+                <f:facet name="header">#{msgs.totalPurchasesHeader}</f:facet>
+                #{track[0]}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.idHeader}</f:facet>
+                #{track[1].id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.titleHeader}</f:facet>
+                #{track[1].title}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.albumHeader}</f:facet>
+                #{track[1].albumId.title}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.artistHeader}</f:facet>
+                #{track[1].artistId.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.songwriterHeader}</f:facet>
+                #{track[1].songwriterId.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.genreHeader}</f:facet>
+                #{track[1].genreId.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.releaseDateHeader}</f:facet>
+                #{track[1].releaseDate}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.playLengthHeader}</f:facet>
+                #{track[1].playLength}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.albumTrackNumHeader}</f:facet>
+                #{track[1].albumTrackNumber}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.coverArtHeader}</f:facet>
+                #{track[1].coverArtId.imagePath}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.dateEnteredHeader}</f:facet>
+                #{track[1].dateEntered}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.partOfAlbumHeader}</f:facet>
+                #{track[1].partOfAlbum}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
+                #{track[1].costPrice}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.listPriceHeader}</f:facet>
+                #{track[1].listPrice}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.salePriceHeader}</f:facet>
+                #{track[1].salePrice}
+            </h:column>
+        </h:dataTable>
+    </h:body>
+</html>

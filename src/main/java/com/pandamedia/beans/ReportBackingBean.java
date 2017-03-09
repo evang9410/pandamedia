@@ -41,6 +41,7 @@ import persistence.entities.Track_;
 @Named("reports")
 @RequestScoped
 public class ReportBackingBean implements Serializable {
+    // TODO: add checks for was it valid during report time and now is removed
     private static final Logger LOG = Logger.getLogger("ReportBackingBean.class");
 
     @PersistenceContext
@@ -204,6 +205,44 @@ public class ReportBackingBean implements Serializable {
         
         // Order by
         query.orderBy(cb.desc(cb.count(invoiceAlbumJoin)));
+        
+        TypedQuery<Object[]> typedQuery = em.createQuery(query);
+        return typedQuery.getResultList();
+    }
+    
+    public List<Object[]> getTotalTrackSalesByDate(Date startDate, Date endDate)
+    {
+        // TODO its not working
+        
+        String logMsg = "Total Track Sales\tStart: " + startDate + "\tEnd: " + endDate;
+        LOG.log(Level.INFO, logMsg);
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<Track> trackRoot = query.from(Track.class);
+        
+        // Subquery
+        Subquery<Double> salesTotal = query.subquery(Double.class);
+        Root<InvoiceTrack> invoiceTrackRoot = salesTotal.from(InvoiceTrack.class);
+        Join invoiceJoin = invoiceTrackRoot.join(InvoiceTrack_.invoice);
+        salesTotal.select(cb.sum(invoiceTrackRoot.get(InvoiceTrack_.finalPrice)));
+        salesTotal.groupBy(invoiceTrackRoot.get(InvoiceTrack_.track));
+               
+        // Subquery Where
+        List<Predicate> predicatesSub = new ArrayList<>();
+        predicatesSub.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
+        predicatesSub.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+        predicatesSub.add(cb.equal(invoiceTrackRoot.get(InvoiceTrack_.track), trackRoot.get(Track_.id)));
+        salesTotal.where(cb.and(predicatesSub.toArray(new Predicate[predicatesSub.size()])));        
+        
+        // Where
+        List<Predicate> predicatesQuery = new ArrayList<>();
+        predicatesQuery.add(cb.equal(trackRoot.get(Track_.removalStatus), 0));
+        
+        // Order by
+        query.orderBy(cb.asc(trackRoot));
+        
+        query.multiselect(salesTotal.getSelection(), trackRoot);
         
         TypedQuery<Object[]> typedQuery = em.createQuery(query);
         return typedQuery.getResultList();
