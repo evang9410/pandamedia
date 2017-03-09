@@ -1,8 +1,4 @@
-    /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.pandamedia.beans;
 
 import java.io.Serializable;
@@ -33,6 +29,7 @@ public class AlbumBackingBean implements Serializable{
     @Inject
     private AlbumJpaController albumController;
     private Album album;
+    private List<Album> filteredAlbums;
     @PersistenceContext
     private EntityManager em;
     private String genreString;
@@ -148,17 +145,14 @@ public class AlbumBackingBean implements Serializable{
             album.setRemovalStatus(i);
             album.setRemovalDate(null);
 
-            albumController.edit(album);
-
-            
+            albumController.edit(album);           
         }
         
         return null; 
     }
     
     public String removeItem(Integer id) throws Exception
-    {
-        
+    {       
         album = albumController.findAlbum(id);
         if(album.getRemovalStatus() != 1)
         {
@@ -166,9 +160,7 @@ public class AlbumBackingBean implements Serializable{
             album.setRemovalStatus(i);
             album.setRemovalDate(Calendar.getInstance().getTime());
 
-            albumController.edit(album);
-
-            
+            albumController.edit(album);     
         }
         
         return null; 
@@ -182,9 +174,23 @@ public class AlbumBackingBean implements Serializable{
     
     public String edit() throws Exception
     {
-        
         albumController.edit(album);
         return "welcome_manager";
+    }
+    
+    public List<Album> getAll()
+    {
+        return albumController.findAlbumEntities();
+    }
+    
+    public void setFilteredAlbums(List<Album> filteredAlbums)
+    {
+        this.filteredAlbums = filteredAlbums;
+    }
+    
+    public List<Album> getFilteredAlbums()
+    {
+        return this.filteredAlbums;
     }
     
 }

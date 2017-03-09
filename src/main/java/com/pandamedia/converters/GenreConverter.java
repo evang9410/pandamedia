@@ -2,6 +2,7 @@
 package com.pandamedia.converters;
 
 import java.io.Serializable;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -17,9 +18,9 @@ import persistence.entities.Genre;
  *
  * @author Naasir
  */
-@SessionScoped
+@RequestScoped
 @FacesConverter("genreConverter")
-public class GenreConverter  implements Converter,Serializable {
+public class GenreConverter  implements Converter {
     
     @Inject
     private GenreJpaController service;

@@ -5,6 +5,7 @@ import persistence.controllers.TrackJpaController;
 import persistence.entities.Track;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -86,4 +87,13 @@ public class TrackBackingBean implements Serializable{
     }
     
     
+
+    
+   public List<Track> getAll()
+   {
+       return trackController.findTrackEntities();
+   }
+    
+    
 }
+

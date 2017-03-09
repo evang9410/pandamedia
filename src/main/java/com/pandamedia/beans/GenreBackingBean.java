@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.pandamedia.beans;
 
 import java.util.List;
@@ -40,6 +36,11 @@ public class GenreBackingBean {
         String q = "SELECT g.name FROM Genre g";
         TypedQuery query = em.createQuery(q, Genre.class).setMaxResults(5); // for testing this is set to 5 results max. In production, we should remove this limit.
         return query.getResultList();
+    }
+    
+    public List<Genre> getAll()
+    {
+        return genreController.findGenreEntities();
     }
     
     

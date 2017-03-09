@@ -2,6 +2,7 @@
 package com.pandamedia.converters;
 
 import java.io.Serializable;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -17,9 +18,9 @@ import persistence.entities.RecordingLabel;
  *
  * @author Naasir
  */
-@SessionScoped
+@RequestScoped
 @FacesConverter("recordingLabelConverter")
-public class RecordingLabelConverter  implements Converter,Serializable {
+public class RecordingLabelConverter  implements Converter {
     
     @Inject
     private RecordingLabelJpaController service;

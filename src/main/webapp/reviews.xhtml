@@ -8,6 +8,7 @@
     <h:head>
         <title>Reviews</title>
         <h:outputStylesheet name="css/bootstrap.css"/>
+        <h:outputStylesheet library="css" name="style.css"/>
     </h:head>
     <h:body>
         <b:navBar brand="PandaMedia" brandHref="manager_index.xhtml" styleClass="navbar navbar-default pandaNavbar">
@@ -19,7 +20,6 @@
                 <b:navLink value="Reporting" href="reporting.xhtml"></b:navLink>
             </b:navbarLinks>
         </b:navBar> 
-        <h:outputStylesheet library="css" name="style.css"  />
         
         <f:view>
 
@@ -27,7 +27,7 @@
 
             <h:form>
                 <h1><h:outputText value="Reviews"/></h1>
-                <p:dataTable value="#{reviewJpaController.all}" var="item">
+                <p:dataTable value="#{reviewBacking.all}" var="item" paginator="true" rows="5">
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="Id"/>

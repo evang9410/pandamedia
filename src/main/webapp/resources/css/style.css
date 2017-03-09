@@ -154,6 +154,7 @@ html, body {
     margin-bottom: 27px;
 }
 
+
 .navbar-header{
   height: 100%;  
 } 
@@ -186,7 +187,6 @@ html, body {
 }
 
 .navbar-default, .dropdown-menu{
-    min-height: 100%;
     background-color: #303030;
     color:#fff;
     margin-bottom:0;

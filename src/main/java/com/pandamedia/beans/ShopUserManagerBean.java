@@ -6,6 +6,7 @@ import persistence.entities.Invoice;
 import persistence.entities.ShopUser;
 import persistence.entities.Survey;
 import java.io.Serializable;
+import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -44,6 +45,11 @@ public class ShopUserManagerBean implements Serializable{
     public String loadEdit(Integer id) throws Exception
     {
             return null;
+    }
+    
+    public List<ShopUser> getAll()
+    {
+        return userController.findShopUserEntities();
     }
     
     
