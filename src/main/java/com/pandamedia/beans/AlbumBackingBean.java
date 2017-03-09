@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -29,6 +30,7 @@ public class AlbumBackingBean implements Serializable{
     @Inject
     private AlbumJpaController albumController;
     private Album album;
+    private List<Album> albums;
     private List<Album> filteredAlbums;
     @PersistenceContext
     private EntityManager em;
@@ -36,6 +38,27 @@ public class AlbumBackingBean implements Serializable{
     private List<Album> genrelist;
     private int albumid;
     
+    
+    
+    public AlbumBackingBean(){
+        genrelist = new ArrayList();
+    }
+    
+    @PostConstruct
+    public void init()
+    {
+        this.albums = albumController.findAlbumEntities();     
+    }
+    
+    public List<Album> getAlbums()
+    {
+        return albums;
+    }
+    
+    public void setAlbums(List<Album> albums)
+    {
+        this.albums = albums;
+    }
     public Album getAlbum(){
         if(album == null){
             album = new Album();
@@ -51,11 +74,6 @@ public class AlbumBackingBean implements Serializable{
         this.albumid = albumid;
     }
     
-    
-    
-    public AlbumBackingBean(){
-        genrelist = new ArrayList();
-    }
 
     public List<Album> getGenrelist() {
         return genrelist;
@@ -178,10 +196,6 @@ public class AlbumBackingBean implements Serializable{
         return "welcome_manager";
     }
     
-    public List<Album> getAll()
-    {
-        return albumController.findAlbumEntities();
-    }
     
     public void setFilteredAlbums(List<Album> filteredAlbums)
     {

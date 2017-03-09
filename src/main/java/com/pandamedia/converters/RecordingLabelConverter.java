@@ -1,16 +1,14 @@
 
 package com.pandamedia.converters;
 
-import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
+import javax.inject.Named;
 import persistence.controllers.RecordingLabelJpaController;
 import persistence.entities.RecordingLabel;
 
@@ -19,7 +17,7 @@ import persistence.entities.RecordingLabel;
  * @author Naasir
  */
 @RequestScoped
-@FacesConverter("recordingLabelConverter")
+@Named("recordingLabelConverter")
 public class RecordingLabelConverter  implements Converter {
     
     @Inject

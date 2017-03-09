@@ -7,217 +7,172 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Inventory</title>
+        <title>#{msgs.inventory}</title>
         <h:outputStylesheet name="css/bootstrap.css"/>
         <h:outputStylesheet library="css" name="style.css"/>
     </h:head>
     <h:body styleClass="bodyClass">
         <b:navBar brand="PandaMedia" brandHref="manager_index.xhtml" styleClass="navbar navbar-default pandaNavbar">
             <b:navbarLinks pull="right">
-                <b:navLink value="Sales" href="salesPage.xhtml"></b:navLink>
-                <b:navLink value="Clients" href="clients.xhtml"></b:navLink>
-                <b:navLink value="Orders" href="orders.xhtml"></b:navLink>
-                <b:navLink value="Reviews" href="reviews.xhtml"></b:navLink>
-                <b:navLink value="Reporting" href="reporting.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.sales}" href="salesPage.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.clients}" href="clients.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.orders}" href="orders.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.reviews}" href="reviews.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.reports}" href="reporting.xhtml"></b:navLink>
             </b:navbarLinks>
         </b:navBar> 
         
 
         <f:view>
 
-            <h:outputLink value="AlbumFunctionality/addAlbum.xhtml">Create Album</h:outputLink>
+            <h:outputLink value="AlbumFunctionality/addAlbum.xhtml">#{msgs.addAlbum}</h:outputLink>
             <br/>
-            <h:outputLink value="TrackFunctionality/addTrack.xhtml">Create Track</h:outputLink>
+            <h:outputLink value="TrackFunctionality/addTrack.xhtml">#{msgs.addTrack}</h:outputLink>
 
 
 
             <h:form>
-                <h1><h:outputText value="Albums"/></h1>
-                <p:dataTable value="#{albumBacking.all}" widgetVar="albumTable" filteredValue="#{albumBacking.filteredAlbums}"  var="item" paginator="true" rows="5">
+                <h1><h:outputText value="#{msgs.albums}"/></h1>
+                <p:dataTable value="#{albumBacking.albums}" widgetVar="albumTable" filteredValue="#{albumBacking.filteredAlbums}"  var="item" paginator="true" rows="5">
                     <f:facet name="header">
                         <p:outputPanel>
-                            <h:outputText value="Search all fields:" />
-                            <p:inputText id="globalFilter" onkeyup="PF('carsTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                            <h:outputText value="#{msgs.search}" />
+                            <p:inputText id="globalFilter" onkeyup="PF('albumTable').filter()" style="width:150px" placeholder="#{msgs.keyword}"/>
                         </p:outputPanel>
                     </f:facet>
-                    <p:column filterBy="#{albumBacking.album.id}" headerText="ID" filterMatchMode="contains">
+                    <p:column filterBy="#{item.id}" headerText="#{msgs.id}" filterMatchMode="contains">
                         <h:outputText value="#{item.id}"/>
                     </p:column>
-                    <p:column filterBy="#{albumBacking.album.title}" headerText="Title" filterMatchMode="contains">
+                    <p:column filterBy="#{item.title}" headerText="#{msgs.title}" filterMatchMode="contains">
                         <h:outputText value="#{item.title}"/>
                     </p:column>
-                    <p:column filterBy="#{albumBacking.album.releaseDate}" headerText="ReleaseDate" filterMatchMode="contains">
+                    <p:column filterBy="#{item.releaseDate}" headerText="#{msgs.releaseDate}" filterMatchMode="contains">
                         <h:outputText value="#{item.releaseDate}">
                             <f:convertDateTime pattern="MM/dd/yyyy" />
                         </h:outputText>
                     </p:column>
-                    <p:column filterBy="#{albumBacking.album.numTracks}" headerText="NumTracks" filterMatchMode="contains">
+                    <p:column filterBy="#{item.numTracks}" headerText="#{msgs.numTracks}" filterMatchMode="contains">
                         <h:outputText value="#{item.numTracks}"/>
                     </p:column>
-                    <p:column filterBy="#{albumBacking.album.dateEntered}" headerText="DateEntered" filterMatchMode="contains">
+                    <p:column filterBy="#{item.dateEntered}" headerText="#{msgs.dateEntered}" filterMatchMode="contains">
                         <h:outputText value="#{item.dateEntered}">
                             <f:convertDateTime pattern="MM/dd/yyyy" />
                         </h:outputText>
                     </p:column>
-                    <p:column filterBy="#{albumBacking.album.costPrice}" headerText="CostPrice" filterMatchMode="contains">
+                    <p:column filterBy="#{item.costPrice}" headerText="#{msgs.costPrice}" filterMatchMode="contains">
                         <h:outputText value="#{item.costPrice}"/>
                     </p:column>
-                    <p:column filterBy="#{albumBacking.album.listPrice}" headerText="ListPrice" filterMatchMode="contains">
+                    <p:column filterBy="#{item.listPrice}" headerText="#{msgs.listPrice}" filterMatchMode="contains">
                         <h:outputText value="#{item.listPrice}"/>
                     </p:column>
-                    <p:column filterBy="#{albumBacking.album.salePrice}" headerText="SalePrice" filterMatchMode="contains">
+                    <p:column filterBy="#{item.salePrice}" headerText="#{msgs.salePrice}" filterMatchMode="contains">
                         <h:outputText value="#{item.salePrice}"/>
                     </p:column>
-                    <p:column filterBy="#{albumBacking.album.removalStatus}" headerText="RemovalStatus" filterMatchMode="contains">
+                    <p:column filterBy="#{item.removalStatus}" headerText="#{msgs.removalStatus}" filterMatchMode="contains">
                         <h:outputText value="#{item.removalStatus}"/>
                     </p:column>
-                    <p:column filterBy="#{albumBacking.album.removalDate}" headerText="RemovalDate" filterMatchMode="contains">
+                    <p:column filterBy="#{item.removalDate}" headerText="#{msgs.removalDate}" filterMatchMode="contains">
                         <h:outputText value="#{item.removalDate}">
                             <f:convertDateTime pattern="MM/dd/yyyy" />
                         </h:outputText>
                     </p:column>
-                    <p:column filterBy="#{albumBacking.album.artistId}" headerText="ArtistID" filterMatchMode="contains">
+                    <p:column filterBy="#{item.artistId.name}" headerText="#{msgs.artistName}" filterMatchMode="contains">
                         <h:outputText value="#{item.artistId.name}"/>
                     </p:column>
-                    <p:column filterBy="#{albumBacking.album.genreId}" headerText="GenreID" filterMatchMode="contains">
+                    <p:column filterBy="#{item.genreId.name}" headerText="#{msgs.genreName}" filterMatchMode="contains">
                         <h:outputText value="#{item.genreId.name}"/>
                     </p:column>
-                    <p:column filterBy="#{albumBacking.album.recordingLabelId}" headerText="RecordingLabID" filterMatchMode="contains">
+                    <p:column filterBy="#{item.recordingLabelId.name}" headerText="#{msgs.recLabelName}" filterMatchMode="contains">
                         <h:outputText value="#{item.recordingLabelId.name}"/>
                     </p:column>
-                    <p:column filterBy="#{albumBacking.album.coverArtId}" headerText="CoverArtID" filterMatchMode="contains">
+                    <p:column filterBy="#{item.coverArtId.imagePath}" headerText="#{msgs.artPath}" filterMatchMode="contains">
                         <h:outputText value="#{item.coverArtId.imagePath}"/>
                     </p:column>
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="Options"/>
+                            <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <h:commandButton  value="Edit" action="#{albumBacking.loadEditForIndex(item.id)}" />
-                        <h:commandButton value="Add" action="#{albumBacking.addItem(item.id)}" />
-                        <h:commandButton  value="Delete" action="#{albumBacking.removeItem(item.id)}" />
+                        <h:commandButton  value="#{msgs.edit}" action="#{albumBacking.loadEditForIndex(item.id)}" />
+                        <h:commandButton value="#{msgs.add}" action="#{albumBacking.addItem(item.id)}" />
+                        <h:commandButton  value="#{msgs.del}" action="#{albumBacking.removeItem(item.id)}" />
                     </p:column>
                 </p:dataTable>
             </h:form>
 
 
             <h:form>
-                <h1><h:outputText value="Tracks"/></h1>
-                <p:dataTable value="#{trackBacking.all}" var="item" paginator="true" rows="5">
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Id"/>
-                        </f:facet>
+                <h1><h:outputText value="#{msgs.tracks}"/></h1>
+                <p:dataTable value="#{trackBacking.tracks}" widgetVar="trackTable" filteredValue="#{trackBacking.filteredTracks}" var="item" paginator="true" rows="5">
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="#{msgs.search}" />
+                            <p:inputText id="globalFilter" onkeyup="PF('trackTable').filter()" style="width:150px" placeholder="#{msgs.keyword}"/>
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column filterBy="#{item.id}" headerText="#{msgs.id}" filterMatchMode="contains">
                         <h:outputText value="#{item.id}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Title"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.title}" headerText="#{msgs.title}" filterMatchMode="contains">
                         <h:outputText value="#{item.title}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="ReleaseDate"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.releaseDate}" headerText="#{msgs.releaseDate}" filterMatchMode="contains">
                         <h:outputText value="#{item.releaseDate}">
                             <f:convertDateTime pattern="MM/dd/yyyy" />
                         </h:outputText>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="PlayLength"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.playLength}" headerText="#{msgs.playLength}" filterMatchMode="contains">
                         <h:outputText value="#{item.playLength}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="AlbumTrackNumber"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.albumTrackNumber}" headerText="#{msgs.albumTrackNumber}" filterMatchMode="contains">
                         <h:outputText value="#{item.albumTrackNumber}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="DateEntered"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.dateEntered}" headerText="#{msgs.dateEntered}" filterMatchMode="contains">
                         <h:outputText value="#{item.dateEntered}">
                             <f:convertDateTime pattern="MM/dd/yyyy" />
                         </h:outputText>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="PartOfAlbum"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.partOfAlbum}" headerText="#{msgs.partOfAlbum}" filterMatchMode="contains">
                         <h:outputText value="#{item.partOfAlbum}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="CostPrice"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.costPrice}" headerText="#{msgs.costPrice}" filterMatchMode="contains">
                         <h:outputText value="#{item.costPrice}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="ListPrice"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.listPrice}" headerText="#{msgs.listPrice}" filterMatchMode="contains">
                         <h:outputText value="#{item.listPrice}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="SalePrice"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.salePrice}" headerText="#{msgs.salePrice}" filterMatchMode="contains">
                         <h:outputText value="#{item.salePrice}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="RemovalStatus"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.removalStatus}" headerText="#{msgs.removalStatus}" filterMatchMode="contains">
                         <h:outputText value="#{item.removalStatus}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="RemovalDate"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.removalDate}" headerText="#{msgs.removalDate}" filterMatchMode="contains">
                         <h:outputText value="#{item.removalDate}">
                             <f:convertDateTime pattern="MM/dd/yyyy" />
                         </h:outputText>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="AlbumId"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.albumId.title}" headerText="#{msgs.albumTitle}" filterMatchMode="contains">
                         <h:outputText value="#{item.albumId.title}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="ArtistId"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.artistId.name}" headerText="#{msgs.artistName}" filterMatchMode="contains">
                         <h:outputText value="#{item.artistId.name}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="SongwriterId"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.songwriterId.name}" headerText="#{msgs.songwriterName}" filterMatchMode="contains">
                         <h:outputText value="#{item.songwriterId.name}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="GenreId"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.genreId.name}" headerText="#{msgs.genreName}" filterMatchMode="contains">
                         <h:outputText value="#{item.genreId.name}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="CoverArtId"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.coverArtId.imagePath}" headerText="#{msgs.artPath}" filterMatchMode="contains">>>
                         <h:outputText value="#{item.coverArtId.imagePath}"/>
                     </p:column>
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="Options"/>
+                            <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <h:outputLink value="TrackFunctionality/editTrack.xhtml">Edit</h:outputLink>
-                        <h:commandButton  value="Add" action="#{trackBacking.addItem(item.id)}" />
-                        <h:commandButton  value="Delete" action="#{trackBacking.removeItem(item.id)}" />
+                        <h:commandButton  value="#{msgs.edit}" action="#{trackBacking.loadEditForIndex(item.id)}" />
+                        <h:commandButton  value="#{msgs.add}" action="#{trackBacking.addItem(item.id)}" />
+                        <h:commandButton  value="#{msgs.del}" action="#{trackBacking.removeItem(item.id)}" />
                     </p:column>
                 </p:dataTable>
             </h:form>

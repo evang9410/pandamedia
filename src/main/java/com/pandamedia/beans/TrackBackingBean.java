@@ -6,12 +6,14 @@ import persistence.entities.Track;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import persistence.controllers.TrackJpaController;
+import persistence.entities.Album;
 import persistence.entities.Track;
 
 /**
@@ -23,16 +25,44 @@ import persistence.entities.Track;
 public class TrackBackingBean implements Serializable{
     @Inject
     private TrackJpaController trackController;
+    private Track track;
+    private List<Track> tracks;
+    private List<Track> filteredTracks;
     @PersistenceContext
     private EntityManager em;
-    private Track track;
     private String genre_string;
+    
+    @PostConstruct
+    public void init()
+    {
+        this.tracks = trackController.findTrackEntities();     
+    }
     
     public Track getTrack(){
         if(track == null){
             track = new Track();
         }
         return track;
+    }
+    
+    public void setFilteredTracks(List<Track> filteredTracks)
+    {
+        this.filteredTracks = filteredTracks;
+    }
+    
+    public List<Track> getFilteredTracks()
+    {
+        return this.filteredTracks;
+    }
+    
+    public List<Track> getTracks()
+    {
+        return tracks;
+    }
+    
+    public void setTracks(List<Track> tracks)
+    {
+        this.tracks = tracks;
     }
     
     public void setTrack(Track track){
@@ -86,13 +116,12 @@ public class TrackBackingBean implements Serializable{
         return null; 
     }
     
-    
+    public String loadEditForIndex(Integer id)
+    {
+        this.track = trackController.findTrack(id);
+        return "AlbumFunctionality/editAlbum.xhtml";
+    }
 
-    
-   public List<Track> getAll()
-   {
-       return trackController.findTrackEntities();
-   }
     
     
 }
