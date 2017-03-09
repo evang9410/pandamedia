@@ -52,12 +52,13 @@
                     <ui:repeat value="#{albumBacking.album.trackList}" var="tracks">
                         <tr>
                             <th scope="row">#{tracks.albumTrackNumber}</th>
-                            <h:form>
-                                <h:commandLink action="#{track.trackPage(tracks)}">
-                                    <td>#{tracks.title}</td>
-                                </h:commandLink>                               
-                            </h:form>
-                            
+                            <td>
+                                <h:form>
+                                    <h:commandLink action="#{trackBacking.trackPage(tracks)}">
+                                        #{tracks.title}
+                                    </h:commandLink>                               
+                                </h:form>    
+                            </td>                            
                             <td>#{tracks.playLength}</td>
                             <td width="50">
                                 <h:form>

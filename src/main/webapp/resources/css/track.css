@@ -19,3 +19,8 @@ body{
     height: 45vh;
     margin-top: 2%;
 }
+
+.review-wrapper{
+    height: 40vh;
+    background-color: lime;
+}

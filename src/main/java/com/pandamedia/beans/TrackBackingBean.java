@@ -4,13 +4,16 @@ import java.io.Serializable;
 import persistence.controllers.TrackJpaController;
 import persistence.entities.Track;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import persistence.controllers.TrackJpaController;
+import persistence.entities.Review;
 import persistence.entities.Track;
 
 /**
@@ -85,5 +88,17 @@ public class TrackBackingBean implements Serializable{
         return null; 
     }
     
-    
+    public List<Review> getApprovedReviews(){
+        List<Review> approvedReviews = new ArrayList();
+        short cond = 1;
+        for(Review r : track.getReviewList()){
+            System.out.println(r.getApprovalStatus().equals(cond));
+            if(r.getApprovalStatus() == 1){
+                approvedReviews.add(r);
+            }
+        }
+        System.out.println("approved reviews size: "  + approvedReviews.size());
+        return approvedReviews;
+    }
+     
 }
