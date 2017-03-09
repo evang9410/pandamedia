@@ -30,7 +30,7 @@ public class UserSearch implements Serializable{
     private String parameters;
     
     @Inject
-    private TrackJpaController tjpac;
+    private searchDropdown sd;
     
     @PersistenceContext
     private EntityManager em;
@@ -47,34 +47,58 @@ public class UserSearch implements Serializable{
         return resultsList;
      * @return }**/
     
+    public String executeSearch(){
+        String str = sd.getType();
+        switch(str) {
+            case "Track": searchTracks();
+                break;
+            case "Album": searchAlbums();
+                break;
+            case "Artist": searchArtists();
+                break;
+            case "Date": searchDate();
+                break;
+        }
+        return "searchpage";
+    }
+    
     //Default Search Criteria    
-    public List<Track> searchTracks(){
+    public void searchTracks(){
         //Creates query that returns a list of tracks with a name relevant to "parameters"
-        String q = "SELECT t FROM Track t WHERE t.name LIKE '%:p'";
+        String q = "SELECT t FROM Track t WHERE t.title LIKE :var";
         TypedQuery<Track> query =  em.createQuery(q, Track.class);
-        query.setParameter("p", parameters);
+        query.setParameter("var", "%" + parameters + "%");
         resultsList = query.getResultList();
-        return resultsList;
     }
     
     
-    public List<Album> searchAlbums(){
+    public void searchAlbums(){
         //Creates query that returns a list of albums with a name relevant to "parameters"
-        String q = "SELECT a FROM Album a WHERE a.name LIKE '%:p'";
+        String q = "SELECT a FROM Album a WHERE a.title LIKE :var";
         TypedQuery<Album> query =  em.createQuery(q, Album.class);
-        query.setParameter("p", parameters);
+        query.setParameter("var", "%" + parameters + "%");
         resultsList = query.getResultList();
-        return resultsList;
     }
 
-    public List<Artist> searchArtists(){
+    public void searchArtists(){
         //Creates query that returns a list of artists with a name relevant to "parameters"
-        String q = "SELECT a FROM Artist a WHERE a.name LIKE '%:p'";
+        String q = "SELECT a FROM Artist a WHERE a.name LIKE '%:var%'";
         TypedQuery<Artist> query =  em.createQuery(q, Artist.class);
-        query.setParameter("p", parameters);
+        query.setParameter("var", "%" + parameters + "%");
         resultsList = query.getResultList();
-        return resultsList;
     }
+    
+    public void searchDate(){
+        //Creates query that returns a list of tracks with a release date relevant to "parameters"
+        
+        /**
+         * 
+         * 
+         * 
+         */
+
+    }
+    
     /*
     public String isResultSingle(){
     

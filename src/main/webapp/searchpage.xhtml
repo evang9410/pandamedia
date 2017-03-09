@@ -9,42 +9,34 @@ and open the template in the editor.
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:p="http://primefaces.org/ui"
-    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:b="http://bootsfaces.net/ui">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway"></link>
     
         <div class="searchResultContainer">
-            <h:form>
-                <div class="searchBar">
-                    <h:inputText value="#{Search.parameters}" />
-                    
-                    <!--Select search type dropdown menu-->
-                    <p:selectOneMenu id="type" value="#{searchDropdown.type}">
-                        <p:ajax listener="#{searchDropdown.onTypeChange}" update="type" />
-                        <f:selectItem itemLabel="#{msgs.typeSelectLabel}" itemValue="" noSelectionOption="true"/>
-                        <f:selectItems value="#{searchDropdown.types}"/>
-                    </p:selectOneMenu>
-
-                    <!--Will have icon instead of value -->
-                    <p:commandButton icon="" value="search!"/>
-                </div>
-            </h:form>
             <div class="displaySearchResults">
                 
-                <!--in case its an albums list-->
-                <ui:repeat value="#{Search.resultsList}" var="r">
-                    <div class="displayEachAlbumResult">
-                        <div id="albumArtWrapper">
-                            <!--No art to display yet-->
-                        </div>
-
-                        <div id ="album_info">
-                            <h2>#{album.title}</h2><br/>
-                            <h4>#{msgs.by} #{album.artistId.name}, #{album.releaseDate.getYear()}</h4>
-                            <h4>#{album.genreId.name}</h4>
-                            <h4>#{album.numTracks} Tracks</h4>
-                        </div>
-                    </div>
+                <!--in case there are tracks in the list, else does not display anything -->
+                <ui:repeat value="#{Search.resultsList}" var="tracks">
+                    track <br></br>
                 </ui:repeat>
+                
+                <!-- ___________________________________________________________________ -->  
+                <br></br>
+                <!--in case there are albums in the list, else does not display anything -->
+                <ui:repeat value="#{Search.resultsList}" var="albums">
+
+                </ui:repeat>
+                
+                <!-- __________________________________________________________________* -->     
+                <br></br>
+                
+                <!--in case there are artists in the list, else does not display anything-->
+                <ui:repeat value="#{Search.resultsList}" var="artists">
+
+                </ui:repeat>
+                
+                
             </div>
         </div>
 </ui:composition>

@@ -8,27 +8,25 @@ package commands;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
  *
  * @author Pierre Azelart
  */
-
-@ManagedBean
-@ViewScoped
 @Named("searchDropdown")
+@SessionScoped
 public class searchDropdown implements Serializable{
     private String type;
-    private ArrayList<String> types;
     
+    @PostConstruct
     public void init(){
-        types = new ArrayList<>();
-        types.add("Track");
-        types.add("Album");
-        types.add("Artist");
-        types.add("Date");
+        //Default search type
+        type = "Track";
     }
 
     public String getType() {
@@ -38,13 +36,4 @@ public class searchDropdown implements Serializable{
     public void setType(String type) {
         this.type = type;
     }
-    
-    public ArrayList<String> getTypes() {
-        return types;
-    }
-    
-    public void onTypeChange(){
-        
-    }
-    
 }
