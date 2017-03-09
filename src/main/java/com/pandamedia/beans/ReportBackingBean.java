@@ -116,12 +116,12 @@ public class ReportBackingBean implements Serializable {
     
     public List<Object[]> getTopClients(Date startDate, Date endDate)
     {
-        // TODO fix count to be on correct invoice dates
+        // TODO fix sum to be on correct invoice dates
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<ShopUser> userRoot = query.from(ShopUser.class);
         ListJoin invoiceJoin = userRoot.join(ShopUser_.invoiceList, JoinType.LEFT);
-        query.multiselect(cb.count(invoiceJoin), userRoot);
+        query.multiselect(cb.sum(invoiceJoin.get(Invoice_.totalGrossValue)), userRoot);
         query.groupBy(userRoot.get(ShopUser_.id));
         
         // Subquery
@@ -136,10 +136,10 @@ public class ReportBackingBean implements Serializable {
         
         // Putting them together
         query.where(cb.exists(subquery));
-        query.orderBy(cb.desc(cb.count(invoiceJoin)));
+        query.orderBy(cb.desc(cb.sum(invoiceJoin.get(Invoice_.totalGrossValue))));
         TypedQuery<Object[]> typedQuery = em.createQuery(query);
         
-        LOG.info("size= " + typedQuery.getResultList().size());
+//        LOG.info("size= " + typedQuery.getResultList().size());
         return typedQuery.getResultList();
     }
 }
