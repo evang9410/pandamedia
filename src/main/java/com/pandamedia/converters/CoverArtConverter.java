@@ -2,6 +2,7 @@
 package com.pandamedia.converters;
 
 import java.io.Serializable;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -17,9 +18,9 @@ import persistence.entities.CoverArt;
  *
  * @author Naasir
  */
-@SessionScoped
+@RequestScoped
 @FacesConverter("coverArtConverter")
-public class CoverArtConverter  implements Converter,Serializable {
+public class CoverArtConverter  implements Converter {
     
     @Inject
     private CoverArtJpaController service;

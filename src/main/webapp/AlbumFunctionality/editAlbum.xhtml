@@ -42,19 +42,19 @@
                     </p:inputText>
                     <p:outputLabel value="ArtistId:" for="artistId" />
                     <p:selectOneMenu id="artistId" value="#{albumBacking.album.artistId}" converter="artistConverter" required="true" requiredMessage="The ArtistId field is required.">
-                        <f:selectItems value="#{artistJpaController.all}" var="artist" itemLabel="#{artist.name}" itemValue="#{artist}"/>
+                        <f:selectItems value="#{artistBacking.all}" var="artist" itemLabel="#{artist.name}" itemValue="#{artist}"/>
                     </p:selectOneMenu>
                     <p:outputLabel value="GenreId:" for="genreId" />
                     <p:selectOneMenu id="genreId" value="#{albumBacking.album.genreId}" converter="genreConverter" required="true" requiredMessage="The GenreId field is required.">
-                        <f:selectItems value="#{genreJpaController.all}" var="genre" itemLabel="#{genre.name}"/>
+                        <f:selectItems value="#{genreBacking.all}" var="genre" itemLabel="#{genre.name}" itemValue="#{genre}"/>
                     </p:selectOneMenu>
                     <p:outputLabel value="RecordingLabelId:" for="recordingLabelId" />
                     <p:selectOneMenu id="recordingLabelId" value="#{albumBacking.album.recordingLabelId}" converter="recordingLabelConverter" required="true" requiredMessage="The RecordingLabelId field is required.">
-                        <f:selectItems value="#{recordingLabelJpaController.all}" var="recLabel" itemLabel="#{recLabel.name}"/>
+                        <f:selectItems value="#{recordingLabelBacking.all}" var="recLabel" itemLabel="#{recLabel.name}" itemValue="#{recLabel}"/>
                     </p:selectOneMenu>
                     <p:outputLabel value="CoverArtId:" for="coverArtId" />
                     <p:selectOneMenu id="coverArtId" value="#{albumBacking.album.coverArtId}" converter="coverArtConverter" required="true" requiredMessage="The CoverArtId field is required.">
-                        <f:selectItems value="#{coverArtJpaController.all}" var="coverArt" itemLabel="#{coverArt.imagePath}"/>
+                        <f:selectItems value="#{coverArtBacking.all}" var="coverArt" itemLabel="#{coverArt.imagePath}" itemValue="#{coverArt}"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
                 <h:commandButton action="#{albumBacking.edit()}" value="Edit"/>

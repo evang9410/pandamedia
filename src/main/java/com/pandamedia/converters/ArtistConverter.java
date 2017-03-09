@@ -21,9 +21,9 @@ import persistence.entities.Artist;
  *
  * @author Naasir
  */
-@SessionScoped
+@RequestScoped
 @FacesConverter("artistConverter")
-public class ArtistConverter  implements Converter,Serializable {
+public class ArtistConverter  implements Converter {
     
     @Inject
     private ArtistJpaController service;
