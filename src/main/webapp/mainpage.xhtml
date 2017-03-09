@@ -83,9 +83,10 @@ and open the template in the editor.
         <div class="sug_containter">
             <h2 id="genre_header">#{msgs.suggested}</h2>
         </div>
-        <b:carousel styleClass="client-tracking">
+        <b:carousel styleClass="client-tracking" interval="5000">
             <c:forEach items="#{user.findUser(44).lastGenreSearched.albumList}" var="albums">
                 <b:carouselItem>
+                    <!-- replace this src with the albums cover art string -->
                     <img src="./resources/images/bg.jpg" alt="Valladolid" />
                     <b:carouselCaption>
                         <h:link outcome="album">
