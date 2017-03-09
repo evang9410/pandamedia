@@ -108,7 +108,7 @@ public class ReportBackingBean implements Serializable {
         subquery.where(cb.and(cb.and(p1, p2), cb.and(p3, p4)));
 
         // Putting them together
-        query.where(cb.not(cb.exists(subquery)));
+        query.where(cb.and(cb.not(cb.exists(subquery)), cb.equal(trackRoot.get(Track_.removalStatus), 0)));
         
         TypedQuery<Track> typedQuery = em.createQuery(query);
         return typedQuery.getResultList();
