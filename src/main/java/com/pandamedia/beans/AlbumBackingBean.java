@@ -29,6 +29,7 @@ public class AlbumBackingBean implements Serializable{
     @Inject
     private AlbumJpaController albumController;
     private Album album;
+    private List<Album> filteredAlbums;
     @PersistenceContext
     private EntityManager em;
     private String genreString;
@@ -160,6 +161,16 @@ public class AlbumBackingBean implements Serializable{
     public List<Album> getAll()
     {
         return albumController.findAlbumEntities();
+    }
+    
+    public void setFilteredAlbums(List<Album> filteredAlbums)
+    {
+        this.filteredAlbums = filteredAlbums;
+    }
+    
+    public List<Album> getFilteredAlbums()
+    {
+        return this.filteredAlbums;
     }
     
 }

@@ -27,7 +27,7 @@
 
             <h:form>
                 <h1><h:outputText value="Reviews"/></h1>
-                <p:dataTable value="#{reviewJpaController.all}" var="item">
+                <p:dataTable value="#{reviewBacking.all}" var="item" paginator="true" rows="5">
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="Id"/>

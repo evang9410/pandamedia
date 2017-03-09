@@ -24,4 +24,6 @@ public class UserBackingBean implements Serializable{
     private ShopUserJpaController userController;
     @PersistenceUnit
     private EntityManager em;
+    
+    
 }

@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Edit</title>
+    </h:head>
+    <h:body>
+        <f:view>
+
+
+            <h:form>
+                <h1><h:outputText value="Create/Edit"/></h1>
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Id:" for="id" />
+                    <p:inputText id="id" value="#{invoiceBacking.invoice.id}" title="Id" required="true" requiredMessage="The Id field is required."/>
+                    <p:outputLabel value="SaleDate:" for="saleDate" />
+                    <p:inputText id="saleDate" value="#{invoiceBacking.invoice.saleDate}" title="SaleDate" required="true" requiredMessage="The SaleDate field is required.">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </p:inputText>
+                    <p:outputLabel value="TotalNetValue:" for="totalNetValue" />
+                    <p:inputText id="totalNetValue" value="#{invoiceBacking.invoice.totalNetValue}" title="TotalNetValue" required="true" requiredMessage="The TotalNetValue field is required."/>
+                    <p:outputLabel value="PstTax:" for="pstTax" />
+                    <p:inputText id="pstTax" value="#{invoiceBacking.invoice.pstTax}" title="PstTax" required="true" requiredMessage="The PstTax field is required."/>
+                    <p:outputLabel value="GstTax:" for="gstTax" />
+                    <p:inputText id="gstTax" value="#{invoiceBacking.invoice.gstTax}" title="GstTax" required="true" requiredMessage="The GstTax field is required."/>
+                    <p:outputLabel value="HstTax:" for="hstTax" />
+                    <p:inputText id="hstTax" value="#{invoiceBacking.invoice.hstTax}" title="HstTax" required="true" requiredMessage="The HstTax field is required."/>
+                    <p:outputLabel value="TotalGrossValue:" for="totalGrossValue" />
+                    <p:inputText id="totalGrossValue" value="#{invoiceBacking.invoice.totalGrossValue}" title="TotalGrossValue" required="true" requiredMessage="The TotalGrossValue field is required."/>
+                    <p:outputLabel value="RemovalStatus:" for="removalStatus" />
+                    <p:inputText id="removalStatus" value="#{invoiceBacking.invoice.removalStatus}" title="RemovalStatus" required="true" requiredMessage="The RemovalStatus field is required."/>
+                    <p:outputLabel value="RemovalDate:" for="removalDate" />
+                    <p:inputText id="removalDate" value="#{invoiceBacking.invoice.removalDate}" title="RemovalDate" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </p:inputText>
+                    <p:outputLabel value="UserId:" for="userId" />
+                    <p:selectOneMenu id="userId" value="#{invoiceBacking.invoice.userId}" required="true" requiredMessage="The UserId field is required.">
+                        <!-- TODO: update below reference to list of available items-->
+                        <f:selectItems value="#{fixme}"/>
+                    </p:selectOneMenu>
+                </p:panelGrid>
+            </h:form>
+        </f:view>
+
+    </h:body>
+</html>
+

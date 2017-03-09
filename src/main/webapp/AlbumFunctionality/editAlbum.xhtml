@@ -41,7 +41,7 @@
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </p:inputText>
                     <p:outputLabel value="ArtistId:" for="artistId" />
-                    <p:selectOneMenu id="artistId" value="#{albumBacking.album.artistId}" converter="artistConverter" required="true" requiredMessage="The ArtistId field is required.">
+                    <p:selectOneMenu id="artistId" value="#{albumBacking.album.artistId}" converter="#{artistConverter}" required="true" requiredMessage="The ArtistId field is required.">
                         <f:selectItems value="#{artistBacking.all}" var="artist" itemLabel="#{artist.name}" itemValue="#{artist}"/>
                     </p:selectOneMenu>
                     <p:outputLabel value="GenreId:" for="genreId" />

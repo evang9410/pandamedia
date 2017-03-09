@@ -49,6 +49,10 @@ public class InvoiceBackingBean implements Serializable{
         return null; 
     }
     
+    public List<Invoice> getAll()
+    {
+        return invoiceController.findInvoiceEntities();
+    }
 
     
     

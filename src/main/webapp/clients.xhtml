@@ -31,7 +31,7 @@
 
             <h:form>
                 <h1><h:outputText value="List"/></h1>
-                <p:dataTable value="#{shopUserJpaController.all}" var="item">
+                <p:dataTable value="#{userBacking.all}" var="item">
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="Id"/>
@@ -138,7 +138,7 @@
                         <f:facet name="header">
                             <h:outputText value="Options"/>
                         </f:facet>
-                        <h:outputLink value="">Edit</h:outputLink>
+                        <h:commandButton  value="Edit" action="#{albumBacking.loadEditForIndex(item.id)}" />
                     </p:column>
                 </p:dataTable>
             </h:form>
