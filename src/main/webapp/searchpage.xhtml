@@ -1,0 +1,51 @@
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway"></link>
+    
+        <div class="searchResultContainer">
+            <h:form>
+                <div class="searchBar">
+                    <h:inputText value="#{Search.parameters}" />
+                    
+                    <!--Select search type dropdown menu-->
+                    <p:selectOneMenu id="type" value="#{searchDropdown.type}">
+                        <p:ajax listener="#{searchDropdown.onTypeChange}" update="type" />
+                        <f:selectItem itemLabel="#{msgs.typeSelectLabel}" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{searchDropdown.types}"/>
+                    </p:selectOneMenu>
+
+                    <!--Will have icon instead of value -->
+                    <p:commandButton icon="" value="search!"/>
+                </div>
+            </h:form>
+            <div class="displaySearchResults">
+                
+                <!--in case its an albums list-->
+                <ui:repeat value="#{Search.resultsList}" var="r">
+                    <div class="displayEachAlbumResult">
+                        <div id="albumArtWrapper">
+                            <!--No art to display yet-->
+                        </div>
+
+                        <div id ="album_info">
+                            <h2>#{album.title}</h2><br/>
+                            <h4>#{msgs.by} #{album.artistId.name}, #{album.releaseDate.getYear()}</h4>
+                            <h4>#{album.genreId.name}</h4>
+                            <h4>#{album.numTracks} Tracks</h4>
+                        </div>
+                    </div>
+                </ui:repeat>
+            </div>
+        </div>
+</ui:composition>
+

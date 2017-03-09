@@ -7,11 +7,9 @@ package commands;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import javax.annotation.ManagedBean;
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Named;
 
 /**
  *
@@ -20,6 +18,7 @@ import javax.faces.bean.ViewScoped;
 
 @ManagedBean
 @ViewScoped
+@Named("searchDropdown")
 public class searchDropdown implements Serializable{
     private String type;
     private ArrayList<String> types;

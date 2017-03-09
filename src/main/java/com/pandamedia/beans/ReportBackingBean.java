@@ -17,12 +17,8 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
-import persistence.entities.Genre_;
 import persistence.entities.Invoice;
-import persistence.entities.Invoice_;
-import persistence.entities.Province_;
 import persistence.entities.ShopUser;
-import persistence.entities.ShopUser_;
 
 /**
  * This class provides common methods for the report pages, and
@@ -94,7 +90,7 @@ public class ReportBackingBean implements Serializable {
      * @author Erika Bourque
      * @return The list of shop users
      */
-    public List<Object[]> getZeroUsers() {
+   /* public List<Object[]> getZeroUsers() {
         LOG.log(Level.INFO, "Zero Users start date: {0}", startDate);
         LOG.log(Level.INFO, "Zero Users end date: {0}", endDate);
 
@@ -132,5 +128,5 @@ public class ReportBackingBean implements Serializable {
         TypedQuery<Object[]> typedQuery = em.createQuery(query);
 
         return typedQuery.getResultList();
-    }
+    }*/
 }
