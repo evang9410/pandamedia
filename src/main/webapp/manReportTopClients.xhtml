@@ -22,7 +22,7 @@
         </pm:reportcalendars>
         <h:dataTable id="reportTable" value="#{reports.getTopClients(reportDates.startDate, reportDates.endDate)}" var="user">
             <h:column>
-                <f:facet name="header">#{msgs.idHeader}</f:facet>
+                <f:facet name="header">#{msgs.totalSpentHeader}</f:facet>
                 #{user[0]}
             </h:column>
             <h:column>

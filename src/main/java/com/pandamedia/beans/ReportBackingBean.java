@@ -56,8 +56,8 @@ public class ReportBackingBean implements Serializable {
      * @return                  The list of shop users
      */
     public List<ShopUser> getZeroUsers(Date startDate, Date endDate) {
-//        LOG.log(Level.INFO, "Zero Users start date: {0}", startDate);
-//        LOG.log(Level.INFO, "Zero Users end date: {0}", endDate);
+        String logMsg = "Zero Users\tStart: " + startDate + "\tEnd: " + endDate;
+        LOG.log(Level.INFO, logMsg);
 
         // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -73,8 +73,8 @@ public class ReportBackingBean implements Serializable {
         // Using predicates to avoid compiler errors, does not like CriteriaBuilder's between method
         Predicate p1 = cb.equal(invoiceRoot.get(Invoice_.userId), userRoot);
         Predicate p2 = cb.between(invoiceRoot.get(Invoice_.saleDate).as(Date.class), startDate, endDate);
-        subquery.where(cb.and(p1, p2));
-        // TODO: and invoice not removed
+        Predicate p3 = cb.equal(invoiceRoot.get(Invoice_.removalStatus), 0);
+        subquery.where(cb.and(cb.and(p1, p2), p3));
 
         // Putting them together
         query.where(cb.not(cb.exists(subquery)));
@@ -85,8 +85,8 @@ public class ReportBackingBean implements Serializable {
     
     public List<Track> getZeroTracks(Date startDate, Date endDate)
     {
-//        LOG.log(Level.INFO, "Zero tracks start date: {0}", startDate);
-//        LOG.log(Level.INFO, "Zero tracks end date: {0}", endDate);
+        String logMsg = "Zero Tracks\tStart: " + startDate + "\tEnd: " + endDate;
+        LOG.log(Level.INFO, logMsg);
 
         // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -103,43 +103,47 @@ public class ReportBackingBean implements Serializable {
         // Using predicates to avoid compiler errors, does not like CriteriaBuilder's between method
         Predicate p1 = cb.equal(invoiceTrackRoot.get(InvoiceTrack_.invoiceTrackPK).get(InvoiceTrackPK_.trackId), trackRoot.get(Track_.id));
         Predicate p2 = cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate);
-        subquery.where(cb.and(p1, p2));
-        // TODO: and invoice not removed
-        // TODO: and track not removed
+        Predicate p3 = cb.equal(invoiceTrackRoot.get(InvoiceTrack_.removalStatus), 0);
+        Predicate p4 = cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0);
+        subquery.where(cb.and(cb.and(p1, p2), cb.and(p3, p4)));
 
         // Putting them together
         query.where(cb.not(cb.exists(subquery)));
+        
         TypedQuery<Track> typedQuery = em.createQuery(query);
-
         return typedQuery.getResultList();
     }
     
     public List<Object[]> getTopClients(Date startDate, Date endDate)
     {
-        // TODO fix sum to be on correct invoice dates
+        String logMsg = "Top Clients\tStart: " + startDate + "\tEnd: " + endDate;
+        LOG.log(Level.INFO, logMsg);
+        
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<ShopUser> userRoot = query.from(ShopUser.class);
+        
+        // Join
         ListJoin invoiceJoin = userRoot.join(ShopUser_.invoiceList, JoinType.LEFT);
+        
+        // Select
         query.multiselect(cb.sum(invoiceJoin.get(Invoice_.totalGrossValue)), userRoot);
         query.groupBy(userRoot.get(ShopUser_.id));
         
-        // Subquery
-        Subquery<Invoice> subquery = query.subquery(Invoice.class);
-        Root<Invoice> invoiceRoot = subquery.from(Invoice.class);
-        subquery.select(invoiceRoot);
+        // Where
+        Predicate p1 = cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate);
+        Predicate p2 = cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0);
+        query.where(cb.and(p1, p2));
         
-        // Using predicates to avoid compiler errors, does not like CriteriaBuilder's between method
-        Predicate p1 = cb.equal(invoiceRoot.get(Invoice_.userId), userRoot);
-        Predicate p2 = cb.between(invoiceRoot.get(Invoice_.saleDate).as(Date.class), startDate, endDate);
-        subquery.where(cb.and(p1, p2));
-        
-        // Putting them together
-        query.where(cb.exists(subquery));
+        // Order By
         query.orderBy(cb.desc(cb.sum(invoiceJoin.get(Invoice_.totalGrossValue))));
-        TypedQuery<Object[]> typedQuery = em.createQuery(query);
         
-//        LOG.info("size= " + typedQuery.getResultList().size());
+        TypedQuery<Object[]> typedQuery = em.createQuery(query);
         return typedQuery.getResultList();
     }
+    
+//    public List<Object[]> getTopSellers(Date startDate, Date endDate)
+//    {
+//        
+//    }
 }
