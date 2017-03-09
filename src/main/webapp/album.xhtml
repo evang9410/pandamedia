@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -17,7 +12,11 @@ and open the template in the editor.
         <h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
-    <body class = "bodyClass">
+
+    <h:body class = "bodyClass">
+        <header>
+            <ui:include src="./WEB-INF/sections/menu.xhtml"/>
+        </header>
 
         <div class="album-info-wrapper">
             <div class="container-fluid">
@@ -53,7 +52,12 @@ and open the template in the editor.
                     <ui:repeat value="#{albumBacking.album.trackList}" var="tracks">
                         <tr>
                             <th scope="row">#{tracks.albumTrackNumber}</th>
-                            <td>#{tracks.title}</td>
+                            <h:form>
+                                <h:commandLink action="#{track.trackPage(tracks)}">
+                                    <td>#{tracks.title}</td>
+                                </h:commandLink>                               
+                            </h:form>
+                            
                             <td>#{tracks.playLength}</td>
                             <td width="50">
                                 <h:form>
@@ -65,5 +69,5 @@ and open the template in the editor.
                 </tbody>
             </table>
         </div>
-    </body>
+    </h:body>
 </html>

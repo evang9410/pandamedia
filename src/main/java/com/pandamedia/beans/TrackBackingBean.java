@@ -36,5 +36,12 @@ public class TrackBackingBean implements Serializable{
         return track;
     }
     
-    
+    public void setTrack(Track track){
+        this.track = track;
+    }
+
+    public String trackPage(Track t){
+        track = t;
+        return "track";
+    }
 }
