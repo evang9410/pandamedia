@@ -1,30 +1,11 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:pm="http://pandamedia.com/facelets">
-    <h:head>
-        <title>#{msgs.manReportZeroUserTitle}</title>
-        <meta name="author" content="Erika Bourque"></meta>
-    </h:head>
-    <h:body>
-        #{msgs.manReportZeroUserTitle}
-        <pm:reportcalendars 
-            max="#{reportDates.defaultEndDate}" 
-            start="#{reportDates.startDate}" 
-            end="#{reportDates.endDate}" 
-            updateTable="reportTable">
-        </pm:reportcalendars>
-<!--        <pm:userdisplay
-            tablename="reportTable">
-            <ui:param name="bean" value="#{reports}" />
-            <ui:param name="method" value="getZeroUsers(reportDates.startDate, reportDates.endDate)" />
-        </pm:userdisplay>-->
-        <h:dataTable id="reportTable" value="#{reports.getZeroUsers(reportDates.startDate, reportDates.endDate)}" var="user">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <!-- omnifaces might make this work -->
+    <h:dataTable id="#{tablename}" value="#{bean[method]}" var="user">
             <h:column>
                 <f:facet name="header">#{msgs.idHeader}</f:facet>
                 #{user.id}
@@ -85,7 +66,5 @@
                 <f:facet name="header">#{msgs.isManagerHeader}</f:facet>
                 #{user.isManager}
             </h:column>
-        </h:dataTable>
-    </h:body>
-</html>
-
+        </h:dataTable>    
+</ui:composition>

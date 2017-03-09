@@ -39,7 +39,8 @@ import persistence.entities.ShopUser;
 import persistence.entities.Track;
 
 /**
- *
+ * TODO find a way to log, also find a way to get province correctly
+ * 
  * @author Erika Bourque
  */
 @RunWith(Arquillian.class)

@@ -16,6 +16,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Status;
 import javax.transaction.UserTransaction;
 import persistence.controllers.exceptions.IllegalOrphanException;
 import persistence.controllers.exceptions.NonexistentEntityException;
@@ -103,7 +104,10 @@ public class ShopUserJpaController implements Serializable {
         } catch (Exception ex) {
             LOG.info(ex.getMessage());
             try {
-                utx.rollback();
+                if (utx.getStatus() == Status.STATUS_ACTIVE)
+                {
+                    utx.rollback();
+                }                
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }

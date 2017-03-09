@@ -3,7 +3,6 @@ package com.pandamedia.beans;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -11,10 +10,12 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CollectionJoin;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
@@ -24,6 +25,7 @@ import persistence.entities.InvoiceTrackPK_;
 import persistence.entities.InvoiceTrack_;
 import persistence.entities.Invoice_;
 import persistence.entities.ShopUser;
+import persistence.entities.ShopUser_;
 import persistence.entities.Track;
 import persistence.entities.Track_;
 
@@ -54,8 +56,8 @@ public class ReportBackingBean implements Serializable {
      * @return                  The list of shop users
      */
     public List<ShopUser> getZeroUsers(Date startDate, Date endDate) {
-        LOG.log(Level.INFO, "Zero Users start date: {0}", startDate);
-        LOG.log(Level.INFO, "Zero Users end date: {0}", endDate);
+//        LOG.log(Level.INFO, "Zero Users start date: {0}", startDate);
+//        LOG.log(Level.INFO, "Zero Users end date: {0}", endDate);
 
         // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -83,8 +85,8 @@ public class ReportBackingBean implements Serializable {
     
     public List<Track> getZeroTracks(Date startDate, Date endDate)
     {
-        LOG.log(Level.INFO, "Zero tracks start date: {0}", startDate);
-        LOG.log(Level.INFO, "Zero tracks end date: {0}", endDate);
+//        LOG.log(Level.INFO, "Zero tracks start date: {0}", startDate);
+//        LOG.log(Level.INFO, "Zero tracks end date: {0}", endDate);
 
         // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -109,6 +111,35 @@ public class ReportBackingBean implements Serializable {
         query.where(cb.not(cb.exists(subquery)));
         TypedQuery<Track> typedQuery = em.createQuery(query);
 
+        return typedQuery.getResultList();
+    }
+    
+    public List<Object[]> getTopClients(Date startDate, Date endDate)
+    {
+        // TODO fix count to be on correct invoice dates
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<ShopUser> userRoot = query.from(ShopUser.class);
+        ListJoin invoiceJoin = userRoot.join(ShopUser_.invoiceList, JoinType.LEFT);
+        query.multiselect(cb.count(invoiceJoin), userRoot);
+        query.groupBy(userRoot.get(ShopUser_.id));
+        
+        // Subquery
+        Subquery<Invoice> subquery = query.subquery(Invoice.class);
+        Root<Invoice> invoiceRoot = subquery.from(Invoice.class);
+        subquery.select(invoiceRoot);
+        
+        // Using predicates to avoid compiler errors, does not like CriteriaBuilder's between method
+        Predicate p1 = cb.equal(invoiceRoot.get(Invoice_.userId), userRoot);
+        Predicate p2 = cb.between(invoiceRoot.get(Invoice_.saleDate).as(Date.class), startDate, endDate);
+        subquery.where(cb.and(p1, p2));
+        
+        // Putting them together
+        query.where(cb.exists(subquery));
+        query.orderBy(cb.desc(cb.count(invoiceJoin)));
+        TypedQuery<Object[]> typedQuery = em.createQuery(query);
+        
+        LOG.info("size= " + typedQuery.getResultList().size());
         return typedQuery.getResultList();
     }
 }
