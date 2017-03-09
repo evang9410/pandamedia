@@ -92,8 +92,7 @@ public class TrackBackingBean implements Serializable{
         List<Review> approvedReviews = new ArrayList();
         short cond = 1;
         for(Review r : track.getReviewList()){
-            System.out.println(r.getApprovalStatus().equals(cond));
-            if(r.getApprovalStatus() == 1){
+            if(r.getApprovalStatus() == cond){
                 approvedReviews.add(r);
             }
         }
