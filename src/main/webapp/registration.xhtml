@@ -9,24 +9,42 @@
     </h:head>
     <h:body>
         <h:form>
+            <h:outputLabel for="titleInput" value="Title"/>
+            <h:selectOneMenu id="titleInput" value="#{userBean.shopUser.title}" required="true">
+                <f:selectItem itemValue="Mr">Mr</f:selectItem>
+                <f:selectItem itemValue="Mrs">Mrs</f:selectItem>
+                <f:selectItem itemValue="Ms">Ms</f:selectItem>
+                <f:selectItem itemValue="Prof">Prof</f:selectItem>
+                <f:selectItem itemValue="Dr">Dr</f:selectItem>
+                <f:selectItem itemValue="TBA">TBA</f:selectItem>
+            </h:selectOneMenu>
+            <br/>
+            <h:outputLabel for="fnameInput" value="First Name"/>
+            <h:inputText id="fnameInput" value="#{userBean.shopUser.firstName}"/>
+            <br/>
+            <h:outputLabel for="lnameInput" value="Last Name"/>
+            <h:inputText id="lnameInput" value="#{userBean.shopUser.lastName}"/>
+            <br/>
             <h:outputLabel for="emailInput" value="Email"/>
             <h:inputText id="emailInput" value="#{userBean.shopUser.email}"
-                         validator="#{userBean.validateEmail}">
+                         validator="#{userBean.validateEmail}" required="true">
                 <f:ajax event="valueChange" render="emailError"/>
             </h:inputText>
                 <h:message id="emailError" for="emailInput" style="color:red"/>
             <br/>
             <h:outputLabel for="password" value="Password"/>
-            <h:inputSecret id="password" value="#{userBean.shopUser.password}"/>
+            <h:inputSecret id="password" value="#{userBean.password}" required="true" immediate="true">
+                <!--<f:ajax event="valueChange" immediate="true"/>-->
+            </h:inputSecret>
             <br/>
             <h:outputLabel for="confirmPwd" value="Confirm Password"/>
             <h:inputSecret id="confirmPwd" value="#{userBean.confirmPasswd}"
-                           validator="#{userBean.validatePassword}">
-                <f:ajax event="valueChange" render="passwordError"/>
+                           validator="#{userBean.validatePassword}" required="true" immediate="true">
+                <!--<f:ajax event="keyup" render="passwordError"/>-->
             </h:inputSecret>
             <h:message id="passwordError" for="confirmPwd" style="color:red"/>
             <br/>
-            <h:commandButton value="submit" />
+            <h:commandButton value="submit" action="#{userBean.createNewUser()}"/>
         </h:form>
     </h:body>
 </html>
