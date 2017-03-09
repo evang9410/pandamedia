@@ -22,7 +22,7 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body class="parallax">
-        <div>s
+        <div>
             <ui:include src="./WEB-INF/sections/menu.xhtml"/>
         </div>
         <!-- latest releases -->
@@ -31,12 +31,13 @@ and open the template in the editor.
             ad banner
         </div>
         <h2 id="latest_header">#{msgs.newReleases}</h2>
+        
         <div class="contentflow_container">
-            <b:carousel styleClass="client-tracking" interval="5000">
+            <b:carousel interval="5000" styleClass="client-tracking">
                 <c:forEach items="#{albumBacking.latestAlbums}" var="latest">
                     <b:carouselItem>
                         <!-- replace this src with the albums cover art string -->
-                        <img src="./resources/images/bg.jpg" alt="Valladolid" />
+                        <img src="./resources/images/bg.jpg"/>
                         <b:carouselCaption>
                             <h:form>
                                 <h:commandLink action="#{albumBacking.albumPage(latest)}">
@@ -47,8 +48,8 @@ and open the template in the editor.
                     </b:carouselItem>
                 </c:forEach>
             </b:carousel>
-
         </div>
+        
         <div class = "container-fluid content well-lg">
             <div class = "genre">
                 <h2 id="genre_header">#{msgs.genres}</h2>
