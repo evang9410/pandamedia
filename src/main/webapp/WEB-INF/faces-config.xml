@@ -17,8 +17,16 @@
             <to-view-id>/index.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>welcome_manager</from-outcome>
+            <to-view-id>/manager_index.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
     <navigation-case>
         <from-outcome>main</from-outcome>
         <to-view-id>../mainpage.xhtml</to-view-id>
     </navigation-case>
+    
 </faces-config>

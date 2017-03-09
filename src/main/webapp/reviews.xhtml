@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Reviews</title>
+        <h:outputStylesheet name="css/bootstrap.css"/>
+    </h:head>
+    <h:body>
+        <b:navBar brand="PandaMedia" brandHref="manager_index.xhtml" styleClass="navbar navbar-default pandaNavbar">
+            <b:navbarLinks pull="right">
+                <b:navLink value="Sales" href="salesPage.xhtml"></b:navLink>
+                <b:navLink value="Clients" href="clients.xhtml"></b:navLink>
+                <b:navLink value="Orders" href="orders.xhtml"></b:navLink>
+                <b:navLink value="Reviews" href="reviews.xhtml"></b:navLink>
+                <b:navLink value="Reporting" href="reporting.xhtml"></b:navLink>
+            </b:navbarLinks>
+        </b:navBar> 
+        <h:outputStylesheet library="css" name="style.css"  />
+        
+        <f:view>
+
+
+
+            <h:form>
+                <h1><h:outputText value="Reviews"/></h1>
+                <p:dataTable value="#{reviewJpaController.all}" var="item">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Id"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="DateEntered"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dateEntered}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Rating"/>
+                        </f:facet>
+                        <h:outputText value="#{item.rating}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="ReviewContent"/>
+                        </f:facet>
+                        <h:outputText value="#{item.reviewContent}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="ApprovalStatus"/>
+                        </f:facet>
+                        <h:outputText value="#{item.approvalStatus}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="TrackId"/>
+                        </f:facet>
+                        <h:outputText value="#{item.trackId.title}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="UserId"/>
+                        </f:facet>
+                        <h:outputText value="#{item.userId.firstName}"/>
+                        <br/>
+                        <h:outputText value="#{item.userId.lastName}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Options"/>
+                        </f:facet>
+                        <h:commandButton value="Approve" action="#{reviewBacking.approve(item.id)}" />
+                        <h:commandButton value="Disapprove" action="#{reviewBacking.disapprove(item.id)}" />
+                        <h:commandButton value="Remove" action="#{reviewBacking.removeItem(item.id)}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+
+        </f:view>
+
+        
+    </h:body>
+</html>
+

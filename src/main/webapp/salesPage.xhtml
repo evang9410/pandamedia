@@ -1,0 +1,259 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
+    <h:head>
+        <title>Sales</title>
+        <h:outputStylesheet name="css/bootstrap.css"/>
+    </h:head>
+    <h:body styleClass="bodyClass">
+        <b:navBar brand="PandaMedia" brandHref="manager_index.xhtml" styleClass="navbar navbar-default pandaNavbar">
+            <b:navbarLinks pull="right">
+                <b:navLink value="Sales" href="salesPage.xhtml"></b:navLink>
+                <b:navLink value="Clients" href="clients.xhtml"></b:navLink>
+                <b:navLink value="Orders" href="orders.xhtml"></b:navLink>
+                <b:navLink value="Reviews" href="reviews.xhtml"></b:navLink>
+                <b:navLink value="Reporting" href="reporting.xhtml"></b:navLink>
+            </b:navbarLinks>
+        </b:navBar> 
+        <h:outputStylesheet library="css" name="style.css"  />
+        
+        
+        <f:view>
+
+
+
+
+            <h:form>
+                <h1><h:outputText value="List"/></h1>
+                <p:dataTable value="#{albumJpaController.all}" var="item">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Id"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Title"/>
+                        </f:facet>
+                        <h:outputText value="#{item.title}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="ReleaseDate"/>
+                        </f:facet>
+                        <h:outputText value="#{item.releaseDate}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="NumTracks"/>
+                        </f:facet>
+                        <h:outputText value="#{item.numTracks}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="DateEntered"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dateEntered}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="CostPrice"/>
+                        </f:facet>
+                        <h:outputText value="#{item.costPrice}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="ListPrice"/>
+                        </f:facet>
+                        <h:outputText value="#{item.listPrice}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="SalePrice"/>
+                        </f:facet>
+                        <h:outputText value="#{item.salePrice}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="RemovalStatus"/>
+                        </f:facet>
+                        <h:outputText value="#{item.removalStatus}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="RemovalDate"/>
+                        </f:facet>
+                        <h:outputText value="#{item.removalDate}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="ArtistId"/>
+                        </f:facet>
+                        <h:outputText value="#{item.artistId}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="GenreId"/>
+                        </f:facet>
+                        <h:outputText value="#{item.genreId}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="RecordingLabelId"/>
+                        </f:facet>
+                        <h:outputText value="#{item.recordingLabelId}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="CoverArtId"/>
+                        </f:facet>
+                        <h:outputText value="#{item.coverArtId}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Options"/>
+                        </f:facet>
+                        <h:outputLink value="#{albumBacking.loadEditForIndex(item.id)}">Edit</h:outputLink>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </f:view>
+
+
+        <f:view>
+            <h:form>
+                <h1><h:outputText value="List"/></h1>
+                <p:dataTable value="#{trackJpaController.all}" var="item">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Id"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Title"/>
+                        </f:facet>
+                        <h:outputText value="#{item.title}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="ReleaseDate"/>
+                        </f:facet>
+                        <h:outputText value="#{item.releaseDate}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="PlayLength"/>
+                        </f:facet>
+                        <h:outputText value="#{item.playLength}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="AlbumTrackNumber"/>
+                        </f:facet>
+                        <h:outputText value="#{item.albumTrackNumber}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="DateEntered"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dateEntered}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="PartOfAlbum"/>
+                        </f:facet>
+                        <h:outputText value="#{item.partOfAlbum}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="CostPrice"/>
+                        </f:facet>
+                        <h:outputText value="#{item.costPrice}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="ListPrice"/>
+                        </f:facet>
+                        <h:outputText value="#{item.listPrice}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="SalePrice"/>
+                        </f:facet>
+                        <h:outputText value="#{item.salePrice}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="RemovalStatus"/>
+                        </f:facet>
+                        <h:outputText value="#{item.removalStatus}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="RemovalDate"/>
+                        </f:facet>
+                        <h:outputText value="#{item.removalDate}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="AlbumId"/>
+                        </f:facet>
+                        <h:outputText value="#{item.albumId}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="ArtistId"/>
+                        </f:facet>
+                        <h:outputText value="#{item.artistId}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="SongwriterId"/>
+                        </f:facet>
+                        <h:outputText value="#{item.songwriterId}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="GenreId"/>
+                        </f:facet>
+                        <h:outputText value="#{item.genreId}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="CoverArtId"/>
+                        </f:facet>
+                        <h:outputText value="#{item.coverArtId}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Options"/>
+                        </f:facet>
+                        <h:outputLink value="">Edit Sales</h:outputLink>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+
+        </f:view>
+
+    </h:body>
+</html>
+
