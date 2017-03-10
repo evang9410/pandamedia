@@ -23,25 +23,27 @@ import javax.persistence.criteria.Subquery;
 import persistence.entities.Album;
 import persistence.entities.Album_;
 import persistence.entities.Invoice;
+import persistence.entities.InvoiceAlbum;
+import persistence.entities.InvoiceAlbum_;
 import persistence.entities.InvoiceTrack;
 import persistence.entities.InvoiceTrackPK_;
 import persistence.entities.InvoiceTrack_;
 import persistence.entities.Invoice_;
-
 import persistence.entities.ShopUser;
 import persistence.entities.ShopUser_;
 import persistence.entities.Track;
 import persistence.entities.Track_;
 
 /**
- * This class provides common methods for the report pages, and
- * keeps track of the desired start and end dates of the current report.
+ * This class provides common methods for the report pages, and keeps track of
+ * the desired start and end dates of the current report.
  *
  * @author Erika Bourque
  */
 @Named("reports")
 @RequestScoped
 public class ReportBackingBean implements Serializable {
+
     // TODO: add checks for was it valid during report time and now is removed
     private static final Logger LOG = Logger.getLogger("ReportBackingBean.class");
 
@@ -56,9 +58,9 @@ public class ReportBackingBean implements Serializable {
      * purchases in the time frame specified.
      *
      * @author Erika Bourque
-     * @param startDate         The report's start date
-     * @param endDate           The report's end date
-     * @return                  The list of shop users
+     * @param startDate The report's start date
+     * @param endDate The report's end date
+     * @return The list of shop users
      */
     public List<ShopUser> getZeroUsers(Date startDate, Date endDate) {
         String logMsg = "Zero Users\tStart: " + startDate + "\tEnd: " + endDate;
@@ -87,9 +89,8 @@ public class ReportBackingBean implements Serializable {
 
         return typedQuery.getResultList();
     }
-    
-    public List<Track> getZeroTracks(Date startDate, Date endDate)
-    {
+
+    public List<Track> getZeroTracks(Date startDate, Date endDate) {
         String logMsg = "Zero Tracks\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
 
@@ -114,56 +115,54 @@ public class ReportBackingBean implements Serializable {
 
         // Putting them together
         query.where(cb.and(cb.not(cb.exists(subquery)), cb.equal(trackRoot.get(Track_.removalStatus), 0)));
-        
+
         TypedQuery<Track> typedQuery = em.createQuery(query);
         return typedQuery.getResultList();
     }
-    
-    public List<Object[]> getTopClients(Date startDate, Date endDate)
-    {
+
+    public List<Object[]> getTopClients(Date startDate, Date endDate) {
         String logMsg = "Top Clients\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
-        
+
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<ShopUser> userRoot = query.from(ShopUser.class);
-        
+
         // Join
         ListJoin invoiceJoin = userRoot.join(ShopUser_.invoiceList, JoinType.LEFT);
-        
+
         // Select
         query.multiselect(cb.sum(invoiceJoin.get(Invoice_.totalGrossValue)), userRoot);
         query.groupBy(userRoot.get(ShopUser_.id));
-        
+
         // Where
         Predicate p1 = cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate);
         Predicate p2 = cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0);
         query.where(cb.and(p1, p2));
-        
+
         // Order By
         query.orderBy(cb.desc(cb.sum(invoiceJoin.get(Invoice_.totalGrossValue))));
-        
+
         TypedQuery<Object[]> typedQuery = em.createQuery(query);
         return typedQuery.getResultList();
     }
-    
-    public List<Object[]> getTopTrackSellers(Date startDate, Date endDate)
-    {
+
+    public List<Object[]> getTopTrackSellers(Date startDate, Date endDate) {
         String logMsg = "Top Track Sellers\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
-        
+
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<Track> trackRoot = query.from(Track.class);
-        
+
         // Joins
         ListJoin invoiceTrackJoin = trackRoot.join(Track_.invoiceTrackList, JoinType.LEFT);
         Join invoiceJoin = invoiceTrackJoin.join(InvoiceTrack_.invoice);
-        
+
         // Select
         query.multiselect(cb.count(invoiceTrackJoin), trackRoot);
         query.groupBy(trackRoot.get(Track_.id));
-        
+
         // Where
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
@@ -171,31 +170,30 @@ public class ReportBackingBean implements Serializable {
         predicates.add(cb.equal(invoiceTrackJoin.get(InvoiceTrack_.removalStatus), 0));
         predicates.add(cb.equal(trackRoot.get(Track_.removalStatus), 0));
         query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
-        
+
         // Order by
         query.orderBy(cb.desc(cb.count(invoiceTrackJoin)));
-        
+
         TypedQuery<Object[]> typedQuery = em.createQuery(query);
         return typedQuery.getResultList();
     }
-    
-    public List<Object[]> getTopAlbumSellers(Date startDate, Date endDate)
-    {
+
+    public List<Object[]> getTopAlbumSellers(Date startDate, Date endDate) {
         String logMsg = "Top Album Sellers\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
-        
+
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<Album> albumRoot = query.from(Album.class);
-        
+
         // Joins
         ListJoin invoiceAlbumJoin = albumRoot.join(Album_.invoiceAlbumList, JoinType.LEFT);
         Join invoiceJoin = invoiceAlbumJoin.join(InvoiceTrack_.invoice);
-        
+
         // Select
         query.multiselect(cb.count(invoiceAlbumJoin), albumRoot);
         query.groupBy(albumRoot.get(Album_.id));
-        
+
         // Where
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
@@ -203,58 +201,102 @@ public class ReportBackingBean implements Serializable {
         predicates.add(cb.equal(invoiceAlbumJoin.get(InvoiceTrack_.removalStatus), 0));
         predicates.add(cb.equal(albumRoot.get(Album_.removalStatus), 0));
         query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
-        
+
         // Order by
         query.orderBy(cb.desc(cb.count(invoiceAlbumJoin)));
-        
+
         TypedQuery<Object[]> typedQuery = em.createQuery(query);
         return typedQuery.getResultList();
     }
-    
-    public List<Object[]> getTotalTrackSalesByDate(Date startDate, Date endDate)
-    {
+
+    public List<Object[]> getTotalTrackSalesByDate(Date startDate, Date endDate) {
         // TODO add way to get zeros if no sales have been made
-        
+
         String logMsg = "Total Track Sales\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
-        
+
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<Track> trackRoot = query.from(Track.class);
 //        Root<InvoiceTrack> invoiceTrackRoot = query.from(InvoiceTrack.class);
-        ListJoin invoiceTrackJoin = trackRoot.join(Track_.invoiceTrackList, JoinType.LEFT);
-        query.groupBy(invoiceTrackJoin.get(InvoiceTrack_.track).get(Track_.id));
+        Join<Track, InvoiceTrack> invoiceTrackJoin = trackRoot.join(Track_.invoiceTrackList, JoinType.LEFT);
+        query.groupBy(trackRoot.get(Track_.id));
         Join invoiceJoin = invoiceTrackJoin.join(InvoiceTrack_.invoice);
 //        Join trackJoin = invoiceTrackRoot.join(InvoiceTrack_.track, JoinType.LEFT);
-        
+
         // Subquery
 //        Subquery<Double> salesTotal = query.subquery(Double.class);
 //        Root<InvoiceTrack> invoiceTrackRoot = salesTotal.from(InvoiceTrack.class);
 ////        Join invoiceJoin = invoiceTrackRoot.join(InvoiceTrack_.invoice);
 //        salesTotal.select(cb.sum(invoiceTrackRoot.get(InvoiceTrack_.finalPrice)));
 //        salesTotal.groupBy(invoiceTrackRoot.get(InvoiceTrack_.track).get(Track_.id));
-               
         // Subquery Where
-        List<Predicate> predicatesSub = new ArrayList<>();
+        List<Predicate> predicates = new ArrayList<>();
 //        predicatesSub.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
 //        predicatesSub.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
 //        predicatesSub.add(cb.equal(invoiceTrackRoot.get(InvoiceTrack_.track), trackRoot.get(Track_.id)));
 //        salesTotal.where(cb.and(predicatesSub.toArray(new Predicate[predicatesSub.size()])));
 
-        predicatesSub.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
-        predicatesSub.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
-        query.where(cb.and(predicatesSub.toArray(new Predicate[predicatesSub.size()])));        
-        
+        predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+        predicates.add(cb.equal(trackRoot.get(Track_.removalStatus), 0));
+        query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+
         // Where
 //        List<Predicate> predicatesQuery = new ArrayList<>();
 //        predicatesQuery.add(cb.equal(trackRoot.get(Track_.removalStatus), 0));
-        
         // Order by
         query.orderBy(cb.asc(trackRoot));
-        
+
         query.multiselect(cb.sum(invoiceTrackJoin.get(InvoiceTrack_.finalPrice)), trackRoot);
 //        query.multiselect(salesTotal.getSelection(), trackRoot);
-        
+
+        TypedQuery<Object[]> typedQuery = em.createQuery(query);
+        return typedQuery.getResultList();
+    }
+
+    public List<Object[]> getTotalAlbumSalesByDate(Date startDate, Date endDate) {
+        // TODO add way to get zeros if no sales have been made
+
+        String logMsg = "Total Album Sales\tStart: " + startDate + "\tEnd: " + endDate;
+        LOG.log(Level.INFO, logMsg);
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<Album> albumRoot = query.from(Album.class);
+//        Root<InvoiceTrack> invoiceTrackRoot = query.from(InvoiceTrack.class);
+        Join<Album, InvoiceAlbum> invoiceAlbumJoin = albumRoot.join(Album_.invoiceAlbumList, JoinType.LEFT);
+        query.groupBy(albumRoot.get(Album_.id));
+        Join invoiceJoin = invoiceAlbumJoin.join(InvoiceAlbum_.invoice);
+//        Join trackJoin = invoiceTrackRoot.join(InvoiceTrack_.track, JoinType.LEFT);
+
+        // Subquery
+//        Subquery<Double> salesTotal = query.subquery(Double.class);
+//        Root<InvoiceTrack> invoiceTrackRoot = salesTotal.from(InvoiceTrack.class);
+////        Join invoiceJoin = invoiceTrackRoot.join(InvoiceTrack_.invoice);
+//        salesTotal.select(cb.sum(invoiceTrackRoot.get(InvoiceTrack_.finalPrice)));
+//        salesTotal.groupBy(invoiceTrackRoot.get(InvoiceTrack_.track).get(Track_.id));
+        // Subquery Where
+        List<Predicate> predicates = new ArrayList<>();
+//        predicatesSub.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
+//        predicatesSub.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+//        predicatesSub.add(cb.equal(invoiceTrackRoot.get(InvoiceTrack_.track), trackRoot.get(Track_.id)));
+//        salesTotal.where(cb.and(predicatesSub.toArray(new Predicate[predicatesSub.size()])));
+
+        predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+        predicates.add(cb.equal(albumRoot.get(Album_.removalStatus), 0));
+        query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+
+        // Where
+//        List<Predicate> predicatesQuery = new ArrayList<>();
+//        predicatesQuery.add(cb.equal(trackRoot.get(Track_.removalStatus), 0));
+        // Order by
+        query.orderBy(cb.asc(albumRoot));
+
+        query.multiselect(cb.sum(invoiceAlbumJoin.get(InvoiceAlbum_.finalPrice)), albumRoot);
+//        query.multiselect(salesTotal.getSelection(), trackRoot);
+
         TypedQuery<Object[]> typedQuery = em.createQuery(query);
         return typedQuery.getResultList();
     }

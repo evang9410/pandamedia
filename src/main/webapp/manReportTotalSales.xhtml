@@ -17,7 +17,7 @@
             max="#{reportDates.defaultEndDate}" 
             start="#{reportDates.startDate}" 
             end="#{reportDates.endDate}" 
-            updateTable="trackTable">
+            updateTable="trackTable albumTable">
         </pm:reportcalendars>
         <h:dataTable id="trackTable" value="#{reports.getTotalTrackSalesByDate(reportDates.startDate, reportDates.endDate)}" var="track">
             <h:column>
@@ -83,6 +83,60 @@
             <h:column>
                 <f:facet name="header">#{msgs.salePriceHeader}</f:facet>
                 #{track[1].salePrice}
+            </h:column>
+        </h:dataTable>
+        <h:dataTable id="albumTable" value="#{reports.getTotalAlbumSalesByDate(reportDates.startDate, reportDates.endDate)}" var="album">
+            <h:column>
+                <f:facet name="header">#{msgs.totalPurchasesHeader}</f:facet>
+                #{album[0]}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.idHeader}</f:facet>
+                #{album[1].id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.titleHeader}</f:facet>
+                #{album[1].title}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.artistHeader}</f:facet>
+                #{album[1].artistId.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.recordingLabelHeader}</f:facet>
+                #{album[1].recordingLabelId.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.genreHeader}</f:facet>
+                #{album[1].genreId.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.releaseDateHeader}</f:facet>
+                #{album[1].releaseDate}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.numTracksHeader}</f:facet>
+                #{album[1].numTracks}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.coverArtHeader}</f:facet>
+                #{album[1].coverArtId.imagePath}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.dateEnteredHeader}</f:facet>
+                #{album[1].dateEntered}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
+                #{album[1].costPrice}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.listPriceHeader}</f:facet>
+                #{album[1].listPrice}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.salePriceHeader}</f:facet>
+                #{album[1].salePrice}
             </h:column>
         </h:dataTable>
     </h:body>
