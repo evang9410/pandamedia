@@ -5,59 +5,59 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Edit</title>
+        <title>#{msgs.edit}</title>
     </h:head>
     <h:body>
         <f:view>
 
 
             <h:form>
-                <h1><h:outputText value="Edit"/></h1>
+                <h1><h:outputText value="#{msgs.edit}"/></h1>
                 <p:panelGrid columns="2">
-                    <p:outputLabel value="Id:" for="id" />
+                    <p:outputLabel value="#{msgs.id}" for="id" />
                     <p:inputText id="id" value="#{albumBacking.album.id}" title="Id" required="true" requiredMessage="The Id field is required."/>
-                    <p:outputLabel value="Title:" for="title" />
+                    <p:outputLabel value="#{msgs.title}" for="title" />
                     <p:inputText id="title" value="#{albumBacking.album.title}" title="Title" required="true" requiredMessage="The Title field is required."/>
-                    <p:outputLabel value="ReleaseDate:" for="releaseDate" />
+                    <p:outputLabel value="#{msgs.releaseDate}" for="releaseDate" />
                     <p:inputText id="releaseDate" value="#{albumBacking.album.releaseDate}" title="ReleaseDate" required="true" requiredMessage="The ReleaseDate field is required.">
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </p:inputText>
-                    <p:outputLabel value="NumTracks:" for="numTracks" />
+                    <p:outputLabel value="#{msgs.numTracks}" for="numTracks" />
                     <p:inputText id="numTracks" value="#{albumBacking.album.numTracks}" title="NumTracks" required="true" requiredMessage="The NumTracks field is required."/>
-                    <p:outputLabel value="DateEntered:" for="dateEntered" />
+                    <p:outputLabel value="#{msgs.dateEntered}" for="dateEntered" />
                     <p:inputText id="dateEntered" value="#{albumBacking.album.dateEntered}" title="DateEntered" required="true" requiredMessage="The DateEntered field is required.">
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </p:inputText>
-                    <p:outputLabel value="CostPrice:" for="costPrice" />
+                    <p:outputLabel value="#{msgs.costPrice}" for="costPrice" />
                     <p:inputText id="costPrice" value="#{albumBacking.album.costPrice}" title="CostPrice" required="true" requiredMessage="The CostPrice field is required."/>
-                    <p:outputLabel value="ListPrice:" for="listPrice" />
+                    <p:outputLabel value="#{msgs.listPrice}" for="listPrice" />
                     <p:inputText id="listPrice" value="#{albumBacking.album.listPrice}" title="ListPrice" required="true" requiredMessage="The ListPrice field is required."/>
-                    <p:outputLabel value="SalePrice:" for="salePrice" />
+                    <p:outputLabel value="#{msgs.salePrice}" for="salePrice" />
                     <p:inputText id="salePrice" value="#{albumBacking.album.salePrice}" title="SalePrice" required="true" requiredMessage="The SalePrice field is required."/>
-                    <p:outputLabel value="RemovalStatus:" for="removalStatus" />
+                    <p:outputLabel value="#{msgs.removalStatus}" for="removalStatus" />
                     <p:inputText id="removalStatus" value="#{albumBacking.album.removalStatus}" title="RemovalStatus" required="true" requiredMessage="The RemovalStatus field is required."/>
-                    <p:outputLabel value="RemovalDate:" for="removalDate" />
+                    <p:outputLabel value="#{msgs.removalDate}" for="removalDate" />
                     <p:inputText id="removalDate" value="#{albumBacking.album.removalDate}" title="RemovalDate" >
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </p:inputText>
-                    <p:outputLabel value="ArtistId:" for="artistId" />
+                    <p:outputLabel value="#{msgs.artistName}" for="artistId" />
                     <p:selectOneMenu id="artistId" value="#{albumBacking.album.artistId}" converter="#{artistConverter}" required="true" requiredMessage="The ArtistId field is required.">
                         <f:selectItems value="#{artistBacking.all}" var="artist" itemLabel="#{artist.name}" itemValue="#{artist}"/>
                     </p:selectOneMenu>
-                    <p:outputLabel value="GenreId:" for="genreId" />
+                    <p:outputLabel value="#{msgs.genreName}" for="genreId" />
                     <p:selectOneMenu id="genreId" value="#{albumBacking.album.genreId}" converter="#{genreConverter}" required="true" requiredMessage="The GenreId field is required.">
                         <f:selectItems value="#{genreBacking.all}" var="genre" itemLabel="#{genre.name}" itemValue="#{genre}"/>
                     </p:selectOneMenu>
-                    <p:outputLabel value="RecordingLabelId:" for="recordingLabelId" />
+                    <p:outputLabel value="#{msgs.recLabelName}" for="recordingLabelId" />
                     <p:selectOneMenu id="recordingLabelId" value="#{albumBacking.album.recordingLabelId}" converter="#{recordingLabelConverter}" required="true" requiredMessage="The RecordingLabelId field is required.">
                         <f:selectItems value="#{recordingLabelBacking.all}" var="recLabel" itemLabel="#{recLabel.name}" itemValue="#{recLabel}"/>
                     </p:selectOneMenu>
-                    <p:outputLabel value="CoverArtId:" for="coverArtId" />
+                    <p:outputLabel value="#{msgs.artPath}" for="coverArtId" />
                     <p:selectOneMenu id="coverArtId" value="#{albumBacking.album.coverArtId}" converter="#{coverArtConverter}" required="true" requiredMessage="The CoverArtId field is required.">
                         <f:selectItems value="#{coverArtBacking.all}" var="coverArt" itemLabel="#{coverArt.imagePath}" itemValue="#{coverArt}"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
-                <h:commandButton action="#{albumBacking.edit()}" value="Edit"/>
+                <h:commandButton action="#{albumBacking.edit()}" value="#{msgs.edit}"/>
             </h:form>
 
 

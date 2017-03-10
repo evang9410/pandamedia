@@ -195,7 +195,7 @@ public class AlbumBackingBean implements Serializable{
         albumController.edit(album);
         return "welcome_manager";
     }
-    
+       
     
     public void setFilteredAlbums(List<Album> filteredAlbums)
     {
@@ -205,6 +205,11 @@ public class AlbumBackingBean implements Serializable{
     public List<Album> getFilteredAlbums()
     {
         return this.filteredAlbums;
+    }
+    
+    public List<Album> getAll()
+    {
+        return albumController.findAlbumEntities();
     }
     
 }

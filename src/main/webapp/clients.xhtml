@@ -6,66 +6,46 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Clients</title>
+        <title>#{msgs.clients}</title>
         <h:outputStylesheet name="css/bootstrap.css"/>
         <h:outputStylesheet library="css" name="style.css"  />
     </h:head>
     <h:body styleClass="bodyClass">
         <b:navBar brand="PandaMedia" brandHref="manager_index.xhtml" styleClass="navbar navbar-default pandaNavbar">
             <b:navbarLinks pull="right">
-                <b:navLink value="Sales" href="salesPage.xhtml"></b:navLink>
-                <b:navLink value="Clients" href="clients.xhtml"></b:navLink>
-                <b:navLink value="Orders" href="orders.xhtml"></b:navLink>
-                <b:navLink value="Reviews" href="reviews.xhtml"></b:navLink>
-                <b:navLink value="Reporting" href="reporting.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.sales}" href="salesPage.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.clients}" href="clients.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.orders}" href="orders.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.reviews}" href="reviews.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.reports}" href="reporting.xhtml"></b:navLink>
             </b:navbarLinks>
         </b:navBar> 
         <f:view>
-
             <h:form>
-                <h:inputText id="username"/>
-                <h:commandButton value="Search" />
-            </h:form>
-
-
-
-            <h:form>
-                <h1><h:outputText value="List"/></h1>
-                <p:dataTable value="#{userBacking.all}" var="item">
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Id"/>
-                        </f:facet>
+                <h1><h:outputText value="#{msgs.clients}"/></h1>
+                <p:dataTable value="#{userBacking.users}" widgetVar="userTable" filteredValue="#{userBacking.filteredUsers}"  var="item" paginator="true" rows="5">
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="#{msgs.search}" />
+                            <p:inputText id="globalFilter" onkeyup="PF('userTable').filter()" style="width:150px" placeholder="#{msgs.keyword}"/>
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column filterBy="#{item.id}" headerText="#{msgs.id}" filterMatchMode="contains">
                         <h:outputText value="#{item.id}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Title"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.title}" headerText="#{msgs.title}" filterMatchMode="contains">
                         <h:outputText value="#{item.title}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="LastName"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.lastName}" headerText="#{msgs.lastNameHeader}" filterMatchMode="contains">
                         <h:outputText value="#{item.lastName}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="FirstName"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.firstName}" headerText="#{msgs.firstNameHeader}" filterMatchMode="contains">
                         <h:outputText value="#{item.firstName}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="CompanyName"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.companyName}" headerText="#{msgs.companyHeader}" filterMatchMode="contains">
                         <h:outputText value="#{item.companyName}"/>
                     </p:column>
                     <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="StreetAddress"/>
-                        </f:facet>
                         <h:outputText value="#{item.streetAddress}"/>
                     </p:column>
                     <p:column>

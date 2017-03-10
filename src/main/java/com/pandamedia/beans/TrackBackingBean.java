@@ -119,7 +119,20 @@ public class TrackBackingBean implements Serializable{
     public String loadEditForIndex(Integer id)
     {
         this.track = trackController.findTrack(id);
-        return "AlbumFunctionality/editAlbum.xhtml";
+        return "TrackFunctionality/editTrack.xhtml";
+    }
+    
+    public String edit() throws Exception
+    {
+        trackController.edit(track);
+        
+        return "welcome_manager";
+    }
+    
+    public String create() throws Exception
+    {
+        trackController.create(track);
+        return "welcome_manager";
     }
 
     
