@@ -13,16 +13,28 @@
     </h:head>
     <h:body>
         #{msgs.manReportZeroTrackTitle}
-        <pm:reportcalendars 
-            max="#{reportDates.defaultEndDate}" 
-            start="#{reportDates.startDate}" 
-            end="#{reportDates.endDate}" 
-            updateTable="reportTable">
-        </pm:reportcalendars>
-        <p:selectOneMenu id="trackId" value="#{trackBacking.track}">
-            <f:selectItems value="#{trackJpaController.findTrackEntities()}" var="track" itemLabel="#{track.id}" itemValue="#{track}"/>
-        </p:selectOneMenu>
-        <h:dataTable id="reportTable" value="#{reprimports.getSalesByTrack(reportDates.startDate, reportDates.endDate, trackBacking.track)}" var="invoice">
+        <h:form id="calendars">
+            <p:calendar 
+            id="reportStartDate" 
+            mode="inline" 
+            navigator="true" 
+            maxdate="#{reportDates.defaultEndDate}"
+            value="#{reportDates.startDate}">
+                <p:ajax event="dateSelect" process="reportStartDate reportEndDate track" immediate="true" update="reportTable"/> 
+            </p:calendar>
+            <p:calendar 
+                id="reportEndDate" 
+                mode="inline" 
+                navigator="true" 
+                maxdate="#{reportDates.defaultEndDate}"
+                value="#{reportDates.endDate}">
+                <p:ajax event="dateSelect" process="reportStartDate reportEndDate track" immediate="true" update="reportTable"/>
+            </p:calendar>
+            <p:selectOneMenu id="track" value="#{trackBacking.track}" converter="#{trackConverter}">
+                <f:selectItems value="#{trackJpaController.findTrackEntities()}" var="track" itemLabel="#{track.id} - #{track.title}"/>
+                <p:ajax event="change" process="reportStartDate reportEndDate track" immediate="true" update="reportTable"/>
+            </p:selectOneMenu>
+        <h:dataTable id="reportTable" value="#{reports.getSalesByTrack(reportDates.startDate, reportDates.endDate, trackBacking.track)}" var="invoice">
             <h:column>
                 <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
                 #{invoice[0]}

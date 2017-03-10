@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CollectionJoin;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -36,8 +35,7 @@ import persistence.entities.Track;
 import persistence.entities.Track_;
 
 /**
- * This class provides common methods for the report pages, and keeps track of
- * the desired start and end dates of the current report.
+ * This class provides common methods for the report pages.
  *
  * @author Erika Bourque
  */
@@ -46,6 +44,7 @@ import persistence.entities.Track_;
 public class ReportBackingBean implements Serializable {
 
     // TODO: add checks for was it valid during report time and now is removed
+    // TODO: valid all values coming in are good ones
     private static final Logger LOG = Logger.getLogger("ReportBackingBean.class");
 
     @PersistenceContext
@@ -340,16 +339,17 @@ public class ReportBackingBean implements Serializable {
         return typedQuery.getResultList();
     }
     
-    public List<Object[]> getSalesByArtist(Date startDate, Date endDate, Artist artist)
+    public List<Object[]> getSalesByArtistTracks(Date startDate, Date endDate, Artist artist)
     {
         if (artist == null)
         {
-            String logMsg = "Sales By Artist\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: null";
+            // TODO should this default to artist #1?
+            String logMsg = "Sales By Artist Tracks\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: null";
             LOG.log(Level.INFO, logMsg);
             return null;
         }
         
-        String logMsg = "Sales By Artist\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: " + artist.getId();
+        String logMsg = "Sales By Artist Tracks\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: " + artist.getId();
         LOG.log(Level.INFO, logMsg);
         
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -366,15 +366,92 @@ public class ReportBackingBean implements Serializable {
         query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
         
         query.multiselect(invoiceJoin.get(Invoice_.saleDate),
+                trackJoin,
                 invoiceTrackRoot.get(InvoiceTrack_.finalPrice), 
                 invoiceTrackRoot.get(InvoiceTrack_.track).get(Track_.costPrice),
-                cb.diff(invoiceTrackRoot.get(InvoiceTrack_.finalPrice), invoiceTrackRoot.get(InvoiceTrack_.track).get(Track_.costPrice)),
+                cb.diff(invoiceTrackRoot.get(InvoiceTrack_.finalPrice), trackJoin.get(Track_.costPrice)),
                 invoiceJoin,
                 invoiceJoin.get(Invoice_.userId));
         
         TypedQuery<Object[]> typedQuery = em.createQuery(query);
         
         LOG.info("size of list = " + typedQuery.getResultList().size());
+        return typedQuery.getResultList();
+    }
+    
+    public List<Object[]> getSalesByArtistAlbums(Date startDate, Date endDate, Artist artist)
+    {
+        if (artist == null)
+        {
+            // TODO should this default to artist #1?
+            String logMsg = "Sales By Artist Albums\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: null";
+            LOG.log(Level.INFO, logMsg);
+            return null;
+        }
+        
+        String logMsg = "Sales By Artist Albums\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: " + artist.getId();
+        LOG.log(Level.INFO, logMsg);
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<InvoiceAlbum> invoiceAlbumRoot = query.from(InvoiceAlbum.class);
+        Join invoiceJoin = invoiceAlbumRoot.join(InvoiceAlbum_.invoice);
+        Join albumJoin = invoiceAlbumRoot.join(InvoiceAlbum_.album);
+        
+        List<Predicate> predicates = new ArrayList<>();
+        // might cause error, do id to id if needed
+        predicates.add(cb.equal(albumJoin.get(Album_.artistId), artist));
+        predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+        query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+        
+        query.multiselect(invoiceJoin.get(Invoice_.saleDate),
+                albumJoin,
+                invoiceAlbumRoot.get(InvoiceAlbum_.finalPrice), 
+                invoiceAlbumRoot.get(InvoiceAlbum_.album).get(Album_.costPrice),
+                cb.diff(invoiceAlbumRoot.get(InvoiceAlbum_.finalPrice), albumJoin.get(Album_.costPrice)),
+                invoiceJoin,
+                invoiceJoin.get(Invoice_.userId));
+        
+        TypedQuery<Object[]> typedQuery = em.createQuery(query);
+        
+        LOG.info("size of list = " + typedQuery.getResultList().size());
+        return typedQuery.getResultList();
+    }
+    
+    // TODO need to test
+    public List<Object[]> getSalesByAlbum(Date startDate, Date endDate, Album album)
+    {
+        if (album == null)
+        {
+            String logMsg = "Sales By Album\tStart: " + startDate + "\tEnd: " + endDate + "\tAlbum: null";
+            LOG.log(Level.INFO, logMsg);
+            return null;
+        }
+        
+        String logMsg = "Sales By Album\tStart: " + startDate + "\tEnd: " + endDate + "\tAlbum: " + album.getId();
+        LOG.log(Level.INFO, logMsg);
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<InvoiceAlbum> invoiceAlbumRoot = query.from(InvoiceAlbum.class);
+        Join invoiceJoin = invoiceAlbumRoot.join(InvoiceAlbum_.invoice);
+        
+        List<Predicate> predicates = new ArrayList<>();
+        // might cause error, do id to id if needed
+        predicates.add(cb.equal(invoiceAlbumRoot.get(InvoiceAlbum_.album), album));
+        predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+        query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+        
+        query.multiselect(invoiceJoin.get(Invoice_.saleDate),
+                invoiceAlbumRoot.get(InvoiceAlbum_.finalPrice), 
+                invoiceAlbumRoot.get(InvoiceAlbum_.album).get(Album_.costPrice),
+                cb.diff(invoiceAlbumRoot.get(InvoiceAlbum_.finalPrice), invoiceAlbumRoot.get(InvoiceAlbum_.album).get(Album_.costPrice)),
+                invoiceJoin.get(Invoice_.id),
+                invoiceJoin.get(Invoice_.userId));
+        
+        TypedQuery<Object[]> typedQuery = em.createQuery(query);
         return typedQuery.getResultList();
     }
 }

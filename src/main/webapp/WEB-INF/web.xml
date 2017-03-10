@@ -28,12 +28,12 @@
     
     <welcome-file-list>
       <!--<welcome-file>mainpage.xhtml</welcome-file>-->
-      <!--<welcome-file>manReportTopClients.xhtml</welcome-file>-->
-      <!--<welcome-file>manReportZeroUser.xhtml</welcome-file>-->
-      <!--<welcome-file>manReportZeroTrack.xhtml</welcome-file>-->
-      <!--<welcome-file>manReportTopSellers.xhtml</welcome-file>-->
-      <!--<welcome-file>manReportTotalSales.xhtml</welcome-file>-->
-      <welcome-file>manReportSalesByArtist.xhtml</welcome-file>
+      <!--<welcome-file>reports/salesbyartist.xhtml</welcome-file>-->
+      <!--<welcome-file>reports/topclients.xhtml</welcome-file>-->
+      <!--<welcome-file>reports/topsellers.xhtml</welcome-file>-->
+      <!--<welcome-file>reports/totalsales.xhtml</welcome-file>-->
+      <!--<welcome-file>reports/zeroclients.xhtml</welcome-file>-->
+      <welcome-file>reports/zerotracks.xhtml</welcome-file>
     </welcome-file-list>
     
     <!-- web fonts -->

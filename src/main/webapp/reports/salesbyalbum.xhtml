@@ -8,11 +8,11 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:pm="http://pandamedia.com/facelets">
     <h:head>
-        <title>#{msgs.manReportSalesByArtist}</title>
+        <title>#{msgs.manReportSalesByAlbum}</title>
         <meta name="author" content="Erika Bourque"/>
     </h:head>
     <h:body>
-        #{msgs.manReportSalesByArtist}
+        #{msgs.manReportSalesByAlbum}
         <h:form id="calendars">
             <p:calendar 
             id="reportStartDate" 
@@ -20,7 +20,7 @@
             navigator="true" 
             maxdate="#{reportDates.defaultEndDate}"
             value="#{reportDates.startDate}">
-                <p:ajax event="dateSelect" process="reportStartDate reportEndDate artist" immediate="true" update="reportTable"/> 
+                <p:ajax event="dateSelect" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/> 
             </p:calendar>
             <p:calendar 
                 id="reportEndDate" 
@@ -28,14 +28,14 @@
                 navigator="true" 
                 maxdate="#{reportDates.defaultEndDate}"
                 value="#{reportDates.endDate}">
-                <p:ajax event="dateSelect" process="reportStartDate reportEndDate artist" immediate="true" update="reportTable"/>
+                <p:ajax event="dateSelect" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/>
             </p:calendar>
-            <p:selectOneMenu id="artist" value="#{artistBackingBean.artist}" converter="#{artistConverter}">
-                <f:selectItems value="#{artistJpaController.findArtistEntities()}" var="artist" itemLabel="#{artist.id}"/>
-                <p:ajax event="change" process="reportStartDate reportEndDate artist" immediate="true" update="reportTable"/>
+            <p:selectOneMenu id="album" value="#{albumBacking.album}" converter="#{albumConverter}">
+                <f:selectItems value="#{albumJpaController.findAlbumEntities()}" var="album" itemLabel="#{album.id} - #{album.title}"/>
+                <p:ajax event="change" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/>
             </p:selectOneMenu>
         </h:form>        
-        <h:dataTable id="reportTable" value="#{reports.getSalesByArtist(reportDates.startDate, reportDates.endDate, artistBackingBean.artist)}" var="invoice">
+        <h:dataTable id="reportTable" value="#{reports.getSalesByAlbum(reportDates.startDate, reportDates.endDate, albumBacking.album)}" var="invoice">
             <h:column>
                 <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
                 #{invoice[0]}
@@ -54,11 +54,11 @@
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>
-                #{invoice[4].id}
+                #{invoice[4]}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.userNumHeader}</f:facet>
-                #{invoice[5].id}
+                #{invoice[5]}
             </h:column>
         </h:dataTable>
     </h:body>
