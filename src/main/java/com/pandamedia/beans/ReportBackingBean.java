@@ -22,6 +22,7 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 import persistence.entities.Album;
 import persistence.entities.Album_;
+import persistence.entities.Artist;
 import persistence.entities.Invoice;
 import persistence.entities.InvoiceAlbum;
 import persistence.entities.InvoiceAlbum_;
@@ -336,6 +337,44 @@ public class ReportBackingBean implements Serializable {
                 invoiceJoin.get(Invoice_.userId));
         
         TypedQuery<Object[]> typedQuery = em.createQuery(query);
+        return typedQuery.getResultList();
+    }
+    
+    public List<Object[]> getSalesByArtist(Date startDate, Date endDate, Artist artist)
+    {
+        if (artist == null)
+        {
+            String logMsg = "Sales By Artist\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: null";
+            LOG.log(Level.INFO, logMsg);
+            return null;
+        }
+        
+        String logMsg = "Sales By Artist\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: " + artist.getId();
+        LOG.log(Level.INFO, logMsg);
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<InvoiceTrack> invoiceTrackRoot = query.from(InvoiceTrack.class);
+        Join invoiceJoin = invoiceTrackRoot.join(InvoiceTrack_.invoice);
+        Join trackJoin = invoiceTrackRoot.join(InvoiceTrack_.track);
+        
+        List<Predicate> predicates = new ArrayList<>();
+        // might cause error, do id to id if needed
+        predicates.add(cb.equal(trackJoin.get(Track_.artistId), artist));
+        predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+        query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+        
+        query.multiselect(invoiceJoin.get(Invoice_.saleDate),
+                invoiceTrackRoot.get(InvoiceTrack_.finalPrice), 
+                invoiceTrackRoot.get(InvoiceTrack_.track).get(Track_.costPrice),
+                cb.diff(invoiceTrackRoot.get(InvoiceTrack_.finalPrice), invoiceTrackRoot.get(InvoiceTrack_.track).get(Track_.costPrice)),
+                invoiceJoin,
+                invoiceJoin.get(Invoice_.userId));
+        
+        TypedQuery<Object[]> typedQuery = em.createQuery(query);
+        
+        LOG.info("size of list = " + typedQuery.getResultList().size());
         return typedQuery.getResultList();
     }
 }

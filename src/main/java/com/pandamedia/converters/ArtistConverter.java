@@ -11,6 +11,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
+import javax.inject.Named;
 import persistence.controllers.ArtistJpaController;
 import persistence.entities.Artist;
 
@@ -21,13 +22,14 @@ import persistence.entities.Artist;
  *
  * @author Naasir
  */
-@SessionScoped
-@FacesConverter("artistConverter")
-public class ArtistConverter  implements Converter,Serializable {
+@RequestScoped
+@Named
+public class ArtistConverter implements Converter,Serializable {
     
     @Inject
     private ArtistJpaController service;
  
+    @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
         if(value != null && value.trim().length() > 0) {
             try {   
@@ -42,6 +44,7 @@ public class ArtistConverter  implements Converter,Serializable {
         }
     }
  
+    @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object object) {
         if(object != null) {
             return String.valueOf(((Artist) object).getId());

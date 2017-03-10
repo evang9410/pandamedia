@@ -33,7 +33,7 @@
       <!--<welcome-file>manReportZeroTrack.xhtml</welcome-file>-->
       <!--<welcome-file>manReportTopSellers.xhtml</welcome-file>-->
       <!--<welcome-file>manReportTotalSales.xhtml</welcome-file>-->
-      <welcome-file>manReportSalesByTrack.xhtml</welcome-file>
+      <welcome-file>manReportSalesByArtist.xhtml</welcome-file>
     </welcome-file-list>
     
     <!-- web fonts -->
