@@ -209,7 +209,7 @@ public class ReportBackingBean implements Serializable {
         return typedQuery.getResultList();
     }
 
-    public List<Object[]> getTotalTrackSalesByDate(Date startDate, Date endDate) {
+    public List<Object[]> getTotalTrackSalesDetails(Date startDate, Date endDate) {
         // TODO add way to get zeros if no sales have been made
 
         String logMsg = "Total Track Sales\tStart: " + startDate + "\tEnd: " + endDate;
@@ -255,8 +255,9 @@ public class ReportBackingBean implements Serializable {
         return typedQuery.getResultList();
     }
 
-    public List<Object[]> getTotalAlbumSalesByDate(Date startDate, Date endDate) {
+    public List<Object[]> getTotalAlbumSalesDetails(Date startDate, Date endDate) {
         // TODO add way to get zeros if no sales have been made
+        // TODO add total cost and total profit
 
         String logMsg = "Total Album Sales\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
@@ -294,9 +295,46 @@ public class ReportBackingBean implements Serializable {
         // Order by
         query.orderBy(cb.asc(albumRoot));
 
-        query.multiselect(cb.sum(invoiceAlbumJoin.get(InvoiceAlbum_.finalPrice)), albumRoot);
+        query.multiselect(cb.sum(invoiceAlbumJoin.get(InvoiceAlbum_.finalPrice)), 
+                albumRoot);
 //        query.multiselect(salesTotal.getSelection(), trackRoot);
 
+        TypedQuery<Object[]> typedQuery = em.createQuery(query);
+        return typedQuery.getResultList();
+    }
+    
+    // TODO need to test
+    public List<Object[]> getSalesByTrack(Date startDate, Date endDate, Track track)
+    {
+        if (track == null)
+        {
+            String logMsg = "Sales By Track\tStart: " + startDate + "\tEnd: " + endDate + "\tTrack: null";
+            LOG.log(Level.INFO, logMsg);
+            return null;
+        }
+        
+        String logMsg = "Sales By Track\tStart: " + startDate + "\tEnd: " + endDate + "\tTrack: " + track.getId();
+        LOG.log(Level.INFO, logMsg);
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<InvoiceTrack> invoiceTrackRoot = query.from(InvoiceTrack.class);
+        Join invoiceJoin = invoiceTrackRoot.join(InvoiceTrack_.invoice);
+        
+        List<Predicate> predicates = new ArrayList<>();
+        // might cause error, do id to id if needed
+        predicates.add(cb.equal(invoiceTrackRoot.get(InvoiceTrack_.track), track));
+        predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+        query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+        
+        query.multiselect(invoiceJoin.get(Invoice_.saleDate),
+                invoiceTrackRoot.get(InvoiceTrack_.finalPrice), 
+                invoiceTrackRoot.get(InvoiceTrack_.track).get(Track_.costPrice),
+                cb.diff(invoiceTrackRoot.get(InvoiceTrack_.finalPrice), invoiceTrackRoot.get(InvoiceTrack_.track).get(Track_.costPrice)),
+                invoiceJoin.get(Invoice_.id),
+                invoiceJoin.get(Invoice_.userId));
+        
         TypedQuery<Object[]> typedQuery = em.createQuery(query);
         return typedQuery.getResultList();
     }

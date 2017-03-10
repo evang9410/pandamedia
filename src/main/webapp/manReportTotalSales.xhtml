@@ -19,7 +19,7 @@
             end="#{reportDates.endDate}" 
             updateTable="trackTable albumTable">
         </pm:reportcalendars>
-        <h:dataTable id="trackTable" value="#{reports.getTotalTrackSalesByDate(reportDates.startDate, reportDates.endDate)}" var="track">
+        <h:dataTable id="trackTable" value="#{reports.getTotalTrackSalesDetails(reportDates.startDate, reportDates.endDate)}" var="track">
             <h:column>
                 <f:facet name="header">#{msgs.totalPurchasesHeader}</f:facet>
                 #{track[0]}
@@ -85,7 +85,7 @@
                 #{track[1].salePrice}
             </h:column>
         </h:dataTable>
-        <h:dataTable id="albumTable" value="#{reports.getTotalAlbumSalesByDate(reportDates.startDate, reportDates.endDate)}" var="album">
+        <h:dataTable id="albumTable" value="#{reports.getTotalAlbumSalesDetails(reportDates.startDate, reportDates.endDate)}" var="album">
             <h:column>
                 <f:facet name="header">#{msgs.totalPurchasesHeader}</f:facet>
                 #{album[0]}

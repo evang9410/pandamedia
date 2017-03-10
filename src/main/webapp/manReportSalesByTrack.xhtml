@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pm="http://pandamedia.com/facelets">
+    <h:head>
+        <title>#{msgs.manReportZeroTrackTitle}</title>
+        <meta name="author" content="Erika Bourque"/>
+    </h:head>
+    <h:body>
+        #{msgs.manReportZeroTrackTitle}
+        <pm:reportcalendars 
+            max="#{reportDates.defaultEndDate}" 
+            start="#{reportDates.startDate}" 
+            end="#{reportDates.endDate}" 
+            updateTable="reportTable">
+        </pm:reportcalendars>
+        <p:selectOneMenu id="trackId" value="#{trackBacking.track}">
+            <f:selectItems value="#{trackJpaController.findTrackEntities()}" var="track" itemLabel="#{track.id}" itemValue="#{track}"/>
+        </p:selectOneMenu>
+        <h:dataTable id="reportTable" value="#{reprimports.getSalesByTrack(reportDates.startDate, reportDates.endDate, trackBacking.track)}" var="invoice">
+            <h:column>
+                <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
+                #{invoice[0]}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
+                #{invoice[1]}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
+                #{invoice[2]}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.profitHeader}</f:facet>
+                #{invoice[3]}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>
+                #{invoice[4]}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.userNumHeader}</f:facet>
+                #{invoice[5]}
+            </h:column>
+        </h:dataTable>
+    </h:body>
+</html>
