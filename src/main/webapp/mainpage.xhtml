@@ -10,7 +10,8 @@ and open the template in the editor.
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>Pandamedia</title>
 
@@ -22,7 +23,6 @@ and open the template in the editor.
     </h:head>
     <h:body class="parallax">
         <div>
-
             <ui:include src="./WEB-INF/sections/menu.xhtml"/>
         </div>
         <!-- latest releases -->
@@ -31,21 +31,25 @@ and open the template in the editor.
             ad banner
         </div>
         <h2 id="latest_header">#{msgs.newReleases}</h2>
+        
         <div class="contentflow_container">
-            <p:contentFlow value="#{albumBacking.latestAlbums}" var="album" styleClass="contentflow">
-                <p:graphicImage url="./resources/images/bg.jpg" styleClass="content card_album_art" />                
-                <div class="caption">
-
-                    <h:link outcome="album">
-                        <f:param name="albumId" value="#{album.id}"/>
-                        <h2>#{album.title}</h2>
-                    </h:link>                   
-                </div> 
-            </p:contentFlow>
-
+            <b:carousel interval="5000" styleClass="client-tracking">
+                <c:forEach items="#{albumBacking.latestAlbums}" var="latest">
+                    <b:carouselItem>
+                        <!-- replace this src with the albums cover art string -->
+                        <img src="./resources/images/bg.jpg"/>
+                        <b:carouselCaption>
+                            <h:form>
+                                <h:commandLink action="#{albumBacking.albumPage(latest)}">
+                                    <h3>#{latest.title}</h3>
+                                </h:commandLink>
+                            </h:form>
+                        </b:carouselCaption>
+                    </b:carouselItem>
+                </c:forEach>
+            </b:carousel>
         </div>
-
-        <!-- Content Block -->
+        
         <div class = "container-fluid content well-lg">
             <div class = "genre">
                 <h2 id="genre_header">#{msgs.genres}</h2>
@@ -61,19 +65,21 @@ and open the template in the editor.
             <div class="row well-lg"> 
                 <div class="center_content">
                     <h:panelGroup id="album_content">
-                        <ui:repeat value="#{albumBacking.albumFromGenre}" var="album">
+                        <ui:repeat value="#{albumBacking.albumFromGenre}" var="ag">
                             <div class="col-sm-2">
                                 <div class = "card_album well-sm">
-                                    <h:link outcome="album">
-                                        <f:param name="albumId" value="#{album.id}"/>
-                                        <img class="card_album_art img-responsive" src="./resources/images/bg.jpg" alt="Card image cap"/>
-                                        <h3>#{album.title}</h3>
-                                    </h:link>
+                                    <h:form>
+                                        <h:commandLink action="#{albumBacking.albumPage(ag)}">
+                                            <img class="card_album_art img-responsive" src="./resources/images/bg.jpg"/>
+                                            <h3>#{ag.title}</h3>
+                                        </h:commandLink>
+                                    </h:form>
 
-                                    <h4>#{album.artistId.name}</h4>
+                                    <h4>#{ag.artistId.name}</h4>
                                 </div>                                          
                             </div>
                         </ui:repeat>
+
                     </h:panelGroup>
                 </div>
             </div>
@@ -81,16 +87,28 @@ and open the template in the editor.
         <div class="sug_containter">
             <h2 id="genre_header">#{msgs.suggested}</h2>
         </div>
-        <b:carousel styleClass="client-tracking">
-            <b:carouselItem>
-                <img src="./resources/images/bg.jpg" alt="Valladolid" />
-            </b:carouselItem>
-            <b:carouselItem>
-                <img src="./resources/images/bg.jpg" alt="Valladolid" />
-            </b:carouselItem>
-            <b:carouselItem>
-                <img src="./resources/images/bg.jpg" alt="Valladolid" />
-            </b:carouselItem>
+        <b:carousel styleClass="client-tracking" interval="5000">
+            <c:forEach items="#{user.findUser(44).lastGenreSearched.albumList}" var="albums">
+                <b:carouselItem>
+                    <!-- replace this src with the albums cover art string -->
+                    <img src="./resources/images/bg.jpg" alt="Valladolid" />
+                    <b:carouselCaption>
+                        <h:form>
+                            <h:commandLink action="#{albumBacking.albumPage(albums)}">
+                                <h3>#{albums.title}</h3>
+                            </h:commandLink>
+                        </h:form>
+                    </b:carouselCaption>
+                </b:carouselItem>
+            </c:forEach>
+<!--            <c:forEach items="#{user.findUser(44).lastGenreSearched.trackList}" var="tracks">
+                <b:carouselItem>
+                    <img src="./resources/images/bg.jpg" alt="Valladolid" />
+                    <b:carouselCaption>
+                        <h3>#{tracks.title}</h3>
+                    </b:carouselCaption>
+                </b:carouselItem>
+            </c:forEach>-->
         </b:carousel>
 
 

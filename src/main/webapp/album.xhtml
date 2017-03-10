@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -12,41 +7,37 @@ and open the template in the editor.
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>album test</title>
         <h:outputStylesheet name="css/album.css"/>
         <h:outputStylesheet name="css/bootstrap.css"/>
         <h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
-    <body class = "bodyClass">
-        
-        <ui:param name ="album" value="#{albumBacking.findAlbumById()}"/>
 
-        
-        <div class ="album">
-            <div class ="container well-lg">
-                <div class ="row">
-                    <div id="albumArtWrapper" class ="col-md-4">
-                        <div>
-                            <!-- should we be using a http uri to retreive the album art or is it stored?
-                                anyway, for testing it will just be a img from the resources -->
-                            <img id="albumArt" src="resources/images/bg.png"/>
-                        </div>
+    <h:body class = "bodyClass">
+        <header>
+            <ui:include src="./WEB-INF/sections/menu.xhtml"/>
+        </header>
+
+        <div class="album-info-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-4">
+                        <img class="albumArt" src="resources/images/bg.jpg"/>
+                    </div>
+                    <div class="col-md-3 album-info">
+                        <h1>#{albumBacking.album.title}</h1>
+                        <h3>#{msgs.from} #{albumBaking.album.artistId.name}, 
+                            <h:outputText value="#{albumBacking.album.releaseDate.time}">
+                                <f:convertDateTime pattern="yyyy"/>
+                            </h:outputText>
+                        </h3>
                     </div>
 
-                    <div class="col-md-4">
-                        <div id ="album_info">
-                            <h2>#{album.title}</h2><br/>
-                            <h4>#{msgs.by} #{album.artistId.name}, #{album.releaseDate.getYear()}</h4>
-                            <h4>#{album.genreId.name}</h4>
-                            <h4>#{album.numTracks} Tracks</h4>
-                        </div>
-                    </div>
                 </div>
-            </div>
+                <hr style="width:75%"/>
+            </div>            
         </div>
-        
-        <div class="tracklist_container well-sm">
+        <div class="tracklist_container test">
             <table class="table table-inverse track_list">
                 <thead>
                     <tr>
@@ -56,18 +47,27 @@ and open the template in the editor.
                         <th></th>
                     </tr>
                 </thead>
-                
+
                 <tbody>
-                    <ui:repeat value="#{album.trackList}" var="track">
+                    <ui:repeat value="#{albumBacking.album.trackList}" var="tracks">
                         <tr>
-                            <th scope="row">#{track.albumTrackNumber}</th>
-                            <td>#{track.title}</td>
-                            <td>#{track.playLength}</td>
-                            <td width="50"><h:form><i class="fa fa-cart-plus" aria-hidden="true"></i></h:form></td>
+                            <th scope="row">#{tracks.albumTrackNumber}</th>
+                            <h:form>
+                                <h:commandLink action="#{track.trackPage(tracks)}">
+                                    <td>#{tracks.title}</td>
+                                </h:commandLink>                               
+                            </h:form>
+                            
+                            <td>#{tracks.playLength}</td>
+                            <td width="50">
+                                <h:form>
+                                    <b:commandButton ajax="true" icon-awesome="cart-plus" value="" look="primary"/>                                    
+                                </h:form>
+                            </td>
                         </tr>
                     </ui:repeat>
                 </tbody>
             </table>
         </div>
-    </body>
+    </h:body>
 </html>

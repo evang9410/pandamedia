@@ -5,10 +5,6 @@
 .contentflow_container{
     width: 90vw;
     height: 60vh;
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-top:2%;
-    margin-bottom: 2%;
 }
 
 .horizontal-ad{
@@ -95,4 +91,14 @@
 
 .sug_containter{
     margin-left: 5%;
+}
+
+.latest-carousel{
+    margin: 0 auto;
+    width: 90vw;
+}
+
+.carosel-images{
+    max-height: 100%;
+    max-width: 100%;
 }
