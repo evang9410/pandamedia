@@ -35,16 +35,31 @@ import persistence.entities.Track;
 import persistence.entities.Track_;
 
 /**
- * This class provides common methods for the report pages.
+ * This class provides common queries for the report pages.
  *
  * @author Erika Bourque
  */
 @Named("reports")
 @RequestScoped
 public class ReportBackingBean implements Serializable {
-
+    // TODO: change logging?
     // TODO: add checks for was it valid during report time and now is removed
-    // TODO: valid all values coming in are good ones
+    // TODO: validate all values coming in are good ones
+    // TODO: remove subquery from zero methods?
+    // TODO: format date
+    // TODO: format money
+    // TODO: write total income/cost/profit method for all sales
+    // TODO: add the individual cost/profit columns for all sales
+    // cb.prod
+    // cb.diff
+    // probably should make an Expression of the product, can select it outright and do diff with
+    // TODO: change total sales to be format of (with cost, profit), maybe just invoice, final, cost, profit, item(album or track), user
+//    query.multiselect(invoiceJoin.get(Invoice_.saleDate),
+//                invoiceTrackRoot.get(InvoiceTrack_.finalPrice), 
+//                invoiceTrackRoot.get(InvoiceTrack_.track).get(Track_.costPrice),
+//                cb.diff(invoiceTrackRoot.get(InvoiceTrack_.finalPrice), invoiceTrackRoot.get(InvoiceTrack_.track).get(Track_.costPrice)),
+//                invoiceJoin.get(Invoice_.id),
+//                invoiceJoin.get(Invoice_.userId));
     private static final Logger LOG = Logger.getLogger("ReportBackingBean.class");
 
     @PersistenceContext
@@ -72,24 +87,35 @@ public class ReportBackingBean implements Serializable {
         Root<ShopUser> userRoot = query.from(ShopUser.class);
         query.select(userRoot);
 
-        // Subquery
+        // Invoice Subquery
         Subquery<Invoice> subquery = query.subquery(Invoice.class);
         Root<Invoice> invoiceRoot = subquery.from(Invoice.class);
         subquery.select(invoiceRoot);
 
-        // Using predicates to avoid compiler errors, does not like CriteriaBuilder's between method
-        Predicate p1 = cb.equal(invoiceRoot.get(Invoice_.userId), userRoot);
-        Predicate p2 = cb.between(invoiceRoot.get(Invoice_.saleDate).as(Date.class), startDate, endDate);
-        Predicate p3 = cb.equal(invoiceRoot.get(Invoice_.removalStatus), 0);
-        subquery.where(cb.and(cb.and(p1, p2), p3));
-
+        // Where clause
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(invoiceRoot.get(Invoice_.userId), userRoot));
+        predicates.add(cb.equal(invoiceRoot.get(Invoice_.removalStatus), 0));        
+        // Making Netbeans compiler happy, does not like subquery Root in Criteria Builder's between clause
+        Predicate p1 = cb.between(invoiceRoot.get(Invoice_.saleDate).as(Date.class), startDate, endDate);
+        predicates.add(p1);
+        subquery.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
         // Putting them together
         query.where(cb.not(cb.exists(subquery)));
+        
         TypedQuery<ShopUser> typedQuery = em.createQuery(query);
-
         return typedQuery.getResultList();
     }
 
+    /**
+     * This method returns a list of the all the tracks that have
+     * not been purchased in the time frame specified.
+     * 
+     * @author Erika Bourque
+     * @param startDate The report's start date
+     * @param endDate   The report's end date
+     * @return          The list of tracks
+     */
     public List<Track> getZeroTracks(Date startDate, Date endDate) {
         String logMsg = "Zero Tracks\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
@@ -100,19 +126,21 @@ public class ReportBackingBean implements Serializable {
         Root<Track> trackRoot = query.from(Track.class);
         query.select(trackRoot);
 
-        // Subquery
+        // Invoice Subquery
         Subquery<InvoiceTrack> subquery = query.subquery(InvoiceTrack.class);
         Root<InvoiceTrack> invoiceTrackRoot = subquery.from(InvoiceTrack.class);
         subquery.select(invoiceTrackRoot);
         Join invoiceJoin = invoiceTrackRoot.join(InvoiceTrack_.invoice);
 
-        // Using predicates to avoid compiler errors, does not like CriteriaBuilder's between method
-        Predicate p1 = cb.equal(invoiceTrackRoot.get(InvoiceTrack_.invoiceTrackPK).get(InvoiceTrackPK_.trackId), trackRoot.get(Track_.id));
-        Predicate p2 = cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate);
-        Predicate p3 = cb.equal(invoiceTrackRoot.get(InvoiceTrack_.removalStatus), 0);
-        Predicate p4 = cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0);
-        subquery.where(cb.and(cb.and(p1, p2), cb.and(p3, p4)));
-
+        // Where Clause
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(invoiceTrackRoot.get(InvoiceTrack_.invoiceTrackPK).get(InvoiceTrackPK_.trackId), trackRoot.get(Track_.id)));
+        predicates.add(cb.equal(invoiceTrackRoot.get(InvoiceTrack_.removalStatus), 0));
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+        // Making Netbeans compiler happy, does not like subquery Root in Criteria Builder's between clause
+        Predicate p1 = cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate);
+        predicates.add(p1);
+        subquery.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
         // Putting them together
         query.where(cb.and(cb.not(cb.exists(subquery)), cb.equal(trackRoot.get(Track_.removalStatus), 0)));
 
@@ -120,22 +148,29 @@ public class ReportBackingBean implements Serializable {
         return typedQuery.getResultList();
     }
 
+    /**
+     * This method returns a list of the clients who made purchases in the 
+     * time frame specified along with the total amount they spent, in order of
+     * most amount spent to least amount spent.
+     * 
+     * @author Erika Bourque
+     * @param startDate The report's start date
+     * @param endDate The report's end date
+     * @return          The list of clients with their total amount spent
+     */
     public List<Object[]> getTopClients(Date startDate, Date endDate) {
         String logMsg = "Top Clients\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
 
+        // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<ShopUser> userRoot = query.from(ShopUser.class);
-
-        // Join
         ListJoin invoiceJoin = userRoot.join(ShopUser_.invoiceList, JoinType.LEFT);
-
-        // Select
         query.multiselect(cb.sum(invoiceJoin.get(Invoice_.totalGrossValue)), userRoot);
         query.groupBy(userRoot.get(ShopUser_.id));
 
-        // Where
+        // Where clause
         Predicate p1 = cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate);
         Predicate p2 = cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0);
         query.where(cb.and(p1, p2));
@@ -147,23 +182,30 @@ public class ReportBackingBean implements Serializable {
         return typedQuery.getResultList();
     }
 
+    /**
+     * This method returns a list of the tracks that have been purchased in the 
+     * time frame specified along with the total income they generated, in 
+     * order of most income to least income.
+     * 
+     * @author Erika Bourque
+     * @param startDate The report's start date
+     * @param endDate The report's end date
+     * @return          The list of tracks with their total income
+     */
     public List<Object[]> getTopTrackSellers(Date startDate, Date endDate) {
         String logMsg = "Top Track Sellers\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
 
+        // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<Track> trackRoot = query.from(Track.class);
-
-        // Joins
         ListJoin invoiceTrackJoin = trackRoot.join(Track_.invoiceTrackList, JoinType.LEFT);
         Join invoiceJoin = invoiceTrackJoin.join(InvoiceTrack_.invoice);
-
-        // Select
         query.multiselect(cb.count(invoiceTrackJoin), trackRoot);
         query.groupBy(trackRoot.get(Track_.id));
 
-        // Where
+        // Where clause
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
         predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
@@ -178,23 +220,30 @@ public class ReportBackingBean implements Serializable {
         return typedQuery.getResultList();
     }
 
+    /**
+     * This method returns a list of the albums that have been purchased in the 
+     * time frame specified along with the total income they generated, in 
+     * order of most income to least income.
+     * 
+     * @author Erika Bourque
+     * @param startDate The report's start date
+     * @param endDate The report's end date
+     * @return          The list of albums with their total income
+     */
     public List<Object[]> getTopAlbumSellers(Date startDate, Date endDate) {
         String logMsg = "Top Album Sellers\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
 
+        // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<Album> albumRoot = query.from(Album.class);
-
-        // Joins
         ListJoin invoiceAlbumJoin = albumRoot.join(Album_.invoiceAlbumList, JoinType.LEFT);
         Join invoiceJoin = invoiceAlbumJoin.join(InvoiceTrack_.invoice);
-
-        // Select
         query.multiselect(cb.count(invoiceAlbumJoin), albumRoot);
         query.groupBy(albumRoot.get(Album_.id));
 
-        // Where
+        // Where clause
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
         predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
@@ -209,9 +258,18 @@ public class ReportBackingBean implements Serializable {
         return typedQuery.getResultList();
     }
 
-    public List<Object[]> getTotalTrackSalesDetails(Date startDate, Date endDate) {
-        // TODO add way to get zeros if no sales have been made
-
+    /**
+     * This method returns a list of the invoice details for all tracks that have 
+     * been purchased in the time frame specified, in order of the sale date.  
+     * This includes the income, cost, and profit of the sale.
+     * 
+     * @author Erika Bourque
+     * @param startDate The report's start date
+     * @param endDate The report's end date
+     * @return          The list of invoices
+     */
+    public List<Object[]> getTotalSalesTracks(Date startDate, Date endDate) {
+        // TODO: finish getTotalSalesTracks
         String logMsg = "Total Track Sales\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
 
@@ -255,10 +313,18 @@ public class ReportBackingBean implements Serializable {
         return typedQuery.getResultList();
     }
 
-    public List<Object[]> getTotalAlbumSalesDetails(Date startDate, Date endDate) {
-        // TODO add way to get zeros if no sales have been made
-        // TODO add total cost and total profit
-
+    /**
+     * This method returns a list of the invoice details for all albums that have 
+     * been purchased in the time frame specified, in order of the sale date.  
+     * This includes the income, cost, and profit of the sale.
+     * 
+     * @author Erika Bourque
+     * @param startDate The report's start date
+     * @param endDate The report's end date
+     * @return          The list of invoices
+     */
+    public List<Object[]> getTotalSalesAlbums(Date startDate, Date endDate) {
+        // TODO: finish getTotalSalesAlbums
         String logMsg = "Total Album Sales\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
 
@@ -303,9 +369,20 @@ public class ReportBackingBean implements Serializable {
         return typedQuery.getResultList();
     }
     
-    // TODO need to test
+    /**
+     * This method returns a list of the invoice details for the specified
+     * track, sold in the time frame specified, in order of the sale date.  
+     * This includes the income, cost, and profit of the sale.
+     * 
+     * @author Erika Bourque
+     * @param startDate The report's start date
+     * @param endDate The report's end date
+     * @param track     The track desired for the report
+     * @return          The list of invoices
+     */
     public List<Object[]> getSalesByTrack(Date startDate, Date endDate, Track track)
     {
+        // TODO need to test
         if (track == null)
         {
             String logMsg = "Sales By Track\tStart: " + startDate + "\tEnd: " + endDate + "\tTrack: null";
@@ -339,6 +416,17 @@ public class ReportBackingBean implements Serializable {
         return typedQuery.getResultList();
     }
     
+    /**
+     * This method returns a list of the invoice details for the specified
+     * artist's tracks purchased in the time frame specified, in order of the sale date.  
+     * This includes the income, cost, and profit of the sale.
+     * 
+     * @author Erika Bourque
+     * @param startDate The report's start date
+     * @param endDate The report's end date
+     * @param artist    The artist desired for the report
+     * @return          The list of invoices
+     */
     public List<Object[]> getSalesByArtistTracks(Date startDate, Date endDate, Artist artist)
     {
         if (artist == null)
@@ -379,6 +467,17 @@ public class ReportBackingBean implements Serializable {
         return typedQuery.getResultList();
     }
     
+    /**
+     * This method returns a list of the invoice details for the specified
+     * artist's albums purchased in the time frame specified, in order of the sale date.  
+     * This includes the income, cost, and profit of the sale.
+     * 
+     * @author Erika Bourque
+     * @param startDate The report's start date
+     * @param endDate The report's end date
+     * @param artist    The artist desired for the report
+     * @return          The list of invoices
+     */
     public List<Object[]> getSalesByArtistAlbums(Date startDate, Date endDate, Artist artist)
     {
         if (artist == null)
@@ -419,9 +518,20 @@ public class ReportBackingBean implements Serializable {
         return typedQuery.getResultList();
     }
     
-    // TODO need to test
+    /**
+     * This method returns a list of the invoice details for the specified
+     * album, sold in the time frame specified, in order of the sale date.  
+     * This includes the income, cost, and profit of the sale.
+     * 
+     * @author Erika Bourque
+     * @param startDate The report's start date
+     * @param endDate The report's end date
+     * @param album     The album desired for the report
+     * @return          The list of invoices
+     */    
     public List<Object[]> getSalesByAlbum(Date startDate, Date endDate, Album album)
     {
+        // TODO need to test
         if (album == null)
         {
             String logMsg = "Sales By Album\tStart: " + startDate + "\tEnd: " + endDate + "\tAlbum: null";
