@@ -26,6 +26,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "FrontPageSettings.findById", query = "SELECT f FROM FrontPageSettings f WHERE f.id = :id")})
 public class FrontPageSettings implements Serializable {
 
+    @JoinColumn(name = "ad_a_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Advertisement adAId;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -104,6 +108,14 @@ public class FrontPageSettings implements Serializable {
     @Override
     public String toString() {
         return "persistence.entities.FrontPageSettings[ id=" + id + " ]";
+    }
+
+    public Advertisement getAdAId() {
+        return adAId;
+    }
+
+    public void setAdAId(Advertisement adAId) {
+        this.adAId = adAId;
     }
     
 }

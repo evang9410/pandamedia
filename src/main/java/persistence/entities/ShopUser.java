@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -45,6 +46,12 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "ShopUser.findBySalt", query = "SELECT s FROM ShopUser s WHERE s.salt = :salt")
     , @NamedQuery(name = "ShopUser.findByIsManager", query = "SELECT s FROM ShopUser s WHERE s.isManager = :isManager")})
 public class ShopUser implements Serializable {
+
+    @Basic(optional = false)
+    @NotNull
+    @Lob
+    @Column(name = "hashed_pw")
+    private byte[] hashedPw;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -329,6 +336,14 @@ public class ShopUser implements Serializable {
     @Override
     public String toString() {
         return "persistence.entities.ShopUser[ id=" + id + " ]";
+    }
+
+    public byte[] getHashedPw() {
+        return hashedPw;
+    }
+
+    public void setHashedPw(byte[] hashedPw) {
+        this.hashedPw = hashedPw;
     }
     
 }
