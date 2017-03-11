@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package persistence.entities;
 
 import java.io.Serializable;
@@ -42,16 +47,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "ShopUser.findByHomePhone", query = "SELECT s FROM ShopUser s WHERE s.homePhone = :homePhone")
     , @NamedQuery(name = "ShopUser.findByCellPhone", query = "SELECT s FROM ShopUser s WHERE s.cellPhone = :cellPhone")
     , @NamedQuery(name = "ShopUser.findByEmail", query = "SELECT s FROM ShopUser s WHERE s.email = :email")
-    , @NamedQuery(name = "ShopUser.findByPassword", query = "SELECT s FROM ShopUser s WHERE s.password = :password")
     , @NamedQuery(name = "ShopUser.findBySalt", query = "SELECT s FROM ShopUser s WHERE s.salt = :salt")
     , @NamedQuery(name = "ShopUser.findByIsManager", query = "SELECT s FROM ShopUser s WHERE s.isManager = :isManager")})
 public class ShopUser implements Serializable {
-
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Column(name = "hashed_pw")
-    private byte[] hashedPw;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -113,9 +111,9 @@ public class ShopUser implements Serializable {
     private String email;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "password")
-    private String password;
+    @Lob
+    @Column(name = "hashed_pw")
+    private byte[] hashedPw;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -143,7 +141,7 @@ public class ShopUser implements Serializable {
         this.id = id;
     }
 
-    public ShopUser(Integer id, String title, String lastName, String firstName, String streetAddress, String city, String country, String postalCode, String homePhone, String email, String password, String salt, short isManager) {
+    public ShopUser(Integer id, String title, String lastName, String firstName, String streetAddress, String city, String country, String postalCode, String homePhone, String email, byte[] hashedPw, String salt, short isManager) {
         this.id = id;
         this.title = title;
         this.lastName = lastName;
@@ -154,7 +152,7 @@ public class ShopUser implements Serializable {
         this.postalCode = postalCode;
         this.homePhone = homePhone;
         this.email = email;
-        this.password = password;
+        this.hashedPw = hashedPw;
         this.salt = salt;
         this.isManager = isManager;
     }
@@ -255,12 +253,12 @@ public class ShopUser implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public byte[] getHashedPw() {
+        return hashedPw;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setHashedPw(byte[] hashedPw) {
+        this.hashedPw = hashedPw;
     }
 
     public String getSalt() {
@@ -336,14 +334,6 @@ public class ShopUser implements Serializable {
     @Override
     public String toString() {
         return "persistence.entities.ShopUser[ id=" + id + " ]";
-    }
-
-    public byte[] getHashedPw() {
-        return hashedPw;
-    }
-
-    public void setHashedPw(byte[] hashedPw) {
-        this.hashedPw = hashedPw;
     }
     
 }
