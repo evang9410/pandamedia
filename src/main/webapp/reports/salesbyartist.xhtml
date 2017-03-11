@@ -40,7 +40,7 @@
                      var="invoice">
             <h:column>
                 <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
-                #{invoice[0]}
+                #{invoice[0].saleDate}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.trackNumHeader}</f:facet>
@@ -60,17 +60,17 @@
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>
-                #{invoice[5].id}
+                #{invoice[0].id}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.userNumHeader}</f:facet>
-                #{invoice[6].id}
+                #{invoice[0].userId.id}
             </h:column>
         </h:dataTable>
         <h:dataTable id="albumTable" value="#{reports.getSalesByArtistAlbums(reportDates.startDate, reportDates.endDate, artistBackingBean.artist)}" var="invoice">
             <h:column>
                 <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
-                #{invoice[0]}
+                #{invoice[0].saleDate}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.albumNumHeader}</f:facet>
@@ -90,11 +90,11 @@
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>
-                #{invoice[5].id}
+                #{invoice[0].id}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.userNumHeader}</f:facet>
-                #{invoice[6].id}
+                #{invoice[0].userId.id}
             </h:column>
         </h:dataTable>
     </h:body>
