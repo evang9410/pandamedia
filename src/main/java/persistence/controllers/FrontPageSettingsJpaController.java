@@ -49,10 +49,10 @@ public class FrontPageSettingsJpaController implements Serializable {
                 newsfeedId = em.getReference(newsfeedId.getClass(), newsfeedId.getId());
                 frontPageSettings.setNewsfeedId(newsfeedId);
             }
-            Advertisement advertAId = frontPageSettings.getAdvertAId();
-            if (advertAId != null) {
-                advertAId = em.getReference(advertAId.getClass(), advertAId.getId());
-                frontPageSettings.setAdvertAId(advertAId);
+            Advertisement adAId = frontPageSettings.getAdAId();
+            if (adAId != null) {
+                adAId = em.getReference(adAId.getClass(), adAId.getId());
+                frontPageSettings.setAdAId(adAId);
             }
             em.persist(frontPageSettings);
             if (surveyId != null) {
@@ -63,9 +63,9 @@ public class FrontPageSettingsJpaController implements Serializable {
                 newsfeedId.getFrontPageSettingsList().add(frontPageSettings);
                 newsfeedId = em.merge(newsfeedId);
             }
-            if (advertAId != null) {
-                advertAId.getFrontPageSettingsList().add(frontPageSettings);
-                advertAId = em.merge(advertAId);
+            if (adAId != null) {
+                adAId.getFrontPageSettingsList().add(frontPageSettings);
+                adAId = em.merge(adAId);
             }
             utx.commit();
         } catch (Exception ex) {
@@ -86,8 +86,8 @@ public class FrontPageSettingsJpaController implements Serializable {
             Survey surveyIdNew = frontPageSettings.getSurveyId();
             Newsfeed newsfeedIdOld = persistentFrontPageSettings.getNewsfeedId();
             Newsfeed newsfeedIdNew = frontPageSettings.getNewsfeedId();
-            Advertisement advertAIdOld = persistentFrontPageSettings.getAdvertAId();
-            Advertisement advertAIdNew = frontPageSettings.getAdvertAId();
+            Advertisement adAIdOld = persistentFrontPageSettings.getAdAId();
+            Advertisement adAIdNew = frontPageSettings.getAdAId();
             if (surveyIdNew != null) {
                 surveyIdNew = em.getReference(surveyIdNew.getClass(), surveyIdNew.getId());
                 frontPageSettings.setSurveyId(surveyIdNew);
@@ -96,9 +96,9 @@ public class FrontPageSettingsJpaController implements Serializable {
                 newsfeedIdNew = em.getReference(newsfeedIdNew.getClass(), newsfeedIdNew.getId());
                 frontPageSettings.setNewsfeedId(newsfeedIdNew);
             }
-            if (advertAIdNew != null) {
-                advertAIdNew = em.getReference(advertAIdNew.getClass(), advertAIdNew.getId());
-                frontPageSettings.setAdvertAId(advertAIdNew);
+            if (adAIdNew != null) {
+                adAIdNew = em.getReference(adAIdNew.getClass(), adAIdNew.getId());
+                frontPageSettings.setAdAId(adAIdNew);
             }
             frontPageSettings = em.merge(frontPageSettings);
             if (surveyIdOld != null && !surveyIdOld.equals(surveyIdNew)) {
@@ -117,13 +117,13 @@ public class FrontPageSettingsJpaController implements Serializable {
                 newsfeedIdNew.getFrontPageSettingsList().add(frontPageSettings);
                 newsfeedIdNew = em.merge(newsfeedIdNew);
             }
-            if (advertAIdOld != null && !advertAIdOld.equals(advertAIdNew)) {
-                advertAIdOld.getFrontPageSettingsList().remove(frontPageSettings);
-                advertAIdOld = em.merge(advertAIdOld);
+            if (adAIdOld != null && !adAIdOld.equals(adAIdNew)) {
+                adAIdOld.getFrontPageSettingsList().remove(frontPageSettings);
+                adAIdOld = em.merge(adAIdOld);
             }
-            if (advertAIdNew != null && !advertAIdNew.equals(advertAIdOld)) {
-                advertAIdNew.getFrontPageSettingsList().add(frontPageSettings);
-                advertAIdNew = em.merge(advertAIdNew);
+            if (adAIdNew != null && !adAIdNew.equals(adAIdOld)) {
+                adAIdNew.getFrontPageSettingsList().add(frontPageSettings);
+                adAIdNew = em.merge(adAIdNew);
             }
             utx.commit();
         } catch (Exception ex) {
@@ -163,10 +163,10 @@ public class FrontPageSettingsJpaController implements Serializable {
                 newsfeedId.getFrontPageSettingsList().remove(frontPageSettings);
                 newsfeedId = em.merge(newsfeedId);
             }
-            Advertisement advertAId = frontPageSettings.getAdvertAId();
-            if (advertAId != null) {
-                advertAId.getFrontPageSettingsList().remove(frontPageSettings);
-                advertAId = em.merge(advertAId);
+            Advertisement adAId = frontPageSettings.getAdAId();
+            if (adAId != null) {
+                adAId.getFrontPageSettingsList().remove(frontPageSettings);
+                adAId = em.merge(adAId);
             }
             em.remove(frontPageSettings);
             utx.commit();

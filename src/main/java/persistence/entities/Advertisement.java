@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package persistence.entities;
 
 import java.io.Serializable;
@@ -42,7 +47,7 @@ public class Advertisement implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "ad_path")
     private String adPath;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "advertAId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "adAId")
     private List<FrontPageSettings> frontPageSettingsList;
 
     public Advertisement() {
