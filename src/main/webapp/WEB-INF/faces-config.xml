@@ -27,5 +27,4 @@
         <from-outcome>main</from-outcome>
         <to-view-id>../mainpage.xhtml</to-view-id>
     </navigation-case>
-    
 </faces-config>
