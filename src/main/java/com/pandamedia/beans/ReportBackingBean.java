@@ -48,6 +48,8 @@ public class ReportBackingBean implements Serializable {
     // TODO: remove subquery from zero methods?
     // TODO: format date
     // TODO: format money
+    // TODO: sales by track has null in input field
+    // TODO: should sales by artist/track/album have defaults?
     // TODO: write total income/cost/profit method for all sales
     // TODO: add the individual cost/profit columns for all sales
     // cb.prod
@@ -382,7 +384,6 @@ public class ReportBackingBean implements Serializable {
      */
     public List<Object[]> getSalesByTrack(Date startDate, Date endDate, Track track)
     {
-        // TODO need to test
         if (track == null)
         {
             String logMsg = "Sales By Track\tStart: " + startDate + "\tEnd: " + endDate + "\tTrack: null";
@@ -393,24 +394,25 @@ public class ReportBackingBean implements Serializable {
         String logMsg = "Sales By Track\tStart: " + startDate + "\tEnd: " + endDate + "\tTrack: " + track.getId();
         LOG.log(Level.INFO, logMsg);
         
+        // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<InvoiceTrack> invoiceTrackRoot = query.from(InvoiceTrack.class);
         Join invoiceJoin = invoiceTrackRoot.join(InvoiceTrack_.invoice);
+        query.multiselect(invoiceJoin,
+                invoiceTrackRoot.get(InvoiceTrack_.finalPrice), 
+                invoiceTrackRoot.get(InvoiceTrack_.track).get(Track_.costPrice),
+                cb.diff(invoiceTrackRoot.get(InvoiceTrack_.finalPrice), invoiceTrackRoot.get(InvoiceTrack_.track).get(Track_.costPrice)));
         
+        // Where clause
         List<Predicate> predicates = new ArrayList<>();
-        // might cause error, do id to id if needed
         predicates.add(cb.equal(invoiceTrackRoot.get(InvoiceTrack_.track), track));
         predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
         predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
         query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
         
-        query.multiselect(invoiceJoin.get(Invoice_.saleDate),
-                invoiceTrackRoot.get(InvoiceTrack_.finalPrice), 
-                invoiceTrackRoot.get(InvoiceTrack_.track).get(Track_.costPrice),
-                cb.diff(invoiceTrackRoot.get(InvoiceTrack_.finalPrice), invoiceTrackRoot.get(InvoiceTrack_.track).get(Track_.costPrice)),
-                invoiceJoin.get(Invoice_.id),
-                invoiceJoin.get(Invoice_.userId));
+        // Order by clause
+        query.orderBy(cb.desc(invoiceJoin.get(Invoice_.saleDate)));
         
         TypedQuery<Object[]> typedQuery = em.createQuery(query);
         return typedQuery.getResultList();
@@ -428,10 +430,9 @@ public class ReportBackingBean implements Serializable {
      * @return          The list of invoices
      */
     public List<Object[]> getSalesByArtistTracks(Date startDate, Date endDate, Artist artist)
-    {
+    {        
         if (artist == null)
         {
-            // TODO should this default to artist #1?
             String logMsg = "Sales By Artist Tracks\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: null";
             LOG.log(Level.INFO, logMsg);
             return null;
@@ -458,8 +459,7 @@ public class ReportBackingBean implements Serializable {
         predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
         predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
         query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
-        
-        
+                
         // Order by clause
         query.orderBy(cb.desc(invoiceJoin.get(Invoice_.saleDate)));
         
@@ -482,7 +482,6 @@ public class ReportBackingBean implements Serializable {
     {
         if (artist == null)
         {
-            // TODO should this default to artist #1?
             String logMsg = "Sales By Artist Albums\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: null";
             LOG.log(Level.INFO, logMsg);
             return null;
@@ -530,7 +529,6 @@ public class ReportBackingBean implements Serializable {
      */    
     public List<Object[]> getSalesByAlbum(Date startDate, Date endDate, Album album)
     {
-        // TODO need to test
         if (album == null)
         {
             String logMsg = "Sales By Album\tStart: " + startDate + "\tEnd: " + endDate + "\tAlbum: null";
@@ -541,24 +539,25 @@ public class ReportBackingBean implements Serializable {
         String logMsg = "Sales By Album\tStart: " + startDate + "\tEnd: " + endDate + "\tAlbum: " + album.getId();
         LOG.log(Level.INFO, logMsg);
         
+        // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<InvoiceAlbum> invoiceAlbumRoot = query.from(InvoiceAlbum.class);
         Join invoiceJoin = invoiceAlbumRoot.join(InvoiceAlbum_.invoice);
+        query.multiselect(invoiceJoin,
+                invoiceAlbumRoot.get(InvoiceAlbum_.finalPrice), 
+                invoiceAlbumRoot.get(InvoiceAlbum_.album).get(Album_.costPrice),
+                cb.diff(invoiceAlbumRoot.get(InvoiceAlbum_.finalPrice), invoiceAlbumRoot.get(InvoiceAlbum_.album).get(Album_.costPrice)));
         
+        // Where clause
         List<Predicate> predicates = new ArrayList<>();
-        // might cause error, do id to id if needed
         predicates.add(cb.equal(invoiceAlbumRoot.get(InvoiceAlbum_.album), album));
         predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
         predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
         query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
         
-        query.multiselect(invoiceJoin.get(Invoice_.saleDate),
-                invoiceAlbumRoot.get(InvoiceAlbum_.finalPrice), 
-                invoiceAlbumRoot.get(InvoiceAlbum_.album).get(Album_.costPrice),
-                cb.diff(invoiceAlbumRoot.get(InvoiceAlbum_.finalPrice), invoiceAlbumRoot.get(InvoiceAlbum_.album).get(Album_.costPrice)),
-                invoiceJoin.get(Invoice_.id),
-                invoiceJoin.get(Invoice_.userId));
+        // Order by clause
+        query.orderBy(cb.desc(invoiceJoin.get(Invoice_.saleDate)));
         
         TypedQuery<Object[]> typedQuery = em.createQuery(query);
         return typedQuery.getResultList();

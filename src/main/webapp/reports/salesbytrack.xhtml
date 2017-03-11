@@ -8,11 +8,11 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:pm="http://pandamedia.com/facelets">
     <h:head>
-        <title>#{msgs.manReportZeroTrackTitle}</title>
+        <title>#{msgs.manReportSalesByTrack}</title>
         <meta name="author" content="Erika Bourque"/>
     </h:head>
     <h:body>
-        #{msgs.manReportZeroTrackTitle}
+        #{msgs.manReportSalesByTrack}
         <h:form id="calendars">
             <p:calendar 
             id="reportStartDate" 
@@ -20,7 +20,7 @@
             navigator="true" 
             maxdate="#{reportDates.defaultEndDate}"
             value="#{reportDates.startDate}">
-                <p:ajax event="dateSelect" process="reportStartDate reportEndDate track" immediate="true" update="reportTable"/> 
+                <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate track" immediate="true" update="reportTable"/>--> 
             </p:calendar>
             <p:calendar 
                 id="reportEndDate" 
@@ -28,16 +28,18 @@
                 navigator="true" 
                 maxdate="#{reportDates.defaultEndDate}"
                 value="#{reportDates.endDate}">
-                <p:ajax event="dateSelect" process="reportStartDate reportEndDate track" immediate="true" update="reportTable"/>
+                <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate track" immediate="true" update="reportTable"/>-->
             </p:calendar>
-            <p:selectOneMenu id="track" value="#{trackBacking.track}" converter="#{trackConverter}">
-                <f:selectItems value="#{trackJpaController.findTrackEntities()}" var="track" itemLabel="#{track.id} - #{track.title}"/>
-                <p:ajax event="change" process="reportStartDate reportEndDate track" immediate="true" update="reportTable"/>
-            </p:selectOneMenu>
+            <label for="trackId">#{msgs.trackIdLbl}</label>
+            <p:inputText id="trackId" value="#{trackBacking.track}" converter="#{trackConverter}">
+                <!--<p:ajax event="change" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
+            </p:inputText>
+            <p:commandButton id="search" update="reportTable" value="#{msgs.searchBtn}" />
+        </h:form>
         <h:dataTable id="reportTable" value="#{reports.getSalesByTrack(reportDates.startDate, reportDates.endDate, trackBacking.track)}" var="invoice">
             <h:column>
                 <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
-                #{invoice[0]}
+                #{invoice[0].saleDate}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
@@ -53,11 +55,11 @@
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>
-                #{invoice[4]}
+                #{invoice[0].id}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.userNumHeader}</f:facet>
-                #{invoice[5]}
+                #{invoice[0].userId.id}
             </h:column>
         </h:dataTable>
     </h:body>

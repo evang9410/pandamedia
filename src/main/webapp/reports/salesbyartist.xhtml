@@ -20,7 +20,7 @@
             navigator="true" 
             maxdate="#{reportDates.defaultEndDate}"
             value="#{reportDates.startDate}">
-                <p:ajax event="dateSelect" process="reportStartDate reportEndDate artist" immediate="true" update="trackTable albumTable"/> 
+                <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>--> 
             </p:calendar>
             <p:calendar 
                 id="reportEndDate" 
@@ -28,74 +28,81 @@
                 navigator="true" 
                 maxdate="#{reportDates.defaultEndDate}"
                 value="#{reportDates.endDate}">
-                <p:ajax event="dateSelect" process="reportStartDate reportEndDate artist" immediate="true" update="trackTable albumTable"/>
+                <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
             </p:calendar>
-            <p:selectOneMenu id="artist" value="#{artistBackingBean.artist}" converter="#{artistConverter}">
-                <f:selectItems value="#{artistJpaController.findArtistEntities()}" var="artist" itemLabel="#{artist.id} - #{artist.name}"/>
-                <p:ajax event="change" process="reportStartDate reportEndDate artist" immediate="true" update="trackTable albumTable"/>
-            </p:selectOneMenu>
+            <label for="artistId">#{msgs.artistIdLbl}</label>
+            <p:inputText id="artistId" value="#{artistBackingBean.artist}" converter="#{artistConverter}">
+                <!--<p:ajax event="change" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
+            </p:inputText>
+            <p:commandButton id="search" update="trackTable albumTable" value="#{msgs.searchBtn}" />    
         </h:form>        
-        <h:dataTable id="trackTable" 
+        <p:dataTable id="trackTable" 
                      value="#{reports.getSalesByArtistTracks(reportDates.startDate, reportDates.endDate, artistBackingBean.artist)}" 
                      var="invoice">
-            <h:column>
+            <f:facet name="header">
+                #{msgs.trackLbl}
+            </f:facet>
+            <p:column>
                 <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
                 #{invoice[0].saleDate}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.trackNumHeader}</f:facet>
                 #{invoice[1].id}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
                 #{invoice[2]}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
                 #{invoice[3]}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.profitHeader}</f:facet>
                 #{invoice[4]}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>
                 #{invoice[0].id}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.userNumHeader}</f:facet>
                 #{invoice[0].userId.id}
-            </h:column>
-        </h:dataTable>
-        <h:dataTable id="albumTable" value="#{reports.getSalesByArtistAlbums(reportDates.startDate, reportDates.endDate, artistBackingBean.artist)}" var="invoice">
-            <h:column>
+            </p:column>
+        </p:dataTable>
+        <p:dataTable id="albumTable" value="#{reports.getSalesByArtistAlbums(reportDates.startDate, reportDates.endDate, artistBackingBean.artist)}" var="invoice">
+            <f:facet name="header">
+                #{msgs.albumLbl}
+            </f:facet>
+            <p:column>
                 <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
                 #{invoice[0].saleDate}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.albumNumHeader}</f:facet>
                 #{invoice[1].id}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
                 #{invoice[2]}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
                 #{invoice[3]}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.profitHeader}</f:facet>
                 #{invoice[4]}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>
                 #{invoice[0].id}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.userNumHeader}</f:facet>
                 #{invoice[0].userId.id}
-            </h:column>
-        </h:dataTable>
+            </p:column>
+        </p:dataTable>
     </h:body>
 </html>

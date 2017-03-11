@@ -20,7 +20,7 @@
             navigator="true" 
             maxdate="#{reportDates.defaultEndDate}"
             value="#{reportDates.startDate}">
-                <p:ajax event="dateSelect" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/> 
+                <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/>--> 
             </p:calendar>
             <p:calendar 
                 id="reportEndDate" 
@@ -28,17 +28,18 @@
                 navigator="true" 
                 maxdate="#{reportDates.defaultEndDate}"
                 value="#{reportDates.endDate}">
-                <p:ajax event="dateSelect" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/>
+                <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/>-->
             </p:calendar>
-            <p:selectOneMenu id="album" value="#{albumBacking.album}" converter="#{albumConverter}">
-                <f:selectItems value="#{albumJpaController.findAlbumEntities()}" var="album" itemLabel="#{album.id} - #{album.title}"/>
-                <p:ajax event="change" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/>
-            </p:selectOneMenu>
+            <label for="albumId">#{msgs.albumIdLbl}</label>
+            <p:inputText id="albumId" value="#{albumBacking.album}" converter="#{albumConverter}">
+                <!--<p:ajax event="change" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
+            </p:inputText>
+            <p:commandButton id="search" update="reportTable" value="#{msgs.searchBtn}" />
         </h:form>        
         <h:dataTable id="reportTable" value="#{reports.getSalesByAlbum(reportDates.startDate, reportDates.endDate, albumBacking.album)}" var="invoice">
             <h:column>
                 <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
-                #{invoice[0]}
+                #{invoice[0].saleDate}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
@@ -54,11 +55,11 @@
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>
-                #{invoice[4]}
+                #{invoice[0].id}
             </h:column>
             <h:column>
                 <f:facet name="header">#{msgs.userNumHeader}</f:facet>
-                #{invoice[5]}
+                #{invoice[0].userId.id}
             </h:column>
         </h:dataTable>
     </h:body>
