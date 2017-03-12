@@ -7,6 +7,7 @@ package com.pandamedia.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
@@ -23,7 +24,7 @@ import persistence.entities.Genre;
 
 /**
  *
- * @author Evang
+ * @author Evan Glicakis
  */
 @Named("albumBacking")
 @SessionScoped
@@ -36,6 +37,7 @@ public class AlbumBackingBean implements Serializable{
     private EntityManager em;
     private String genreString;
     private List<Album> genrelist;
+    private int albumid;
     
     public Album getAlbum(){
         if(album == null){
@@ -43,6 +45,16 @@ public class AlbumBackingBean implements Serializable{
         }
         return album;
     }
+
+    public int getAlbumid() {
+        return albumid;
+    }
+
+    public void setAlbumid(int albumid) {
+        this.albumid = albumid;
+    }
+    
+    
     
     public AlbumBackingBean(){
         genrelist = new ArrayList();
@@ -64,6 +76,15 @@ public class AlbumBackingBean implements Serializable{
 
     public void setGenreString(String genreString) {
         this.genreString = genreString;
+    }
+    /**
+     * sets the album variable and returns the string of the url to the album page
+     * @param a
+     * @return 
+     */
+    public String albumPage(Album a){
+        this.album = a;
+        return "album";
     }
     
     
@@ -116,6 +137,54 @@ public class AlbumBackingBean implements Serializable{
         query.setParameter("name", genre);
         return query.getResultList().get(0).getId();//this should be query.getSingleResult, however, since we have like 5 genres with the same name with the 
         // test data, we get a list and get the first result, test data should have been sanitized.
+    }
+    
+     public String addItem(Integer id) throws Exception
+    {
+        album = albumController.findAlbum(id);
+        if(album.getRemovalStatus() != 0)
+        {
+            short i = 0;
+            album.setRemovalStatus(i);
+            album.setRemovalDate(null);
+
+            albumController.edit(album);
+
+            
+        }
+        
+        return null; 
+    }
+    
+    public String removeItem(Integer id) throws Exception
+    {
+        
+        album = albumController.findAlbum(id);
+        if(album.getRemovalStatus() != 1)
+        {
+            short i = 1;
+            album.setRemovalStatus(i);
+            album.setRemovalDate(Calendar.getInstance().getTime());
+
+            albumController.edit(album);
+
+            
+        }
+        
+        return null; 
+    }
+    
+    public String loadEditForIndex(Integer id)
+    {
+        this.album = albumController.findAlbum(id);
+        return "AlbumFunctionality/editAlbum.xhtml";
+    }
+    
+    public String edit() throws Exception
+    {
+        
+        albumController.edit(album);
+        return "welcome_manager";
     }
     
 }

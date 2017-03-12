@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Clients</title>
+        <h:outputStylesheet name="css/bootstrap.css"/>
+    </h:head>
+    <h:body styleClass="bodyClass">
+        <b:navBar brand="PandaMedia" brandHref="manager_index.xhtml" styleClass="navbar navbar-default pandaNavbar">
+            <b:navbarLinks pull="right">
+                <b:navLink value="Sales" href="salesPage.xhtml"></b:navLink>
+                <b:navLink value="Clients" href="clients.xhtml"></b:navLink>
+                <b:navLink value="Orders" href="orders.xhtml"></b:navLink>
+                <b:navLink value="Reviews" href="reviews.xhtml"></b:navLink>
+                <b:navLink value="Reporting" href="reporting.xhtml"></b:navLink>
+            </b:navbarLinks>
+        </b:navBar> 
+        <h:outputStylesheet library="css" name="style.css"  />
+        <f:view>
+
+            <h:form>
+                <h:inputText id="username"/>
+                <h:commandButton value="Search" />
+            </h:form>
+
+
+
+            <h:form>
+                <h1><h:outputText value="List"/></h1>
+                <p:dataTable value="#{shopUserJpaController.all}" var="item">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Id"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Title"/>
+                        </f:facet>
+                        <h:outputText value="#{item.title}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="LastName"/>
+                        </f:facet>
+                        <h:outputText value="#{item.lastName}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="FirstName"/>
+                        </f:facet>
+                        <h:outputText value="#{item.firstName}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="CompanyName"/>
+                        </f:facet>
+                        <h:outputText value="#{item.companyName}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="StreetAddress"/>
+                        </f:facet>
+                        <h:outputText value="#{item.streetAddress}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="City"/>
+                        </f:facet>
+                        <h:outputText value="#{item.city}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Country"/>
+                        </f:facet>
+                        <h:outputText value="#{item.country}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="PostalCode"/>
+                        </f:facet>
+                        <h:outputText value="#{item.postalCode}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="HomePhone"/>
+                        </f:facet>
+                        <h:outputText value="#{item.homePhone}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="CellPhone"/>
+                        </f:facet>
+                        <h:outputText value="#{item.cellPhone}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Email"/>
+                        </f:facet>
+                        <h:outputText value="#{item.email}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Password"/>
+                        </f:facet>
+                        <h:outputText value="#{item.password}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Salt"/>
+                        </f:facet>
+                        <h:outputText value="#{item.salt}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="IsManager"/>
+                        </f:facet>
+                        <h:outputText value="#{item.isManager}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="ProvinceId"/>
+                        </f:facet>
+                        <h:outputText value="#{item.provinceId}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="LastGenreSearched"/>
+                        </f:facet>
+                        <h:outputText value="#{item.lastGenreSearched}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Options"/>
+                        </f:facet>
+                        <h:outputLink value="">Edit</h:outputLink>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+
+        </f:view>
+
+        
+    </h:body>
+</html>
+
