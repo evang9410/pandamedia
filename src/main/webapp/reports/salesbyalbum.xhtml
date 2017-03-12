@@ -34,33 +34,48 @@
             <p:inputText id="albumId" value="#{albumBacking.album}" converter="#{albumConverter}">
                 <!--<p:ajax event="change" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
             </p:inputText>
-            <p:commandButton id="search" update="reportTable" value="#{msgs.searchBtn}" />
-        </h:form>        
-        <h:dataTable id="reportTable" value="#{reports.getSalesByAlbum(reportDates.startDate, reportDates.endDate, albumBacking.album)}" var="invoice">
-            <h:column>
+            <p:commandButton id="search" update="totalTable reportTable" value="#{msgs.searchBtn}" />
+        </h:form>
+        <p:dataTable id="totalTable" value="#{reports.getSalesByAlbumTotals(reportDates.startDate, reportDates.endDate, albumBacking.album)}" 
+                     var="total">
+            <p:column>
+                <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
+                #{total[0]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
+                #{total[1]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.profitHeader}</f:facet>
+                #{total[2]}
+            </p:column>
+        </p:dataTable>        
+        <p:dataTable id="reportTable" value="#{reports.getSalesByAlbum(reportDates.startDate, reportDates.endDate, albumBacking.album)}" var="invoice">
+            <p:column>
                 <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
                 #{invoice[0].saleDate}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
                 #{invoice[1]}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
                 #{invoice[2]}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.profitHeader}</f:facet>
                 #{invoice[3]}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>
                 #{invoice[0].id}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.userNumHeader}</f:facet>
                 #{invoice[0].userId.id}
-            </h:column>
-        </h:dataTable>
+            </p:column>
+        </p:dataTable>
     </h:body>
 </html>

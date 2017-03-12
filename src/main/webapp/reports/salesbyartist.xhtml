@@ -34,8 +34,38 @@
             <p:inputText id="artistId" value="#{artistBackingBean.artist}" converter="#{artistConverter}">
                 <!--<p:ajax event="change" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
             </p:inputText>
-            <p:commandButton id="search" update="trackTable albumTable" value="#{msgs.searchBtn}" />    
-        </h:form>        
+            <p:commandButton id="search" update="trackTotalTable albumTotalTable trackTable albumTable" value="#{msgs.searchBtn}" />
+        </h:form>
+        <p:dataTable id="trackTotalTable" value="#{reports.getSalesByArtistTrackTotals(reportDates.startDate, reportDates.endDate, artistBackingBean.artist)}" 
+                     var="trackTotal">
+            <p:column>
+                <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
+                #{trackTotal[0]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
+                #{trackTotal[1]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.profitHeader}</f:facet>
+                #{trackTotal[2]}
+            </p:column>
+        </p:dataTable>
+        <p:dataTable id="albumTotalTable" value="#{reports.getSalesByArtistAlbumTotals(reportDates.startDate, reportDates.endDate, artistBackingBean.artist)}" 
+                     var="albumTotal">
+            <p:column>
+                <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
+                #{albumTotal[0]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
+                #{albumTotal[1]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.profitHeader}</f:facet>
+                #{albumTotal[2]}
+            </p:column>
+        </p:dataTable>
         <p:dataTable id="trackTable" 
                      value="#{reports.getSalesByArtistTracks(reportDates.startDate, reportDates.endDate, artistBackingBean.artist)}" 
                      var="invoice">
