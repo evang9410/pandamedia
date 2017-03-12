@@ -36,7 +36,7 @@
             </p:inputText>
             <p:commandButton id="search" update="trackTotalTable albumTotalTable trackTable albumTable" value="#{msgs.searchBtn}" />
         </h:form>
-        <p:dataTable id="trackTotalTable" value="#{reports.getSalesByArtistTrackTotals(reportDates.startDate, reportDates.endDate, artistBackingBean.artist)}" 
+        <p:dataTable id="trackTotalTable" value="#{reports.getSalesByArtistTracksTotals(reportDates.startDate, reportDates.endDate, artistBackingBean.artist)}" 
                      var="trackTotal">
             <p:column>
                 <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
@@ -51,7 +51,7 @@
                 #{trackTotal[2]}
             </p:column>
         </p:dataTable>
-        <p:dataTable id="albumTotalTable" value="#{reports.getSalesByArtistAlbumTotals(reportDates.startDate, reportDates.endDate, artistBackingBean.artist)}" 
+        <p:dataTable id="albumTotalTable" value="#{reports.getSalesByArtistAlbumsTotals(reportDates.startDate, reportDates.endDate, artistBackingBean.artist)}" 
                      var="albumTotal">
             <p:column>
                 <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>

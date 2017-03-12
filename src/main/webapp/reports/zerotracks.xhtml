@@ -19,67 +19,67 @@
             end="#{reportDates.endDate}" 
             updateTable="reportTable">
         </pm:reportcalendars>
-        <h:dataTable id="reportTable" value="#{reports.getZeroTracks(reportDates.startDate, reportDates.endDate)}" var="track">
-            <h:column>
+        <p:dataTable id="reportTable" value="#{reports.getZeroTracks(reportDates.startDate, reportDates.endDate)}" var="track">
+            <p:column>
                 <f:facet name="header">#{msgs.idHeader}</f:facet>
                 #{track.id}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.titleHeader}</f:facet>
                 #{track.title}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.albumHeader}</f:facet>
                 #{track.albumId.title}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.artistHeader}</f:facet>
                 #{track.artistId.name}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.songwriterHeader}</f:facet>
                 #{track.songwriterId.name}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.genreHeader}</f:facet>
                 #{track.genreId.name}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.releaseDateHeader}</f:facet>
                 #{track.releaseDate}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.playLengthHeader}</f:facet>
                 #{track.playLength}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.albumTrackNumHeader}</f:facet>
                 #{track.albumTrackNumber}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.coverArtHeader}</f:facet>
                 #{track.coverArtId.imagePath}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.dateEnteredHeader}</f:facet>
                 #{track.dateEntered}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.partOfAlbumHeader}</f:facet>
                 #{track.partOfAlbum}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
                 #{track.costPrice}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.listPriceHeader}</f:facet>
                 #{track.listPrice}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.salePriceHeader}</f:facet>
                 #{track.salePrice}
-            </h:column>
-        </h:dataTable>
+            </p:column>
+        </p:dataTable>
     </h:body>
 </html>

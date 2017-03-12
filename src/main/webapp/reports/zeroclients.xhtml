@@ -19,73 +19,68 @@
             end="#{reportDates.endDate}" 
             updateTable="reportTable">
         </pm:reportcalendars>
-<!--        <pm:userdisplay
-            tablename="reportTable">
-            <ui:param name="bean" value="#{reports}" />
-            <ui:param name="method" value="getZeroUsers(reportDates.startDate, reportDates.endDate)" />
-        </pm:userdisplay>-->
-        <h:dataTable id="reportTable" value="#{reports.getZeroUsers(reportDates.startDate, reportDates.endDate)}" var="userVar">
-            <h:column>
+        <p:dataTable id="reportTable" value="#{reports.getZeroUsers(reportDates.startDate, reportDates.endDate)}" var="userVar">
+            <p:column>
                 <f:facet name="header">#{msgs.idHeader}</f:facet>
                 #{userVar.id}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.titleHeader}</f:facet>
                 #{userVar.title}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.lastNameHeader}</f:facet>
                 #{userVar.lastName}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.firstNameHeader}</f:facet>
                 #{userVar.firstName}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.companyHeader}</f:facet>
                 #{userVar.companyName}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.streetHeader}</f:facet>
                 #{userVar.streetAddress}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.cityHeader}</f:facet>
                 #{userVar.city}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.provinceHeader}</f:facet>
                 #{userVar.provinceId.name}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.countryHeader}</f:facet>
                 #{userVar.country}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.postalCodeHeader}</f:facet>
                 #{userVar.postalCode}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.homePhoneHeader}</f:facet>
                 #{userVar.homePhone}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.cellPhoneHeader}</f:facet>
                 #{userVar.cellPhone}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.emailHeader}</f:facet>
                 #{userVar.email}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.lastGenreHeader}</f:facet>
                 #{userVar.lastGenreSearched.name}
-            </h:column>
-            <h:column>
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.isManagerHeader}</f:facet>
                 #{userVar.isManager}
-            </h:column>
-        </h:dataTable>
+            </p:column>
+        </p:dataTable>
     </h:body>
 </html>
 

@@ -49,11 +49,8 @@ public class ReportBackingBean implements Serializable {
     // TODO: remove subquery from zero methods?
     // TODO: format date
     // TODO: format money
-    // TODO: sales by track has null in input field
+    // TODO: sales by track + album has null in input field
     // TODO: should sales by artist/track/album have defaults?
-    // TODO: write total income/cost/profit method for all sales
-    // cb.diff
-
     private static final Logger LOG = Logger.getLogger("ReportBackingBean.class");
 
     @PersistenceContext
@@ -72,7 +69,7 @@ public class ReportBackingBean implements Serializable {
      * @return The list of shop users
      */
     public List<ShopUser> getZeroUsers(Date startDate, Date endDate) {
-        String logMsg = "Zero Users\tStart: " + startDate + "\tEnd: " + endDate;
+        String logMsg = "getZeroUsers\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
 
         // Query
@@ -111,7 +108,7 @@ public class ReportBackingBean implements Serializable {
      * @return          The list of tracks
      */
     public List<Track> getZeroTracks(Date startDate, Date endDate) {
-        String logMsg = "Zero Tracks\tStart: " + startDate + "\tEnd: " + endDate;
+        String logMsg = "getZeroTracks\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
 
         // Query
@@ -153,14 +150,14 @@ public class ReportBackingBean implements Serializable {
      * @return          The list of clients with their total amount spent
      */
     public List<Object[]> getTopClients(Date startDate, Date endDate) {
-        String logMsg = "Top Clients\tStart: " + startDate + "\tEnd: " + endDate;
+        String logMsg = "getTopClients\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
 
         // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<ShopUser> userRoot = query.from(ShopUser.class);
-        ListJoin invoiceJoin = userRoot.join(ShopUser_.invoiceList, JoinType.LEFT);
+        Join invoiceJoin = userRoot.join(ShopUser_.invoiceList);
         query.multiselect(cb.sum(invoiceJoin.get(Invoice_.totalGrossValue)), userRoot);
         query.groupBy(userRoot.get(ShopUser_.id));
 
@@ -186,15 +183,15 @@ public class ReportBackingBean implements Serializable {
      * @param endDate The report's end date
      * @return          The list of tracks with their total income
      */
-    public List<Object[]> getTopTrackSellers(Date startDate, Date endDate) {
-        String logMsg = "Top Track Sellers\tStart: " + startDate + "\tEnd: " + endDate;
+    public List<Object[]> getTopSellersTracks(Date startDate, Date endDate) {
+        String logMsg = "getTopSellersTracks\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
 
         // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<Track> trackRoot = query.from(Track.class);
-        ListJoin invoiceTrackJoin = trackRoot.join(Track_.invoiceTrackList, JoinType.LEFT);
+        Join invoiceTrackJoin = trackRoot.join(Track_.invoiceTrackList);
         Join invoiceJoin = invoiceTrackJoin.join(InvoiceTrack_.invoice);
         query.multiselect(cb.sum(invoiceTrackJoin.get(InvoiceTrack_.finalPrice)), trackRoot);
         query.groupBy(trackRoot.get(Track_.id));
@@ -224,15 +221,15 @@ public class ReportBackingBean implements Serializable {
      * @param endDate The report's end date
      * @return          The list of albums with their total income
      */
-    public List<Object[]> getTopAlbumSellers(Date startDate, Date endDate) {
-        String logMsg = "Top Album Sellers\tStart: " + startDate + "\tEnd: " + endDate;
+    public List<Object[]> getTopSellersAlbums(Date startDate, Date endDate) {
+        String logMsg = "getTopSellersAlbums\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
 
         // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<Album> albumRoot = query.from(Album.class);
-        ListJoin invoiceAlbumJoin = albumRoot.join(Album_.invoiceAlbumList, JoinType.LEFT);
+        Join invoiceAlbumJoin = albumRoot.join(Album_.invoiceAlbumList);
         Join invoiceJoin = invoiceAlbumJoin.join(InvoiceTrack_.invoice);
         query.multiselect(cb.sum(invoiceAlbumJoin.get(InvoiceAlbum_.finalPrice)), albumRoot);
         query.groupBy(albumRoot.get(Album_.id));
@@ -262,7 +259,7 @@ public class ReportBackingBean implements Serializable {
      * @return          The list of totals
      */
     public List<Object[]> getTotalSalesTracks(Date startDate, Date endDate) {
-        String logMsg = "Total Track Sales\tStart: " + startDate + "\tEnd: " + endDate;
+        String logMsg = "getTotalSalesTracks\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
         
         // Query
@@ -298,7 +295,7 @@ public class ReportBackingBean implements Serializable {
      * @return          The list of totals
      */
     public List<Object[]> getTotalSalesAlbums(Date startDate, Date endDate) {
-        String logMsg = "Total Album Sales\tStart: " + startDate + "\tEnd: " + endDate;
+        String logMsg = "getTotalSalesAlbums\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
         
         // Query
@@ -334,8 +331,8 @@ public class ReportBackingBean implements Serializable {
      * @param endDate The report's end date
      * @return          The list of invoices
      */
-    public List<Object[]> getTotalSalesTrackDetails(Date startDate, Date endDate) {
-        String logMsg = "Total Track Sale Details\tStart: " + startDate + "\tEnd: " + endDate;
+    public List<Object[]> getTotalSalesTracksDetails(Date startDate, Date endDate) {
+        String logMsg = "getTotalSalesTracksDetails\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
         
         // Query
@@ -372,8 +369,8 @@ public class ReportBackingBean implements Serializable {
      * @param endDate The report's end date
      * @return          The list of invoices
      */
-    public List<Object[]> getTotalSalesAlbumDetails(Date startDate, Date endDate) {
-        String logMsg = "Total Album Sale Details\tStart: " + startDate + "\tEnd: " + endDate;
+    public List<Object[]> getTotalSalesAlbumsDetails(Date startDate, Date endDate) {
+        String logMsg = "getTotalSalesAlbumsDetails\tStart: " + startDate + "\tEnd: " + endDate;
         LOG.log(Level.INFO, logMsg);
 
         // Query
@@ -415,12 +412,12 @@ public class ReportBackingBean implements Serializable {
     {
         if (track == null)
         {
-            String logMsg = "Sales By Track\tStart: " + startDate + "\tEnd: " + endDate + "\tTrack: null";
+            String logMsg = "getSalesByTrack\tStart: " + startDate + "\tEnd: " + endDate + "\tTrack: null";
             LOG.log(Level.INFO, logMsg);
             return null;
         }
         
-        String logMsg = "Sales By Track\tStart: " + startDate + "\tEnd: " + endDate + "\tTrack: " + track.getId();
+        String logMsg = "getSalesByTrack\tStart: " + startDate + "\tEnd: " + endDate + "\tTrack: " + track.getId();
         LOG.log(Level.INFO, logMsg);
         
         // Query
@@ -460,12 +457,12 @@ public class ReportBackingBean implements Serializable {
     public List<Object[]> getSalesByTrackTotals(Date startDate, Date endDate, Track track) {
         if (track == null)
         {
-            String logMsg = "Sales By Track\tStart: " + startDate + "\tEnd: " + endDate + "\tTrack: null";
+            String logMsg = "getSalesByTrackTotals\tStart: " + startDate + "\tEnd: " + endDate + "\tTrack: null";
             LOG.log(Level.INFO, logMsg);
             return null;
         }
         
-        String logMsg = "Sales by Track Totals\tStart: " + startDate + "\tEnd: " + endDate;
+        String logMsg = "getSalesByTrackTotals\tStart: " + startDate + "\tEnd: " + endDate + "\tTrack: " + track.getId();
         LOG.log(Level.INFO, logMsg);
         
         // Query
@@ -507,12 +504,12 @@ public class ReportBackingBean implements Serializable {
     {        
         if (artist == null)
         {
-            String logMsg = "Sales By Artist Tracks\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: null";
+            String logMsg = "getSalesByArtistTracks\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: null";
             LOG.log(Level.INFO, logMsg);
             return null;
         }
         
-        String logMsg = "Sales By Artist Tracks\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: " + artist.getId();
+        String logMsg = "getSalesByArtistTracks\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: " + artist.getId();
         LOG.log(Level.INFO, logMsg);
         
         // Query
@@ -551,15 +548,15 @@ public class ReportBackingBean implements Serializable {
      * @param artist    The artist desired for the report
      * @return          The list of totals
      */
-    public List<Object[]> getSalesByArtistTrackTotals(Date startDate, Date endDate, Artist artist) {
+    public List<Object[]> getSalesByArtistTracksTotals(Date startDate, Date endDate, Artist artist) {
         if (artist == null)
         {
-            String logMsg = "Sales By Artist Track Totals\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: null";
+            String logMsg = "getSalesByArtistTracksTotals\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: null";
             LOG.log(Level.INFO, logMsg);
             return null;
         }
         
-        String logMsg = "Sales By Artist Track Totals\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: " + artist.getId();
+        String logMsg = "getSalesByArtistTracksTotals\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: " + artist.getId();
         LOG.log(Level.INFO, logMsg);
         
         // Query
@@ -602,12 +599,12 @@ public class ReportBackingBean implements Serializable {
     {
         if (artist == null)
         {
-            String logMsg = "Sales By Artist Albums\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: null";
+            String logMsg = "getSalesByArtistAlbums\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: null";
             LOG.log(Level.INFO, logMsg);
             return null;
         }
         
-        String logMsg = "Sales By Artist Albums\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: " + artist.getId();
+        String logMsg = "getSalesByArtistAlbums\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: " + artist.getId();
         LOG.log(Level.INFO, logMsg);
         
         // Query
@@ -646,15 +643,15 @@ public class ReportBackingBean implements Serializable {
      * @param artist    The artist desired for the report
      * @return          The list of totals
      */
-    public List<Object[]> getSalesByArtistAlbumTotals(Date startDate, Date endDate, Artist artist) {
+    public List<Object[]> getSalesByArtistAlbumsTotals(Date startDate, Date endDate, Artist artist) {
         if (artist == null)
         {
-            String logMsg = "Sales By Artist Album Totals\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: null";
+            String logMsg = "getSalesByArtistAlbumsTotals\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: null";
             LOG.log(Level.INFO, logMsg);
             return null;
         }
         
-        String logMsg = "Sales By Artist Album Totals\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: " + artist.getId();
+        String logMsg = "getSalesByArtistAlbumsTotals\tStart: " + startDate + "\tEnd: " + endDate + "\tArtist: " + artist.getId();
         LOG.log(Level.INFO, logMsg);
         
         // Query
@@ -697,12 +694,12 @@ public class ReportBackingBean implements Serializable {
     {
         if (album == null)
         {
-            String logMsg = "Sales By Album\tStart: " + startDate + "\tEnd: " + endDate + "\tAlbum: null";
+            String logMsg = "getSalesByAlbum\tStart: " + startDate + "\tEnd: " + endDate + "\tAlbum: null";
             LOG.log(Level.INFO, logMsg);
             return null;
         }
         
-        String logMsg = "Sales By Album\tStart: " + startDate + "\tEnd: " + endDate + "\tAlbum: " + album.getId();
+        String logMsg = "getSalesByAlbum\tStart: " + startDate + "\tEnd: " + endDate + "\tAlbum: " + album.getId();
         LOG.log(Level.INFO, logMsg);
         
         // Query
@@ -731,23 +728,23 @@ public class ReportBackingBean implements Serializable {
     
     /**
      * This method returns the total income, cost, and profit of all the sales 
-     * within the time frame specified for a particular track.
+     * within the time frame specified for a particular album.
      * 
      * @author Erika Bourque
      * @param startDate The report's start date
      * @param endDate The report's end date
-     * @param album     The track desired for the report
+     * @param album     The album desired for the report
      * @return          The list of totals
      */
     public List<Object[]> getSalesByAlbumTotals(Date startDate, Date endDate, Album album) {
         if (album == null)
         {
-            String logMsg = "Sales By Album Totals\tStart: " + startDate + "\tEnd: " + endDate + "\tAlbum: null";
+            String logMsg = "getSalesByAlbumTotals\tStart: " + startDate + "\tEnd: " + endDate + "\tAlbum: null";
             LOG.log(Level.INFO, logMsg);
             return null;
         }
         
-        String logMsg = "Sales by Album Totals\tStart: " + startDate + "\tEnd: " + endDate + "\tAlbum: " + album.getId();
+        String logMsg = "getSalesByAlbumTotals\tStart: " + startDate + "\tEnd: " + endDate + "\tAlbum: " + album.getId();
         LOG.log(Level.INFO, logMsg);
         
         // Query
