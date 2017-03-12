@@ -94,11 +94,13 @@
 }
 
 .latest-carousel{
-    margin: 0 auto;
-    width: 90vw;
+    margin-left: 2%;
+    width: 50vw;
+    height: 45vh;
 }
-
-.carosel-images{
-    max-height: 100%;
-    max-width: 100%;
+  
+.carousel-img{
+    margin: 0 auto;
+    max-height: inherit;
+    max-width: inherit;
 }
