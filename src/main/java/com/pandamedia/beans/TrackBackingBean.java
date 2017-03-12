@@ -87,7 +87,11 @@ public class TrackBackingBean implements Serializable{
         
         return null; 
     }
-    
+    /**
+     * iterates through the reviews for a track and returns a list of the approved
+     * ratings.
+     * @return 
+     */
     public List<Review> getApprovedReviews(){
         List<Review> approvedReviews = new ArrayList();
         short cond = 1;
@@ -98,6 +102,21 @@ public class TrackBackingBean implements Serializable{
         }
         System.out.println("approved reviews size: "  + approvedReviews.size());
         return approvedReviews;
+    }
+    /**
+     * this method is used to display the stars next to a review on the track page
+     * it takes in the review rating, creates a List of elements that JSF will then iterate
+     * through with <ui:repeat> this is the safer way of doing it rather than using
+     * <c:forEach>
+     * @param rating
+     * @return 
+     */
+    public List getStarsList(int rating){
+        List l = new ArrayList();
+        for(int i = 0; i <= rating; i++){
+            l.add(i);
+        }
+        return l;
     }
      
 }
