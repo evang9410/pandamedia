@@ -20,6 +20,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import persistence.entities.ShopUser;
 import jodd.mail.*;
+import persistence.controllers.ProvinceJpaController;
+import persistence.controllers.ShopUserJpaController;
 
 /**
  *
@@ -31,6 +33,10 @@ public class UserBean implements Serializable {
 
     @Inject
     private ShopUser shopUser;
+    @Inject
+    private ShopUserJpaController userController;
+    @Inject
+    private ProvinceJpaController provinceController;
     private String password;
     private String confirmPasswd;
     //used to salt the password
@@ -60,8 +66,9 @@ public class UserBean implements Serializable {
         this.password = password;
     }
 
-    public String createNewUser() {
-
+    public String createNewUser() throws Exception {
+        setFields();
+        userController.create(shopUser);
         return null;
     }
 
@@ -95,6 +102,7 @@ public class UserBean implements Serializable {
         shopUser.setHomePhone("");
         shopUser.setPostalCode("");
         shopUser.setStreetAddress("");
+        shopUser.setProvinceId(provinceController.findProvince(1));
         
         //generates a random salt to salt the password
         String salt=getSalt();

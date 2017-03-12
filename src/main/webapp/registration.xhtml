@@ -33,13 +33,13 @@
                 <h:message id="emailError" for="emailInput" style="color:red"/>
             <br/>
             <h:outputLabel for="password" value="Password"/>
-            <h:inputSecret id="password" value="#{userBean.password}" required="true" immediate="true">
+            <h:inputSecret id="password" value="#{userBean.password}" required="true">
                 <!--<f:ajax event="valueChange" immediate="true"/>-->
             </h:inputSecret>
             <br/>
             <h:outputLabel for="confirmPwd" value="Confirm Password"/>
             <h:inputSecret id="confirmPwd" value="#{userBean.confirmPasswd}"
-                           validator="#{userBean.validatePassword}" required="true" immediate="true">
+                           required="true">
                 <!--<f:ajax event="keyup" render="passwordError"/>-->
             </h:inputSecret>
             <h:message id="passwordError" for="confirmPwd" style="color:red"/>
