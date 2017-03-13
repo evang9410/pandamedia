@@ -45,80 +45,41 @@
                     <p:column filterBy="#{item.companyName}" headerText="#{msgs.companyHeader}" filterMatchMode="contains">
                         <h:outputText value="#{item.companyName}"/>
                     </p:column>
-                    <p:column>
+                    <p:column filterBy="#{item.streetAddress}" headerText="#{msgs.streetHeader}" filterMatchMode="contains">
                         <h:outputText value="#{item.streetAddress}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="City"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.city}" headerText="#{msgs.cityHeader}" filterMatchMode="contains">
                         <h:outputText value="#{item.city}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Country"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.country}" headerText="#{msgs.countryHeader}" filterMatchMode="contains">
                         <h:outputText value="#{item.country}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="PostalCode"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.postalCode}" headerText="#{msgs.postalCodeHeader}" filterMatchMode="contains">
                         <h:outputText value="#{item.postalCode}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="HomePhone"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.homePhone}" headerText="#{msgs.homePhoneHeader}" filterMatchMode="contains">
                         <h:outputText value="#{item.homePhone}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="CellPhone"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.cellPhone}" headerText="#{msgs.cellPhoneHeader}" filterMatchMode="contains">
                         <h:outputText value="#{item.cellPhone}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Email"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.email}" headerText="#{msgs.emailHeader}" filterMatchMode="contains">
                         <h:outputText value="#{item.email}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Password"/>
-                        </f:facet>
-                        <h:outputText value="#{item.password}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Salt"/>
-                        </f:facet>
-                        <h:outputText value="#{item.salt}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="IsManager"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.isManager}" headerText="#{msgs.isManagerHeader}" filterMatchMode="contains">
                         <h:outputText value="#{item.isManager}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="ProvinceId"/>
-                        </f:facet>
-                        <h:outputText value="#{item.provinceId}"/>
+                    <p:column filterBy="#{item.provinceId}" headerText="#{msgs.provinceHeader}" filterMatchMode="contains">
+                        <h:outputText value="#{item.provinceId.name}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.lastGenreSearched}" headerText="#{msgs.lastGenreHeader}" filterMatchMode="contains">
+                        <h:outputText value="#{item.lastGenreSearched.name}"/>
                     </p:column>
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="LastGenreSearched"/>
+                            <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <h:outputText value="#{item.lastGenreSearched}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Options"/>
-                        </f:facet>
-                        <h:commandButton  value="Edit" action="#{albumBacking.loadEditForIndex(item.id)}" />
+                        <p:commandButton  value="#{msgs.edit}" action="#{userBacking.loadEditForClients(item.id)}" />
                     </p:column>
                 </p:dataTable>
             </h:form>

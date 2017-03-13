@@ -212,4 +212,26 @@ public class AlbumBackingBean implements Serializable{
         return albumController.findAlbumEntities();
     }
     
+    public String loadEditForSales(Integer id)
+    {
+        this.album = albumController.findAlbum(id);
+        return "AlbumFunctionality/editSalesAlbum.xhtml";
+    }
+    
+    public String editSales() throws Exception
+    {
+        double salePrice = album.getSalePrice();
+        double listPrice = album.getListPrice();
+        
+        //Add a popup msg
+        if(salePrice >= listPrice)
+          return null;
+        
+        else
+        {
+            albumController.edit(album); 
+            return "welcome_sales";
+        }
+    }
+    
 }

@@ -169,5 +169,27 @@ public class TrackBackingBean implements Serializable{
         }
         return l;
     }
+    
+    public String loadEditForSales(Integer id)
+    {
+        this.track = trackController.findTrack(id);
+        return "TrackFunctionality/editSalesTrack.xhtml";
+    }
+    
+    public String editSales() throws Exception
+    {
+        double salePrice = track.getSalePrice();
+        double listPrice = track.getListPrice();
+        
+        //Add a popup msg
+        if(salePrice >= listPrice)
+          return null;
+        
+        else
+        {
+            trackController.edit(track); 
+            return "welcome_sales";
+        }
+    }
      
 }

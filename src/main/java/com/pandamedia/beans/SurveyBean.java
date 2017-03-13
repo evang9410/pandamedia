@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -17,7 +16,7 @@ import javax.inject.Named;
  * @author Hau Gilles Che
  */
 @Named("surveyBean")
-@RequestScoped
+@SessionScoped
 public class SurveyBean implements Serializable {
     private int surveyId=1;
     private String userChoice;

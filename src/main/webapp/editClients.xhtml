@@ -7,59 +7,48 @@
       xmlns:p="http://primefaces.org/ui">>
     
     <h:head>
-        <title>Edit</title>
+        <title>#{msgs.edit}</title>
     </h:head>
     <h:body>
         <f:view>
-
-
             <h:form>
-                <h1><h:outputText value="Create/Edit"/></h1>
+                <h1><h:outputText value=#{msgs.edit}/></h1>
                 <p:panelGrid columns="2">
-                    <p:outputLabel value="Id:" for="id" />
+                    <p:outputLabel value="#{msgs.id}" for="id" />
                     <p:inputText id="id" value="#{userBacking.user.id}" title="Id" required="true" requiredMessage="The Id field is required."/>
-                    <p:outputLabel value="Title:" for="title" />
+                    <p:outputLabel value="#{msgs.title}" for="title" />
                     <p:inputText id="title" value="#{userBacking.user.title}" title="Title" required="true" requiredMessage="The Title field is required."/>
-                    <p:outputLabel value="LastName:" for="lastName" />
+                    <p:outputLabel value="#{msgs.lastNameHeader}" for="lastName" />
                     <p:inputText id="lastName" value="#{userBacking.user.lastName}" title="LastName" required="true" requiredMessage="The LastName field is required."/>
-                    <p:outputLabel value="FirstName:" for="firstName" />
+                    <p:outputLabel value="#{msgs.firstNameHeader}" for="firstName" />
                     <p:inputText id="firstName" value="#{userBacking.user.firstName}" title="FirstName" required="true" requiredMessage="The FirstName field is required."/>
-                    <p:outputLabel value="CompanyName:" for="companyName" />
+                    <p:outputLabel value="#{msgs.companyHeader}" for="companyName" />
                     <p:inputText id="companyName" value="#{userBacking.user.companyName}" title="CompanyName" />
-                    <p:outputLabel value="StreetAddress:" for="streetAddress" />
+                    <p:outputLabel value="#{msgs.streetHeader}" for="streetAddress" />
                     <p:inputText id="streetAddress" value="#{userBacking.user.streetAddress}" title="StreetAddress" required="true" requiredMessage="The StreetAddress field is required."/>
-                    <p:outputLabel value="City:" for="city" />
+                    <p:outputLabel value="#{msgs.cityHeader}" for="city" />
                     <p:inputText id="city" value="#{userBacking.user.city}" title="City" required="true" requiredMessage="The City field is required."/>
-                    <p:outputLabel value="Country:" for="country" />
+                    <p:outputLabel value="#{msgs.countryHeader}" for="country" />
                     <p:inputText id="country" value="#{userBacking.user.country}" title="Country" required="true" requiredMessage="The Country field is required."/>
-                    <p:outputLabel value="PostalCode:" for="postalCode" />
+                    <p:outputLabel value="#{msgs.postalCodeHeader}" for="postalCode" />
                     <p:inputText id="postalCode" value="#{userBacking.user.postalCode}" title="PostalCode" required="true" requiredMessage="The PostalCode field is required."/>
-                    <p:outputLabel value="HomePhone:" for="homePhone" />
+                    <p:outputLabel value="#{msgs.homePhoneHeader}" for="homePhone" />
                     <p:inputText id="homePhone" value="#{userBacking.user.homePhone}" title="HomePhone" required="true" requiredMessage="The HomePhone field is required."/>
-                    <p:outputLabel value="CellPhone:" for="cellPhone" />
+                    <p:outputLabel value="#{msgs.cellPhoneHeader}" for="cellPhone" />
                     <p:inputText id="cellPhone" value="#{userBacking.user.cellPhone}" title="CellPhone" />
-                    <p:outputLabel value="Email:" for="email" />
+                    <p:outputLabel value="#{msgs.emailHeader}" for="email" />
                     <p:inputText id="email" value="#{userBacking.user.email}" title="Email" required="true" requiredMessage="The Email field is required."/>
-                    <p:outputLabel value="Password:" for="password" />
-                    <p:inputText id="password" value="#{userBacking.user.password}" title="Password" required="true" requiredMessage="The Password field is required."/>
-                    <p:outputLabel value="Salt:" for="salt" />
-                    <p:inputText id="salt" value="#{userBacking.user.salt}" title="Salt" required="true" requiredMessage="The Salt field is required."/>
-                    <p:outputLabel value="IsManager:" for="isManager" />
+                    <p:outputLabel value="#{msgs.isManagerHeader}" for="isManager" />
                     <p:inputText id="isManager" value="#{userBacking.user.isManager}" title="IsManager" required="true" requiredMessage="The IsManager field is required."/>
-                    <p:outputLabel value="ProvinceId:" for="provinceId" />
-                    <p:selectOneMenu id="provinceId" value="#{userBacking.user.provinceId}" required="true" requiredMessage="The ProvinceId field is required.">
-                        <!-- TODO: update below reference to list of available items-->
-                        <f:selectItems value="#{fixme}"/>
-                    </p:selectOneMenu>
-                    <p:outputLabel value="LastGenreSearched:" for="lastGenreSearched" />
-                    <p:selectOneMenu id="lastGenreSearched" value="#{userBacking.user.lastGenreSearched}" >
-                        <!-- TODO: update below reference to list of available items-->
-                        <f:selectItems value="#{fixme}"/>
+                    <p:outputLabel value="#{msgs.provinceHeader}" for="provinceId" />
+                    <p:selectOneMenu id="provinceId" value="#{userBacking.user.provinceId}" converter="provinceConverter" required="true" requiredMessage="The ProvinceId field is required.">
+                        <f:selectItems value="#{provinceBacking.all}" var="province" itemLabel="#{province.name}" itemValue="#{province}"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
             </h:form>
         </f:view>
 
     </h:body>
+
 </html>
 

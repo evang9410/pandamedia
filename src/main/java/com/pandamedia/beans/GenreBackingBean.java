@@ -1,8 +1,9 @@
 
 package com.pandamedia.beans;
 
+import java.io.Serializable;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -16,14 +17,15 @@ import persistence.entities.Genre;
  * @author Evang
  */
 @Named("genreBacking")
-@RequestScoped
-public class GenreBackingBean {
+@SessionScoped
+public class GenreBackingBean implements Serializable {
     @Inject
     private GenreJpaController genreController;
+    private Genre genre;
     @PersistenceContext
     private EntityManager em;
     
-    private Genre genre;
+    
     
     public Genre getGenre(){
         if(genre == null){

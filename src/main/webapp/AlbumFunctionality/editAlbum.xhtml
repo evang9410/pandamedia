@@ -9,8 +9,6 @@
     </h:head>
     <h:body>
         <f:view>
-
-
             <h:form>
                 <h1><h:outputText value="#{msgs.edit}"/></h1>
                 <p:panelGrid columns="2">
@@ -57,7 +55,7 @@
                         <f:selectItems value="#{coverArtBacking.all}" var="coverArt" itemLabel="#{coverArt.imagePath}" itemValue="#{coverArt}"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
-                <h:commandButton action="#{albumBacking.edit()}" value="#{msgs.edit}"/>
+                <p:commandButton action="#{albumBacking.edit()}" value="#{msgs.edit}"/>
             </h:form>
 
 

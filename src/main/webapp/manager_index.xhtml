@@ -92,9 +92,9 @@
                         <f:facet name="header">
                             <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <h:commandButton  value="#{msgs.edit}" action="#{albumBacking.loadEditForIndex(item.id)}" />
-                        <h:commandButton value="#{msgs.add}" action="#{albumBacking.addItem(item.id)}" />
-                        <h:commandButton  value="#{msgs.del}" action="#{albumBacking.removeItem(item.id)}" />
+                        <p:commandButton  value="#{msgs.edit}" action="#{albumBacking.loadEditForIndex(item.id)}" />
+                        <p:commandButton value="#{msgs.add}" action="#{albumBacking.addItem(item.id)}" />
+                        <p:commandButton  value="#{msgs.del}" action="#{albumBacking.removeItem(item.id)}" />
                     </p:column>
                 </p:dataTable>
             </h:form>
@@ -102,7 +102,7 @@
 
             <h:form>
                 <h1><h:outputText value="#{msgs.tracks}"/></h1>
-                <p:dataTable value="#{trackBacking.tracks}" widgetVar="trackTable" filteredValue="#{trackBacking.filteredTracks}" var="item" paginator="true" rows="5">
+                <p:dataTable value="#{trackBacking.tracks}" id="trackTableID" widgetVar="trackTable" filteredValue="#{trackBacking.filteredTracks}" var="item" paginator="true" rows="5">
                     <f:facet name="header">
                         <p:outputPanel>
                             <h:outputText value="#{msgs.search}" />
@@ -170,9 +170,9 @@
                         <f:facet name="header">
                             <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <h:commandButton  value="#{msgs.edit}" action="#{trackBacking.loadEditForIndex(item.id)}" />
-                        <h:commandButton  value="#{msgs.add}" action="#{trackBacking.addItem(item.id)}" />
-                        <h:commandButton  value="#{msgs.del}" action="#{trackBacking.removeItem(item.id)}" />
+                        <p:commandButton  value="#{msgs.edit}" action="#{trackBacking.loadEditForIndex(item.id)}" />
+                        <p:commandButton  value="#{msgs.add}" action="#{trackBacking.addItem(item.id)}"/>
+                        <p:commandButton  value="#{msgs.del}" action="#{trackBacking.removeItem(item.id)}"/>
                     </p:column>
                 </p:dataTable>
             </h:form>

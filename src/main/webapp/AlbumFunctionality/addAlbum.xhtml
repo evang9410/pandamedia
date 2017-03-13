@@ -55,7 +55,7 @@
                         <f:selectItems value="#{coverArtBacking.all}" var="coverArt" itemLabel="#{coverArt.imagePath}" itemValue="#{coverArt}"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
-                <h:commandButton action="#{albumBacking.create()}" value="#{msgs.addAlbum}"/>
+                <p:commandButton action="#{albumBacking.create()}" value="#{msgs.addAlbum}"/>
             </h:form>
 
         </f:view>

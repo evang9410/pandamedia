@@ -63,7 +63,7 @@
                         <f:selectItems value="#{coverArtBacking.all}" var="coverArt" itemLabel="#{coverArt.imagePath}" itemValue="#{coverArt}"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
-                <h:commandButton action="#{trackBacking.edit()}" value="#{msgs.edit}"/>
+                <p:commandButton action="#{trackBacking.edit()}" value="#{msgs.edit}"/>
             </h:form>
 
         </f:view>

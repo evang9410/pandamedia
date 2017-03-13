@@ -1,7 +1,7 @@
 package com.pandamedia.beans;
 
 import java.io.Serializable;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,7 +33,7 @@ import persistence.entities.Track;
  * @author Erika Bourque
  */
 @Named("reports")
-@RequestScoped
+@SessionScoped
 public class ReportBackingBean implements Serializable {
     private static final Logger LOG = Logger.getLogger("ReportBackingBean.class");
 

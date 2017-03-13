@@ -81,6 +81,11 @@ public class ShopUserManagerBean implements Serializable{
         return userController.findShopUserEntities();
     }
     
+    public String loadEditForClients(Integer id)
+    {
+        this.user = userController.findShopUser(id);
+        return "editClients.xhtml";
+    }
     
 
 }
