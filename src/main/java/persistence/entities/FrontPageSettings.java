@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package persistence.entities;
 
 import java.io.Serializable;
@@ -38,9 +43,9 @@ public class FrontPageSettings implements Serializable {
     @JoinColumn(name = "newsfeed_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Newsfeed newsfeedId;
-    @JoinColumn(name = "advert_a_id", referencedColumnName = "id")
+    @JoinColumn(name = "ad_a_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Advertisement advertAId;
+    private Advertisement adAId;
 
     public FrontPageSettings() {
     }
@@ -73,12 +78,12 @@ public class FrontPageSettings implements Serializable {
         this.newsfeedId = newsfeedId;
     }
 
-    public Advertisement getAdvertAId() {
-        return advertAId;
+    public Advertisement getAdAId() {
+        return adAId;
     }
 
-    public void setAdvertAId(Advertisement advertAId) {
-        this.advertAId = advertAId;
+    public void setAdAId(Advertisement adAId) {
+        this.adAId = adAId;
     }
 
     @Override

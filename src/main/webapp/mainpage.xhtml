@@ -18,7 +18,6 @@ and open the template in the editor.
         <h:outputStylesheet library="css" name="bootstrap.css" />
         <h:outputStylesheet library="css" name="mainpage.css" />
         <h:outputStylesheet library="css" name="style.css" />
-        <h:outputStylesheet library="css" name="carousel.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body class="parallax">
@@ -33,11 +32,11 @@ and open the template in the editor.
         <h2 id="latest_header">#{msgs.newReleases}</h2>
         
         <div class="contentflow_container">
-            <b:carousel interval="5000" styleClass="client-tracking">
+            <b:carousel interval="5000" styleClass="latest-carousel">
                 <c:forEach items="#{albumBacking.latestAlbums}" var="latest">
-                    <b:carouselItem>
+                    <b:carouselItem style="max-height: 45vh;">
                         <!-- replace this src with the albums cover art string -->
-                        <img src="./resources/images/bg.jpg"/>
+                        <img src="./resources/coverart/#{latest.coverArtId.imagePath}" class="carousel-img"/>
                         <b:carouselCaption>
                             <h:form>
                                 <h:commandLink action="#{albumBacking.albumPage(latest)}">
@@ -70,7 +69,7 @@ and open the template in the editor.
                                 <div class = "card_album well-sm">
                                     <h:form>
                                         <h:commandLink action="#{albumBacking.albumPage(ag)}">
-                                            <img class="card_album_art img-responsive" src="./resources/images/bg.jpg"/>
+                                            <img class="card_album_art img-responsive" src="./resources/coverart/#{ag.coverArtId.imagePath}"/>
                                             <h3>#{ag.title}</h3>
                                         </h:commandLink>
                                     </h:form>
@@ -89,9 +88,9 @@ and open the template in the editor.
         </div>
         <b:carousel styleClass="client-tracking" interval="5000">
             <c:forEach items="#{user.findUser(44).lastGenreSearched.albumList}" var="albums">
-                <b:carouselItem>
+                <b:carouselItem style="height: 45vh;">
                     <!-- replace this src with the albums cover art string -->
-                    <img src="./resources/images/bg.jpg" alt="Valladolid" />
+                    <img src="./resources/coverart/#{albums.coverArtId.imagePath}" class="carousel-img" />
                     <b:carouselCaption>
                         <h:form>
                             <h:commandLink action="#{albumBacking.albumPage(albums)}">
