@@ -100,7 +100,6 @@ public class TrackBackingBean implements Serializable{
                 approvedReviews.add(r);
             }
         }
-        System.out.println("approved reviews size: "  + approvedReviews.size());
         return approvedReviews;
     }
     /**
