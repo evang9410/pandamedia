@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package commands;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -14,7 +8,6 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import persistence.controllers.TrackJpaController;
 import persistence.entities.Album;
 import persistence.entities.Artist;
 import persistence.entities.Track;
@@ -37,19 +30,7 @@ public class UserSearch implements Serializable{
     
     @PersistenceContext
     private EntityManager em;
-    
 
-    
-    
-    /**
-    public ArrayList searchAll(String str){
-        //JPA queries
-        //set resultsList
-        //returns it
-              
-        return resultsList;
-     * @return }**/
-    
     public String executeSearch(){
         String str = sd.getType();
         switch(str) {

@@ -31,6 +31,19 @@
 
 
 
+.main_title{
+    border-bottom: 3px solid #fc4e1b;
+    display:inline-block;
+    padding-left: 5px;
+    padding-right:5px;
+    margin-bottom: 10px;
+    transition: padding-right 1s;
+}
+
+.main_title:hover{
+    padding-right: 15px;
+}
+
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
     color: #fff;
 }
