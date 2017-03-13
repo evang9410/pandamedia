@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -19,7 +18,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import persistence.controllers.AlbumJpaController;
 import persistence.entities.Album;
-import persistence.entities.CoverArt;
 import persistence.entities.Genre;
 
 /**

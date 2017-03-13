@@ -26,7 +26,10 @@ import persistence.entities.Track;
 @Named("Search")
 @RequestScoped
 public class UserSearch implements Serializable{
-    private List resultsList;
+    private List<Track> trackResultsList;
+    private List albumResultsList;
+    private List artistResultsList;
+    
     private String parameters;
     
     @Inject
@@ -68,7 +71,7 @@ public class UserSearch implements Serializable{
         String q = "SELECT t FROM Track t WHERE t.title LIKE :var";
         TypedQuery<Track> query =  em.createQuery(q, Track.class);
         query.setParameter("var", "%" + parameters + "%");
-        resultsList = query.getResultList();
+        trackResultsList = query.getResultList();
     }
     
     
@@ -77,15 +80,15 @@ public class UserSearch implements Serializable{
         String q = "SELECT a FROM Album a WHERE a.title LIKE :var";
         TypedQuery<Album> query =  em.createQuery(q, Album.class);
         query.setParameter("var", "%" + parameters + "%");
-        resultsList = query.getResultList();
+        albumResultsList = query.getResultList();
     }
 
     public void searchArtists(){
         //Creates query that returns a list of artists with a name relevant to "parameters"
-        String q = "SELECT a FROM Artist a WHERE a.name LIKE '%:var%'";
+        String q = "SELECT a FROM Artist a WHERE a.name LIKE :var";
         TypedQuery<Artist> query =  em.createQuery(q, Artist.class);
         query.setParameter("var", "%" + parameters + "%");
-        resultsList = query.getResultList();
+        artistResultsList = query.getResultList();
     }
     
     public void searchDate(){
@@ -118,13 +121,30 @@ public class UserSearch implements Serializable{
         return this.parameters;
     }
 
-    public List getResultsList() {
-        return resultsList;
+    public List getTrackResultsList() {
+        return trackResultsList;
     }
 
-    public void setResultsList(List resultsList) {
-        this.resultsList = resultsList;
+    public void setTrackResultsList(List trackResultsList) {
+        this.trackResultsList = trackResultsList;
     }
+
+    public List getAlbumResultsList() {
+        return albumResultsList;
+    }
+
+    public void setAlbumResultsList(List albumResultsList) {
+        this.albumResultsList = albumResultsList;
+    }
+
+    public List getArtistResultsList() {
+        return artistResultsList;
+    }
+
+    public void setArtistResultsList(List artistResultsList) {
+        this.artistResultsList = artistResultsList;
+    }
+
     
     
 }

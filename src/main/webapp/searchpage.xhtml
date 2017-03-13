@@ -12,32 +12,48 @@ and open the template in the editor.
     xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:b="http://bootsfaces.net/ui">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway"></link>
-    
-        <div class="searchResultContainer">
-            <div class="displaySearchResults">
-                
-                <!--in case there are tracks in the list, else does not display anything -->
-                <ui:repeat value="#{Search.resultsList}" var="tracks">
-                    track <br></br>
-                </ui:repeat>
-                
-                <!-- ___________________________________________________________________ -->  
-                <br></br>
-                <!--in case there are albums in the list, else does not display anything -->
-                <ui:repeat value="#{Search.resultsList}" var="albums">
+    <h:head>
+        <title>Search Results:</title>
+        <h:outputStylesheet library="css" name="bootstrap.css" />
+        <h:outputStylesheet library="css" name="style.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>    
+    <ui:include src="./WEB-INF/sections/menu.xhtml"/>
+    <div class="searchResultContainer">
+        <div class="displaySearchResults">
 
-                </ui:repeat>
-                
-                <!-- __________________________________________________________________* -->     
+            <!--in case there are tracks in the list, else does not display anything -->
+            <ui:repeat value="#{Search.trackResultsList}" var="t">
+                #{t.title}
                 <br></br>
-                
-                <!--in case there are artists in the list, else does not display anything-->
-                <ui:repeat value="#{Search.resultsList}" var="artists">
+                #{t.costPrice}$
+                <br></br>
+                #{t.albumId.title}
+                <br></br><br></br>
+            </ui:repeat>
 
-                </ui:repeat>
-                
-                
-            </div>
+            <!-- ___________________________________________________________________ -->  
+            <br></br>
+            <!--in case there are albums in the list, else does not display anything -->
+            <ui:repeat value="#{Search.albumResultsList}" var="al">
+            #{al.title}
+            <br></br>
+            #{al.numTracks}
+            <br></br><br></br>
+            </ui:repeat>
+
+            <!-- __________________________________________________________________* -->     
+            <br></br>
+
+            <!--in case there are artists in the list, else does not display anything-->
+            <ui:repeat value="#{Search.artistResultsList}" var="ar">
+                #{ar.name}
+                <br></br><br></br>
+            </ui:repeat>
+
+
+
         </div>
+    </div>
 </ui:composition>
 
