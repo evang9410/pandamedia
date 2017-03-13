@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import persistence.controllers.TrackJpaController;
 import persistence.entities.Review;
 import persistence.entities.Track;
@@ -93,14 +94,12 @@ public class TrackBackingBean implements Serializable{
      * @return 
      */
     public List<Review> getApprovedReviews(){
-        List<Review> approvedReviews = new ArrayList();
-        short cond = 1;
-        for(Review r : track.getReviewList()){
-            if(r.getApprovalStatus() == cond){
-                approvedReviews.add(r);
-            }
-        }
-        return approvedReviews;
+        int track_id = track.getId();
+        String q = "SELECT r FROM Review r WHERE r.trackId.id = :trackId AND r.approvalStatus = :approval ORDER BY r.dateEntered DESC";
+        TypedQuery<Review> query = em.createQuery(q, Review.class);
+        query.setParameter("trackId", track_id);
+        query.setParameter("approval", 1);
+        return query.getResultList();
     }
     /**
      * this method is used to display the stars next to a review on the track page
