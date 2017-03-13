@@ -17,16 +17,16 @@
         <header>
             <ui:include src="./WEB-INF/sections/menu.xhtml"/>
         </header>
-        <div class="track-info-wrapper well-sm">
-            <div class="container-fluid">
+        <div class="track-info-wrapper well-lg">
+            <div class="container">
                 <div class="row">                   
-                    <div class="col-md-2">
+                    <div class="col-xs-12 col-md-4">
                         <img class="albumArt" src="resources/coverart/#{trackBacking.track.coverArtId.imagePath}"/>
                     </div>
-                    <div class="col-md-4 track-info">
+                    <div class="col-xs-6 col-md-4">
                         <h2>#{trackBacking.track.artistId.name}</h2>
                         <h3>#{trackBacking.track.title}</h3>
-                        <b:button iconAwesome="cart-plus" iconAlign="right"  look="success" value="#{trackBacking.track.listPrice}"/>
+                        <b:button iconAwesome="cart-plus" iconAlign="right"  look="success" value="#{trackBacking.track.listPrice}"/>                       
                     </div>
                 </div>
             </div>            
@@ -39,29 +39,39 @@
                             <br style="clear:both"/>   
                             <div class="form-group">
                                 <div class="rating">
-                                    <h:selectOneRadio value="#{reviewBacking.review.rating}">
-                                        <f:selectItem itemValue="1" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
-                                        <f:selectItem itemValue="2" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
-                                        <f:selectItem itemValue="3" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
-                                        <f:selectItem itemValue="4" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
+                                    <label>Rating: </label>
+                                    <h:selectOneRadio value="#{reviewBacking.review.rating}" validator="#{reviewBacking.validateRating}">
                                         <f:selectItem itemValue="5" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
+                                        <f:selectItem itemValue="4" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
+                                        <f:selectItem itemValue="3" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
+                                        <f:selectItem itemValue="2" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
+                                        <f:selectItem itemValue="1" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
                                     </h:selectOneRadio>
                                 </div>
                             </div>
-
                             <div class="form-group">
-                                <h:inputTextarea class="form-control" id="message" 
+                                <h:inputTextarea class="form-control" id="message"
+
                                                  rows="7" a:maxlength="2000"
-                                                 value="#{reviewBacking.review.reviewContent}"/>
+                                                 value="#{reviewBacking.review.reviewContent}"
+                                                 validator="#{reviewBacking.validateReviewContent}"/>
                             </div>
                             <h:commandButton value="submit review" action="#{reviewBacking.submitReview(trackBacking.track, user.findUser(5))}" 
-                                             onclick="alert('your review has been submitted for review.')"/>
+                                             styleClass="btn btn-primary">
+<!--                                <f:ajax execute="@form" render="@form"/>-->
+                            </h:commandButton>
                         </h:form>
                     </div>
                 </div>
             </div>
-
         </b:modal>
+        <p:outputPanel autoUpdate="true">
+            <p:dialog id="msgDialog" widgetVar="messageDialog" modal="true"
+                      visible="#{facesContext.validationFailed}">
+                <p:messages id="messagesInDialog" />
+            </p:dialog>
+        </p:outputPanel>
+
         <div class="container">
             <div class="row">
                 <button id="btrigger" class="btn btn-info btn-lg" data-target="#write-review-modal" data-toggle="modal">#{msgs.addreview}</button>
@@ -96,10 +106,11 @@
                 //  Check Radio-box
                 $(".rating input:radio").attr("checked", false);
                 $('.rating input').click(function () {
-                    $(".rating span").removeClass('checked');
+                    $(".rating td").removeClass('checked');
                     $(this).parent().addClass('checked');
                 });
             });
         </script>
+
     </h:body>   
 </html>
