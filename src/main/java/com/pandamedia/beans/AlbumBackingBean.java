@@ -22,7 +22,7 @@ import persistence.entities.Genre;
 
 /**
  *
- * @author Evang
+ * @author Evan Glicakis
  */
 @Named("albumBacking")
 @SessionScoped
@@ -35,6 +35,7 @@ public class AlbumBackingBean implements Serializable{
     private EntityManager em;
     private String genreString;
     private List<Album> genrelist;
+    private int albumid;
     
     public Album getAlbum(){
         if(album == null){
@@ -42,6 +43,16 @@ public class AlbumBackingBean implements Serializable{
         }
         return album;
     }
+
+    public int getAlbumid() {
+        return albumid;
+    }
+
+    public void setAlbumid(int albumid) {
+        this.albumid = albumid;
+    }
+    
+    
     
     public AlbumBackingBean(){
         genrelist = new ArrayList();
@@ -63,6 +74,15 @@ public class AlbumBackingBean implements Serializable{
 
     public void setGenreString(String genreString) {
         this.genreString = genreString;
+    }
+    /**
+     * sets the album variable and returns the string of the url to the album page
+     * @param a
+     * @return 
+     */
+    public String albumPage(Album a){
+        this.album = a;
+        return "album";
     }
     
     

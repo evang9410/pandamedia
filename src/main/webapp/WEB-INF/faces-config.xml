@@ -4,7 +4,6 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
     <application>
-<!--        <el-resolver>com.pandamedia.views.util.JsfCrudELResolver</el-resolver>-->
         <resource-bundle>
             <base-name>bundles.messages</base-name>
             <var>msgs</var>
@@ -28,5 +27,4 @@
         <from-outcome>main</from-outcome>
         <to-view-id>../mainpage.xhtml</to-view-id>
     </navigation-case>
-    
 </faces-config>

@@ -10,8 +10,9 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceUnit;
+import javax.persistence.PersistenceContext;
 import persistence.controllers.ShopUserJpaController;
+import persistence.entities.ShopUser;
 
 /**
  *
@@ -22,6 +23,24 @@ import persistence.controllers.ShopUserJpaController;
 public class UserBackingBean implements Serializable{
     @Inject
     private ShopUserJpaController userController;
-    @PersistenceUnit
+    @PersistenceContext
     private EntityManager em;
+    
+    private ShopUser user;
+    
+    public ShopUser getUser(){
+        if(user == null){
+            user = new ShopUser();
+        }
+        return user;
+    }
+    /**
+     * Temporary method to use a ShopUser object while testing, once login and
+     * registration is done, we should be not using the method.
+     * @param id 
+     * @return 
+     */
+    public ShopUser findUser(int id){
+        return userController.findShopUser(id);        
+    }
 }
