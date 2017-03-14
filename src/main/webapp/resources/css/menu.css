@@ -1,3 +1,75 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+.navbar{
+    height: 70px;
+}
+
+.navbar-default{
+    background-color: #17171b;
+    border: none;
+    border-radius: 0px;
+}
+
+.navbar-default .navbar-nav > li > a{
+    color: rgba(255,255,255, 0.87);
+    font-size: 18px;
+}
+
+.navbar-default .navbar-brand{
+    font-size: 22px;
+    color: rgba(255,255,255, 0.87);
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+}
+
+.navbar-default .navbar-brand:hover{
+    color: #fff;
+    transition: ease-in-out 0.3s;
+}
+
+.container-fluid{
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.btn, .btn .btn-search{
+    padding: 0px;
+    margin: 6px 12px;
+    border: none;
+}
+
+.navbar-default .navbar-nav > li > a:hover, i:hover{
+    color: #02b875;
+    transition: ease-in-out 0.2s;
+}
+
+.form-group{
+    border: none;
+    border-radius: 0px;
+}
+
+.form-control{
+    height:24px;
+    border-radius: 20px;
+    border-width: 1.5px;
+    border-color: #fff;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    
+}
+
+.form-control:focus{
+    border-color: #02b875;
+    transition: ease-in-out 0.2s;
+    outline: none;
+}
+
+i{
+    color: rgba(255,255,255, 0.87);
+}
+
 .navbar-brand img{
     float:left;
     display: inline-block;
@@ -12,6 +84,11 @@ img{
     margin-right: 15px;
 }
 
-.form-control{
-    margin-right: 5px;
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open, .navbar-default .navbar-nav > .open > a:focus {
+    color: #17171b;
+    background-color: #e7e7e7;
+}
+
+.navbar-default .navbar-nav > li > a:focus {
+    color: rgba(255,255,255, 0.87);
 }
