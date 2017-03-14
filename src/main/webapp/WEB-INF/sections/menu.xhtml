@@ -26,12 +26,12 @@
                 <h:form>
                     <ul class="nav navbar-nav">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">#{searchDropdown.type}<span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">#{searchDropdown.toDisplay}<span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><h:commandLink action="#{searchDropdown.setType('Album')}">#{msgs.albums}</h:commandLink></li>
-                                <li><h:commandLink action="#{searchDropdown.setType('Artist')}">#{msgs.artists}</h:commandLink></li>
-                                <li><h:commandLink action="#{searchDropdown.setType('Track')}">#{msgs.tracks}</h:commandLink></li>
-                                <li><h:commandLink action="#{searchDropdown.setType('Date')}">#{msgs.date}</h:commandLink></li>
+                                <li><h:commandLink action="#{searchDropdown.setType('albums')}">#{msgs.albums}</h:commandLink></li>
+                                <li><h:commandLink action="#{searchDropdown.setType('artists')}">#{msgs.artists}</h:commandLink></li>
+                                <li><h:commandLink action="#{searchDropdown.setType('tracks')}">#{msgs.tracks}</h:commandLink></li>
+                                <li><h:commandLink action="#{searchDropdown.setType('date')}">#{msgs.date}</h:commandLink></li>
                             </ul>
                         </li>
                     </ul>

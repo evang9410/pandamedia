@@ -10,14 +10,13 @@
     <ui:define name="Window title">Search results</ui:define>
 
     <ui:define name="page-content">
-        quality content, you just searched:#{Search.parameters}
         <div class="searchResultContainer">
             <div class="displaySearchResults">
                 <!--in case there are tracks in the list, else does not display anything -->
                 <ui:repeat value="#{Search.trackResultsList}" var="t">
                     #{t.title}
                     <br></br>
-                    #{t.costPrice}$
+                    #{t.costPrice}
                     <br></br>
                     #{t.albumId.title}
                     <br></br><br></br>
