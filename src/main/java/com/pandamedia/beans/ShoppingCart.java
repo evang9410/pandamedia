@@ -8,8 +8,10 @@ package com.pandamedia.beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.media.Track;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import persistence.entities.Album;
 
 /**
  *
@@ -28,6 +30,33 @@ public class ShoppingCart implements Serializable{
      */
     public List<Object> getCart(){
         return this.cart;
+    }
+    /**
+     * Gathers the shopping cart album objects and returns them as a list to be displayed in the cart.
+     * @return 
+     */
+    public List<Album> getAlbumsFromCart(){
+        List<Album> albums = new ArrayList();
+        for(int i = 0; i < cart.size(); i++){
+            if(cart.get(i) instanceof Album){
+                albums.add((Album)cart.get(i));
+            }
+        }
+        return albums;
+    }
+    /**
+     * gets the tracks from the cart.
+     * There has to be a more efficient way to sort this list. Maybe a hashmap?
+     * @return 
+     */
+    public List<Track> getTracksFromCart(){
+        List<Track> tracks = new ArrayList();
+        for(int i = 0; i < cart.size(); i++){
+            if(cart.get(i) instanceof Track){
+                tracks.add((Track)cart.get(i));
+            }
+        }
+        return tracks;
     }
     
 }
