@@ -1,0 +1,70 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <!-- omnifaces might make this work -->
+    <h:dataTable id="#{tablename}" value="#{bean[method]}" var="user">
+            <h:column>
+                <f:facet name="header">#{msgs.idHeader}</f:facet>
+                #{user.id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.titleHeader}</f:facet>
+                #{user.title}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.lastNameHeader}</f:facet>
+                #{user.lastName}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.firstNameHeader}</f:facet>
+                #{user.firstName}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.companyHeader}</f:facet>
+                #{user.companyName}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.streetHeader}</f:facet>
+                #{user.streetAddress}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.cityHeader}</f:facet>
+                #{user.city}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.provinceHeader}</f:facet>
+                #{user.provinceId.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.countryHeader}</f:facet>
+                #{user.country}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.postalCodeHeader}</f:facet>
+                #{user.postalCode}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.homePhoneHeader}</f:facet>
+                #{user.homePhone}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.cellPhoneHeader}</f:facet>
+                #{user.cellPhone}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.emailHeader}</f:facet>
+                #{user.email}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.lastGenreHeader}</f:facet>
+                #{user.lastGenreSearched.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs.isManagerHeader}</f:facet>
+                #{user.isManager}
+            </h:column>
+        </h:dataTable>    
+</ui:composition>

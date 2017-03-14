@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pm="http://pandamedia.com/facelets">
+    <h:head>
+        <title>#{msgs.manReportSalesByAlbum}</title>
+        <meta name="author" content="Erika Bourque"/>
+    </h:head>
+    <h:body>
+        #{msgs.manReportSalesByAlbum}
+        <h:form id="calendars">
+            <p:calendar 
+            id="reportStartDate" 
+            mode="inline" 
+            navigator="true" 
+            maxdate="#{reportDates.defaultEndDate}"
+            value="#{reportDates.startDate}">
+                <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/>--> 
+            </p:calendar>
+            <p:calendar 
+                id="reportEndDate" 
+                mode="inline" 
+                navigator="true" 
+                maxdate="#{reportDates.defaultEndDate}"
+                value="#{reportDates.endDate}">
+                <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/>-->
+            </p:calendar>
+            <label for="albumId">#{msgs.albumIdLbl}</label>
+            <p:inputText id="albumId" value="#{albumBacking.album}" converter="#{albumConverter}">
+                <!--<p:ajax event="change" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
+            </p:inputText>
+            <p:commandButton id="search" update="totalTable reportTable" value="#{msgs.searchBtn}" />
+        </h:form>
+        <p:dataTable id="totalTable" value="#{reports.getSalesByAlbumTotals(reportDates.startDate, reportDates.endDate, albumBacking.album)}" 
+                     var="total">
+            <p:column>
+                <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
+                #{total[0]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
+                #{total[1]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.profitHeader}</f:facet>
+                #{total[2]}
+            </p:column>
+        </p:dataTable>        
+        <p:dataTable id="reportTable" value="#{reports.getSalesByAlbum(reportDates.startDate, reportDates.endDate, albumBacking.album)}" var="invoice">
+            <p:column>
+                <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
+                #{invoice[0].saleDate}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
+                #{invoice[1]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
+                #{invoice[2]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.profitHeader}</f:facet>
+                #{invoice[3]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>
+                #{invoice[0].id}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.userNumHeader}</f:facet>
+                #{invoice[0].userId.id}
+            </p:column>
+        </p:dataTable>
+    </h:body>
+</html>
