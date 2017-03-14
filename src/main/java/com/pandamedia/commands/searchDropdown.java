@@ -3,15 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package commands;
+package com.pandamedia.commands;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.bean.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
