@@ -1,6 +1,7 @@
 
 package com.pandamedia.converters;
 
+import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -14,20 +15,21 @@ import persistence.entities.Album;
 
 /**
  *
- * @author Naasir
+ * @author Naasir Jusab
  */
 @RequestScoped
-@Named("albumConverter")
-public class AlbumConverter  implements Converter {
+@Named
+public class AlbumConverter implements Converter {
     
     @Inject
-    private AlbumJpaController service;
- 
-    public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
+    AlbumJpaController service;
+    
+    @Override
+    public Object getAsObject(FacesContext context, UIComponent component, String value) {
+
         if(value != null && value.trim().length() > 0) {
             try {   
-                return service.findAlbum(Integer.parseInt(value));
-               
+                return service.findAlbum(Integer.parseInt(value));    
             } catch(NumberFormatException e) {
                 throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid theme."));
             }
@@ -36,8 +38,9 @@ public class AlbumConverter  implements Converter {
             return null;
         }
     }
- 
-    public String getAsString(FacesContext fc, UIComponent uic, Object object) {
+
+    @Override
+    public String getAsString(FacesContext context, UIComponent component, Object object) {
         if(object != null) {
             return String.valueOf(((Album) object).getId());
         }
@@ -46,3 +49,5 @@ public class AlbumConverter  implements Converter {
         }
     }   
 }        
+
+

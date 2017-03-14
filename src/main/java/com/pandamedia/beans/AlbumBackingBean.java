@@ -104,6 +104,11 @@ public class AlbumBackingBean implements Serializable{
         this.albumid = albumid;
     }
     
+    public void setAlbum(Album album)
+    {
+        this.album = album;
+    }
+    
 
     public List<Album> getGenrelist() {
         return genrelist;

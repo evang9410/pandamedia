@@ -3,6 +3,7 @@ package com.pandamedia.beans;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -19,6 +20,7 @@ import persistence.entities.Artist;
 @Named("artistBacking")
 @SessionScoped
 public class ArtistBackingBean implements Serializable {
+    private static final Logger LOG = Logger.getLogger("ArtistBackingBean.class");
     @Inject
     private ArtistJpaController artistController;
     private Artist artist;
@@ -56,4 +58,9 @@ public class ArtistBackingBean implements Serializable {
         return artistController.findArtistEntities();
     }
     
+    public void setArtist(Artist artist)
+    {
+        LOG.info("New artist id: " + artist.getId());
+        this.artist = artist;
+    }
 }

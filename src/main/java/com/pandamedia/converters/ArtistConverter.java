@@ -26,6 +26,7 @@ public class ArtistConverter  implements Converter {
     @Inject
     private ArtistJpaController service;
  
+    @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
         if(value != null && value.trim().length() > 0) {
             try {   
@@ -40,6 +41,7 @@ public class ArtistConverter  implements Converter {
         }
     }
  
+    @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object object) {
         if(object != null) {
             return String.valueOf(((Artist) object).getId());

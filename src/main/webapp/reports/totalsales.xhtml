@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pm="http://pandamedia.com/facelets">
+    <h:head>
+        <title>#{msgs.manReportTotalSalesTitle}</title>
+        <meta name="author" content="Erika Bourque"/>
+    </h:head>
+    <h:body>
+        #{msgs.manReportTotalSalesTitle}
+        <pm:reportcalendars 
+            max="#{reportDates.defaultEndDate}" 
+            start="#{reportDates.startDate}" 
+            end="#{reportDates.endDate}" 
+            updateTable="trackTotalTable albumTotalTable trackTable albumTable">
+        </pm:reportcalendars>
+        <p:dataTable id="trackTotalTable" value="#{reports.getTotalSalesTracks(reportDates.startDate, reportDates.endDate)}" var="trackTotal">
+            <p:column>
+                <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
+                #{trackTotal[0]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
+                #{trackTotal[1]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.profitHeader}</f:facet>
+                #{trackTotal[2]}
+            </p:column>
+        </p:dataTable>
+        <p:dataTable id="albumTotalTable" value="#{reports.getTotalSalesAlbums(reportDates.startDate, reportDates.endDate)}" var="albumTotal">
+            <p:column>
+                <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
+                #{albumTotal[0]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
+                #{albumTotal[1]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.profitHeader}</f:facet>
+                #{albumTotal[2]}
+            </p:column>
+        </p:dataTable>
+        <p:dataTable id="trackTable" value="#{reports.getTotalSalesTracksDetails(reportDates.startDate, reportDates.endDate)}" var="track">
+            <p:column>
+                <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
+                #{track[0].saleDate}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
+                #{track[2]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
+                #{track[1].costPrice}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.profitHeader}</f:facet>
+                #{track[3]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.trackNumHeader}</f:facet>
+                #{track[1].id}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>
+                #{track[0].id}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.userNumHeader}</f:facet>
+                #{track[0].userId.id}
+            </p:column>
+        </p:dataTable>
+        <p:dataTable id="albumTable" value="#{reports.getTotalSalesAlbumsDetails(reportDates.startDate, reportDates.endDate)}" var="album">
+            <p:column>
+                <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
+                #{album[0].saleDate}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
+                #{album[2]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
+                #{album[1].costPrice}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.profitHeader}</f:facet>
+                #{album[3]}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.albumNumHeader}</f:facet>
+                #{album[1].id}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>
+                #{album[0].id}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.userNumHeader}</f:facet>
+                #{album[0].userId.id}
+            </p:column>
+        </p:dataTable>
+    </h:body>
+</html>
