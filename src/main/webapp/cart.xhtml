@@ -23,119 +23,119 @@ and open the template in the editor.
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 col-md-10 col-md-offset-1">                     
-                        <table jsf:id= "cart_albums" class="table table-hover">
-                            <thead>
+                    <table jsf:id= "cart_albums" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Total</th>
+                                <th> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat value="#{cart.albumsFromCart}" var="albums">
                                 <tr>
-                                    <th>Product</th>
-                                    <th>Quantity</th>
-                                    <th class="text-center">Price</th>
-                                    <th class="text-center">Total</th>
-                                    <th> </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <ui:repeat value="#{cart.albumsFromCart}" var="albums">
-                                    <tr>
-                                        <td class="col-sm-9 col-md-8">
-                                            <div class="media">
-                                                <h:form>
-                                                    <h:commandLink styleClass="thumbnail pull-left" action="#{albumBacking.albumPage(albums)}">
-                                                        <img class="media-object" src="resources/coverart/#{albums.coverArtId.imagePath}" style="width: 150px; height: 150px;"/>
-                                                    </h:commandLink>
-                                                </h:form>
-
-                                                <div class="media-body">
-                                                    <h4 class="media-heading"><a href="#">#{albums.title}</a></h4>
-                                                    <h5 class="media-heading"> #{msgs.by} <a href="#">#{albums.artistId.name}</a></h5>
-                                                </div>
-                                            </div></td>
-                                        <td class="col-sm-1 col-md-1" style="text-align: center">
-                                            <h:inputText id="quantity-input" styleClass="form-control" value=""/>
-                                            <!--<input type="email" class="form-control" id="exampleInputEmail1" value="3">-->
-                                        </td>
-                                        <td class="col-sm-1 col-md-1 text-center"><strong>$#{albums.listPrice}</strong></td>
-                                        <td class="col-sm-1 col-md-1 text-center"><strong id="quantity-sum"></strong></td>
-                                        <td class="col-sm-1 col-md-1 text-right">
+                                    <td class="col-sm-9 col-md-8">
+                                        <div class="media">
                                             <h:form>
-                                                <b:commandButton value="" look="danger" 
-                                                                 action="#{cart.cart.remove(albums)}"
-                                                                 icon-awesome="trash">
-                                                    <f:ajax render="cart_albums"/>
-                                                </b:commandButton>
+                                                <h:commandLink styleClass="thumbnail pull-left" action="#{albumBacking.albumPage(albums)}">
+                                                    <img class="media-object" src="resources/coverart/#{albums.coverArtId.imagePath}" style="width: 150px; height: 150px;"/>
+                                                </h:commandLink>
                                             </h:form>
-                                        </td>
-                                    </tr>
-                                    <!-- track listings -->
-                                    <ui:repeat value="#{albums.trackList}" var="tracks">
-                                        <tr>
-                                            <td></td>
-                                            <td class="col-sm-1">#{tracks.albumTrackNumber}</td>
-                                            <td class="col-md-6 offset-md-3" colspan="3">#{tracks.title}<br/></td>
-                                        </tr>
-                                    </ui:repeat>
-                                </ui:repeat>
-                                <!-- individual tracks -->
-                                <ui:repeat value="#{cart.tracksFromCart}" var="individual_tracks">
-                                    <tr>
-                                        <td class="col-sm-9 col-md-8">
-                                            <div class="media">
-                                                <h:form>
-                                                    <h:commandLink styleClass="thumbnail pull-left" action="#{trackBacking.trackPage(individual_tracks)}">
-                                                        <img class="media-object" src="resources/coverart/#{individual_tracks.coverArtId.imagePath}" style="width: 90px; height: 90px;"/>
-                                                    </h:commandLink>
-                                                </h:form>
 
-                                                <div class="media-body">
-                                                    <h4 class="media-heading"><a href="#">#{individual_tracks.title}</a></h4>
-                                                    <h5 class="media-heading"> #{msgs.by} <a href="#">#{individual_tracks.artistId.name}</a></h5>
-                                                </div>
-                                            </div></td>
-                                        <td class="col-sm-1 col-md-1" style="text-align: center">
-                                            <h:inputText id="quantity-input" styleClass="form-control" value=""/>
-                                            <!--<input type="email" class="form-control" id="exampleInputEmail1" value="3">-->
-                                        </td>
-                                        <td class="col-sm-1 col-md-1 text-center"><strong>$#{individual_tracks.listPrice}</strong></td>
-                                        <td class="col-sm-1 col-md-1 text-center"><strong id="quantity-sum"></strong></td>
-                                        <td class="col-sm-1 col-md-1 text-right">
-                                            <h:form>
-                                                <b:commandButton value="" look="danger" icon-awesome="trash"  
-                                                                 action="#{cart.cart.remove(individual_tracks)}"
-                                                                 >
-                                                    <f:ajax render="cart_albums"/>
-                                                </b:commandButton>
-                                            </h:form>
-                                        </td>
-                                    </tr>
-                                </ui:repeat>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td>   </td>
-                                    <td>   </td>
-                                    <td>   </td>
-                                    <td><h5>Subtotal</h5>
+                                            <div class="media-body">
+                                                <h4 class="media-heading"><a href="#">#{albums.title}</a></h4>
+                                                <h5 class="media-heading"> #{msgs.by} <a href="#">#{albums.artistId.name}</a></h5>
+                                            </div>
+                                        </div></td>
+                                    <td class="col-sm-1 col-md-1" style="text-align: center">
+                                        <h:inputText id="quantity-input" styleClass="form-control" value=""/>
+                                        <!--<input type="email" class="form-control" id="exampleInputEmail1" value="3">-->
                                     </td>
-                                    <td class="text-right">
-                                        <h5>
-                                            <strong>#{cart.subTotal}</strong>
-                                        </h5>
+                                    <td class="col-sm-1 col-md-1 text-center"><strong>$#{albums.listPrice}</strong></td>
+                                    <td class="col-sm-1 col-md-1 text-center"><strong id="quantity-sum"></strong></td>
+                                    <td class="col-sm-1 col-md-1 text-right">
+                                        <h:form>
+                                            <b:commandButton value="" look="danger" 
+                                                             action="#{cart.cart.remove(albums)}"
+                                                             icon-awesome="trash">
+                                                <f:ajax render="cart_albums"/>
+                                            </b:commandButton>
+                                        </h:form>
                                     </td>
                                 </tr>
+                                <!-- track listings -->
+                                <ui:repeat value="#{albums.trackList}" var="tracks">
+                                    <tr>
+                                        <td></td>
+                                        <td class="col-sm-1">#{tracks.albumTrackNumber}</td>
+                                        <td class="col-md-6 offset-md-3" colspan="3">#{tracks.title}<br/></td>
+                                    </tr>
+                                </ui:repeat>
+                            </ui:repeat>
+                            <!-- individual tracks -->
+                            <ui:repeat value="#{cart.tracksFromCart}" var="individual_tracks">
                                 <tr>
-                                    <td>   </td>
-                                    <td>   </td>
-                                    <td>   </td>
-                                    <td>
-                                        <button type="button" class="btn btn-default">
-                                            <span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping
-                                        </button></td>
-                                    <td>
-                                        <button type="button" class="btn btn-success">
-                                            Checkout <span class="glyphicon glyphicon-play"></span>
-                                        </button></td>
+                                    <td class="col-sm-9 col-md-8">
+                                        <div class="media">
+                                            <h:form>
+                                                <h:commandLink styleClass="thumbnail pull-left" action="#{trackBacking.trackPage(individual_tracks)}">
+                                                    <img class="media-object" src="resources/coverart/#{individual_tracks.coverArtId.imagePath}" style="width: 90px; height: 90px;"/>
+                                                </h:commandLink>
+                                            </h:form>
+
+                                            <div class="media-body">
+                                                <h4 class="media-heading"><a href="#">#{individual_tracks.title}</a></h4>
+                                                <h5 class="media-heading"> #{msgs.by} <a href="#">#{individual_tracks.artistId.name}</a></h5>
+                                            </div>
+                                        </div></td>
+                                    <td class="col-sm-1 col-md-1" style="text-align: center">
+                                        <h:inputText id="quantity-input" styleClass="form-control" value=""/>
+                                        <!--<input type="email" class="form-control" id="exampleInputEmail1" value="3">-->
+                                    </td>
+                                    <td class="col-sm-1 col-md-1 text-center"><strong>$#{individual_tracks.listPrice}</strong></td>
+                                    <td class="col-sm-1 col-md-1 text-center"><strong id="quantity-sum"></strong></td>
+                                    <td class="col-sm-1 col-md-1 text-right">
+                                        <h:form>
+                                            <b:commandButton value="" look="danger" icon-awesome="trash"  
+                                                             action="#{cart.cart.remove(individual_tracks)}"
+                                                             >
+                                                <f:ajax render="cart_albums"/>
+                                            </b:commandButton>
+                                        </h:form>
+                                    </td>
                                 </tr>
-                            </tfoot>
-                        </table>
+                            </ui:repeat>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>   </td>
+                                <td>   </td>
+                                <td>   </td>
+                                <td><h5>Subtotal</h5>
+                                </td>
+                                <td class="text-right">
+                                    <h5>
+                                        <strong>#{cart.subTotal}</strong>
+                                    </h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>   </td>
+                                <td>   </td>
+                                <td>   </td>
+                                <td>
+                                    <button type="button" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping
+                                    </button></td>
+                                <td>
+                                    <button type="button" class="btn btn-success">
+                                        Checkout <span class="glyphicon glyphicon-play"></span>
+                                    </button></td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
         </div>
