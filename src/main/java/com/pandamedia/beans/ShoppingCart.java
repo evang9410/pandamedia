@@ -8,7 +8,7 @@ package com.pandamedia.beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.media.Track;
+import persistence.entities.Track;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import persistence.entities.Album;
@@ -57,6 +57,19 @@ public class ShoppingCart implements Serializable{
             }
         }
         return tracks;
+    }
+    
+    public double getSubTotal(){
+        double subtotal = 0;
+        for(Object o : cart){
+            if(o instanceof Album){
+                subtotal += ((Album) o).getListPrice();
+            }
+            if(o instanceof Track){
+                subtotal += ((Track)o).getListPrice();
+            }
+        }
+        return subtotal;
     }
     
 }
