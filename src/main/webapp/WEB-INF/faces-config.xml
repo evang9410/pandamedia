@@ -23,11 +23,25 @@
             <to-view-id>/manager_index.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
-        <navigation-rule>
+    <navigation-rule>
         <from-view-id>*</from-view-id>
         <navigation-case>
             <from-outcome>welcome_sales</from-outcome>
             <to-view-id>/salesPage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>welcome_clients</from-outcome>
+            <to-view-id>/clients.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>welcome_orders</from-outcome>
+            <to-view-id>/orders.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-case>

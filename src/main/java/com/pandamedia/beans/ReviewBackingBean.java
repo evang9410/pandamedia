@@ -6,11 +6,13 @@ import persistence.entities.Review;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 
 
 /**
@@ -23,9 +25,36 @@ public class ReviewBackingBean implements Serializable{
     @Inject
     private ReviewJpaController reviewController;
     private Review review;
+    private List<Review> reviews;
+    private List<Review> filteredReviews;
     @PersistenceContext
     private EntityManager em;
     
+     @PostConstruct
+    public void init()
+    {
+        this.reviews = reviewController.findReviewEntities();     
+    }
+    
+    public List<Review> getReviews()
+    {
+        return reviews;
+    }
+    
+    public void setReviews(List<Review> reviews)
+    {
+        this.reviews = reviews;
+    }
+    
+    public void setFilteredReviews(List<Review> filteredReviews)
+    {
+        this.filteredReviews = filteredReviews;
+    }
+    
+    public List<Review> getFilteredReviews()
+    {
+        return this.filteredReviews;
+    }
     
     public Review getReview(){
         if(review == null){

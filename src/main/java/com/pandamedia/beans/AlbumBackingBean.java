@@ -20,8 +20,9 @@ import persistence.entities.CoverArt;
 import persistence.entities.Genre;
 
 /**
- *
- * @author Evan Glicakis
+ * This class will be used as the album backing bean. It can create, update,
+ * delete and read albums.
+ * @author Evan Glicakis, Naasir Jusab
  */
 @Named("albumBacking")
 @SessionScoped
@@ -44,21 +45,42 @@ public class AlbumBackingBean implements Serializable{
         genrelist = new ArrayList();
     }
     
+    /**
+     * This method will initialize a list of albums that will be used by the 
+     * datable. PostConstruct is used in methods that need to be executed after 
+     * dependency injection is done to perform any initialization. In this case,
+     * I need the list of albums after albumController has been injected.
+     */
     @PostConstruct
     public void init()
     {
         this.albums = albumController.findAlbumEntities();     
     }
     
+    /**
+     * This method will return all the albums in a list so it can be displayed.
+     * @return all albums in the database
+     */
     public List<Album> getAlbums()
     {
         return albums;
     }
     
+    /**
+     * This method will set a list of albums to make changes to the current
+     * list of all albums.
+     * @param albums all albums in the database
+     */
     public void setAlbums(List<Album> albums)
     {
         this.albums = albums;
     }
+    
+    /**
+     * This method will return an album if it exists already. Otherwise, it will
+     * return a new album.
+     * @return album
+     */
     public Album getAlbum(){
         if(album == null){
             album = new Album();
@@ -66,10 +88,18 @@ public class AlbumBackingBean implements Serializable{
         return album;
     }
 
+    /**
+     * This method will return the ID of the album.
+     * @return album id
+     */
     public int getAlbumid() {
         return albumid;
     }
 
+    /**
+     * This method will change the ID of the album.
+     * @param albumid 
+     */
     public void setAlbumid(int albumid) {
         this.albumid = albumid;
     }
@@ -82,9 +112,7 @@ public class AlbumBackingBean implements Serializable{
     public void setGenrelist(List<Album> genrelist) {
         this.genrelist = genrelist;
     }
-    
-    
-
+     
     public String getGenreString() {
         return genreString;
     }
@@ -154,7 +182,17 @@ public class AlbumBackingBean implements Serializable{
         // test data, we get a list and get the first result, test data should have been sanitized.
     }
     
-     public String addItem(Integer id) throws Exception
+    /**
+     * This method will add an album that has been removed. It will change
+     * the removal status to 0 which means that it is available for purchase.
+     * 1 means that it is not available for purchase. It will set the removal 
+     * date to null since it has not been removed. The return type null
+     * should refresh the page.
+     * @param id of the album that will be added
+     * @return null refresh the page
+     * @throws Exception 
+     */
+    public String addItem(Integer id)
     {
         album = albumController.findAlbum(id);
         if(album.getRemovalStatus() != 0)
@@ -163,13 +201,30 @@ public class AlbumBackingBean implements Serializable{
             album.setRemovalStatus(i);
             album.setRemovalDate(null);
 
-            albumController.edit(album);           
+            try
+            {
+                albumController.edit(album);      
+            }
+            catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
         }
         
         return null; 
     }
     
-    public String removeItem(Integer id) throws Exception
+    /**
+     * This method will remove an album that has been added. It will change
+     * the removal status to 1 which means that it is not available for purchase.
+     * 0 means that it is available for purchase. It will set the removal 
+     * date to the date when you clicked on the remove, meaning today's date. 
+     * The return type null should refresh the page.
+     * @param id of the album that will be removed
+     * @return null refresh the page
+     * @throws Exception 
+     */
+    public String removeItem(Integer id)
     {       
         album = albumController.findAlbum(id);
         if(album.getRemovalStatus() != 1)
@@ -177,48 +232,104 @@ public class AlbumBackingBean implements Serializable{
             short i = 1;
             album.setRemovalStatus(i);
             album.setRemovalDate(Calendar.getInstance().getTime());
-
-            albumController.edit(album);     
+            try
+            {
+                albumController.edit(album);   
+            }
+            catch(Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
         }
         
         return null; 
     }
     
+    /**
+     * This method will set the album so that when the editAlbum.xhtml loads.
+     * The fields of the page will have values already. All the manager has to do 
+     * is change the values. The id will make sure that the right album is being 
+     * edited and the return type will display the edit page for the album.
+     * @param id of an album that will be edited
+     * @return string that is the edit for an album
+     */
     public String loadEditForIndex(Integer id)
     {
         this.album = albumController.findAlbum(id);
         return "AlbumFunctionality/editAlbum.xhtml";
     }
     
-    public String edit() throws Exception
+    /**
+     * This method will be called to edit an album.  
+     * @return string that is the inventory page
+     * @throws Exception 
+     */
+    public String edit()
     {
-        albumController.edit(album);
+        try
+        {
+            albumController.edit(album);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
         return "welcome_manager";
     }
-       
     
+    /**
+     * This method will set a list of filtered albums to change the current
+     * list of filtered albums.
+     * @param filteredAlbums list of filtered albums
+     */
     public void setFilteredAlbums(List<Album> filteredAlbums)
     {
         this.filteredAlbums = filteredAlbums;
     }
     
+    /**
+     * This method will return a list of filtered albums so that the manager
+     * can make searches on albums.
+     * @return list of album
+     */
     public List<Album> getFilteredAlbums()
     {
         return this.filteredAlbums;
     }
     
+    /**
+     * This method will return all the albums in the database.
+     * @return 
+     */
     public List<Album> getAll()
     {
         return albumController.findAlbumEntities();
     }
     
+    /**
+     * This method will set the album so that when the editSalesAlbum.xhtml loads.
+     * The fields of the page will have values already. All the manager has to  
+     * do is change the values. The id will make sure that the right album is
+     * being edited and the return type will display the edit page for the 
+     * album.
+     * @param id of the album that will be edited
+     * @return string that represents the page where the sales of an album
+     * can be edited
+     */
     public String loadEditForSales(Integer id)
     {
         this.album = albumController.findAlbum(id);
         return "AlbumFunctionality/editSalesAlbum.xhtml";
     }
     
-    public String editSales() throws Exception
+    /**
+     * This method will edit the sales of an album, if the sale price is less
+     * than the list price. Otherwise, it will just refresh the page until the
+     * manager puts a value where the sale price is less than the list price.
+     * @return string that is the salesPage.xhtml
+     * @throws Exception 
+     */
+    public String editSales()
     {
         double salePrice = album.getSalePrice();
         double listPrice = album.getListPrice();
@@ -229,7 +340,14 @@ public class AlbumBackingBean implements Serializable{
         
         else
         {
-            albumController.edit(album); 
+            try
+            { 
+                albumController.edit(album); 
+            }
+            catch(Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
             return "welcome_sales";
         }
     }

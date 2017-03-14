@@ -5,43 +5,41 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Edit</title>
+        <title>#{msgs.edit}</title>
     </h:head>
     <h:body>
         <f:view>
-
-
             <h:form>
-                <h1><h:outputText value="Create/Edit"/></h1>
+                <h1><h:outputText value="#{msgs.edit}"/></h1>
                 <p:panelGrid columns="2">
-                    <p:outputLabel value="Id:" for="id" />
+                    <p:outputLabel value="#{msgs.id}" for="id" />
                     <p:inputText id="id" value="#{invoiceBacking.invoice.id}" title="Id" required="true" requiredMessage="The Id field is required."/>
-                    <p:outputLabel value="SaleDate:" for="saleDate" />
+                    <p:outputLabel value="#{msgs.saleDate}" for="saleDate" />
                     <p:inputText id="saleDate" value="#{invoiceBacking.invoice.saleDate}" title="SaleDate" required="true" requiredMessage="The SaleDate field is required.">
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </p:inputText>
-                    <p:outputLabel value="TotalNetValue:" for="totalNetValue" />
+                    <p:outputLabel value="#{msgs.totalNetValue}" for="totalNetValue" />
                     <p:inputText id="totalNetValue" value="#{invoiceBacking.invoice.totalNetValue}" title="TotalNetValue" required="true" requiredMessage="The TotalNetValue field is required."/>
-                    <p:outputLabel value="PstTax:" for="pstTax" />
+                    <p:outputLabel value="#{msgs.pstTax}" for="pstTax" />
                     <p:inputText id="pstTax" value="#{invoiceBacking.invoice.pstTax}" title="PstTax" required="true" requiredMessage="The PstTax field is required."/>
-                    <p:outputLabel value="GstTax:" for="gstTax" />
+                    <p:outputLabel value="#{msgs.gstTax}" for="gstTax" />
                     <p:inputText id="gstTax" value="#{invoiceBacking.invoice.gstTax}" title="GstTax" required="true" requiredMessage="The GstTax field is required."/>
-                    <p:outputLabel value="HstTax:" for="hstTax" />
+                    <p:outputLabel value="#{msgs.hstTax}" for="hstTax" />
                     <p:inputText id="hstTax" value="#{invoiceBacking.invoice.hstTax}" title="HstTax" required="true" requiredMessage="The HstTax field is required."/>
-                    <p:outputLabel value="TotalGrossValue:" for="totalGrossValue" />
+                    <p:outputLabel value="#{msgs.totalGrossValue}" for="totalGrossValue" />
                     <p:inputText id="totalGrossValue" value="#{invoiceBacking.invoice.totalGrossValue}" title="TotalGrossValue" required="true" requiredMessage="The TotalGrossValue field is required."/>
-                    <p:outputLabel value="RemovalStatus:" for="removalStatus" />
+                    <p:outputLabel value="#{msgs.removalStatus}" for="removalStatus" />
                     <p:inputText id="removalStatus" value="#{invoiceBacking.invoice.removalStatus}" title="RemovalStatus" required="true" requiredMessage="The RemovalStatus field is required."/>
-                    <p:outputLabel value="RemovalDate:" for="removalDate" />
+                    <p:outputLabel value="#{msgs.removalDate}" for="removalDate" />
                     <p:inputText id="removalDate" value="#{invoiceBacking.invoice.removalDate}" title="RemovalDate" >
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </p:inputText>
-                    <p:outputLabel value="UserId:" for="userId" />
-                    <p:selectOneMenu id="userId" value="#{invoiceBacking.invoice.userId}" required="true" requiredMessage="The UserId field is required.">
-                        <!-- TODO: update below reference to list of available items-->
-                        <f:selectItems value="#{fixme}"/>
+                    <p:outputLabel value="#{msgs.userEmail}" for="userId" />
+                    <p:selectOneMenu id="userId" value="#{invoiceBacking.invoice.userId}" converter="#{userConverter}" required="true" requiredMessage="The UserId field is required.">
+                        <f:selectItems value="#{userBacking.all}" var="userList" itemLabel="#{userList.email}" itemValue="#{userList}"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
+                <p:commandButton action="#{invoiceBacking.edit()}" value="#{msgs.edit}"/>
             </h:form>
         </f:view>
 

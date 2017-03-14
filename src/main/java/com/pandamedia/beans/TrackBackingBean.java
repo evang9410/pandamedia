@@ -96,9 +96,7 @@ public class TrackBackingBean implements Serializable{
             track.setRemovalStatus(i);
             track.setRemovalDate(null);
 
-            trackController.edit(track);
-
-            
+            trackController.edit(track);   
         }
         
         return null; 

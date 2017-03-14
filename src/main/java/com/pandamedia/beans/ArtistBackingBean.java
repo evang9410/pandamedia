@@ -12,8 +12,9 @@ import persistence.controllers.ArtistJpaController;
 import persistence.entities.Artist;
 
 /**
- *
- * @author Naasir 
+ * This class will be used as the artist backing bean. It is used as a means
+ * of getting artists.
+ * @author Naasir Jusab
  */
 @Named("artistBacking")
 @SessionScoped
@@ -24,7 +25,11 @@ public class ArtistBackingBean implements Serializable {
     @PersistenceContext
     private EntityManager em;
     
-    
+    /**
+     * This method will return an artist if it exists already. Otherwise, it will
+     * return a new artist object.
+     * @return artist
+     */
     public Artist getArtist(){
         if(artist == null){
             artist = new Artist();
@@ -42,6 +47,10 @@ public class ArtistBackingBean implements Serializable {
         return artist;
     }
     
+    /**
+     * This method will return all the artists in the database.
+     * @return 
+     */
     public List<Artist> getAll()
     {
         return artistController.findArtistEntities();

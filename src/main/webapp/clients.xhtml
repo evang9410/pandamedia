@@ -18,6 +18,9 @@
                 <b:navLink value="#{msgs.orders}" href="orders.xhtml"></b:navLink>
                 <b:navLink value="#{msgs.reviews}" href="reviews.xhtml"></b:navLink>
                 <b:navLink value="#{msgs.reports}" href="reporting.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.newsFeed}" href="newsFeedManagement.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.survey}" href="surveyManagement.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.banner}" href="bannerAdManagement.xhtml"></b:navLink>
             </b:navbarLinks>
         </b:navBar> 
         <f:view>
@@ -69,10 +72,10 @@
                     <p:column filterBy="#{item.isManager}" headerText="#{msgs.isManagerHeader}" filterMatchMode="contains">
                         <h:outputText value="#{item.isManager}"/>
                     </p:column>
-                    <p:column filterBy="#{item.provinceId}" headerText="#{msgs.provinceHeader}" filterMatchMode="contains">
+                    <p:column filterBy="#{item.provinceId.name}" headerText="#{msgs.provinceHeader}" filterMatchMode="contains">
                         <h:outputText value="#{item.provinceId.name}"/>
                     </p:column>
-                    <p:column filterBy="#{item.lastGenreSearched}" headerText="#{msgs.lastGenreHeader}" filterMatchMode="contains">
+                    <p:column filterBy="#{item.lastGenreSearched.name}" headerText="#{msgs.lastGenreHeader}" filterMatchMode="contains">
                         <h:outputText value="#{item.lastGenreSearched.name}"/>
                     </p:column>
                     <p:column>

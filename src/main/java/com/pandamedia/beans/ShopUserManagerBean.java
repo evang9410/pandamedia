@@ -18,7 +18,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
-import persistence.entities.Album;
+
 
 /**
  *
@@ -68,14 +68,7 @@ public class ShopUserManagerBean implements Serializable{
         }
         return user;
     }
-    
-    
-    
-    public String loadEdit(Integer id) throws Exception
-    {
-            return null;
-    }
-    
+        
     public List<ShopUser> getAll()
     {
         return userController.findShopUserEntities();
@@ -83,9 +76,15 @@ public class ShopUserManagerBean implements Serializable{
     
     public String loadEditForClients(Integer id)
     {
+        System.out.println(id);
         this.user = userController.findShopUser(id);
-        return "editClients.xhtml";
+        return "ClientFunctionality/editClients.xhtml";
     }
     
+    public String edit() throws Exception
+    {
+        userController.edit(user);
+        return "welcome_clients";
+    }
 
 }

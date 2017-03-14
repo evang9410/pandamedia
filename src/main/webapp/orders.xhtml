@@ -6,99 +6,75 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Orders</title>
+        <title>#{msgs.orders}</title>
         <h:outputStylesheet name="css/bootstrap.css"/>
-        <h:outputStylesheet library="css" name="style.css"  />
+        <h:outputStylesheet library="css" name="style.css"/>
     </h:head>
     <h:body>
         <b:navBar brand="PandaMedia" brandHref="manager_index.xhtml" styleClass="navbar navbar-default pandaNavbar">
             <b:navbarLinks pull="right">
-                <b:navLink value="Sales" href="salesPage.xhtml"></b:navLink>
-                <b:navLink value="Clients" href="clients.xhtml"></b:navLink>
-                <b:navLink value="Orders" href="orders.xhtml"></b:navLink>
-                <b:navLink value="Reviews" href="reviews.xhtml"></b:navLink>
-                <b:navLink value="Reporting" href="reporting.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.sales}" href="salesPage.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.clients}" href="clients.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.orders}" href="orders.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.reviews}" href="reviews.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.reports}" href="reporting.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.newsFeed}" href="newsFeedManagement.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.survey}" href="surveyManagement.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.banner}" href="bannerAdManagement.xhtml"></b:navLink>
             </b:navbarLinks>
         </b:navBar> 
         
         <f:view>
-
-
-
-
             <h:form>
-                <h1><h:outputText value="List"/></h1>
-                <p:dataTable value="#{invoiceBacking.all}" var="item">
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Id"/>
-                        </f:facet>
+                <h1><h:outputText value="#{msgs.orders}"/></h1>
+                <p:dataTable value="#{invoiceBacking.invoices}" widgetVar="invoiceTable" filteredValue="#{invoiceBacking.filteredInvoices}"  var="item" paginator="true" rows="5">
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="#{msgs.search}" />
+                            <p:inputText id="globalFilter" onkeyup="PF('invoiceTable').filter()" style="width:150px" placeholder="#{msgs.keyword}"/>
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column filterBy="#{item.id}" headerText="#{msgs.id}" filterMatchMode="contains">
                         <h:outputText value="#{item.id}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="SaleDate"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.saleDate}" headerText="#{msgs.saleDate}" filterMatchMode="contains">
                         <h:outputText value="#{item.saleDate}">
                             <f:convertDateTime pattern="MM/dd/yyyy" />
                         </h:outputText>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="TotalNetValue"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.totalNetValue}" headerText="#{msgs.totalNetValue}" filterMatchMode="contains">
                         <h:outputText value="#{item.totalNetValue}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="PstTax"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.pstTax}" headerText="#{msgs.pstTax}" filterMatchMode="contains">
                         <h:outputText value="#{item.pstTax}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="GstTax"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.gstTax}" headerText="#{msgs.gstTax}" filterMatchMode="contains">
                         <h:outputText value="#{item.gstTax}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="HstTax"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.hstTax}" headerText="#{msgs.hstTax}" filterMatchMode="contains">
                         <h:outputText value="#{item.hstTax}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="TotalGrossValue"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.totalGrossValue}" headerText="#{msgs.totalGrossValue}" filterMatchMode="contains">
                         <h:outputText value="#{item.totalGrossValue}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="RemovalStatus"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.removalStatus}" headerText="#{msgs.removalStatus}" filterMatchMode="contains">
                         <h:outputText value="#{item.removalStatus}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="RemovalDate"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.removalDate}" headerText="#{msgs.removalDate}" filterMatchMode="contains">
                         <h:outputText value="#{item.removalDate}">
                             <f:convertDateTime pattern="MM/dd/yyyy" />
                         </h:outputText>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="UserId"/>
-                        </f:facet>
-                        <h:outputText value="#{item.userId}"/>
+                    <p:column filterBy="#{item.userId.email}" headerText="#{msgs.userEmail}" filterMatchMode="contains">
+                        <h:outputText value="#{item.userId.email}"/>
                     </p:column>
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="Options"/>
+                            <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <h:commandButton action="#{invoiceBacking.removeItem(item.id)}" value="Remove" />
-                        <h:outputLink value="">Edit</h:outputLink>
+                        <p:commandButton action="#{invoiceBacking.addItem(item.id)}" value="#{msgs.add}" />
+                        <p:commandButton action="#{invoiceBacking.removeItem(item.id)}" value="#{msgs.del}" />
+                        <p:commandButton action="#{invoiceBacking.loadEditForOrders(item.id)}" value="#{msgs.edit}" />
                     </p:column>
                 </p:dataTable>
             </h:form>

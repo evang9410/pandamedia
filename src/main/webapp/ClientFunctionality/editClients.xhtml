@@ -3,8 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">>
+      xmlns:p="http://primefaces.org/ui">
     
     <h:head>
         <title>#{msgs.edit}</title>
@@ -12,7 +11,7 @@
     <h:body>
         <f:view>
             <h:form>
-                <h1><h:outputText value=#{msgs.edit}/></h1>
+                <h1><h:outputText value="#{msgs.edit}"/></h1>
                 <p:panelGrid columns="2">
                     <p:outputLabel value="#{msgs.id}" for="id" />
                     <p:inputText id="id" value="#{userBacking.user.id}" title="Id" required="true" requiredMessage="The Id field is required."/>
@@ -41,10 +40,11 @@
                     <p:outputLabel value="#{msgs.isManagerHeader}" for="isManager" />
                     <p:inputText id="isManager" value="#{userBacking.user.isManager}" title="IsManager" required="true" requiredMessage="The IsManager field is required."/>
                     <p:outputLabel value="#{msgs.provinceHeader}" for="provinceId" />
-                    <p:selectOneMenu id="provinceId" value="#{userBacking.user.provinceId}" converter="provinceConverter" required="true" requiredMessage="The ProvinceId field is required.">
+                    <p:selectOneMenu id="provinceId" value="#{userBacking.user.provinceId}" converter="#{provinceConverter}" required="true" requiredMessage="The ProvinceId field is required.">
                         <f:selectItems value="#{provinceBacking.all}" var="province" itemLabel="#{province.name}" itemValue="#{province}"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
+                <p:commandButton action="#{userBacking.edit()}" value="#{msgs.edit}"/>
             </h:form>
         </f:view>
 

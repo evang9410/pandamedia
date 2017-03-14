@@ -13,7 +13,8 @@ import persistence.entities.CoverArt;
 
 
 /**
- *
+ * This class will be used as the coverArt backing bean. It is used as a means
+ * of getting cover arts.
  * @author Naasir 
  */
 @Named("coverArtBacking")
