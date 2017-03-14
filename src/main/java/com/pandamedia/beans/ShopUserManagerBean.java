@@ -5,6 +5,7 @@ import persistence.controllers.ShopUserJpaController;
 import persistence.entities.Invoice;
 import persistence.entities.ShopUser;
 import persistence.entities.Survey;
+import javax.persistence.criteria.Predicate;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -14,10 +15,13 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
+import persistence.entities.Invoice_;
+import persistence.entities.ShopUser_;
 
 
 /**
@@ -85,6 +89,25 @@ public class ShopUserManagerBean implements Serializable{
     {
         userController.edit(user);
         return "welcome_clients";
+    }
+    
+    public int getClientTotalPurchase(Integer id) 
+    {
+        // Query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<ShopUser> userRoot = query.from(ShopUser.class);
+        Join invoiceJoin = userRoot.join(ShopUser_.invoiceList);
+        query.multiselect(cb.sum(invoiceJoin.get(Invoice_.totalGrossValue)), userRoot);
+        query.groupBy(userRoot.get(ShopUser_.id));
+
+        // Where clause
+        Predicate p1 = cb.equal(userRoot.get(ShopUser_.id), id);
+        Predicate p2 = cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0);
+        query.where(cb.and(p1, p2));
+
+        TypedQuery<Object[]> typedQuery = em.createQuery(query);
+        return typedQuery.getFirstResult();
     }
 
 }

@@ -79,6 +79,9 @@
                         <h:outputText value="#{item.lastGenreSearched.name}"/>
                     </p:column>
                     <p:column>
+                        <h:outputText value="#{userBacking.getClientTotalPurchase(item.id)}"/>
+                    </p:column>
+                    <p:column>
                         <f:facet name="header">
                             <h:outputText value="#{msgs.options}"/>
                         </f:facet>
@@ -86,10 +89,7 @@
                     </p:column>
                 </p:dataTable>
             </h:form>
-
-        </f:view>
-
-        
+        </f:view>    
     </h:body>
 </html>
 
