@@ -43,4 +43,6 @@ public class UserBackingBean implements Serializable{
     public ShopUser findUser(int id){
         return userController.findShopUser(id);        
     }
+    
+    
 }

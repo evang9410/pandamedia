@@ -8,4 +8,8 @@
         <tag-name>reportcalendars</tag-name>
         <source>tags/reportcalendars.xhtml</source>
     </tag>
+    <tag>
+        <tag-name>userdisplay</tag-name>
+        <source>tags/userdisplay.xhtml</source>
+    </tag>
 </facelet-taglib>

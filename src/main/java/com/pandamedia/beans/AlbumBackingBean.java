@@ -52,7 +52,10 @@ public class AlbumBackingBean implements Serializable{
         this.albumid = albumid;
     }
     
-    
+    public void setAlbum(Album album)
+    {
+        this.album = album;
+    }
     
     public AlbumBackingBean(){
         genrelist = new ArrayList();
