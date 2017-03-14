@@ -13,8 +13,9 @@ import persistence.controllers.GenreJpaController;
 import persistence.entities.Genre;
 
 /**
- *
- * @author Evang
+ * This class will be used as the genre backing bean. It is used as a means
+ * of getting genres and querying them.
+ * @author Naasir Jusab, Evan Glicakis
  */
 @Named("genreBacking")
 @SessionScoped
@@ -25,8 +26,11 @@ public class GenreBackingBean implements Serializable {
     @PersistenceContext
     private EntityManager em;
     
-    
-    
+    /**
+     * This method will return a genre if it exists already. Otherwise, it will
+     * return a new genre object.
+     * @return genre object
+     */    
     public Genre getGenre(){
         if(genre == null){
             genre = new Genre();
@@ -40,6 +44,11 @@ public class GenreBackingBean implements Serializable {
         return query.getResultList();
     }
     
+    /**
+     * This method will return all the genres in the database so it can be 
+     * displayed on the data table.
+     * @return list of all the genres
+     */
     public List<Genre> getAll()
     {
         return genreController.findGenreEntities();

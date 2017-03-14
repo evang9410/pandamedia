@@ -21,7 +21,7 @@ import persistence.entities.Genre;
 
 /**
  * This class will be used as the album backing bean. It can create, update,
- * delete and read albums.
+ * delete and query albums.
  * @author Evan Glicakis, Naasir Jusab
  */
 @Named("albumBacking")
@@ -47,7 +47,7 @@ public class AlbumBackingBean implements Serializable{
     
     /**
      * This method will initialize a list of albums that will be used by the 
-     * datable. PostConstruct is used in methods that need to be executed after 
+     * data table. PostConstruct is used in methods that need to be executed after 
      * dependency injection is done to perform any initialization. In this case,
      * I need the list of albums after albumController has been injected.
      */
@@ -58,7 +58,8 @@ public class AlbumBackingBean implements Serializable{
     }
     
     /**
-     * This method will return all the albums in a list so it can be displayed.
+     * This method will return all the albums in a list so it can be displayed
+     * on the data table.
      * @return all albums in the database
      */
     public List<Album> getAlbums()
@@ -79,7 +80,7 @@ public class AlbumBackingBean implements Serializable{
     /**
      * This method will return an album if it exists already. Otherwise, it will
      * return a new album.
-     * @return album
+     * @return album object
      */
     public Album getAlbum(){
         if(album == null){
@@ -104,6 +105,10 @@ public class AlbumBackingBean implements Serializable{
         this.albumid = albumid;
     }
     
+    /**
+     * This method will change the current album object.
+     * @param album new album object
+     */
     public void setAlbum(Album album)
     {
         this.album = album;
@@ -139,8 +144,8 @@ public class AlbumBackingBean implements Serializable{
     
     /**
      * Finds the album from its id.
-     * @param id
-     * @return 
+     * @param id of the album
+     * @return album object
      */
     public Album findAlbumById(){
         //album = albumController.findAlbum(id); // questionable, do I set just the album variable and return void?
@@ -195,7 +200,6 @@ public class AlbumBackingBean implements Serializable{
      * should refresh the page.
      * @param id of the album that will be added
      * @return null refresh the page
-     * @throws Exception 
      */
     public String addItem(Integer id)
     {
@@ -223,11 +227,10 @@ public class AlbumBackingBean implements Serializable{
      * This method will remove an album that has been added. It will change
      * the removal status to 1 which means that it is not available for purchase.
      * 0 means that it is available for purchase. It will set the removal 
-     * date to the date when you clicked on the remove, meaning today's date. 
+     * date to the date when you clicked on the remove. 
      * The return type null should refresh the page.
      * @param id of the album that will be removed
      * @return null refresh the page
-     * @throws Exception 
      */
     public String removeItem(Integer id)
     {       
@@ -256,7 +259,7 @@ public class AlbumBackingBean implements Serializable{
      * is change the values. The id will make sure that the right album is being 
      * edited and the return type will display the edit page for the album.
      * @param id of an album that will be edited
-     * @return string that is the edit for an album
+     * @return string that is the edit page for an album
      */
     public String loadEditForIndex(Integer id)
     {
@@ -267,7 +270,6 @@ public class AlbumBackingBean implements Serializable{
     /**
      * This method will be called to edit an album.  
      * @return string that is the inventory page
-     * @throws Exception 
      */
     public String edit()
     {
@@ -295,7 +297,7 @@ public class AlbumBackingBean implements Serializable{
     /**
      * This method will return a list of filtered albums so that the manager
      * can make searches on albums.
-     * @return list of album
+     * @return list of filteredAlbums
      */
     public List<Album> getFilteredAlbums()
     {
@@ -303,8 +305,9 @@ public class AlbumBackingBean implements Serializable{
     }
     
     /**
-     * This method will return all the albums in the database.
-     * @return 
+     * This method will return all the albums in the database so it can be
+     * displayed on the data table.
+     * @return list of albums
      */
     public List<Album> getAll()
     {
@@ -332,7 +335,6 @@ public class AlbumBackingBean implements Serializable{
      * than the list price. Otherwise, it will just refresh the page until the
      * manager puts a value where the sale price is less than the list price.
      * @return string that is the salesPage.xhtml
-     * @throws Exception 
      */
     public String editSales()
     {
@@ -355,6 +357,23 @@ public class AlbumBackingBean implements Serializable{
             }
             return "welcome_sales";
         }
+    }
+    
+    /**
+     * This method will be called to create an album.  
+     * @return string that is the inventory page
+     */
+    public String create() 
+    {
+        try
+        {
+            albumController.create(album);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        return "welcome_manager";
     }
     
 }

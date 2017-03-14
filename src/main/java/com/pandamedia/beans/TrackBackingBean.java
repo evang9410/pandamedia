@@ -21,8 +21,9 @@ import persistence.entities.Review;
 import persistence.entities.Track;
 
 /**
- *
- * @author Naasir, Evan
+ * This class will be used as the track backing bean. It can create, update,
+ * delete and query tracks.
+ * @author Evan Glicakis, Naasir Jusab
  */
 @Named("trackBacking")
 @SessionScoped
@@ -36,12 +37,23 @@ public class TrackBackingBean implements Serializable{
     private EntityManager em;
     private String genre_string;
     
+    /**
+     * This method will initialize a list of tracks that will be used by the 
+     * data table. PostConstruct is used in methods that need to be executed after 
+     * dependency injection is done to perform any initialization. In this case,
+     * I need the list of tracks after trackController has been injected.
+     */
     @PostConstruct
     public void init()
     {
         this.tracks = trackController.findTrackEntities();     
     }
     
+    /**
+     * This method will return a track if it exists already. Otherwise, it will
+     * return a new track.
+     * @return track object
+     */
     public Track getTrack(){
         if(track == null){
             track = new Track();
@@ -49,30 +61,59 @@ public class TrackBackingBean implements Serializable{
         return track;
     }
     
+    /**
+     * This method will set a list of filtered tracks to change the current
+     * list of filtered tracks.
+     * @param filteredTracks list of filtered tracks
+     */
     public void setFilteredTracks(List<Track> filteredTracks)
     {
         this.filteredTracks = filteredTracks;
     }
     
+    /**
+     * This method will return a list of filtered tracks so that the manager
+     * can make searches on tracks.
+     * @return list of filteredTracks
+     */
     public List<Track> getFilteredTracks()
     {
         return this.filteredTracks;
     }
     
+    /**
+     * This method will return all the tracks in a list so it can be displayed
+     * on the data table.
+     * @return all tracks in the database
+     */
     public List<Track> getTracks()
     {
         return tracks;
     }
     
+    /**
+     * This method will set a list of tracks to make changes to the current
+     * list of all tracks.
+     * @param tracks all tracks in the database
+     */
     public void setTracks(List<Track> tracks)
     {
         this.tracks = tracks;
     }
     
+    /**
+     * This method will change the current track object.
+     * @param track new track object
+     */
     public void setTrack(Track track){
         this.track = track;
     }
 
+    /**
+     * sets the track variable and returns the string of the url to the track page
+     * @param a
+     * @return 
+     */
     public String trackPage(Track t){
         track = t;
         return "track";
@@ -80,15 +121,24 @@ public class TrackBackingBean implements Serializable{
 
     /**
      * Finds the Track from its id.
-     * @param id
-     * @return 
+     * @param id of the track
+     * @return track object
      */
     public Track findTrackById(int id){
         track = trackController.findTrack(id); 
         return track;
     }
     
-    public String addItem(Integer id) throws Exception
+    /**
+     * This method will add a track that has been removed. It will change
+     * the removal status to 0 which means that it is available for purchase.
+     * 1 means that it is not available for purchase. It will set the removal 
+     * date to null since it has not been removed. The return type null
+     * should refresh the page.
+     * @param id of the track that will be added
+     * @return null refresh the page
+     */
+    public String addItem(Integer id) 
     {
         track = trackController.findTrack(id);
         if(track.getRemovalStatus() != 0)
@@ -97,13 +147,29 @@ public class TrackBackingBean implements Serializable{
             track.setRemovalStatus(i);
             track.setRemovalDate(null);
 
-            trackController.edit(track);   
+            try
+            {
+                trackController.edit(track); 
+            }
+            catch(Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
         }
         
         return null; 
     }
     
-    public String removeItem(Integer id) throws Exception
+    /**
+     * This method will remove a track that has been added. It will change
+     * the removal status to 1 which means that it is not available for purchase.
+     * 0 means that it is available for purchase. It will set the removal 
+     * date to the date when you clicked on the remove. 
+     * The return type null should refresh the page.
+     * @param id of the track that will be removed
+     * @return null refresh the page
+     */
+    public String removeItem(Integer id) 
     {
         track = trackController.findTrack(id);
         if(track.getRemovalStatus() != 1)
@@ -112,28 +178,65 @@ public class TrackBackingBean implements Serializable{
             track.setRemovalStatus(i);
             track.setRemovalDate(Calendar.getInstance().getTime());
 
-            trackController.edit(track);
+            try
+            {
+                trackController.edit(track);
+            }
+            catch(Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
         }
         
         return null; 
     }
     
+    /**
+     * This method will set the track so that when the editTrack.xhtml loads.
+     * The fields of the page will have values already. All the manager has to do 
+     * is change the values. The id will make sure that the right track is being 
+     * edited and the return type will display the edit page for the track.
+     * @param id of an track that will be edited
+     * @return string that is the edit page for a track
+     */
     public String loadEditForIndex(Integer id)
     {
         this.track = trackController.findTrack(id);
         return "TrackFunctionality/editTrack.xhtml";
     }
     
-    public String edit() throws Exception
+    /**
+     * This method will be called to edit a track.  
+     * @return string that is the inventory page
+     */
+    public String edit() 
     {
-        trackController.edit(track);
+        try
+        {
+            trackController.edit(track);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
         
         return "welcome_manager";
     }
     
-    public String create() throws Exception
+    /**
+     * This method will be called to create a track.  
+     * @return string that is the inventory page
+     */
+    public String create() 
     {
+        try
+        {
         trackController.create(track);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
         return "welcome_manager";
     }
 
@@ -166,13 +269,29 @@ public class TrackBackingBean implements Serializable{
         return l;
     }
     
+    /**
+     * This method will set the track so that when the editSalesTrack.xhtml loads.
+     * The fields of the page will have values already. All the manager has to  
+     * do is change the values. The id will make sure that the right track is
+     * being edited and the return type will display the edit page for the 
+     * track.
+     * @param id of the track that will be edited
+     * @return string that represents the page where the sales of a track
+     * can be edited
+     */
     public String loadEditForSales(Integer id)
     {
         this.track = trackController.findTrack(id);
         return "TrackFunctionality/editSalesTrack.xhtml";
     }
     
-    public String editSales() throws Exception
+    /**
+     * This method will edit the sales of a track, if the sale price is less
+     * than the list price. Otherwise, it will just refresh the page until the
+     * manager puts a value where the sale price is less than the list price.
+     * @return string that is the salesPage.xhtml
+     */
+    public String editSales() 
     {
         double salePrice = track.getSalePrice();
         double listPrice = track.getListPrice();
@@ -183,7 +302,14 @@ public class TrackBackingBean implements Serializable{
         
         else
         {
-            trackController.edit(track); 
+            try
+            {
+                trackController.edit(track); 
+            }
+            catch(Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
             return "welcome_sales";
         }
     }

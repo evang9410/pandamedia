@@ -13,8 +13,9 @@ import persistence.entities.RecordingLabel;
 
 
 /**
- *
- * @author Naasir 
+ * This class will be used as the recordingLabel backing bean. It is used as a 
+ * means of getting recordingLabels and querying them.
+ * @author Naasir Jusab
  */
 @Named("recordingLabelBacking")
 @SessionScoped
@@ -25,7 +26,11 @@ public class RecordingLabelBackingBean implements Serializable {
     @PersistenceContext
     private EntityManager em;
     
-    
+    /**
+     * This method will return a recording label if it exists already. Otherwise, 
+     * it will return a new recording label object.
+     * @return recording label object
+     */
     public RecordingLabel getRecordingLabel(){
         if(recordingLabel == null){
             recordingLabel = new RecordingLabel();
@@ -35,14 +40,19 @@ public class RecordingLabelBackingBean implements Serializable {
     
     /**
      * Finds the RecordingLabel from its id.
-     * @param id
-     * @return 
+     * @param id of the recording label
+     * @return recording label object
      */
     public RecordingLabel findRecordingLabelById(int id){
         recordingLabel = recordingLabelController.findRecordingLabel(id); 
         return recordingLabel;
     }
     
+    /**
+     * This method will return all the recording labels in the database so it 
+     * can be displayed on the data table.
+     * @return list of all the recording labels
+     */
     public List<RecordingLabel> getAll()
     {
         return recordingLabelController.findRecordingLabelEntities();

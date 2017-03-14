@@ -13,8 +13,9 @@ import persistence.entities.Songwriter;
 
 
 /**
- *
- * @author Naasir
+ * This class will be used as the song writer backing bean. It is used as a means
+ * of getting song writers and querying them.
+ * @author Naasir Jusab
  */
 @Named("songWriterBacking")
 @SessionScoped
@@ -25,7 +26,11 @@ public class SongWriterBackingBean implements Serializable{
     @PersistenceContext
     private EntityManager em;
     
-    
+    /**
+     * This method will return a songWriter if it exists already. Otherwise, it 
+     * will return a new songWriter object.
+     * @return songWriter object
+     */
     public Songwriter getSongwriter(){
         if(songWriter == null){
             songWriter = new Songwriter();
@@ -33,7 +38,11 @@ public class SongWriterBackingBean implements Serializable{
         return songWriter;
     }
     
-    
+    /**
+     * This method will return all the songWriters in the database so it can be 
+     * displayed on the data table.
+     * @return list of all the songWriters
+     */
     public List<Songwriter> getAll()
     {
         return songWriterController.findSongwriterEntities();

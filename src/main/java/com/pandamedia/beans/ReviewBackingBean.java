@@ -25,8 +25,9 @@ import persistence.entities.Track;
 
 
 /**
- *
- * @author Naasir Jusab, Evan Glicakis
+ * This class will be used as the review backing bean. It can create, update,
+ * delete and query reviews.
+ * @author Evan Glicakis, Naasir Jusab
  */
 @Named("reviewBacking")
 @SessionScoped
@@ -39,32 +40,63 @@ public class ReviewBackingBean implements Serializable{
     @PersistenceContext
     private EntityManager em;
     
+    /**
+     * This method will initialize a list of reviews that will be used by the 
+     * data table. PostConstruct is used in methods that need to be executed after 
+     * dependency injection is done to perform any initialization. In this case,
+     * I need the list of reviews after reviewController has been injected.
+     */
     @PostConstruct
     public void init()
     {
         this.reviews = reviewController.findReviewEntities();     
     }
     
+    /**
+     * This method will return all the reviews in a list so it can be displayed
+     * on the data table.
+     * @return all reviews in the database
+     */
     public List<Review> getReviews()
     {
         return reviews;
     }
     
+    /**
+     * This method will set a list of reviews to make changes to the current
+     * list of all reviews.
+     * @param reviews all reviews in the database
+     */
     public void setReviews(List<Review> reviews)
     {
         this.reviews = reviews;
     }
     
+    /**
+     * This method will set a list of filtered reviews to change the current
+     * list of filtered reviews.
+     * @param filteredReviews list of filtered reviews
+     */
     public void setFilteredReviews(List<Review> filteredReviews)
     {
         this.filteredReviews = filteredReviews;
     }
     
+    /**
+     * This method will return a list of filtered reviews so that the manager
+     * can make searches on reviews.
+     * @return list of filteredReviews
+     */
     public List<Review> getFilteredReviews()
     {
         return this.filteredReviews;
     }
     
+    /**
+     * This method will return a review if it exists already. Otherwise, it will
+     * return a new review.
+     * @return review
+     */
     public Review getReview(){
         if(review == null){
             review = new Review();
@@ -74,25 +106,48 @@ public class ReviewBackingBean implements Serializable{
     
     /**
      * Finds the review from its id.
-     * @param id
-     * @return 
+     * @param id of the review
+     * @return review object
      */
-    public Review findAlbumById(int id){
+    public Review findReviewById(int id){
         review = reviewController.findReview(id); 
         return review;
     }
     
-    public String removeItem(Integer id) throws Exception
+    /**
+     * This method takes the id of a review to search for that review object.
+     * Then,it will remove it completely from the database.
+     * Returning null should refresh the page
+     * @param id of the review object
+     * @return null should refresh the page
+     */
+    public String removeItem(Integer id) 
     {
         
         review = reviewController.findReview(id);
         
-        reviewController.destroy(review.getId());
+        try
+        {
+            reviewController.destroy(review.getId());
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
         
         return null; 
     }
     
-    public String approve(Integer id) throws Exception
+    /**
+     * This method takes the id of a review to search for that review object.
+     * If the approval status is not 1 then it will change it to 1 which,
+     * signifies that it has been approved. 0 means that the review has not
+     * been approved. The controller will edit the object and returning null
+     * should refresh the page.
+     * @param id of the review object
+     * @return null should refresh the page
+     */
+    public String approve(Integer id)
     {
         review = reviewController.findReview(id);
         
@@ -101,14 +156,30 @@ public class ReviewBackingBean implements Serializable{
             short i = 1;
             review.setApprovalStatus(i);
 
-            reviewController.edit(review);
+            try
+            {
+                reviewController.edit(review);
+            }
+            catch(Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
                     
         }
         
         return null;
     }
     
-    public String disapprove(Integer id) throws Exception
+    /**
+     * This method takes the id of a review to search for that review object.
+     * If the approval status is not 0 then it will change it to 0 which,
+     * signifies that it has been disapproved. 1 means that the review has 
+     * been approved. The controller will edit the object and returning null
+     * should refresh the page.
+     * @param id of the review object
+     * @return null should refresh the page
+     */
+    public String disapprove(Integer id)
     {
         review = reviewController.findReview(id);
         
@@ -117,7 +188,14 @@ public class ReviewBackingBean implements Serializable{
             short i = 0;
             review.setApprovalStatus(i);
 
-            reviewController.edit(review);
+            try
+            {
+                reviewController.edit(review);
+            }
+            catch(Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
                     
         }
         

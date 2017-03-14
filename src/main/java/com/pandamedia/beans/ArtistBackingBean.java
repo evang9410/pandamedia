@@ -14,7 +14,7 @@ import persistence.entities.Artist;
 
 /**
  * This class will be used as the artist backing bean. It is used as a means
- * of getting artists.
+ * of getting artists and querying them.
  * @author Naasir Jusab
  */
 @Named("artistBacking")
@@ -30,7 +30,7 @@ public class ArtistBackingBean implements Serializable {
     /**
      * This method will return an artist if it exists already. Otherwise, it will
      * return a new artist object.
-     * @return artist
+     * @return artist object
      */
     public Artist getArtist(){
         if(artist == null){
@@ -41,8 +41,8 @@ public class ArtistBackingBean implements Serializable {
     
     /**
      * Finds the Artist from its id.
-     * @param id
-     * @return 
+     * @param id of the artist
+     * @return artist object
      */
     public Artist findArtistById(int id){
         artist = artistController.findArtist(id); 
@@ -50,14 +50,19 @@ public class ArtistBackingBean implements Serializable {
     }
     
     /**
-     * This method will return all the artists in the database.
-     * @return 
+     * This method will return all the artists in the database so it can be 
+     * displayed on the data table.
+     * @return list of all the artists
      */
     public List<Artist> getAll()
     {
         return artistController.findArtistEntities();
     }
     
+    /**
+     * This method will change the current artist object.
+     * @param artist new artist object
+     */
     public void setArtist(Artist artist)
     {
         LOG.info("New artist id: " + artist.getId());
