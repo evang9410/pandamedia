@@ -27,15 +27,8 @@
     </session-config>
     
     <welcome-file-list>
-      <!--<welcome-file>mainpage.xhtml</welcome-file>-->
-      <!--<welcome-file>reports/salesbyalbum.xhtml</welcome-file>-->
-    <!--<welcome-file>reports/salesbytrack.xhtml</welcome-file>-->
-      <!--<welcome-file>reports/salesbyartist.xhtml</welcome-file>-->
-      <!--<welcome-file>reports/topclients.xhtml</welcome-file>-->
-      <!--<welcome-file>reports/topsellers.xhtml</welcome-file>-->
-      <!--<welcome-file>reports/totalsales.xhtml</welcome-file>-->
-      <!--<welcome-file>reports/zeroclients.xhtml</welcome-file>-->
-      <welcome-file>reports/zerotracks.xhtml</welcome-file>
+        <welcome-file>finalization.xhtml</welcome-file>
+        <!--<welcome-file>mainpage.xhtml</welcome-file>-->
     </welcome-file-list>
     
     <!-- web fonts -->

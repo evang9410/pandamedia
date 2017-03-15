@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>#{msgs.finalizationTitle}</title>
+        <meta name="author" content="Erika Bourque"/>
+    </h:head>
+    <body>
+        <div id="content">
+            <div id="billingInfo">
+                #{user.user.title} #{user.user.firstName} #{user.user.lastName}
+                #{user.user.streetAddress}
+                #{user.user.city}, #{user.user.provinceId.name} #{user.user.postalCode}
+                #{user.user.country}
+                #{user.user.homePhone} #{user.user.cellPhone}
+            </div>
+            <div id="orderSummary">
+
+            </div>
+            <div id="creditCardDetails">
+                <h:form>
+                    <p:panelGrid columns="2">
+                        <p:outputLabel for="cardNum" value="#{msgs.cardNumLbl}" />
+                        <p:inputText id="cardNum" required="true" />
+
+                        <p:outputLabel for="cardName" value="#{msgs.cardNameLbl}" />
+                        <p:inputText id="cardName" required="true" />
+
+                        <p:outputLabel for="cardCode" value="#{msgs.cardCodeLbl}" />
+                        <p:inputText id="cardCode" required="true" />
+
+                        <p:outputLabel for="cardMonth" value="#{msgs.cardExpDateLbl}" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="cardMonth" required="true">
+                                <f:selectItems value="#{checkout.months}" />
+                            </p:selectOneMenu>
+
+                            <p:selectOneMenu id="cardYear" required="true">
+                                <f:selectItems value="#{checkout.years}" />
+                            </p:selectOneMenu>
+                        </h:panelGroup>
+                        
+                        <p:commandButton value="#{msgs.cancelBtn}"/>
+                        <p:commandButton value="#{msgs.purchaseBtn}"/>
+                    </p:panelGrid>
+                </h:form>
+            </div>
+        </div>
+    </body>
+</html>
