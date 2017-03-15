@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package commands;
+package com.pandamedia.commands;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -13,7 +13,7 @@ import javax.inject.Named;
 
 /**
  *
- * @author Jason Citron
+ * @author Pierre Azelart
  */
 @Named("ChangeLanguage")
 @SessionScoped

@@ -1,33 +1,29 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<!-- This is a template page that is used for every page displayed -->
-<!-- What is not overridden in pages that use this template then the ui:insert in the template are used -->
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
     <h:head>
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <h:outputStylesheet library="css" name="bootstrap.css" />
-        <h:outputStylesheet library="css" name="menu.css" />
+        <h:outputStylesheet library="css" name="bootstrap.css"/>
+        <h:outputStylesheet library="css" name="menu.css"/>
+        <h:outputStylesheet library="css" name="mainpage.css"/>
         <link rel="icon" type="image/png" href="./resources/images/favicon.png"></link>
-        <title><ui:insert name="Window title"></ui:insert></title>
+        <script src="https://use.fontawesome.com/b8bcb424f5.js"></script> 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <title><ui:insert name="WindowTitle"></ui:insert></title>
     </h:head>
-    
+
     <h:body>  
-        <div class="menu">
-            <ui:insert name="menu">
-                <ui:include src="../sections/menu.xhtml" />
-            </ui:insert>
-        </div>
-        <div class="mainContainer">
-            <ui:insert name="content">
-                <ui:include src="../content/mainpage.xhtml" />  
-            </ui:insert>
-        </div>
-        <!-- add footer -->
-        <!-- load js at bottom for faster loading-->
+
+        <ui:insert name="menu">
+            <ui:include src="../sections/menu.xhtml" />
+        </ui:insert>
+
+        <ui:insert name="page-content"/>
+
     </h:body>
 </html>

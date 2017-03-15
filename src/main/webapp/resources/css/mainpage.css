@@ -1,106 +1,33 @@
-/* 
-    Created on : 15-Feb-2017, 10:10:36 PM
-    Author     : Evang
-*/
-.contentflow_container{
-    width: 90vw;
-    height: 60vh;
+
+h1{
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: rgba(255, 255, 255, 0.87);
 }
 
-.horizontal-ad{
-    width: 45vw;
-    height: 15vh;
-    margin: 0 auto;
-    margin-top: 2%;
-    background-color: blue;
+.carousel-control.left, .carousel-control.right {
+    background-image: none
 }
 
-.parallax{
-    background-image: url("#{resource['/images/bg.jpg']}");
+.carousel-caption{
+    width: auto;
     height: 100%;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-
 }
 
-.content{
-    margin: 0 auto;
-    width:90%;
-    text-align: center;  
-    background: rgba(119, 171, 255, 0.7);
-}
-
-.card_album{
-    max-height: 100%;
-    max-width: 100%;
-    margin-left: 5%;
-    margin-top: 5%;
-    border-radius: 2px;
-    border: 2px solid white;
-    background-color: white;
-       
-}
-
-.card_album_art{
-    border-radius: 2px;
-   
-}
-
-#latest_header{
+.item, .item active{
+    border-color: #17171b;
     text-align: center;
-    color:white;
-    text-shadow: 2px 0 0 black, -2px 0 0 black, 0 2px 0 black, 0 -2px 0 black, 1px 1px black, -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black;
+    height: 432px;
+    background-color: #17171b;
+    border: none !important;
 }
 
-.center_content{
-    margin: 0 auto;
-    text-align: center;
-}
-
-.contentflow_header{
-    font-size: 32em;
-}
-
-.contentflow{
-    margin: 0 auto;
-    width: 50%;
-    background: rgba(119, 171, 255, 0.7);
-}
-
-.genre{
-    text-align: left;
-}
-
-#genre_header{
-    text-align: left;
-    color:white;
-    text-shadow: 2px 0 0 black, -2px 0 0 black, 0 2px 0 black, 0 -2px 0 black, 1px 1px black, -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black;
-}
-
-.genre_links{
-    margin: 1%;
-    color: black;
-}
-.client-tracking{
-    margin-left: 5%;
-    margin-bottom: 5%;
-    width:90vh;
-}
-
-.sug_containter{
-    margin-left: 5%;
-}
-
-.latest-carousel{
-    margin-left: 2%;
-    width: 50vw;
-    height: 45vh;
-}
-  
-.carousel-img{
-    margin: 0 auto;
-    max-height: inherit;
-    max-width: inherit;
+.item > a:hover{
+    outline: none;
+    text-decoration: none;
 }

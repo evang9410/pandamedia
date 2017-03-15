@@ -1,4 +1,4 @@
-package commands;
+package com.pandamedia.commands;
 
 import java.io.Serializable;
 import java.util.List;
@@ -34,13 +34,13 @@ public class UserSearch implements Serializable{
     public String executeSearch(){
         String str = sd.getType();
         switch(str) {
-            case "Track": searchTracks();
+            case "tracks": searchTracks();
                 break;
-            case "Album": searchAlbums();
+            case "albums": searchAlbums();
                 break;
-            case "Artist": searchArtists();
+            case "artists": searchArtists();
                 break;
-            case "Date": searchDate();
+            case "date": searchDate();
                 break;
         }
         return "searchpage";
