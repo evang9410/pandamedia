@@ -1,0 +1,33 @@
+
+h1{
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: rgba(255, 255, 255, 0.87);
+}
+
+.carousel-control.left, .carousel-control.right {
+    background-image: none
+}
+
+.carousel-caption{
+    width: auto;
+    height: 100%;
+}
+
+.item, .item active{
+    border-color: #17171b;
+    text-align: center;
+    height: 432px;
+    background-color: #17171b;
+    border: none !important;
+}
+
+.item > a:hover{
+    outline: none;
+    text-decoration: none;
+}

@@ -13,7 +13,7 @@ import javax.inject.Named;
 
 /**
  *
- * @author Jason Citron
+ * @author Pierre Azelart
  */
 @Named("ChangeLanguage")
 @SessionScoped
