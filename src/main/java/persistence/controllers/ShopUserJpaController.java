@@ -10,6 +10,7 @@ import persistence.entities.Genre;
 import persistence.entities.Review;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -18,6 +19,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.transaction.Status;
 import javax.transaction.UserTransaction;
 import persistence.controllers.exceptions.IllegalOrphanException;
 import persistence.controllers.exceptions.NonexistentEntityException;
@@ -32,7 +34,8 @@ import persistence.entities.ShopUser;
 @Named
 @RequestScoped
 public class ShopUserJpaController implements Serializable {
-
+    private static final Logger LOG = Logger.getLogger("ShopUserJpaController.class");
+    
     @Resource
     private UserTransaction utx;
 
@@ -102,8 +105,12 @@ public class ShopUserJpaController implements Serializable {
             }
             utx.commit();
         } catch (Exception ex) {
+            LOG.info(ex.getMessage());
             try {
-                utx.rollback();
+                if (utx.getStatus() == Status.STATUS_ACTIVE)
+                {
+                    utx.rollback();
+                }                
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }

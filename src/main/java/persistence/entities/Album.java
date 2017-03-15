@@ -20,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -108,6 +109,7 @@ public class Album implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
     private List<InvoiceAlbum> invoiceAlbumList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "albumId")
+    @OrderBy("albumTrackNumber")
     private List<Track> trackList;
 
     public Album() {
