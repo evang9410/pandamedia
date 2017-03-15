@@ -9,67 +9,70 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body>
-            <h:form>
-                <p:panel id="basicInfoPanel" header="Basic Information">
-                <h:outputLabel for="titleInput" value="Title"/>
-                <h:selectOneMenu id="titleInput" value="#{userBean.shopUser.title}" required="true">
-                    <f:selectItem itemValue="Mr">Mr</f:selectItem>
-                    <f:selectItem itemValue="Mrs">Mrs</f:selectItem>
-                    <f:selectItem itemValue="Ms">Ms</f:selectItem>
-                    <f:selectItem itemValue="Prof">Prof</f:selectItem>
-                    <f:selectItem itemValue="Dr">Dr</f:selectItem>
-                    <f:selectItem itemValue="TBA">TBA</f:selectItem>
-                </h:selectOneMenu>
-                <br/>
-                <h:outputLabel for="fnameInput" value="First Name"/>
-                <h:inputText id="fnameInput" value="#{userBean.shopUser.firstName}"/>
-                <br/>
-                <h:outputLabel for="lnameInput" value="Last Name"/>
-                <h:inputText id="lnameInput" value="#{userBean.shopUser.lastName}"/>
-                <br/>
-                <h:outputLabel for="emailInput" value="Email"/>
-                <h:inputText id="emailInput" value="#{userBean.shopUser.email}"
-                             validator="#{userBean.validateEmail}" required="true">
-                    <f:ajax event="valueChange" render="emailError"/>
-                </h:inputText>
-                <h:message id="emailError" for="emailInput" style="color:red"/>
-                <br/>
-                <h:outputLabel for="password" value="Password"/>
-                <h:inputSecret id="password" value="#{userBean.password}" required="true">
-                    <!--<f:ajax event="valueChange" immediate="true"/>-->
-                </h:inputSecret>
-                <br/>
-                <h:outputLabel for="confirmPwd" value="Confirm Password"/>
-                <h:inputSecret id="confirmPwd" value="#{userBean.confirmPasswd}"
-                               required="true">
-                    <!--<f:ajax event="keyup" render="passwordError"/>-->
-                </h:inputSecret>
-                <h:message id="passwordError" for="confirmPwd" style="color:red"/>
-                </p:panel>
-                <br/>
-                <p:panel id="addressInfoPanel" header="Address Information">
-                    <h:outputLabel for="streetAddressInput" value="Street Address"/>
-                    <h:inputText id="streetAddressInput" value="#{userBean.shopUser.streetAddress}"/>
-                    <br/>
-                    <h:outputLabel for="cityInput" value="City"/>
-                    <h:inputText id="cityInput" value="#{userBean.shopUser.city}"/>
-                    <br/>
-                    <h:selectOneMenu id="provinceListbox" value="#{userBean.shopUser.provinceId}">
-                        <f:selectItems value="#{userBean.provinces}" var="province" itemLabel="#{province.name}" itemValue="province"/>
-                    </h:selectOneMenu>
-                    <br/>
-                    <h:outputLabel for="countryInput" value="Country"/>
-                    <h:inputText id="countryInput" value="#{userBean.shopUser.country}"/>
-                    <br/>
-                    <h:outputLabel for="postalCodeInput" value="Postal Code"/>
-                    <h:inputText id="postalCodeInput" value="#{userBean.shopUser.postalCode}"/>
-                    <br/>
-                    <h:outputLabel for="homePhoneInput" value="Home Phone"/>
-                    <h:inputText id="homePhoneInput" value="#{userBean.shopUser.homePhone}"/>
-                    <br/>
-                    
-                </p:panel>
-                <h:commandButton value="submit" action="#{userBean.createNewUser}"/>
-            </h:form>
+        <h:form id="registrationId">
+            <!--<p:panel id="basicInfoPanel" header="Basic Information">-->
+            <h:outputLabel for="titleInput" value="Title"/>
+            <h:selectOneMenu id="titleInput" value="#{userBean.shopUser.title}" required="true">
+                <f:selectItem itemValue="Mr">Mr</f:selectItem>
+                <f:selectItem itemValue="Mrs">Mrs</f:selectItem>
+                <f:selectItem itemValue="Ms">Ms</f:selectItem>
+                <f:selectItem itemValue="Prof">Prof</f:selectItem>
+                <f:selectItem itemValue="Dr">Dr</f:selectItem>
+                <f:selectItem itemValue="TBA">TBA</f:selectItem>
+            </h:selectOneMenu>
+            <br/>
+            <h:outputLabel for="fnameInput" value="First Name"/>
+            <h:inputText id="fnameInput" value="#{userBean.shopUser.firstName}"/>
+            <br/>
+            <h:outputLabel for="lnameInput" value="Last Name"/>
+            <h:inputText id="lnameInput" value="#{userBean.shopUser.lastName}"/>
+            <br/>
+            <h:outputLabel for="emailInput" value="Email"/>
+            <h:inputText id="emailInput" value="#{userBean.shopUser.email}"
+                         required="true">
+                <f:ajax event="valueChange" render="emailError"/>
+            </h:inputText>
+            <h:message id="emailError" for="emailInput" style="color:red"/>
+            <br/>
+            <h:outputLabel for="password" value="Password"/>
+            <h:inputSecret id="password" value="#{userBean.password}" required="true"/>
+            <!--<f:ajax event="valueChange" immediate="true"/>-->
+            <!--</h:inputSecret>-->
+            <br/>
+            <h:outputLabel for="confirmPwd" value="Confirm Password"/>
+            <h:inputSecret id="confirmPwd" value="#{userBean.confirmPasswd}"
+                           required="true"/>
+            <!--<f:ajax event="keyup" render="passwordError"/>-->
+            <!--</h:inputSecret>-->
+            <h:message id="passwordError" for="confirmPwd" style="color:red"/>
+            <!--</p:panel>-->
+            <br/>
+            <!--<p:panel id="addressInfoPanel" header="Address Information">-->
+            <h:outputLabel for="streetAddressInput" value="Street Address"/>
+            <h:inputText id="streetAddressInput" value="#{userBean.shopUser.streetAddress}"/>
+            <br/>
+            <h:outputLabel for="cityInput" value="City"/>
+            <h:inputText id="cityInput" value="#{userBean.shopUser.city}"/>
+            <br/>
+
+            <h:selectOneMenu id="provinceListbox" binding="#{temp}">
+                <f:selectItems value="#{registrationActionBean.provinces}" var="province" itemLabel="#{province.name}"/>
+            </h:selectOneMenu>
+            
+            <br/>
+            <h:outputLabel for="countryInput" value="Country"/>
+            <h:inputText id="countryInput" value="#{userBean.shopUser.country}"/>
+            <br/>
+            <h:outputLabel for="postalCodeInput" value="Postal Code"/>
+            <h:inputText id="postalCodeInput" value="#{userBean.postalCode}"/>
+            <br/>
+            <h:outputLabel for="homePhoneInput" value="Home Phone"/>
+            <h:inputText id="homePhoneInput" value="#{userBean.shopUser.homePhone}"/>
+            <br/>
+
+            <!--</p:panel>-->
+            <h:commandButton id="submitBtn" value="submit" action="#{registrationActionBean.register(temp.value)}" class="btn btn-default btn-login"/>
+            <!--<h:commandButton value="submit" "/>-->
+        </h:form>
     </h:body>
 </html>

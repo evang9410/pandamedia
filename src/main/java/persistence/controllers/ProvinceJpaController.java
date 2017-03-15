@@ -26,7 +26,7 @@ import persistence.entities.Province;
 @Named
 @RequestScoped
 public class ProvinceJpaController implements Serializable {
-
+    
     @Resource
     private UserTransaction utx;
 

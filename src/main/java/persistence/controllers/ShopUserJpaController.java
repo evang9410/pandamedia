@@ -14,7 +14,10 @@ import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.UserTransaction;
 import persistence.controllers.exceptions.IllegalOrphanException;
 import persistence.controllers.exceptions.NonexistentEntityException;
@@ -300,4 +303,25 @@ public class ShopUserJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
     }
 
+    public boolean checkIfUserExists(ShopUser u){
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        
+        CriteriaQuery<ShopUser> cq = cb.createQuery(ShopUser.class);
+        Root<ShopUser> r = cq.from(ShopUser.class);
+        cq.select(r);
+        cq.where(cb.equal(r, u));
+        
+        try{
+            ShopUser user = em.createQuery(cq).getSingleResult();
+            return true;
+        }catch(NoResultException  e){
+            return false;
+        }
+        catch (NonUniqueResultException e){
+            // Should not get here but just in case.
+            return true;
+        }
+        
+    }
+    
 }
