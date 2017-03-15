@@ -100,3 +100,13 @@ img{
 .navbar-default .navbar-nav > li > a:focus {
     color: rgba(255,255,255, 0.87);
 }
+
+.dropdown-menu{
+    background-color: #17171b;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.87);
+}
+
+.dropdown-menu > li > a{
+    color: rgba(255, 255, 255, 0.87);
+}
