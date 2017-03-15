@@ -5,11 +5,18 @@
  */
 package com.pandamedia.beans;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import persistence.entities.Track;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import persistence.entities.Album;
 
@@ -21,6 +28,9 @@ import persistence.entities.Album;
 @SessionScoped
 public class ShoppingCart implements Serializable{
     private List<Object> cart;
+    private UIViewRoot prevPage;
+    @Inject
+    private UserBackingBean user;
     public ShoppingCart(){
         this.cart = new ArrayList();
     }
@@ -70,6 +80,55 @@ public class ShoppingCart implements Serializable{
             }
         }
         return subtotal;
+    }
+    /**
+     * returns the amount of items in the cart, to be used by the navigation bar
+     * to display the amount of items currently in the cart.
+     * @return 
+     */
+    public Integer getCartCount(){
+        return this.cart.size();
+    }
+    
+    public boolean getIsCartEmpty(){
+        boolean isEmpty = false;
+        if(cart.size() == 0){
+           isEmpty= true;
+        }
+        return isEmpty;
+    }
+    public void removeAlbumFromCart(Album a){
+ 
+        
+    }
+    
+    public void removeItem(Object o){
+        cart.remove(o);
+    }
+    
+    
+    /**
+     * Sets the UIViewRoot object, to be called when the shopping cart icon
+     * in the navigation bar is clicked is clicked.
+     */
+    public void setPrevPage(){
+        prevPage = FacesContext.getCurrentInstance().getViewRoot();
+    }
+    /**
+     * returns the user to the location of the ui where the prevPage 
+     * object is holding.
+     * If the prevPage is null or not defined, return them to the mainpage.
+     */
+    public void continueShopping() throws IOException{
+        if(prevPage != null){
+            FacesContext.getCurrentInstance().setViewRoot(prevPage);
+            FacesContext.getCurrentInstance().renderResponse();
+        }else{
+             ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+             context.redirect(context.getRequestContextPath() + "/mainpage.xhtml");
+             System.out.println(context.getRequestContextPath());
+        }
+        
     }
     
 }

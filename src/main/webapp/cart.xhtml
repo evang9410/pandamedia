@@ -10,7 +10,8 @@ and open the template in the editor.
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:jsf="http://xmlns.jcp.org/jsf">
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Shopping cart</title>
         <h:outputStylesheet name="css/bootstrap.css"/>
@@ -22,8 +23,13 @@ and open the template in the editor.
     <h:body>
         <div class="container">
             <div class="row">
+                <h:panelGroup rendered="#{cart.isCartEmpty}">
+                    <h4>Shopping cart is empty</h4>
+                </h:panelGroup>
+            </div>
+            <div class="row">
                 <div class="col-sm-12 col-md-10 col-md-offset-1">                     
-                    <table jsf:id= "cart_albums" class="table table-hover">
+                    <table jsf:id= "cart" class="table table-hover">
                         <thead>
                             <tr>
                                 <th>Product</th>
@@ -57,15 +63,21 @@ and open the template in the editor.
                                     <td class="col-sm-1 col-md-1 text-center"><strong id="quantity-sum"></strong></td>
                                     <td class="col-sm-1 col-md-1 text-right">
                                         <h:form>
-                                            <b:commandButton value="" look="danger" 
-                                                             action="#{cart.cart.remove(albums)}"
-                                                             icon-awesome="trash">
-                                                <f:ajax render="cart_albums"/>
-                                            </b:commandButton>
+
+                                            <p:commandButton actionListener="#{cart.removeItem(albums)}"
+                                                             update="cart" icon="fa fa-trash"
+                                                             styleClass="btn btn-danger"/>
                                         </h:form>
                                     </td>
                                 </tr>
                                 <!-- track listings -->
+                                <tr>
+                                    <th></th>
+                                    <th>track #</th>
+                                    <th>track title</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
                                 <ui:repeat value="#{albums.trackList}" var="tracks">
                                     <tr>
                                         <td></td>
@@ -98,11 +110,9 @@ and open the template in the editor.
                                     <td class="col-sm-1 col-md-1 text-center"><strong id="quantity-sum"></strong></td>
                                     <td class="col-sm-1 col-md-1 text-right">
                                         <h:form>
-                                            <b:commandButton value="" look="danger" icon-awesome="trash"  
-                                                             action="#{cart.cart.remove(individual_tracks)}"
-                                                             >
-                                                <f:ajax render="cart_albums"/>
-                                            </b:commandButton>
+                                            <p:commandButton actionListener="#{cart.removeItem(individual_tracks)}"
+                                                             update="cart" icon="fa fa-trash"
+                                                             styleClass="btn btn-danger btn-lg"/>
                                         </h:form>
                                     </td>
                                 </tr>
@@ -126,13 +136,15 @@ and open the template in the editor.
                                 <td>   </td>
                                 <td>   </td>
                                 <td>
-                                    <button type="button" class="btn btn-default">
-                                        <span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping
-                                    </button></td>
+                                    <h:form>
+                                        <b:commandButton look="default" value="Continue Shopping" action="#{cart.continueShopping()}"/>
+                                    </h:form>
+                                </td>
                                 <td>
-                                    <button type="button" class="btn btn-success">
-                                        Checkout <span class="glyphicon glyphicon-play"></span>
-                                    </button></td>
+                                    <h:form>
+                                        <b:commandButton look="success" value="Checkout" icon-awesome="credit-card"/>
+                                    </h:form>
+                                </td>
                             </tr>
                         </tfoot>
                     </table>
