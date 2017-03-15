@@ -16,8 +16,9 @@ import persistence.entities.Artist;
 
 
 /**
- *
- * @author Naasir
+ * This class will be used as the artist converter for the primefaces selectOneMenu
+ * so that the manager can choose an artist from the list of artists.
+ * @author Naasir Jusab
  */
 @RequestScoped
 @Named("artistConverter")

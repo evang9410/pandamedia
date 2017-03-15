@@ -14,6 +14,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import org.primefaces.context.RequestContext;
 import persistence.controllers.AlbumJpaController;
 import persistence.entities.Album;
 import persistence.entities.CoverArt;
@@ -219,7 +220,7 @@ public class AlbumBackingBean implements Serializable{
                 System.out.println(e.getMessage());
             }
         }
-        
+        RequestContext.getCurrentInstance().update("albumTable");
         return null; 
     }
     
@@ -249,7 +250,7 @@ public class AlbumBackingBean implements Serializable{
                 System.out.println(e.getMessage());
             }
         }
-        
+        RequestContext.getCurrentInstance().update("albumTable");
         return null; 
     }
     

@@ -13,8 +13,9 @@ import persistence.controllers.SongwriterJpaController;
 import persistence.entities.Songwriter;
 
 /**
- *
- * @author Naasir
+ * This class will be used as the songWriter converter for the primefaces selectOneMenu
+ * so that the manager can choose a songWriter from the list of songWriters.
+ * @author Naasir Jusab
  */
 @RequestScoped
 @Named("songwriterConverter")

@@ -14,7 +14,8 @@ import persistence.controllers.AlbumJpaController;
 import persistence.entities.Album;
 
 /**
- *
+ * This class will be used as the album converter for the primefaces selectOneMenu
+ * so that the manager can choose an album from the list of albums.
  * @author Naasir Jusab
  */
 @RequestScoped

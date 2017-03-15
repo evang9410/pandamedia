@@ -13,8 +13,10 @@ import persistence.controllers.RecordingLabelJpaController;
 import persistence.entities.RecordingLabel;
 
 /**
- *
- * @author Naasir
+ * This class will be used as the recordingLabel converter for the primefaces  
+ * selectOneMenu so that the manager can choose a recordingLabel from the list 
+ * of recordingLabels.
+ * @author Naasir Jusab
  */
 @RequestScoped
 @Named("recordingLabelConverter")

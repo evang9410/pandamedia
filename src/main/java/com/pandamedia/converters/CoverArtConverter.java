@@ -13,8 +13,9 @@ import persistence.controllers.CoverArtJpaController;
 import persistence.entities.CoverArt;
 
 /**
- *
- * @author Naasir
+ * This class will be used as the cover art converter for the primefaces selectOneMenu
+ * so that the manager can choose a cover art from the list of cover arts.
+ * @author Naasir Jusab
  */
 @RequestScoped
 @Named("coverArtConverter")

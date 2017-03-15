@@ -13,8 +13,9 @@ import persistence.controllers.ProvinceJpaController;
 import persistence.entities.Province;
 
 /**
- *
- * @author Naasir 
+ * This class will be used as the province converter for the primefaces selectOneMenu
+ * so that the manager can choose a province from the list of provinces.
+ * @author Naasir Jusab
  */
 @RequestScoped
 @Named("provinceConverter")

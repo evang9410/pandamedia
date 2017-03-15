@@ -13,8 +13,9 @@ import persistence.controllers.GenreJpaController;
 import persistence.entities.Genre;
 
 /**
- *
- * @author Naasir
+ * This class will be used as the genre converter for the primefaces selectOneMenu
+ * so that the manager can choose a genre from the list of genres.
+ * @author Naasir Jusab
  */
 @RequestScoped
 @Named("genreConverter")

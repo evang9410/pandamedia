@@ -148,14 +148,14 @@ public class ShopUserManagerBean implements Serializable{
         return "welcome_clients";
     }
     
-    public List<Object[]> getClientTotalPurchase(Integer id) 
+    public Double getClientTotalPurchase(Integer id) 
     {
         // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        CriteriaQuery<Double> query = cb.createQuery(Double.class);
         Root<ShopUser> userRoot = query.from(ShopUser.class);
         Join invoiceJoin = userRoot.join(ShopUser_.invoiceList);
-        query.multiselect(cb.sum(invoiceJoin.get(Invoice_.totalGrossValue)), userRoot);
+        query.select(cb.sum(invoiceJoin.get(Invoice_.totalGrossValue)));
         query.groupBy(userRoot.get(ShopUser_.id));
 
         // Where clause
@@ -163,9 +163,12 @@ public class ShopUserManagerBean implements Serializable{
         Predicate p2 = cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0);
         query.where(cb.and(p1, p2));
 
-        TypedQuery<Object[]> typedQuery = em.createQuery(query);
+        TypedQuery<Double> typedQuery = em.createQuery(query);
         
-        return typedQuery.getResultList();
+        if(typedQuery.getResultList().size() == 0)
+            return 0.0;
+        else
+            return typedQuery.getResultList().get(0);
     }
 
 }

@@ -13,8 +13,9 @@ import persistence.controllers.ShopUserJpaController;
 import persistence.entities.ShopUser;
 
 /**
- *
- * @author Naasir
+ * This class will be used as the user converter for the primefaces selectOneMenu
+ * so that the manager can choose a user from the list of users.
+ * @author Naasir Jusab
  */
 @RequestScoped
 @Named("userConverter")
