@@ -8,7 +8,8 @@ package com.pandamedia.commands;
 import java.io.Serializable;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
@@ -17,19 +18,28 @@ import javax.inject.Named;
  * @author Pierre Azelart
  */
 @Named("searchDropdown")
-@SessionScoped
+@RequestScoped
 public class searchDropdown implements Serializable{
     
-    FacesContext context = FacesContext.getCurrentInstance();
-    ResourceBundle msgs = ResourceBundle.getBundle("bundles.messages", context.getViewRoot().getLocale());
-    String toDisplay = msgs.getString("tracks");
+    private FacesContext context;
+    private ResourceBundle msgs;
+    private String toDisplay = "Type";
     
     private String type;
 
     @PostConstruct
     public void init(){
-        //Default search type
-        type = "tracks";
+        
+        try{
+            FacesContext context = FacesContext.getCurrentInstance();
+            ResourceBundle msgs = ResourceBundle.getBundle("bundles.messages", context.getViewRoot().getLocale());
+            String toDisplay = msgs.getString("tracks");
+            
+            //Default search type
+            type = "tracks";
+        }
+        catch(java.lang.ClassCastException ex){
+        }
     }
 
     public String getType() {
