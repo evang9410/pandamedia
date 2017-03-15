@@ -26,7 +26,11 @@
                     <div class="col-xs-6 col-md-4">
                         <h2>#{trackBacking.track.artistId.name}</h2>
                         <h3>#{trackBacking.track.title}</h3>
-                        <b:button iconAwesome="cart-plus" iconAlign="right"  look="success" value="#{trackBacking.track.listPrice}"/>                       
+                        <h:form>
+                            <b:commandButton ajax="true" iconAwesome="cart-plus" iconAlign="right"  look="success" value="#{trackBacking.track.listPrice}"
+                                         action="#{cart.cart.add(trackBacking.track)}"/>  
+                        </h:form>
+                                             
                     </div>
                 </div>
             </div>            

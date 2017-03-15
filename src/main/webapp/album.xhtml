@@ -32,15 +32,19 @@
                                 <f:convertDateTime pattern="yyyy"/>
                             </h:outputText>
                         </h3>
-                        <h3> </h3>
+                        <h:form>
+                            <b:commandButton ajax="true" icon-awesome="cart-plus" iconAlign="right" value="#{albumBacking.album.listPrice}"
+                                             look="success" action="#{cart.cart.add(albumBacking.album)}"></b:commandButton>
+                        </h:form>
+
                     </div>
 
                 </div>
                 <hr style="width:75%"/>
             </div>            
         </div>
-        <div class="tracklist_container test">
-            <table class="table table-inverse track_list">
+        <div class="tracklist_container">
+            <table class="table table-inverse track_list" style="background-color: black; border: 2px solid lightgray;">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -64,7 +68,8 @@
                             <td>#{tracks.playLength}</td>
                             <td width="50">
                                 <h:form>
-                                    <b:commandButton ajax="true" icon-awesome="cart-plus" iconAlign="right" value="#{tracks.listPrice}" look="primary"/>                                    
+                                    <b:commandButton ajax="true" icon-awesome="cart-plus" iconAlign="right" value="#{tracks.listPrice}" look="primary" 
+                                                     action="#{cart.cart.add(tracks)}"/>
                                 </h:form>
                             </td>
                         </tr>
