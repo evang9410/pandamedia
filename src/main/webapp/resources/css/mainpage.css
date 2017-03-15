@@ -1,10 +1,16 @@
+body{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
 
 h1{
     font-family: "Poppins", sans-serif;
     font-weight: bold;
     position: relative;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 55%;
+    transform: translateY(-45%);
     margin-top: 0px;
     margin-bottom: 0px;
     color: rgba(255, 255, 255, 0.87);
@@ -30,4 +36,41 @@ h1{
 .item > a:hover{
     outline: none;
     text-decoration: none;
+}
+
+.fa-angle-right, .fa-angle-left{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 40px!important;
+    transition: ease-in-out 0.2s;
+}
+
+.carousel-indicators > li{
+    opacity: .5;
+}
+
+.browse-wrapper{
+    border: 2px solid black;
+    height: 40%;
+}
+
+.browse-item{
+    text-align: center;
+}
+
+#browse-albums{
+    display: inline-block;
+    border: 2px solid red;
+    width: 50%;
+    height: 100%;
+    float: left;
+
+}
+
+#browse-artists{
+    height: 100%;
+    display: inline-block;
+    border: 2px solid yellow;
+    width: 50%;
 }

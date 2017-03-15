@@ -2,6 +2,7 @@
 
 .navbar{
     height: 70px;
+    z-index: 999;
 }
 
 .navbar-default{
@@ -113,8 +114,7 @@ img{
 
 .dropdown-menu{
     background-color: #17171b;
-    border-width: 2px;
-    border-color: rgba(255, 255, 255, 0.87);
+    border: 2px solid white;
 }
 
 .dropdown-menu > li > a{
