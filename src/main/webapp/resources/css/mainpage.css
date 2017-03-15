@@ -1,3 +1,10 @@
+body{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
 h1{
     font-family: "Poppins", sans-serif;
     font-weight: bold;
@@ -45,6 +52,11 @@ h1{
 
 .browse-wrapper{
     border: 2px solid black;
+    height: 40%;
+}
+
+.browse-item{
+    text-align: center;
 }
 
 #browse-albums{
