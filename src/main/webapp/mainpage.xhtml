@@ -11,7 +11,7 @@
     </ui:define>
 
     <ui:define name="page-content"> 
-        
+
         <div id="carousel" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
                 <li data-target="#carousel" data-slide-to="0" class="active"></li>
@@ -51,16 +51,22 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </a>
         </div>
-        
+
         <div class="browse-wrapper">
-            <div class="browse-item" id="browse-albums">
-                <div class="browse-caption"><h2>1</h2></div>
-                <a class="browse-btn-link" href="#"><div class="browse-btn">Browse Albums</div></a>
-            </div>
-            <div class="browse-item" id="browse-artists">
-                <div class="browse-caption"><h2>2</h2></div>
-                <a class="browse-btn-link" href="#"><div class="browse-btn">Browse Artists</div></a>
-            </div>
+            <a class="browse-btn-link" href="#">
+                <div class="browse-item" id="browse-albums">
+                    <div class="browse-caption">
+                        <span id="browse-album-caption">Albums</span>
+                    </div>
+                </div>
+            </a>
+            <a class="browse-btn-link" href="#">
+                <div class="browse-item" id="browse-artists">
+                    <div class="browse-caption">
+                        <span id="browse-artist-caption">Artists</span>
+                    </div>
+                </div>
+            </a>
         </div>
     </ui:define>
 </ui:composition>
