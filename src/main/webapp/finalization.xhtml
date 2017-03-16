@@ -36,8 +36,8 @@
                         <p:message for="cardType" />                        
                         
                         <p:outputLabel for="cardNum" value="#{msgs.cardNumLbl}" />
-                        <p:inputText id="cardNum" required="true" value="#{checkout.cardNum}">
-                            <!-- Validate credit card -->
+                        <p:inputText id="cardNum" required="true" value="#{checkout.cardNum}" 
+                                     validator="#{checkout.validateCardNum}">
                         </p:inputText>
                         <p:message for="cardNum" />
 
