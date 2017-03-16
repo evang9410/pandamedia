@@ -32,7 +32,7 @@
 .nd .nn > li > a{
     color: rgba(255,255,255, 0.87);
     font-size: 18px;
-    
+
 }
 
 .nd .nb{
@@ -59,7 +59,7 @@
 }
 
 .sb:hover{
-   color: #02b875;
+    color: #02b875;
     transition: ease-in-out 0.2s; 
 }
 
@@ -90,7 +90,7 @@
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
-    
+
 }
 
 .fc:focus{
