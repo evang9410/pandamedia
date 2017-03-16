@@ -14,6 +14,7 @@
     <body>
         <div id="content">
             <div id="billingInfo">
+                <!-- TODO: make sure this works -->
                 #{user.user.title} #{user.user.firstName} #{user.user.lastName}
                 #{user.user.streetAddress}
                 #{user.user.city}, #{user.user.provinceId.name} #{user.user.postalCode}
@@ -25,29 +26,45 @@
             </div>
             <div id="creditCardDetails">
                 <h:form>
-                    <p:panelGrid columns="2">
+                    <p:panelGrid columns="3">
+                        <p:outputLabel for="cardType" value="#{msgs.cardTypeLbl}" />
+                        <p:selectOneMenu id="cardType" required="true" value="#{checkout.cardType}">
+                            <f:selectItem itemLabel="Visa" itemValue="Visa"/>
+                            <f:selectItem itemLabel="MasterCard" itemValue="MasterCard"/>
+                            <!-- TODO: make these images? -->
+                        </p:selectOneMenu>
+                        <p:message for="cardType" />                        
+                        
                         <p:outputLabel for="cardNum" value="#{msgs.cardNumLbl}" />
-                        <p:inputText id="cardNum" required="true" />
+                        <p:inputText id="cardNum" required="true" value="#{checkout.cardNum}">
+                            <!-- Validate credit card -->
+                        </p:inputText>
+                        <p:message for="cardNum" />
 
                         <p:outputLabel for="cardName" value="#{msgs.cardNameLbl}" />
-                        <p:inputText id="cardName" required="true" />
+                        <p:inputText id="cardName" required="true" value="#{checkout.cardName}"/>
+                        <p:message for="cardName" />
 
                         <p:outputLabel for="cardCode" value="#{msgs.cardCodeLbl}" />
-                        <p:inputText id="cardCode" required="true" />
+                        <p:inputText id="cardCode" required="true" value="#{checkout.cardCode}">
+                            <!-- TODO make sure this is the right kind of validation -->
+                            <f:validateLongRange minimum="0" maximum="9999" />
+                        </p:inputText>
+                        <p:message for="cardCode" />
 
                         <p:outputLabel for="cardMonth" value="#{msgs.cardExpDateLbl}" />
                         <h:panelGroup>
-                            <p:selectOneMenu id="cardMonth" required="true">
-                                <f:selectItems value="#{checkout.months}" />
+                            <p:selectOneMenu id="cardMonth" required="true" value="#{checkout.cardMonth}">
+                                <f:selectItems value="#{checkout.monthSelector}" />
                             </p:selectOneMenu>
-
-                            <p:selectOneMenu id="cardYear" required="true">
-                                <f:selectItems value="#{checkout.years}" />
+                            <p:selectOneMenu id="cardYear" required="true" value="#{checkout.cardYear}" validator="#{checkout.validateDate}">
+                                <f:selectItems value="#{checkout.yearSelector}" />
                             </p:selectOneMenu>
                         </h:panelGroup>
+                        <p:message for="cardYear" styleClass="errorMessage"/>
                         
-                        <p:commandButton value="#{msgs.cancelBtn}"/>
-                        <p:commandButton value="#{msgs.purchaseBtn}"/>
+                        <p:commandButton type="submit" ajax="false" value="#{msgs.cancelBtn}" action="cart.xhtml" immediate="true"/>
+                        <p:commandButton type="submit" value="#{msgs.purchaseBtn}" action="index.xhtml" ajax="false"/>                        
                     </p:panelGrid>
                 </h:form>
             </div>
