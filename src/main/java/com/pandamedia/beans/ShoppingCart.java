@@ -110,9 +110,11 @@ public class ShoppingCart implements Serializable{
     /**
      * Sets the UIViewRoot object, to be called when the shopping cart icon
      * in the navigation bar is clicked is clicked.
+     * @return
      */
-    public void setPrevPage(){
+    public String setPrevPage(){
         prevPage = FacesContext.getCurrentInstance().getViewRoot();
+        return "cart";
     }
     /**
      * returns the user to the location of the ui where the prevPage 
