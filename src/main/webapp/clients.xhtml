@@ -24,9 +24,9 @@
             </b:navbarLinks>
         </b:navBar> 
         <f:view>
-            <h:form>
+            <h:form id="userFormID">
                 <h1><h:outputText value="#{msgs.clients}"/></h1>
-                <p:dataTable value="#{userBacking.users}" widgetVar="userTable" filteredValue="#{userBacking.filteredUsers}"  var="item" paginator="true" rows="5">
+                <p:dataTable value="#{userBacking.all}" id="userTableID" widgetVar="userTable" filteredValue="#{userBacking.filteredUsers}"  var="item" paginator="true" rows="5">
                     <f:facet name="header">
                         <p:outputPanel>
                             <h:outputText value="#{msgs.search}" />
@@ -85,7 +85,7 @@
                         <f:facet name="header">
                             <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <p:commandButton  value="#{msgs.edit}" action="#{userBacking.loadEditForClients(item.id)}" />
+                        <p:commandButton  value="#{msgs.edit}" action="#{userBacking.loadEditForClients(item.id)}" update=":userFormID:userTableID" />
                     </p:column>
                 </p:dataTable>
             </h:form>

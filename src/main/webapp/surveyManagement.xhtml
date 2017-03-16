@@ -49,14 +49,14 @@
                     <p:outputLabel value="#{msgs.votesD}" for="votesD" />
                     <p:inputText id="votesD" value="#{surveyBean.survey.votesD}" title="VotesD" required="true" requiredMessage="The VotesD field is required."/>
                 </p:panelGrid>
-                <p:commandButton value="#{msgs.add}" action="#{surveyBean.save()}" />
+                <p:commandButton value="#{msgs.add}" action="#{surveyBean.save()}" update=":surveyFormID:surveyTableID" />
             </h:form>
             
 
 
-            <h:form>
+            <h:form id="surveyFormID">
                 <h1><h:outputText value="#{msgs.survey}"/></h1>
-                <p:dataTable value="#{surveyBean.all}" var="item" paginator="true" rows="5">
+                <p:dataTable value="#{surveyBean.all}" id="surveyTableID" var="item" paginator="true" rows="5">
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="#{msgs.id}"/>
@@ -121,8 +121,8 @@
                         <f:facet name="header">
                             <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <p:commandButton value="#{msgs.del}" action="#{surveyBean.remove(item.id)}"/>
-                        <p:commandButton value="#{msgs.select}" action="#{surveyBean.select(item.id)}" />
+                        <p:commandButton value="#{msgs.del}" action="#{surveyBean.remove(item.id)}" update=":surveyFormID:surveyTableID"/>
+                        <p:commandButton value="#{msgs.select}" action="#{surveyBean.select(item.id)}" update=":surveyFormID:surveyTableID"/>
                     </p:column>
                 </p:dataTable>
             </h:form>

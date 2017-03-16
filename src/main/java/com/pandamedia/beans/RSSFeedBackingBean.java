@@ -77,6 +77,7 @@ public class RSSFeedBackingBean implements Serializable{
         RSSFeedManager feedManager = new RSSFeedManager();
         feedManager.setUrl(newsFeed.getUrl());
         
+        this.newsFeed = null;
         return null;
     }
     
@@ -92,7 +93,7 @@ public class RSSFeedBackingBean implements Serializable{
         {
             System.out.println(e.getMessage());
         }
-        
+        this.newsFeed = null;
         return null;
     }
     
@@ -102,6 +103,7 @@ public class RSSFeedBackingBean implements Serializable{
         RSSFeedManager feedManager = new RSSFeedManager();
         feedManager.setUrl(newsFeed.getUrl());
         
+        this.newsFeed = null;
         return null;
     }
     

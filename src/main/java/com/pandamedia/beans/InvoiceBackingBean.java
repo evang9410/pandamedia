@@ -3,6 +3,7 @@ package com.pandamedia.beans;
 import persistence.controllers.InvoiceJpaController;
 import persistence.entities.Invoice;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +15,18 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import persistence.entities.InvoiceTrack;
+import persistence.entities.InvoiceTrackPK;
+import persistence.entities.InvoiceTrack_;
+import persistence.entities.Invoice_;
+import persistence.entities.Track;
+import persistence.entities.Track_;
+
 
 
 /**
@@ -124,7 +137,8 @@ public class InvoiceBackingBean implements Serializable{
                 System.out.println(e.getMessage());
             }
         }
-        
+        this.invoice = null;
+        this.filteredInvoices = invoiceController.findInvoiceEntities();
         return null; 
     }
     
@@ -155,7 +169,8 @@ public class InvoiceBackingBean implements Serializable{
                 System.out.println(e.getMessage());
             }
         }
-        
+        this.invoice = null;
+        this.filteredInvoices = invoiceController.findInvoiceEntities();
         return null; 
     }
     
@@ -182,6 +197,35 @@ public class InvoiceBackingBean implements Serializable{
         this.invoice = invoiceController.findInvoice(id);
         return "editOrders.xhtml";
     }
+    
+    public String loadIndivTracks(Integer id)
+    {
+        this.invoice = invoiceController.findInvoice(id);
+        return "removeIndivTracks.xhtml";
+    }
+    
+    public List<Track> loadTable()
+    {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Track> query = cb.createQuery(Track.class);
+        Root<Invoice> invoiceRoot = query.from(Invoice.class);
+        Join invoiceTrackJoin = invoiceRoot.join(Invoice_.invoiceTrackList);
+        Join  invoiceJoin = invoiceTrackJoin.join(InvoiceTrack_.invoice);
+        
+        query.select(invoiceTrackJoin);
+        // Where clause
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(invoiceTrackJoin.get(Invoice_.removalStatus), 0));
+        predicates.add(cb.equal(invoiceJoin.get(InvoiceTrack_.removalStatus), 0));
+        predicates.add(cb.equal(invoiceRoot.get(Invoice_.id), invoice.getId()));
+        
+        query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+        
+        TypedQuery<Track> typedQuery = em.createQuery(query);
+        
+        return typedQuery.getResultList();
+        
+    }
 
     /**
      * This method will be called to edit an invoice.  
@@ -197,8 +241,19 @@ public class InvoiceBackingBean implements Serializable{
         {
             System.out.println(e.getMessage());
         }
+        this.invoice = null;
+        this.filteredInvoices = invoiceController.findInvoiceEntities();
         return "welcome_orders";
     }
+    
+    
+    public String back()
+    {
+        this.invoice = null;
+        this.filteredInvoices = invoiceController.findInvoiceEntities();
+        return "welcome_orders";
+    }
+    
     
     
 }

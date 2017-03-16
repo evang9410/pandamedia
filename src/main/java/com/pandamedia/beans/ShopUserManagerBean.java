@@ -7,6 +7,8 @@ import persistence.entities.ShopUser;
 import persistence.entities.Survey;
 import javax.persistence.criteria.Predicate;
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -145,10 +147,19 @@ public class ShopUserManagerBean implements Serializable{
             System.out.println(e.getMessage());
         }
         
+        this.user = null;
+        this.filteredUsers = userController.findShopUserEntities();
         return "welcome_clients";
     }
     
-    public Double getClientTotalPurchase(Integer id) 
+    public String back()
+    {
+        this.user = null;
+        this.filteredUsers = userController.findShopUserEntities();
+        return "welcome_clients";
+    }
+    
+    public String getClientTotalPurchase(Integer id) 
     {
         // Query
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -164,11 +175,12 @@ public class ShopUserManagerBean implements Serializable{
         query.where(cb.and(p1, p2));
 
         TypedQuery<Double> typedQuery = em.createQuery(query);
+        NumberFormat formatter = new DecimalFormat("#0.00"); 
         
         if(typedQuery.getResultList().size() == 0)
-            return 0.0;
+            return "0.0";
         else
-            return typedQuery.getResultList().get(0);
+            return formatter.format(typedQuery.getResultList().get(0));
     }
 
 }

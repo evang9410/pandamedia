@@ -12,8 +12,6 @@
             <h:form>
                 <h1><h:outputText value="#{msgs.edit}"/></h1>
                 <p:panelGrid columns="2">
-                    <p:outputLabel value="#{msgs.id}" for="id" />
-                    <p:inputText id="id" value="#{trackBacking.track.id}" title="Id" required="true" requiredMessage="The Id field is required."/>
                     <p:outputLabel value="#{msgs.title}" for="title" />
                     <p:inputText id="title" value="#{trackBacking.track.title}" title="Title" required="true" requiredMessage="The Title field is required."/>
                     <p:outputLabel value="#{msgs.releaseDate}" for="releaseDate" />
@@ -64,6 +62,7 @@
                     </p:selectOneMenu>
                 </p:panelGrid>
                 <p:commandButton action="#{trackBacking.edit()}" value="#{msgs.edit}"/>
+                <p:commandButton action="#{trackBacking.back()}" value="#{msgs.back}" />
             </h:form>
 
         </f:view>

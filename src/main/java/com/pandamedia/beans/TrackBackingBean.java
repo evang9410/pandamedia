@@ -5,6 +5,8 @@ import java.io.Serializable;
 import persistence.controllers.TrackJpaController;
 import persistence.entities.Track;
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -15,10 +17,18 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import persistence.controllers.TrackJpaController;
 import persistence.entities.Album;
+import persistence.entities.InvoiceTrack_;
+import persistence.entities.Invoice_;
 import persistence.entities.Review;
 import persistence.entities.Track;
+import persistence.entities.Track_;
 
 /**
  * This class will be used as the track backing bean. It can create, update,
@@ -133,10 +143,12 @@ public class TrackBackingBean implements Serializable{
      * This method will add a track that has been removed. It will change
      * the removal status to 0 which means that it is available for purchase.
      * 1 means that it is not available for purchase. It will set the removal 
-     * date to null since it has not been removed. The return type null
-     * should refresh the page.
+     * date to null since it has not been removed. At the end, the track is set
+     * to null so that it does not stay in session scoped and the filtered 
+     * tracks are regenerated. The return type null should make it stay on the 
+     * same page.
      * @param id of the track that will be added
-     * @return null refresh the page
+     * @return null 
      */
     public String addItem(Integer id) 
     {
@@ -156,7 +168,8 @@ public class TrackBackingBean implements Serializable{
                 System.out.println(e.getMessage());
             }
         }
-        
+        this.track = null;
+        this.filteredTracks = trackController.findTrackEntities();
         return null; 
     }
     
@@ -164,10 +177,12 @@ public class TrackBackingBean implements Serializable{
      * This method will remove a track that has been added. It will change
      * the removal status to 1 which means that it is not available for purchase.
      * 0 means that it is available for purchase. It will set the removal 
-     * date to the date when you clicked on the remove. 
-     * The return type null should refresh the page.
+     * date to the date when you clicked on the remove. At the end, the track is
+     * set to null so that it does not stay in session scoped and the filtered 
+     * tracks are regenerated. The return type null should make it stay on the 
+     * same page.
      * @param id of the track that will be removed
-     * @return null refresh the page
+     * @return null 
      */
     public String removeItem(Integer id) 
     {
@@ -187,7 +202,8 @@ public class TrackBackingBean implements Serializable{
                 System.out.println(e.getMessage());
             }
         }
-        
+        this.track = null;
+        this.filteredTracks = trackController.findTrackEntities();
         return null; 
     }
     
@@ -206,7 +222,9 @@ public class TrackBackingBean implements Serializable{
     }
     
     /**
-     * This method will be called to edit a track.  
+     * This method will be called to edit a track. At the end, the track is set
+     * to null so that it does not stay in session scoped and the filtered 
+     * tracks are regenerated.
      * @return string that is the inventory page
      */
     public String edit() 
@@ -219,12 +237,15 @@ public class TrackBackingBean implements Serializable{
         {
             System.out.println(e.getMessage());
         }
-        
+        this.track = null;
+        this.filteredTracks = trackController.findTrackEntities();
         return "welcome_manager";
     }
     
     /**
-     * This method will be called to create a track.  
+     * This method will be called to create a track. At the end, the track is 
+     * set to null so that it does not stay in session scoped and the filtered 
+     * tracks are regenerated. 
      * @return string that is the inventory page
      */
     public String create() 
@@ -237,9 +258,38 @@ public class TrackBackingBean implements Serializable{
         {
             System.out.println(e.getMessage());
         }
+        this.track = null;
+        this.filteredTracks = trackController.findTrackEntities();
         return "welcome_manager";
     }
-
+   
+    /**
+     * This method is used to return back to the manager home page. Also, the 
+     * track is set to null so that it does not stay in session scoped and the
+     * filtered tracks are regenerated. 
+     * @return manager home page
+     */
+    public String back()
+    {
+        this.track = null;
+        this.filteredTracks = trackController.findTrackEntities();
+        return "welcome_manager";
+    }
+    
+    /**
+     * This method is used to return back to the manager sales page.Also, the  
+     * track is set to null so that it does not stay in session scoped and the
+     * filtered tracks are regenerated. 
+     * @return manager sales page
+     */
+    public String backSales()
+    {
+        this.track = null;
+        this.filteredTracks = trackController.findTrackEntities();
+        return "welcome_sales";
+    }
+    
+    
     /**
      * iterates through the reviews for a track and returns a list of the approved
      * ratings.
@@ -287,9 +337,11 @@ public class TrackBackingBean implements Serializable{
     
     /**
      * This method will edit the sales of a track, if the sale price is less
-     * than the list price. Otherwise, it will just refresh the page until the
-     * manager puts a value where the sale price is less than the list price.
-     * @return string that is the salesPage.xhtml
+     * than the list price. Otherwise, it will just stay on the page until the
+     * manager puts a value where the sale price is less than the list price. 
+     * At the end, the track is set to null so that it does not stay in session 
+     * scoped and the filtered tracks are regenerated.
+     * @return string that is the salesPage.xhtml or null
      */
     public String editSales() 
     {
@@ -310,8 +362,58 @@ public class TrackBackingBean implements Serializable{
             {
                 System.out.println(e.getMessage());
             }
+            this.track = null;
+            this.filteredTracks = trackController.findTrackEntities();
             return "welcome_sales";
         }
+    }
+    
+    /**
+     * This method is used to get the total sales of a track to this date. The
+     * number formatter is used to make the sales only two digits after the 
+     * decimal point and if there are no sales made by the track then 0 is
+     * returned.
+     * @param id of the track whose sales will be displayed
+     * @return string that is the sales of the track
+     */
+    public String getTrackSales(Integer id) 
+    {
+        // Query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Double> query = cb.createQuery(Double.class);
+        Root<Track> trackRoot = query.from(Track.class);
+        Join invoiceTrackJoin = trackRoot.join(Track_.invoiceTrackList);
+        Join invoiceJoin = invoiceTrackJoin.join(InvoiceTrack_.invoice);
+        query.select(cb.sum(invoiceTrackJoin.get(InvoiceTrack_.finalPrice)));
+        query.groupBy(trackRoot.get(Track_.id));
+
+        // Where clause
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(trackRoot.get(Track_.id), id));
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+        predicates.add(cb.equal(invoiceTrackJoin.get(InvoiceTrack_.removalStatus), 0));
+        predicates.add(cb.equal(trackRoot.get(Track_.removalStatus), 0));
+        query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+
+        TypedQuery<Double> typedQuery = em.createQuery(query);
+        NumberFormat formatter = new DecimalFormat("#0.00"); 
+        
+        if(typedQuery.getResultList().size() == 0)
+            return "0.0";
+        else
+            return formatter.format(typedQuery.getResultList().get(0));
+
+
+    }
+    
+    /**
+     * This method will return all the tracks in the database so it can be
+     * displayed on the data table.
+     * @return list of tracks
+     */
+    public List<Track> getAll()
+    {
+        return trackController.findTrackEntities();
     }
      
 }

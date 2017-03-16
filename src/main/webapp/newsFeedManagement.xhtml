@@ -31,13 +31,13 @@
                     <p:outputLabel value="#{msgs.url}" for="url" />
                     <p:inputText id="url" value="#{rssFeedBacking.newsFeed.url}" title="Url" required="true" requiredMessage="The Url field is required."/>
                 </p:panelGrid>
-                <p:commandButton value="#{msgs.add}" action="#{rssFeedBacking.save()}" />
+                <p:commandButton value="#{msgs.add}" action="#{rssFeedBacking.save()}" update=":rssFormID:rssTableID" />
             </h:form>
 
             
-            <h:form>
+            <h:form id="rssFormID">
                 <h1><h:outputText value="#{msgs.newsFeed}"/></h1>
-                <p:dataTable value="#{rssFeedBacking.all}" var="item" paginator="true" rows="5">
+                <p:dataTable value="#{rssFeedBacking.all}" id="rssTableID" var="item" paginator="true" rows="5">
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="#{msgs.id}"/>
@@ -54,8 +54,8 @@
                         <f:facet name="header">
                             <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <p:commandButton value="#{msgs.del}" action="#{rssFeedBacking.remove(item.id)}"/>
-                        <p:commandButton value="#{msgs.select}" action="#{rssFeedBacking.select(item.id)}" />
+                        <p:commandButton value="#{msgs.del}" action="#{rssFeedBacking.remove(item.id)}" update=":rssFormID:rssTableID"/>
+                        <p:commandButton value="#{msgs.select}" action="#{rssFeedBacking.select(item.id)}" update=":rssFormID:rssTableID"/>
                     </p:column>
                     
                 </p:dataTable>

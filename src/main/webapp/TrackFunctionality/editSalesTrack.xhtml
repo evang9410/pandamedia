@@ -16,6 +16,7 @@
                     <p:inputText id="salePrice" value="#{trackBacking.track.salePrice}" title="SalePrice" required="true" requiredMessage="The SalePrice field is required."/>
                 </p:panelGrid>
                 <p:commandButton action="#{trackBacking.editSales()}" value="#{msgs.edit}"/>
+                <p:commandButton action="#{trackBacking.backSales()}" value="#{msgs.back}" />
             </h:form>
         </f:view>
     </h:body>

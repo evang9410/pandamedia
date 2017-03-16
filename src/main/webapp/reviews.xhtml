@@ -25,9 +25,9 @@
         </b:navBar> 
         
         <f:view>
-            <h:form>
+            <h:form id="reviewFormID">
                 <h1><h:outputText value="#{msgs.reviews}"/></h1>
-                <p:dataTable value="#{reviewBacking.reviews}" widgetVar="reviewTable" filteredValue="#{reviewBacking.filteredReviews}" var="item" paginator="true" rows="5">
+                <p:dataTable value="#{reviewBacking.reviews}" id="reviewTableID" widgetVar="reviewTable" filteredValue="#{reviewBacking.filteredReviews}" var="item" paginator="true" rows="5">
                     <f:facet name="header">
                         <p:outputPanel>
                             <h:outputText value="#{msgs.search}" />
@@ -63,9 +63,9 @@
                         <f:facet name="header">
                             <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <p:commandButton value="#{msgs.approve}" action="#{reviewBacking.approve(item.id)}" />
-                        <p:commandButton value="#{msgs.disapprove}" action="#{reviewBacking.disapprove(item.id)}" />
-                        <p:commandButton value="#{msgs.del}" action="#{reviewBacking.removeItem(item.id)}"/>
+                        <p:commandButton value="#{msgs.approve}" action="#{reviewBacking.approve(item.id)}" update=":reviewFormID:reviewTableID" />
+                        <p:commandButton value="#{msgs.disapprove}" action="#{reviewBacking.disapprove(item.id)}" update=":reviewFormID:reviewTableID" />
+                        <p:commandButton value="#{msgs.del}" action="#{reviewBacking.removeItem(item.id)}" update=":reviewFormID:reviewTableID"/>
                     </p:column>
                 </p:dataTable>
             </h:form>

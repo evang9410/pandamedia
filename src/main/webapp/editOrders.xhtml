@@ -12,8 +12,6 @@
             <h:form>
                 <h1><h:outputText value="#{msgs.edit}"/></h1>
                 <p:panelGrid columns="2">
-                    <p:outputLabel value="#{msgs.id}" for="id" />
-                    <p:inputText id="id" value="#{invoiceBacking.invoice.id}" title="Id" required="true" requiredMessage="The Id field is required."/>
                     <p:outputLabel value="#{msgs.saleDate}" for="saleDate" />
                     <p:inputText id="saleDate" value="#{invoiceBacking.invoice.saleDate}" title="SaleDate" required="true" requiredMessage="The SaleDate field is required.">
                         <f:convertDateTime pattern="MM/dd/yyyy" />
@@ -40,6 +38,7 @@
                     </p:selectOneMenu>
                 </p:panelGrid>
                 <p:commandButton action="#{invoiceBacking.edit()}" value="#{msgs.edit}"/>
+                <p:commandButton action="#{invoiceBacking.back()}" value="#{msgs.back}" />
             </h:form>
         </f:view>
 

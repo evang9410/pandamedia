@@ -74,7 +74,7 @@ public class BannerAdBackingBean implements Serializable {
             System.out.println(e.getMessage());
         }
         
-        
+        this.advertisement = null;
         return null;
     }
     
@@ -90,14 +90,14 @@ public class BannerAdBackingBean implements Serializable {
         {
             System.out.println(e.getMessage());
         }
-        
+        this.advertisement = null;
         return null;
     }
     
     public String select(Integer id)
     {
         advertisement = advertisementController.findAdvertisement(id);
-        
+        this.advertisement = null;
         return null;
     }
     

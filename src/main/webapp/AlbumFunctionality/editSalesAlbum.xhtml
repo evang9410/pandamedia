@@ -16,6 +16,7 @@
                     <p:inputText id="salePrice" value="#{albumBacking.album.salePrice}" title="SalePrice" required="true" requiredMessage="The SalePrice field is required."/>
                 </p:panelGrid>
                 <p:commandButton action="#{albumBacking.editSales()}" value="#{msgs.edit}"/>
+                <p:commandButton action="#{albumBacking.backSales()}" value="#{msgs.back}" />
             </h:form>
         </f:view>
     </h:body>

@@ -89,7 +89,7 @@ public class SurveyBean implements Serializable {
         {
             System.out.println(e.getMessage());
         }
-        
+        this.survey = null;
         return null;
     }
     
@@ -104,14 +104,14 @@ public class SurveyBean implements Serializable {
         {
             System.out.println(e.getMessage());
         }
-        
+        this.survey = null;
         return null;
     }
     
     public String select(Integer id)
     {
         survey = surveys.findSurvey(id);
-
+        this.survey = null;
         return null;
     }
     

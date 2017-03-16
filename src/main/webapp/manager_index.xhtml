@@ -23,16 +23,14 @@
                 <b:navLink value="#{msgs.survey}" href="surveyManagement.xhtml"></b:navLink>
                 <b:navLink value="#{msgs.banner}" href="bannerAdManagement.xhtml"></b:navLink>
             </b:navbarLinks>
-        </b:navBar> 
-       
-        <f:view>
+        </b:navBar>  
 
             <h:outputLink value="AlbumFunctionality/addAlbum.xhtml">#{msgs.addAlbum}</h:outputLink>
             <br/>
             <h:outputLink value="TrackFunctionality/addTrack.xhtml">#{msgs.addTrack}</h:outputLink>
-            <h:form>
+            <h:form id="albumFormID">
                 <h1><h:outputText value="#{msgs.albums}"/></h1>
-                <p:dataTable id="albumTable" value="#{albumBacking.albums}" widgetVar="albumTable" filteredValue="#{albumBacking.filteredAlbums}"  var="item" paginator="true" rows="5">
+                <p:dataTable id="albumTable" value="#{albumBacking.all}" widgetVar="albumTable" filteredValue="#{albumBacking.filteredAlbums}"  var="item" paginator="true" rows="5">
                     <f:facet name="header">
                         <p:outputPanel>
                             <h:outputText value="#{msgs.search}" />
@@ -88,20 +86,23 @@
                         <h:outputText value="#{item.coverArtId.imagePath}"/>
                     </p:column>
                     <p:column>
+                        <h:outputText value="#{albumBacking.getAlbumSales(item.id)}"/>
+                    </p:column>
+                    <p:column>
                         <f:facet name="header">
                             <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <p:commandButton  value="#{msgs.edit}" action="#{albumBacking.loadEditForIndex(item.id)}" />
-                        <p:commandButton value="#{msgs.add}" action="#{albumBacking.addItem(item.id)}" />
-                        <p:commandButton  value="#{msgs.del}" action="#{albumBacking.removeItem(item.id)}" />
+                        <p:commandButton  value="#{msgs.edit}" action="#{albumBacking.loadEditForIndex(item.id)}" update=":albumFormID:albumTable"/>
+                        <p:commandButton value="#{msgs.add}" action="#{albumBacking.addItem(item.id)}" update=":albumFormID:albumTable"/>
+                        <p:commandButton  value="#{msgs.del}" action="#{albumBacking.removeItem(item.id)}" update=":albumFormID:albumTable"/>
                     </p:column>
                 </p:dataTable>
             </h:form>
 
 
-            <h:form>
+            <h:form id="trackFormID">
                 <h1><h:outputText value="#{msgs.tracks}"/></h1>
-                <p:dataTable value="#{trackBacking.tracks}" id="trackTableID" widgetVar="trackTable" filteredValue="#{trackBacking.filteredTracks}" var="item" paginator="true" rows="5">
+                <p:dataTable value="#{trackBacking.all}" id="trackTableID" widgetVar="trackTable" filteredValue="#{trackBacking.filteredTracks}" var="item" paginator="true" rows="5">
                     <f:facet name="header">
                         <p:outputPanel>
                             <h:outputText value="#{msgs.search}" />
@@ -166,18 +167,18 @@
                         <h:outputText value="#{item.coverArtId.imagePath}"/>
                     </p:column>
                     <p:column>
+                        <h:outputText value="#{trackBacking.getTrackSales(item.id)}"/>
+                    </p:column>
+                    <p:column>
                         <f:facet name="header">
                             <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <p:commandButton  value="#{msgs.edit}" action="#{trackBacking.loadEditForIndex(item.id)}" />
-                        <p:commandButton  value="#{msgs.add}" action="#{trackBacking.addItem(item.id)}"/>
-                        <p:commandButton  value="#{msgs.del}" action="#{trackBacking.removeItem(item.id)}"/>
+                        <p:commandButton  value="#{msgs.edit}" action="#{trackBacking.loadEditForIndex(item.id)}" update=":trackFormID:trackTableID" />
+                        <p:commandButton  value="#{msgs.add}" action="#{trackBacking.addItem(item.id)}" update=":trackFormID:trackTableID"/>
+                        <p:commandButton  value="#{msgs.del}" action="#{trackBacking.removeItem(item.id)}" update=":trackFormID:trackTableID"/>
                     </p:column>
                 </p:dataTable>
             </h:form>
-
-
-        </f:view>
 
     </h:body>
 

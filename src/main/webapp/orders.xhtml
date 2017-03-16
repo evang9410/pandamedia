@@ -25,9 +25,9 @@
         </b:navBar> 
         
         <f:view>
-            <h:form>
+            <h:form id="invoiceFormID">
                 <h1><h:outputText value="#{msgs.orders}"/></h1>
-                <p:dataTable value="#{invoiceBacking.invoices}" widgetVar="invoiceTable" filteredValue="#{invoiceBacking.filteredInvoices}"  var="item" paginator="true" rows="5">
+                <p:dataTable value="#{invoiceBacking.all}" id="invoiceTableID" widgetVar="invoiceTable" filteredValue="#{invoiceBacking.filteredInvoices}"  var="item" paginator="true" rows="5">
                     <f:facet name="header">
                         <p:outputPanel>
                             <h:outputText value="#{msgs.search}" />
@@ -72,9 +72,10 @@
                         <f:facet name="header">
                             <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <p:commandButton action="#{invoiceBacking.addItem(item.id)}" value="#{msgs.add}" />
-                        <p:commandButton action="#{invoiceBacking.removeItem(item.id)}" value="#{msgs.del}" />
-                        <p:commandButton action="#{invoiceBacking.loadEditForOrders(item.id)}" value="#{msgs.edit}" />
+                        <p:commandButton action="#{invoiceBacking.addItem(item.id)}" value="#{msgs.add}" update=":invoiceFormID:invoiceTableID" />
+                        <p:commandButton action="#{invoiceBacking.removeItem(item.id)}" value="#{msgs.del}" update="invoiceFormID:invoiceTableID" />
+                        <p:commandButton action="#{invoiceBacking.loadIndivTracks(item.id)}" value="#{msgs.removeIndivTracks}" />
+                        <p:commandButton action="#{invoiceBacking.loadEditForOrders(item.id)}" value="#{msgs.edit}" update="invoiceFormID:invoiceTableID" />
                     </p:column>
                 </p:dataTable>
             </h:form>

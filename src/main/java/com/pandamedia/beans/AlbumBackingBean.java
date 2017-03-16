@@ -2,6 +2,8 @@
 package com.pandamedia.beans;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -14,11 +16,21 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import org.primefaces.context.RequestContext;
 import persistence.controllers.AlbumJpaController;
 import persistence.entities.Album;
+import persistence.entities.Album_;
 import persistence.entities.CoverArt;
 import persistence.entities.Genre;
+import persistence.entities.InvoiceAlbum_;
+import persistence.entities.InvoiceTrack_;
+import persistence.entities.Invoice_;
+
 
 /**
  * This class will be used as the album backing bean. It can create, update,
@@ -139,9 +151,7 @@ public class AlbumBackingBean implements Serializable{
     public String albumPage(Album a){
         this.album = a;
         return "album";
-    }
-    
-    
+    }   
     
     /**
      * Finds the album from its id.
@@ -220,7 +230,8 @@ public class AlbumBackingBean implements Serializable{
                 System.out.println(e.getMessage());
             }
         }
-        RequestContext.getCurrentInstance().update("albumTable");
+        this.album = null;
+        this.filteredAlbums = albumController.findAlbumEntities();
         return null; 
     }
     
@@ -250,7 +261,8 @@ public class AlbumBackingBean implements Serializable{
                 System.out.println(e.getMessage());
             }
         }
-        RequestContext.getCurrentInstance().update("albumTable");
+        this.album = null;
+        this.filteredAlbums = albumController.findAlbumEntities();
         return null; 
     }
     
@@ -282,6 +294,8 @@ public class AlbumBackingBean implements Serializable{
         {
             System.out.println(e.getMessage());
         }
+        this.album = null;
+        this.filteredAlbums = albumController.findAlbumEntities();
         return "welcome_manager";
     }
     
@@ -356,6 +370,8 @@ public class AlbumBackingBean implements Serializable{
             {
                 System.out.println(e.getMessage());
             }
+            this.album = null;
+            this.filteredAlbums = albumController.findAlbumEntities();
             return "welcome_sales";
         }
     }
@@ -374,7 +390,52 @@ public class AlbumBackingBean implements Serializable{
         {
             System.out.println(e.getMessage());
         }
+        
+        this.album = null;
+        this.filteredAlbums = albumController.findAlbumEntities();
         return "welcome_manager";
     }
     
+    public String back()
+    {
+        this.album = null;
+        this.filteredAlbums = albumController.findAlbumEntities();
+        return "welcome_manager";
+    }
+    
+    public String backSales()
+    {
+        this.album = null;
+        this.filteredAlbums = albumController.findAlbumEntities();
+        return "welcome_sales";
+    }
+    
+    public String getAlbumSales(Integer id) 
+    {
+
+        // Query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Double> query = cb.createQuery(Double.class);
+        Root<Album> albumRoot = query.from(Album.class);
+        Join invoiceAlbumJoin = albumRoot.join(Album_.invoiceAlbumList);
+        Join invoiceJoin = invoiceAlbumJoin.join(InvoiceTrack_.invoice);
+        query.select(cb.sum(invoiceAlbumJoin.get(InvoiceAlbum_.finalPrice)));
+        query.groupBy(albumRoot.get(Album_.id));
+
+        // Where clause
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(albumRoot.get(Album_.id), id));
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+        predicates.add(cb.equal(invoiceAlbumJoin.get(InvoiceTrack_.removalStatus), 0));
+        predicates.add(cb.equal(albumRoot.get(Album_.removalStatus), 0));
+        query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+
+        TypedQuery<Double> typedQuery = em.createQuery(query);
+        NumberFormat formatter = new DecimalFormat("#0.00"); 
+        
+        if(typedQuery.getResultList().size() == 0)
+            return "0.0";
+        else
+            return formatter.format(typedQuery.getResultList().get(0));
+    }
 }
