@@ -52,9 +52,15 @@
 }
 
 .sb{
+    color: rgba(255,255,255, 0.87);
     padding: 0px;
     margin: 6px 12px;
     border: none;
+}
+
+.sb:hover{
+   color: #02b875;
+    transition: ease-in-out 0.2s; 
 }
 
 .nd .nn > li > a:hover{
@@ -62,6 +68,9 @@
     transition: ease-in-out 0.2s;
 }
 
+.sc{
+    color: rgba(255,255,255, 0.87);
+}
 .sc:hover{
     color: #02b875;
     transition: ease-in-out 0.2s;
