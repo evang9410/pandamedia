@@ -22,13 +22,44 @@
                 #{user.user.homePhone} #{user.user.cellPhone}
             </div>
             <div id="orderSummary">
-
+                <p:dataTable id="cartTracks" value="#{cart.tracksFromCart}" var="track">
+                    <p:column>
+                        <f:facet name="header">#{msgs.titleHeader}</f:facet>
+                        #{track.title}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">#{msgs.artistHeader}</f:facet>
+                        #{track.artistId.name}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">#{msgs.priceHeader}</f:facet>
+                        #{track.listPrice - track.salePrice}
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable id="cartAlbums" value="#{cart.albumsFromCart}" var="album">
+                    <p:column>
+                        <f:facet name="header">#{msgs.titleHeader}</f:facet>
+                        #{album.title}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">#{msgs.artistHeader}</f:facet>
+                        #{album.artistId.name}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">#{msgs.priceHeader}</f:facet>
+                        #{album.listPrice - album.salePrice}
+                    </p:column>
+<!--                    <p:row>
+                        #{cart.subTotal}
+                    </p:row>-->
+                    <!-- repeat for gst, hst, pst, total -->
+                </p:dataTable>
             </div>
             <div id="creditCardDetails">
                 <h:form>
                     <p:panelGrid columns="3">
                         <p:outputLabel for="cardType" value="#{msgs.cardTypeLbl}" />
-                        <p:selectOneMenu id="cardType" required="true" value="#{checkout.cardType}">
+                        <p:selectOneMenu id="cardType" required="true" value="#{creditCard.cardType}">
                             <f:selectItem itemLabel="Visa" itemValue="Visa"/>
                             <f:selectItem itemLabel="MasterCard" itemValue="MasterCard"/>
                             <!-- TODO: make these images? -->
@@ -36,17 +67,17 @@
                         <p:message for="cardType" />                        
                         
                         <p:outputLabel for="cardNum" value="#{msgs.cardNumLbl}" />
-                        <p:inputText id="cardNum" required="true" value="#{checkout.cardNum}" 
-                                     validator="#{checkout.validateCardNum}">
+                        <p:inputText id="cardNum" required="true" value="#{creditCard.cardNum}" 
+                                     validator="#{creditCard.validateCardNum}">
                         </p:inputText>
                         <p:message for="cardNum" />
 
                         <p:outputLabel for="cardName" value="#{msgs.cardNameLbl}" />
-                        <p:inputText id="cardName" required="true" value="#{checkout.cardName}"/>
+                        <p:inputText id="cardName" required="true" value="#{creditCard.cardName}"/>
                         <p:message for="cardName" />
 
                         <p:outputLabel for="cardCode" value="#{msgs.cardCodeLbl}" />
-                        <p:inputText id="cardCode" required="true" value="#{checkout.cardCode}">
+                        <p:inputText id="cardCode" required="true" value="#{creditCard.cardCode}">
                             <!-- TODO make sure this is the right kind of validation -->
                             <f:validateLongRange minimum="0" maximum="9999" />
                         </p:inputText>
@@ -54,10 +85,10 @@
 
                         <p:outputLabel for="cardMonth" value="#{msgs.cardExpDateLbl}" />
                         <h:panelGroup>
-                            <p:selectOneMenu id="cardMonth" required="true" value="#{checkout.cardMonth}">
+                            <p:selectOneMenu id="cardMonth" required="true" value="#{creditCard.cardMonth}">
                                 <f:selectItems value="#{checkout.monthSelector}" />
                             </p:selectOneMenu>
-                            <p:selectOneMenu id="cardYear" required="true" value="#{checkout.cardYear}" validator="#{checkout.validateDate}">
+                            <p:selectOneMenu id="cardYear" required="true" value="#{creditCard.cardYear}" validator="#{creditCard.validateDate}">
                                 <f:selectItems value="#{checkout.yearSelector}" />
                             </p:selectOneMenu>
                         </h:panelGroup>
