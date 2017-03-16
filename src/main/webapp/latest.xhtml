@@ -20,7 +20,7 @@
                 <ui:repeat value="#{albumBacking.latestAlbums}" var="latest">
                     <div class="col-md-3">
                         <h:form>
-                            <h:commandLink action="#{albumBacking.albumPage(latest)}" styleClass="waves-effect waves-light btn">
+                            <h:commandLink action="#{albumBacking.albumPage(latest)}" styleClass="btn">
                                 <figure class="figure card-wrapper">
                                     <img src="resources/coverart/#{latest.coverArtId.imagePath}" class="figure-img img-fluid albumart"/>
                                     <div class="latest-caption">
