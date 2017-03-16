@@ -28,7 +28,9 @@ body{
     font-size: 16px;
     color:#5e5e5e;
 }
-
+.modalPseudoClass{
+    color:black;
+}
 /* special thanks to Besnikhetemi from bootsnipp.com for the comment styling
 http://bootsnipp.com/snippets/rvbKr
 */
@@ -93,11 +95,11 @@ http://stackoverflow.com/questions/8118266/integrating-css-star-rating-into-an-h
     font-size:30px;
     margin-right:2px;
     line-height:30px;
-    color: #858789;
+    color: #858789; 
 }
 .rating td:hover ~ td label,
 .rating td:hover label,
 .rating td.checked label,
 .rating td.checked ~ td label {
-    color:gold;
+    color:gold; 
 }

@@ -14,8 +14,6 @@
         <h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
     </ui:define>
     <ui:define name="page-content">
-
-
         <h:body class = "bodyClass">
             <div class="album-info-wrapper">
                 <div class="container-fluid">
@@ -34,9 +32,7 @@
                                 <b:commandButton ajax="true" icon-awesome="cart-plus" iconAlign="right" value="#{albumBacking.album.listPrice}"
                                                  look="success" action="#{cart.cart.add(albumBacking.album)}"></b:commandButton>
                             </h:form>
-
                         </div>
-
                     </div>
                     <hr style="width:75%"/>
                 </div>            
@@ -51,7 +47,6 @@
                             <th style="text-align: right;"><i class="fa fa-shopping-cart" aria-hidden="true"></i></th>
                         </tr>
                     </thead>
-
                     <tbody>
                         <ui:repeat value="#{albumBacking.album.trackList}" var="tracks">
                             <tr>
@@ -77,5 +72,4 @@
             </div>
         </h:body>
     </ui:define>
-
 </ui:composition>
