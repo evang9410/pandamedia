@@ -4,12 +4,14 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:outputStylesheet library="css" name="mainpage.css" />
+    
+    <ui:define name="css">
+        <h:outputStylesheet name="mainpage.css" library="css"/>
+    </ui:define>
 
     <ui:define name="WindowTitle">
         Home
     </ui:define>
-
     <ui:define name="page-content"> 
 
         <div id="carousel" class="carousel slide" data-ride="carousel">
@@ -21,11 +23,11 @@
 
             <div class="carousel-inner">
                 <div class="item active">
-                    <a href="#">
+                    <h:link outcome="latest">
                         <div class="carousel-caption">
                             <h1>New Releases</h1>
                         </div>
-                    </a>
+                    </h:link>
                 </div>
                 <div class="item">
                     <a href="#">
