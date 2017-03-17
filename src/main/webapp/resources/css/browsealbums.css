@@ -32,6 +32,13 @@ body{
     background-color: #02b875;
     padding: 15px;
     border-radius: 2px;
+    text-align: center;
+}
+
+.pop-albumart{
+    width: 100px;
+    height: 100px;
+    border-radius: 2px;
 }
 .albumart{
     margin: 0 auto;
@@ -52,5 +59,41 @@ body{
     text-align: left;
     font-family: "Poppins", sans-serif;
     color: #60656F;
+}
+
+.row.is-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+.row.is-flex > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
+}
+
+/*
+* And with max cross-browser enabled.
+* Nobody should ever write this by hand. 
+* Use a preprocesser with autoprefixing.
+*/
+.row.is-flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.row.is-flex > [class*='col-'] {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
 }
 

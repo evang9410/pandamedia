@@ -15,14 +15,31 @@
         <h:outputScript library="js" name="ajaxfix.js" target="head"/>
         <br/>
         <div class="container">
-            <div clas="row">
+<!--            <div><h2>Popular Albums</h2></div>-->
                 <div><h2>Popular Albums</h2></div>
+            <div class="row is-flex">
+
                 <ui:repeat value="#{albumBacking.popularAlbums}" var="pop">
-                    #{pop.title}
+                    <div class="col-sm-2">
+                        <h:form>
+                            <h:commandLink action="#{albumBacking.albumPage(ag)}" styleClass="">
+                                <figure class="figure card-wrapper">
+                                    <img src="resources/coverart/#{pop.coverArtId.imagePath}" class="figure-img img-fluid pop-albumart"/>
+                                    <div class="latest-caption">
+                                        <h5>#{pop.title}</h5>
+                                        <h6>#{pop.artistId.name}</h6>
+                                    </div>
+                                </figure>
+                            </h:commandLink>
+                        </h:form>
+                    </div>                
                 </ui:repeat>
             </div>
-            <div class="row">
-                <div><h2>Browse by Genre</h2></div>
+        </div>
+        <div class="container">
+            <div><h2>Browse by Genre</h2></div>
+            <div class="row is-flex">
+                
                 <h:form>
                     <ui:repeat value="#{genreBacking.allGenresNames}" var="genres">
                         <h:commandLink action="#{albumBacking.setGenreString(genres)}" styleClass="genre-links"> 
