@@ -15,45 +15,77 @@
         <div id="content">
             <div id="billingInfo">
                 <!-- TODO: make sure this works -->
-                #{user.user.title} #{user.user.firstName} #{user.user.lastName}
-                #{user.user.streetAddress}
-                #{user.user.city}, #{user.user.provinceId.name} #{user.user.postalCode}
-                #{user.user.country}
-                #{user.user.homePhone} #{user.user.cellPhone}
+                <p:panelGrid>
+                    <p:row>
+                        #{user.user.title} #{user.user.firstName} #{user.user.lastName}
+                    </p:row>
+                    <p:row>
+                        #{user.user.streetAddress}
+                    </p:row>
+                    <p:row>
+                        #{user.user.city}, #{user.user.provinceId.name} #{user.user.postalCode}
+                    </p:row>
+                    <p:row>
+                        #{user.user.country}
+                    </p:row>
+                    <p:row>
+                        #{user.user.homePhone} #{user.user.cellPhone}
+                    </p:row>
+                </p:panelGrid>               
             </div>
             <div id="orderSummary">
-                <p:dataTable id="cartTracks" value="#{cart.tracksFromCart}" var="track">
+                <p:dataTable  rendered="true" var="track" value="#{cart.tracksFromCart}" >
+                    <f:facet name="header">#{msgs.trackLbl}</f:facet>
                     <p:column>
                         <f:facet name="header">#{msgs.titleHeader}</f:facet>
-                        #{track.title}
+                            #{track.title}
                     </p:column>
                     <p:column>
                         <f:facet name="header">#{msgs.artistHeader}</f:facet>
-                        #{track.artistId.name}
+                            #{track.artistId.name}
                     </p:column>
                     <p:column>
                         <f:facet name="header">#{msgs.priceHeader}</f:facet>
-                        #{track.listPrice - track.salePrice}
+                            #{track.listPrice - track.salePrice}
                     </p:column>
                 </p:dataTable>
-                <p:dataTable id="cartAlbums" value="#{cart.albumsFromCart}" var="album">
+                <p:dataTable rendered="true" value="#{cart.albumsFromCart}" var="album">
+                    <f:facet name="header">#{msgs.albumLbl}</f:facet>
                     <p:column>
                         <f:facet name="header">#{msgs.titleHeader}</f:facet>
-                        #{album.title}
+                            #{album.title}
                     </p:column>
                     <p:column>
                         <f:facet name="header">#{msgs.artistHeader}</f:facet>
-                        #{album.artistId.name}
+                            #{album.artistId.name}
                     </p:column>
                     <p:column>
                         <f:facet name="header">#{msgs.priceHeader}</f:facet>
-                        #{album.listPrice - album.salePrice}
-                    </p:column>
-<!--                    <p:row>
-                        #{cart.subTotal}
-                    </p:row>-->
-                    <!-- repeat for gst, hst, pst, total -->
+                            #{album.listPrice - album.salePrice}
+                    </p:column>                      
                 </p:dataTable>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>#{msgs.subtotalHeader}</p:column>
+                        <p:column>#{cart.subTotal}</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>#{msgs.gstLbl}</p:column>
+                        <p:column>#{checkout.gst}</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>#{msgs.pstLbl}</p:column>
+                        <p:column>#{checkout.pst}</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>#{msgs.hstLbl}</p:column>
+                        <p:column>#{checkout.hst}</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>#{msgs.totalHeader}</p:column>
+                        <p:column>#{checkout.total}</p:column>
+                    </p:row>
+                </p:panelGrid>
             </div>
             <div id="creditCardDetails">
                 <h:form>
@@ -65,7 +97,7 @@
                             <!-- TODO: make these images? -->
                         </p:selectOneMenu>
                         <p:message for="cardType" />                        
-                        
+
                         <p:outputLabel for="cardNum" value="#{msgs.cardNumLbl}" />
                         <p:inputText id="cardNum" required="true" value="#{creditCard.cardNum}" 
                                      validator="#{creditCard.validateCardNum}">
@@ -93,7 +125,7 @@
                             </p:selectOneMenu>
                         </h:panelGroup>
                         <p:message for="cardYear" styleClass="errorMessage"/>
-                        
+
                         <p:commandButton type="submit" ajax="false" value="#{msgs.cancelBtn}" action="cart.xhtml" immediate="true"/>
                         <p:commandButton type="submit" value="#{msgs.purchaseBtn}" action="index.xhtml" ajax="false"/>                        
                     </p:panelGrid>

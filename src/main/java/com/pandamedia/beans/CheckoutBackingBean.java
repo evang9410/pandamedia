@@ -1,12 +1,15 @@
 package com.pandamedia.beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
+import persistence.entities.ShopUser;
 
 /**
  *
@@ -14,12 +17,28 @@ import javax.inject.Named;
  */
 @Named("checkout")
 @RequestScoped
-public class CheckoutBackingBean {
+public class CheckoutBackingBean implements Serializable {
+
     @Inject
     private ShoppingCart cart;
-    
-    public List<SelectItem> getMonthSelector()
-    {
+
+    @Inject
+    private ShopUser user;
+
+    private double gst;
+    private double hst;
+    private double pst;
+    private double total;
+
+    @PostConstruct
+    public void init() {
+//        gst = cart.getSubTotal() * user.getProvinceId().getGstRate();
+//        pst = cart.getSubTotal() * user.getProvinceId().getPstRate();
+//        hst = cart.getSubTotal() * user.getProvinceId().getHstRate();
+//        total = cart.getSubTotal() + gst + pst + hst;
+    }
+
+    public List<SelectItem> getMonthSelector() {
         List<SelectItem> list = new ArrayList<>();
         list.add(new SelectItem(1, "01"));
         list.add(new SelectItem(2, "02"));
@@ -35,23 +54,36 @@ public class CheckoutBackingBean {
         list.add(new SelectItem(12, "12"));
         return list;
     }
-    
-    public List<SelectItem> getYearSelector()
-    {
-        List<SelectItem> list = new ArrayList<>();        
+
+    public List<SelectItem> getYearSelector() {
+        List<SelectItem> list = new ArrayList<>();
         int curYear = Calendar.getInstance().get(Calendar.YEAR);
         int maxYears = 10;
-        
-        for (int i = 0; i < maxYears; i++)
-        {
+
+        for (int i = 0; i < maxYears; i++) {
             list.add(new SelectItem(curYear + i));
         }
-        
+
         return list;
     }
-    
-    public void buildInvoice()
-    {
-        
+
+    public double getGst() {
+        return gst;
+    }
+
+    public double getPst() {
+        return pst;
+    }
+
+    public double getHst() {
+        return hst;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void buildInvoice() {
+
     }
 }
