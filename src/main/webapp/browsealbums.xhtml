@@ -38,8 +38,7 @@
         </div>
         <div class="container">
             <div><h2>Browse by Genre</h2></div>
-            <div class="row is-flex">
-                
+            <div class="row is-flex">                
                 <h:form>
                     <ui:repeat value="#{genreBacking.allGenresNames}" var="genres">
                         <h:commandLink action="#{albumBacking.setGenreString(genres)}" styleClass="genre-links"> 
