@@ -2,18 +2,10 @@ package com.pandamedia.beans;
 
 import com.pandamedia.utilities.PasswordHelper;
 import java.io.Serializable;
-import static java.lang.Math.random;
-import java.math.BigInteger;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -28,14 +20,14 @@ import persistence.entities.Province;
 import persistence.entities.ShopUser;
 
 /**
- * This bean provides basic logic for login and registration.
+ * Responsible for user connection interaction (login, logout,registration)
  *
  * @author Hau Gilles Che
  * @version 1.0.01
  */
-@Named
+@Named("userAction")
 @SessionScoped
-public class RegistrationActionBean implements Serializable {
+public class UserActionBean implements Serializable {
 
     @Inject
     private ShopUserJpaController userController;
@@ -57,7 +49,7 @@ public class RegistrationActionBean implements Serializable {
     }
     
     /**
-     * Responsible for creating a new user
+     * Responsible for creating a new user records
      * @param province Id of the province chosen by the user.
      */
     public void register(String province) {
@@ -69,7 +61,7 @@ public class RegistrationActionBean implements Serializable {
         try {
             userController.create(user);
             loggedUser = user;
-            Logger.getLogger(RegistrationActionBean.class.getName()).log(
+            Logger.getLogger(UserActionBean.class.getName()).log(
                     Level.SEVERE, null, "User created");
         } catch (Exception ex) {
             FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
@@ -106,16 +98,20 @@ public class RegistrationActionBean implements Serializable {
         PasswordHelper pwdHelper = new PasswordHelper();
         String salt = pwdHelper.getSalt();
 
-        byte[] hashedPwd = pwdHelper.hash("FuckPriver", salt);
+        byte[] hashedPwd = pwdHelper.hash(userBean.getConfirmPasswd(), salt);
 
         user.setSalt(salt);
         user.setHashedPw(hashedPwd);
 
         user.setPostalCode(userBean.getPostalCode().toString());
+        user.setHomePhone(userBean.getHomePhone().toString());
+        
+        if(userBean.getCellPhone() != null)
+            user.setCellPhone(userBean.getCellPhone().toString());
     }
 
     /**
-     * Validates the email address to make sure it is properly formatted
+     * Validates the email address to make sure it is properly formatted.
      *
      * @param fc
      * @param c

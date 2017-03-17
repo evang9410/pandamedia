@@ -21,9 +21,9 @@
                         <div class="row">
                             <div class="col-xs-2 col-sm-2 col-md-2">
                                 <div class="form-group">
-                                    <!--                        <h:outputLabel for="titleInput" value="Title"/>-->
                                     <h:inputText class="form-control input-sm" id="titleInput" value="#{userBean.shopUser.title}"
-                                                 required="true" a:placeholder="#{msgs.titleHeader}*" />
+                                                 required="true" a:placeholder="#{msgs.titleHeader}*" requiredMessage="#{msgs.requiredFieldMsg}"/>
+                                    <h:message for="titleInput" style="color:red;float:left"/>
                                 </div>
 
                             </div>
@@ -31,17 +31,17 @@
 
                         <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-6">
-                                <!--                            <h:outputLabel for="fnameInput" value="First Name"/>-->
                                 <div class="form-group">
                                     <h:inputText class="form-control input-sm" id="fnameInput" value="#{userBean.shopUser.firstName}"
                                                  required="true" a:placeholder="#{msgs.firstNameHeader}*"/>
+                                    <h:message for="fnameInput" style="color:red"/>
                                 </div>
                             </div>
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group">
-                                    <!--                                <h:outputLabel for="lnameInput" value="Last Name"/>-->
                                     <h:inputText class="form-control input-sm" id="lnameInput" value="#{userBean.shopUser.lastName}"
                                                  required="true" a:placeholder="#{msgs.lastNameHeader}*"/>
+                                    <h:message for="lnameInput" style="color:red"/>
                                 </div>
                             </div>
                         </div>
@@ -52,9 +52,8 @@
                         </div>
 
                         <div class="form-group">
-                            <!--<h:outputLabel for="emailInput" value="Email"/>-->
                             <h:inputText class="form-control input-sm" id="emailInput" value="#{userBean.shopUser.email}"
-                                         required="true" validator="#{registrationActionBean.validateEmail}"
+                                         required="true" validator="#{userAction.validateEmail}"
                                          a:placeholder="#{msgs.emailHeader}*">
                                 <f:ajax event="valueChange" render="emailError"/>
                             </h:inputText>
@@ -62,25 +61,13 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <!--                                <h:outputLabel for="password" value="Password"/>-->
-                                    <h:inputSecret class="form-control input-sm" id="password" value="#{userBean.password}" 
-                                                   required="true" a:placeholder="#{msgs.passwordHeader}*"/>
-                                    <!--<f:ajax event="valueChange" immediate="true"/>-->
-                                    <!--</h:inputSecret>-->
-                                </div>
-                            </div>
+                            
 
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group">
-                                    <!--                                <h:outputLabel for="confirmPwd" value="Confirm Password"/>-->
                                     <h:inputSecret class="form-control input-sm" id="confirmPwd" value="#{userBean.confirmPasswd}"
                                                    required="true" a:placeholder="#{msgs.confirmPasswordHeader}*"/>
-                                    <!--<f:ajax event="keyup" render="passwordError"/>-->
-                                    <!--</h:inputSecret>-->
-                                    <h:message id="passwordError" for="confirmPwd" style="color:red"/>
-                                    <!--</p:panel>--> 
+                                    <h:message for="confirmPwd" style="color:red"/>
                                 </div>
                             </div>
                         </div>
@@ -88,53 +75,54 @@
 
                     <p:panel id="addressInfoPanel" header="#{msgs.addressInfoHeader}" class="panel-title">
                         <div class="form-group">
-                            <!--<h:outputLabel for="streetAddressInput" value="Street Address"/>-->
                             <h:inputText class="form-control input-sm" id="streetAddressInput" value="#{userBean.shopUser.streetAddress}"
-                                        required="true" a:placeholder="#{msgs.streetHeader}*"/>
+                                         required="true" a:placeholder="#{msgs.streetHeader}*" requiredMessage="#{msgs.requiredFieldMsg}"/>
+                            <h:message for="streetAddressInput" style="color:red"/>
                         </div>
 
                         <div class="form-group">
-                            <!--<h:outputLabel for="cityInput" value="City"/>-->
                             <h:inputText class="form-control input-sm" id="cityInput" value="#{userBean.shopUser.city}"
-                                         required="true" a:placeholder="#{msgs.cityHeader}*"/>
+                                         required="true" a:placeholder="#{msgs.cityHeader}*" requiredMessage="#{msgs.requiredFieldMsg}"/>
+                            <h:message for="cityInput" style="color:red"/>
                         </div>
 
                         <div class="row">    
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group">
-                                    <h:selectOneMenu  class="form-control input-sm" id="provinceListbox" binding="#{temp}" required="true">
-                                        <f:selectItems value="#{registrationActionBean.provinces}" var="province" itemLabel="#{province.name}"
+                                    <h:selectOneMenu  class="form-control input-sm" id="provinceListbox" binding="#{temp}" required="true" requiredMessage="#{msgs.requiredFieldMsg}">
+                                        <f:selectItems value="#{userAction.provinces}" var="province" itemLabel="#{province.name}"
                                                         a:placeholder="#{msgs.provinceHeader}*"/>
                                     </h:selectOneMenu>
+                                    <h:message for="provinceListbox" style="color:red"/>
                                 </div>
                             </div>
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group">
-                                    <!--<h:outputLabel for="countryInput" value="Country"/>-->
                                     <h:inputText class="form-control input-sm" id="countryInput" value="#{userBean.shopUser.country}"
-                                                 required="true" a:placeholder="#{msgs.countryHeader}*"/>
+                                                 required="true" a:placeholder="#{msgs.countryHeader}*" requiredMessage="#{msgs.requiredFieldMsg}"/>
+                                    <h:message for="countryInput" style="color:red"/>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <!--<h:outputLabel for="postalCodeInput" value="Postal Code"/>-->
                             <h:inputText class="form-control input-sm" id="postalCodeInput" value="#{userBean.postalCode}"
-                                         required="true" a:placeholder="#{msgs.postalCodeHeader}*"/>
+                                         required="true" a:placeholder="#{msgs.postalCodeHeader}*" requiredMessage="#{msgs.requiredFieldMsg}"/>
                             <h:message for="postalCodeInput" style="color:red"/>
                         </div>
 
                         <div class="form-group">
-                            <!--<h:outputLabel for="homePhoneInput" value="Home Phone"/>-->
-                            <h:inputText class="form-control input-sm" id="homePhoneInput" value="#{userBean.shopUser.homePhone}"
-                                         required="true" a:placeholder="#{msgs.homePhoneHeader}*"/>
+                            <h:inputText class="form-control input-sm" id="homePhoneInput" value="#{userBean.homePhone}"
+                                         required="true" a:placeholder="#{msgs.homePhoneHeader}*" requiredMessage="#{msgs.requiredFieldMsg}"/>
+                            <h:message for="homePhoneInput" style="color:red"/>
                         </div>
                         <div class="form-group">
-                            <h:inputText class="form-control input-sm" id="cellPhoneInput" value="#{userBean.shopUser.cellPhone}"
-                                         a:placeholder="#{msgs.cellPhoneHeader}"/>
+                            <h:inputText class="form-control input-sm" id="cellPhoneInput" value="#{userBean.cellPhone}"
+                                         a:placeholder="#{msgs.cellPhoneHeader}" required="false"/>
+                            <h:message for="cellPhoneInput" style="color:red"/>
                         </div>
                     </p:panel>
-                    <h:commandButton class="btn btn-info btn-block" id="submitBtn" value="#{msgs.registerBtn}" action="#{registrationActionBean.register(temp.value)}"/>
+                    <h:commandButton class="btn btn-info btn-block" id="submitBtn" value="#{msgs.registerBtn}" action="#{userAction.register(temp.value)}"/>
                 </h:form>
             </div>
         </div>

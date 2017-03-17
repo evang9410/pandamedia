@@ -10,7 +10,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 
 /**
- *
+ * Converts Postal Code into properly formatted postal code.
  * @author Hau Gilles Che
  */
 @FacesConverter(forClass = PostalCodeBean.class)
@@ -35,18 +35,23 @@ public class PostalCodeConverter implements Converter, Serializable {
     public Object getAsObject(FacesContext context, UIComponent component,
             String newValue) throws ConverterException {
         StringBuilder builder = new StringBuilder(newValue);
-        boolean foundInvalidCharacter = false;
+        boolean foundInvalidChar = false;
         char invalidChar = '\0';
         int i = 0;
-        while (i < builder.length() && !foundInvalidCharacter) {
+        //signifies no input
+        if(builder.length()<1)
+            return null;
+        while (i < builder.length() && !foundInvalidChar) {
             char ch = builder.charAt(i);
             if (i % 2 == 0) {
-                if (Character.isAlphabetic(ch)) {
-                    char tempChar = Character.toUpperCase(ch);
-                    builder.setCharAt(i, tempChar);
+                if (Character.isLetter(ch)) {
+                    if (Character.isLowerCase(ch)) {
+                        char tempChar = Character.toUpperCase(ch);
+                        builder.setCharAt(i, tempChar);
+                    }
                     i++;
                 } else {
-                    foundInvalidCharacter = true;
+                    foundInvalidChar = true;
                     invalidChar = ch;
                 }
             } else {
@@ -55,13 +60,12 @@ public class PostalCodeConverter implements Converter, Serializable {
                 } else if (Character.isWhitespace(ch)) {
                     builder.deleteCharAt(i);
                 } else {
-                    foundInvalidCharacter = true;
+                    foundInvalidChar = true;
                     invalidChar = ch;
                 }
             }
         }
-
-        if (foundInvalidCharacter) {
+        if (foundInvalidChar) {
             FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
                     "bundles.messages", "badPostalCodeCharacter",
                     new Object[]{invalidChar});
