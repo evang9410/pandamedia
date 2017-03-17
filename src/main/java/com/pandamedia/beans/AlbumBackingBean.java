@@ -95,6 +95,7 @@ public class AlbumBackingBean implements Serializable{
      */
     public String albumPage(Album a){
         this.album = a;
+        System.out.println("" + a.getId() +"\n" + a.getTitle() +"\n" + a.getArtistId().getName());
         return "album";
     }
     /**
