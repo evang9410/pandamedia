@@ -86,8 +86,11 @@ public class ShoppingCart implements Serializable{
      * to display the amount of items currently in the cart.
      * @return 
      */
-    public Integer getCartCount(){
-        return this.cart.size();
+    public String getCartCount(){
+        if(cart.size() > 0)
+            return " ( " + this.cart.size() +" )";
+        else
+            return "";
     }
     
     public boolean getIsCartEmpty(){

@@ -333,7 +333,7 @@ public class ShopUser implements Serializable {
 
     @Override
     public String toString() {
-        return "persistence.entities.ShopUser[ id=" + id + " ]";
+        return "" + id + "";
     }
     
 }
