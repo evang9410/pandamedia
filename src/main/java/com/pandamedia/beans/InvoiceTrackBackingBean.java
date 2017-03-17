@@ -12,6 +12,7 @@ import persistence.controllers.InvoiceTrackJpaController;
 import persistence.entities.InvoiceTrack;
 import persistence.entities.InvoiceTrackPK;
 
+
 /**
  * This class will be used as the invoice track backing bean. It can update,
  * delete and query invoice tracks.
@@ -46,7 +47,7 @@ public class InvoiceTrackBackingBean implements Serializable{
      * when the remove was clicked. Then, the controller edits these values
      * so they do not show on the data table.
      * @param invTrackPK InvoiceTrackPK object
-     * @return null string that should refresh the page
+     * @return null string make it stay on the same page
      */
     public String removeInvoiceTrack(InvoiceTrackPK invTrackPK)
     {
@@ -70,5 +71,6 @@ public class InvoiceTrackBackingBean implements Serializable{
         return null; 
         
     }
+    
     
 }

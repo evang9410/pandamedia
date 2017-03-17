@@ -116,10 +116,12 @@ public class ReviewBackingBean implements Serializable{
     
     /**
      * This method takes the id of a review to search for that review object.
-     * Then,it will remove it completely from the database.
-     * Returning null should refresh the page
+     * Then,it will remove it completely from the database. At the end, the 
+     * review is set to null so that it does not stay in session scoped and the
+     * filtered reviews are regenerated. The return type null should make it 
+     * stay on the same page.
      * @param id of the review object
-     * @return null should refresh the page
+     * @return null make it stay on the same page
      */
     public String removeItem(Integer id) 
     {
@@ -144,10 +146,11 @@ public class ReviewBackingBean implements Serializable{
      * This method takes the id of a review to search for that review object.
      * If the approval status is not 1 then it will change it to 1 which,
      * signifies that it has been approved. 0 means that the review has not
-     * been approved. The controller will edit the object and returning null
-     * should refresh the page.
+     * been approved. At the end, the review is set to null so that it does not  
+     * stay in session scoped and the filtered reviews are regenerated. The  
+     * return type null should make it stay on the same page.
      * @param id of the review object
-     * @return null should refresh the page
+     * @return null make it stay on the same page
      */
     public String approve(Integer id)
     {
@@ -177,10 +180,11 @@ public class ReviewBackingBean implements Serializable{
      * This method takes the id of a review to search for that review object.
      * If the approval status is not 0 then it will change it to 0 which,
      * signifies that it has been disapproved. 1 means that the review has 
-     * been approved. The controller will edit the object and returning null
-     * should refresh the page.
+     * been approved. At the end, the review is set to null so that it does not  
+     * stay in session scoped and the filtered reviews are regenerated. The  
+     * return type null should make it stay on the same page.
      * @param id of the review object
-     * @return null should refresh the page
+     * @return null make it stay on the same page
      */
     public String disapprove(Integer id)
     {
@@ -257,6 +261,11 @@ public class ReviewBackingBean implements Serializable{
         }
     }
     
+    /**
+     * This method will return all the reviews in the database so it can be
+     * displayed on the data table.
+     * @return list of reviews
+     */
     public List<Review> getAll()
     {
         return reviewController.findReviewEntities();

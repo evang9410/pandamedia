@@ -4,26 +4,17 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>#{msgs.reviews}</title>
         <h:outputStylesheet name="css/bootstrap.css"/>
         <h:outputStylesheet library="css" name="style.css"/>
     </h:head>
     <h:body>
-        <b:navBar brand="PandaMedia" brandHref="manager_index.xhtml" styleClass="navbar navbar-default pandaNavbar">
-            <b:navbarLinks pull="right">
-                <b:navLink value="#{msgs.sales}" href="salesPage.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.clients}" href="clients.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.orders}" href="orders.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.reviews}" href="reviews.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.reports}" href="reporting.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.newsFeed}" href="newsFeedManagement.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.survey}" href="surveyManagement.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.banner}" href="bannerAdManagement.xhtml"></b:navLink>
-            </b:navbarLinks>
-        </b:navBar> 
-        
+        <div>
+            <ui:include src="./WEB-INF/sections/manager_menu.xhtml"/>
+        </div>
         <f:view>
             <h:form id="reviewFormID">
                 <h1><h:outputText value="#{msgs.reviews}"/></h1>
@@ -54,7 +45,7 @@
                     <p:column filterBy="#{item.trackId.title}" headerText="#{msgs.title}" filterMatchMode="contains">
                         <h:outputText value="#{item.trackId.title}"/>
                     </p:column>
-                    <p:column filterBy="#{item.userId.firstName}" headerText="#{msgs.firstNameHeader}" filterMatchMode="contains">
+                    <p:column filterBy="#{item.userId.firstName}" headerText="#{msgs.name}" filterMatchMode="contains">
                         <h:outputText value="#{item.userId.firstName}"/>
                         <br/>
                         <h:outputText value="#{item.userId.lastName}"/>
@@ -69,10 +60,7 @@
                     </p:column>
                 </p:dataTable>
             </h:form>
-
-        </f:view>
-
-        
+        </f:view>       
     </h:body>
 </html>
 

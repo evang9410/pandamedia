@@ -8,8 +8,7 @@
     <h:head>
         <title>#{msgs.removeIndivTracks}</title>
     </h:head>
-    <h:body>
-        
+    <h:body>        
         <h:form id="indivFormID">
             <h1><h:outputText value="#{msgs.removeIndivTracks}"/></h1>
                 <p:dataTable value="#{invoiceBacking.loadTable()}" id="indivTableID" var="item" paginator="true" rows="5">

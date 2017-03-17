@@ -61,8 +61,9 @@ public class RSSFeedBackingBean implements Serializable{
     /**
      * This method will save the news feed to the database and select
      * it so that the rss feed manager can change the news feed that is 
-     * being displayed on the main page.
-     * @return null should refresh the page
+     * being displayed on the main page. Then, it sets the news feed to null
+     * so that it does not stay in the session scoped.
+     * @return null should make it stay on the same page
      */
     public String save()
     {
@@ -81,7 +82,13 @@ public class RSSFeedBackingBean implements Serializable{
         return null;
     }
     
-    
+    /**
+     * This method will destroy the news feed in the database and it sets the 
+     * news feed object to null so that it does not stay in session scoped.
+     *
+     * @param id of the news feed object
+     * @return null should make it stay on the same page
+     */
     public String remove(Integer id)
     {
         try
@@ -97,6 +104,14 @@ public class RSSFeedBackingBean implements Serializable{
         return null;
     }
     
+    /**
+     * This method will find the news feed from its id and use the feedManager
+     * to change the news feed being displayed on the main page. Lastly, it
+     * sets the news feed object to null so that it does not stay in session 
+     * scooped.
+     * @param id of the news feed object
+     * @return null should make it stay on the same page
+     */
     public String select(Integer id)
     {
         newsFeed = newsFeedController.findNewsfeed(id);

@@ -77,7 +77,7 @@ public class SurveyBean implements Serializable {
      * This method will save the survey to the database and select
      * it so that the manager can change the survey that is being displayed on 
      * the main page.
-     * @return null should refresh the page
+     * @return null should make it stay on the same page
      */
     public String save()
     {
@@ -89,10 +89,16 @@ public class SurveyBean implements Serializable {
         {
             System.out.println(e.getMessage());
         }
-        this.survey = null;
         return null;
     }
     
+        
+    /**
+     * This method will destroy the survey in the database and it sets the survey
+     * object to null so that it does not stay in session scoped.
+     * @param id of the survey object
+     * @return null should make it stay on the same page
+     */
     public String remove(Integer id)
     {
         try
@@ -108,10 +114,15 @@ public class SurveyBean implements Serializable {
         return null;
     }
     
+    /**
+     * This method will find the survey from its id and set it in order to change 
+     * the survey being displayed on the main page.
+     * @param id of the survey object
+     * @return null should make it stay on the same page
+     */
     public String select(Integer id)
     {
         survey = surveys.findSurvey(id);
-        this.survey = null;
         return null;
     }
     

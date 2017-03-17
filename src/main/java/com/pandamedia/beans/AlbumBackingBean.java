@@ -208,9 +208,11 @@ public class AlbumBackingBean implements Serializable{
      * the removal status to 0 which means that it is available for purchase.
      * 1 means that it is not available for purchase. It will set the removal 
      * date to null since it has not been removed. The return type null
-     * should refresh the page.
+     * should refresh the page. At the end, the album is set to null so that it  
+     * does not stay in session scoped and the filtered albums are regenerated. 
+     * The return type null should make it stay on the same page.
      * @param id of the album that will be added
-     * @return null refresh the page
+     * @return null make it stay on the same page
      */
     public String addItem(Integer id)
     {
@@ -239,10 +241,12 @@ public class AlbumBackingBean implements Serializable{
      * This method will remove an album that has been added. It will change
      * the removal status to 1 which means that it is not available for purchase.
      * 0 means that it is available for purchase. It will set the removal 
-     * date to the date when you clicked on the remove. 
-     * The return type null should refresh the page.
+     * date to the date when you clicked on the remove. At the end, the album is   
+     * set to null so that it does not stay in session scoped and the filtered  
+     * albums are regenerated. The return type null should make it stay on the
+     * same page.
      * @param id of the album that will be removed
-     * @return null refresh the page
+     * @return null make it stay on the same page
      */
     public String removeItem(Integer id)
     {       
@@ -281,7 +285,9 @@ public class AlbumBackingBean implements Serializable{
     }
     
     /**
-     * This method will be called to edit an album.  
+     * This method will be called to edit an album. At the end, the album is   
+     * set to null so that it does not stay in session scoped and the filtered  
+     * albums are regenerated.
      * @return string that is the inventory page
      */
     public String edit()
@@ -349,7 +355,10 @@ public class AlbumBackingBean implements Serializable{
      * This method will edit the sales of an album, if the sale price is less
      * than the list price. Otherwise, it will just refresh the page until the
      * manager puts a value where the sale price is less than the list price.
+     * At the end, the album is set to null so that it does not stay in session  
+     * scoped and the filtered albums are regenerated.
      * @return string that is the salesPage.xhtml
+     * 
      */
     public String editSales()
     {
@@ -377,7 +386,9 @@ public class AlbumBackingBean implements Serializable{
     }
     
     /**
-     * This method will be called to create an album.  
+     * This method will be called to create an album. At the end, the album is   
+     * set to null so that it does not stay in session scoped and the filtered 
+     * albums are regenerated.   
      * @return string that is the inventory page
      */
     public String create() 
@@ -396,6 +407,12 @@ public class AlbumBackingBean implements Serializable{
         return "welcome_manager";
     }
     
+    /**
+     * This method is used to return back to the manager home page. Also, the 
+     * album is set to null so that it does not stay in session scoped and the
+     * filtered albums are regenerated. 
+     * @return manager home page
+     */
     public String back()
     {
         this.album = null;
@@ -403,6 +420,12 @@ public class AlbumBackingBean implements Serializable{
         return "welcome_manager";
     }
     
+    /**
+     * This method is used to return back to the manager sales page. Also, the  
+     * album is set to null so that it does not stay in session scoped and the
+     * filtered albums are regenerated. 
+     * @return manager sales page
+     */
     public String backSales()
     {
         this.album = null;
@@ -410,6 +433,14 @@ public class AlbumBackingBean implements Serializable{
         return "welcome_sales";
     }
     
+    /**
+     * This method is used to get the total sales of an album to this date. The
+     * number formatter is used to make the sales only two digits after the 
+     * decimal point and if there are no sales made by the album then 0 is
+     * returned.
+     * @param id of the album whose sales will be displayed
+     * @return string that is the sales of the album
+     */
     public String getAlbumSales(Integer id) 
     {
 

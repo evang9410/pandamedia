@@ -133,7 +133,9 @@ public class ShopUserManagerBean implements Serializable{
     }
     
     /**
-     * This method will be called to edit an user.  
+     * This method will be called to edit an user. At the end, the user is set
+     * to null so that it does not stay in session scoped and the filtered 
+     * users are regenerated.  
      * @return string that is the main page for clients
      */
     public String edit() 
@@ -152,6 +154,12 @@ public class ShopUserManagerBean implements Serializable{
         return "welcome_clients";
     }
     
+    /**
+     * This method is used to return back to the clients home page. Also, the 
+     * user is set to null so that it does not stay in session scoped and the
+     * filtered users are regenerated. 
+     * @return clients home page
+     */
     public String back()
     {
         this.user = null;
@@ -159,6 +167,14 @@ public class ShopUserManagerBean implements Serializable{
         return "welcome_clients";
     }
     
+    /**
+     * This method is used to get the total purchases of a client. The
+     * number formatter is used to make the purchases only two digits after the 
+     * decimal point and if there are no purchases made by the client then 0 is
+     * returned.
+     * @param id of the client whose purchases will be displayed
+     * @return string that is the purchases of the client
+     */
     public String getClientTotalPurchase(Integer id) 
     {
         // Query

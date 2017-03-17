@@ -24,6 +24,7 @@ import persistence.entities.InvoiceTrack;
 import persistence.entities.InvoiceTrackPK;
 import persistence.entities.InvoiceTrack_;
 import persistence.entities.Invoice_;
+import persistence.entities.ShopUser_;
 import persistence.entities.Track;
 import persistence.entities.Track_;
 
@@ -114,10 +115,12 @@ public class InvoiceBackingBean implements Serializable{
      * This method will add an invoice that has been removed. It will change
      * the removal status to 0 which means that it will be added to reports.
      * 1 means that it will not be added to reports. It will set the removal 
-     * date to null since it has not been removed. The return type null
-     * should refresh the page.
+     * date to null since it has not been removed. At the end, the invoice is 
+     * set to null so that it does not stay in session scoped and the filtered 
+     * invoices are regenerated. The return type null should make it stay on the 
+     * same page.
      * @param id of the invoice that will be added
-     * @return null refresh the page 
+     * @return null make it stay on the same page
      */
     public String addItem(Integer id) 
     {        
@@ -147,9 +150,11 @@ public class InvoiceBackingBean implements Serializable{
      * the removal status to 1 which means that it will not be added to reports.
      * 0 means that it will be added to reports. It will set the removal 
      * date to the date when you clicked on the remove, meaning today's date. 
-     * The return type null should refresh the page.
+     * At the end, the invoice is set to null so that it does not stay in  
+     * session scoped and the filtered invoices are regenerated. The return type
+     * null should make it stay on the same page.
      * @param id of the invoice that will be removed
-     * @return null refresh the page
+     * @return null make it stay on the same page
      */
     public String removeItem(Integer id) 
     {        
@@ -198,12 +203,26 @@ public class InvoiceBackingBean implements Serializable{
         return "editOrders.xhtml";
     }
     
+    /**
+     * This method will set the invoice so that when the removeIndivTracks.xhtml 
+     * loads. The fields of the page will have values already. All the manager
+     * has to do is decide which ones he wants to delete and return type loads 
+     * the data table of all the tracks that belong to an invoice.
+     * @param id of an invoice whose invoice tracks will be displayed
+     * @return string that is the remove page for tracks linked to an invoice
+     */
     public String loadIndivTracks(Integer id)
     {
         this.invoice = invoiceController.findInvoice(id);
         return "removeIndivTracks.xhtml";
     }
     
+    /**
+     * This query is used to load a data table of tracks that are linked to an
+     * invoice. From this data table, the manager can decide which individual
+     * tracks he wants to remove from an order. 
+     * @return list of tracks linked to an invoice
+     */
     public List<Track> loadTable()
     {
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -226,9 +245,32 @@ public class InvoiceBackingBean implements Serializable{
         return typedQuery.getResultList();
         
     }
+    public List<Track> loadDownloadsTable()
+    {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Track> query = cb.createQuery(Track.class);
+        Root<Track> trackRoot = query.from(Track.class);
+        Join trackJoin = trackRoot.join(Track_.invoiceTrackList);
+        Join invoiceTrackJoin = trackJoin.join(InvoiceTrack_.invoice);
+        Join invoiceJoin = invoiceTrackJoin.join(Invoice_.userId);
+        Join clientJoin = invoiceJoin.join(ShopUser_.invoiceList);
+        
+        query.select(trackRoot);
+        
+        // Where clause
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(clientJoin.get(ShopUser_.id),1 )); // hard coded will have to change this
+        query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+        
+        TypedQuery<Track> typedQuery = em.createQuery(query);
+        
+        return typedQuery.getResultList();      
+    }
 
     /**
-     * This method will be called to edit an invoice.  
+     * This method will be called to edit an invoice. At the end, the invoice is 
+     * set to null so that it does not stay in session scoped and the filtered 
+     * invoices are regenerated.  
      * @return string that is the main page for invoices
      */
     public String edit() 
@@ -246,7 +288,12 @@ public class InvoiceBackingBean implements Serializable{
         return "welcome_orders";
     }
     
-    
+    /**
+     * This method is used to return back to the orders home page. Also, the 
+     * invoice is set to null so that it does not stay in session scoped and the
+     * filtered invoices are regenerated. 
+     * @return orders home page
+     */
     public String back()
     {
         this.invoice = null;

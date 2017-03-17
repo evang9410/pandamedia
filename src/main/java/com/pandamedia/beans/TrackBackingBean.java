@@ -148,7 +148,7 @@ public class TrackBackingBean implements Serializable{
      * tracks are regenerated. The return type null should make it stay on the 
      * same page.
      * @param id of the track that will be added
-     * @return null 
+     * @return null make it stay on the same page
      */
     public String addItem(Integer id) 
     {
@@ -182,7 +182,7 @@ public class TrackBackingBean implements Serializable{
      * tracks are regenerated. The return type null should make it stay on the 
      * same page.
      * @param id of the track that will be removed
-     * @return null 
+     * @return null make it stay on the same page
      */
     public String removeItem(Integer id) 
     {

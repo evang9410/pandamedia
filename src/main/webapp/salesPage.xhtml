@@ -4,25 +4,17 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:b="http://bootsfaces.net/ui">
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>#{msgs.sales}</title>
         <h:outputStylesheet name="css/bootstrap.css"/>
         <h:outputStylesheet library="css" name="style.css"/>
     </h:head>
-    <h:body styleClass="bodyClass">
-        <b:navBar brand="PandaMedia" brandHref="manager_index.xhtml" styleClass="navbar navbar-default pandaNavbar">
-            <b:navbarLinks pull="right">
-                <b:navLink value="#{msgs.sales}" href="salesPage.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.clients}" href="clients.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.orders}" href="orders.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.reviews}" href="reviews.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.reports}" href="reporting.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.newsFeed}" href="newsFeedManagement.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.survey}" href="surveyManagement.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.banner}" href="bannerAdManagement.xhtml"></b:navLink>
-            </b:navbarLinks>
-        </b:navBar> 
+    <h:body styleClass="bodyClass">       
+        <div>
+            <ui:include src="./WEB-INF/sections/manager_menu.xhtml"/>
+        </div>
         <f:view>
             <h:form id="albumFormID">
                 <h1><h:outputText value="#{msgs.albums}"/></h1>
@@ -90,8 +82,6 @@
                 </p:dataTable>
             </h:form>
         </f:view>
-
-
         <f:view>
             <h:form id="trackFormID">
                 <h1><h:outputText value="#{msgs.tracks}"/></h1>
@@ -167,7 +157,6 @@
                     </p:column>
                 </p:dataTable>
             </h:form>
-
         </f:view>
 
     </h:body>

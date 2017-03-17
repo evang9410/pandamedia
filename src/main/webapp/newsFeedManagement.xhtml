@@ -4,27 +4,18 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>#{msgs.newsFeed}</title>
         <h:outputStylesheet name="css/bootstrap.css"/>
         <h:outputStylesheet library="css" name="style.css"  />
     </h:head>
     <h:body styleClass="bodyClass">
-        <b:navBar brand="PandaMedia" brandHref="manager_index.xhtml" styleClass="navbar navbar-default pandaNavbar">
-            <b:navbarLinks pull="right">
-                <b:navLink value="#{msgs.sales}" href="salesPage.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.clients}" href="clients.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.orders}" href="orders.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.reviews}" href="reviews.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.reports}" href="reporting.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.newsFeed}" href="newsFeedManagement.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.survey}" href="surveyManagement.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.banner}" href="bannerAdManagement.xhtml"></b:navLink>
-            </b:navbarLinks>
-        </b:navBar> 
-        <f:view>
-            
+        <div>
+            <ui:include src="./WEB-INF/sections/manager_menu.xhtml"/>
+        </div>
+        <f:view>            
             <h:form>
                 <h1><h:outputText value="#{msgs.add}"/></h1>
                 <p:panelGrid columns="2">
@@ -56,12 +47,10 @@
                         </f:facet>
                         <p:commandButton value="#{msgs.del}" action="#{rssFeedBacking.remove(item.id)}" update=":rssFormID:rssTableID"/>
                         <p:commandButton value="#{msgs.select}" action="#{rssFeedBacking.select(item.id)}" update=":rssFormID:rssTableID"/>
-                    </p:column>
-                    
+                    </p:column>                   
                 </p:dataTable>
             </h:form>
         </f:view>
-
     </h:body>
 </html>
 

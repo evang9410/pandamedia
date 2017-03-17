@@ -11,20 +11,11 @@
         <h:outputStylesheet name="css/bootstrap.css"/>
         <h:outputStylesheet library="css" name="style.css"/>
     </h:head>
-    <h:body styleClass="bodyClass">
-        <b:navBar brand="PandaMedia" brandHref="manager_index.xhtml" styleClass="navbar navbar-default pandaNavbar">
-            <b:navbarLinks pull="right">
-                <b:navLink value="#{msgs.sales}" href="salesPage.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.clients}" href="clients.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.orders}" href="orders.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.reviews}" href="reviews.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.reports}" href="reporting.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.newsFeed}" href="newsFeedManagement.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.survey}" href="surveyManagement.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.banner}" href="bannerAdManagement.xhtml"></b:navLink>
-            </b:navbarLinks>
-        </b:navBar>  
-
+    <h:body styleClass="bodyClass">  
+        <div>
+            <ui:include src="./WEB-INF/sections/manager_menu.xhtml"/>
+        </div>
+        <f:view>
             <h:outputLink value="AlbumFunctionality/addAlbum.xhtml">#{msgs.addAlbum}</h:outputLink>
             <br/>
             <h:outputLink value="TrackFunctionality/addTrack.xhtml">#{msgs.addTrack}</h:outputLink>
@@ -86,6 +77,9 @@
                         <h:outputText value="#{item.coverArtId.imagePath}"/>
                     </p:column>
                     <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.sales}"/>
+                        </f:facet>
                         <h:outputText value="#{albumBacking.getAlbumSales(item.id)}"/>
                     </p:column>
                     <p:column>
@@ -98,8 +92,8 @@
                     </p:column>
                 </p:dataTable>
             </h:form>
-
-
+        </f:view>
+        <f:view>           
             <h:form id="trackFormID">
                 <h1><h:outputText value="#{msgs.tracks}"/></h1>
                 <p:dataTable value="#{trackBacking.all}" id="trackTableID" widgetVar="trackTable" filteredValue="#{trackBacking.filteredTracks}" var="item" paginator="true" rows="5">
@@ -167,6 +161,9 @@
                         <h:outputText value="#{item.coverArtId.imagePath}"/>
                     </p:column>
                     <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.sales}"/>
+                        </f:facet>
                         <h:outputText value="#{trackBacking.getTrackSales(item.id)}"/>
                     </p:column>
                     <p:column>
@@ -179,7 +176,7 @@
                     </p:column>
                 </p:dataTable>
             </h:form>
-
+        </f:view>
     </h:body>
 
 </html>

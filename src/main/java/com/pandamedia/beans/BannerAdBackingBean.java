@@ -61,7 +61,7 @@ public class BannerAdBackingBean implements Serializable {
     /**
      * This method will save the ad to the database and select it so that the 
      * manager can change the ad that is being displayed on the main page.
-     * @return null should refresh the page
+     * @return null should make it stay on the same page
      */
     public String save()
     {
@@ -74,11 +74,15 @@ public class BannerAdBackingBean implements Serializable {
             System.out.println(e.getMessage());
         }
         
-        this.advertisement = null;
         return null;
     }
     
-    
+    /**
+     * This method will destroy the ad in the database and it sets the ad
+     * object to null so that it does not stay in session scoped.
+     * @param id of the ad object
+     * @return null should make it stay on the same page
+     */
     public String remove(Integer id)
     {
         try
@@ -94,10 +98,15 @@ public class BannerAdBackingBean implements Serializable {
         return null;
     }
     
+    /**
+     * This method will find the ad from its id and set it in order to change 
+     * the ad being displayed on the main page.
+     * @param id of the ad object
+     * @return null should make it stay on the same page
+     */
     public String select(Integer id)
     {
         advertisement = advertisementController.findAdvertisement(id);
-        this.advertisement = null;
         return null;
     }
     
