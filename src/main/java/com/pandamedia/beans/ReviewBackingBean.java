@@ -108,7 +108,7 @@ public class ReviewBackingBean implements Serializable{
         r.setRating(this.review.getRating());
         r.setTrackId(track);
         r.setUserId(su);
-        
+        System.out.println("Track id: " + track.getId());
         System.out.println("id: " + r.getId() + "\n" +
         "approval status: " + r.getApprovalStatus() + "\n" +
         "curr date: " + r.getDateEntered() + "\n" +

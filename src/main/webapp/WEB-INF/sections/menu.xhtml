@@ -1,26 +1,61 @@
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE html>
-<ui:composition
+<ui:composition    
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:b="http://bootsfaces.net/ui"
-    xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:form>
-        <b:navBar brand="PandaMedia" brandHref="#" styleClass="navbar navbar-default" style="width:100%;">
-            <b:navbarLinks pull="right">
-                <h:inputText styleClass="searchBar"></h:inputText>
-<!--                <b:navCommandLink class="searchButton" id="searchButton" action="">GO</b:navCommandLink>-->
-                <b:navLink value="#{msgs.help}" href="mainpage.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.signIn}" href="#"></b:navLink>
-                <b:dropMenu value="#{msgs.selectLanguage}" styleClass="dropdown">
-                    <b:navCommandLink value="#{msgs.englishLanguage}" action="#{ChangeLanguage.englishAction}"></b:navCommandLink>
-                    <b:navCommandLink value="#{msgs.frenchLanguage}" action="#{ChangeLanguage.frenchAction}"></b:navCommandLink>
-                </b:dropMenu>
-            </b:navbarLinks>
-        </b:navBar>
-    </h:form>
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+      
+    <head>
+        <h:outputStylesheet library="css" name="menu.css"/>
+    </head>
+    <nav class="navbar navbar-default custom-nav nd">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="brand-logo">
+                    <a class="navbar-brand nb" href="mainpage.xhtml"><img alt="navbar-brand" src="./resources/images/favicon.png"/>Pandamedia</a>
+                </div>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <h:form>
+                    <ul class="nav navbar-nav nn">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">#{searchDropdown.toDisplay}<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><h:commandLink action="#{searchDropdown.setType('albums')}">#{msgs.albums}</h:commandLink></li>
+                                <li><h:commandLink action="#{searchDropdown.setType('artists')}">#{msgs.artists}</h:commandLink></li>
+                                <li><h:commandLink action="#{searchDropdown.setType('tracks')}">#{msgs.tracks}</h:commandLink></li>
+                                <li><h:commandLink action="#{searchDropdown.setType('date')}">#{msgs.date}</h:commandLink></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="navbar-form navbar-left">
+                        <div class="form-group fg">
+                            <h:inputText class="form-control fc" a:placeholder="#{msgs.searchPlaceholder}" value="#{Search.parameters}"></h:inputText>
+                        </div>
+                        <h:commandLink class="btn btn-search sb" action="#{Search.executeSearch()}"><i class="fa fa-search" style="font-size: 18px" aria-hidden="true"/></h:commandLink>
+                    </div>
+                    <ul class="nav navbar-nav nn navbar-right">
+                        <li><a id="cart-link" href="#"><i class="fa fa-shopping-cart sc" aria-hidden="true"></i></a></li>
+                        <li><a href="#">#{msgs.signIn}</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">#{msgs.selectLanguage}<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><h:commandLink action="#{ChangeLanguage.frenchAction()}">#{msgs.frenchLanguage}</h:commandLink></li>
+                                <li><h:commandLink action="#{ChangeLanguage.englishAction()}">#{msgs.englishLanguage}</h:commandLink></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </h:form>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
 </ui:composition>
