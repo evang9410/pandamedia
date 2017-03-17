@@ -73,10 +73,10 @@ public class ShoppingCart implements Serializable{
         double subtotal = 0;
         for(Object o : cart){
             if(o instanceof Album){
-                subtotal += ((Album) o).getListPrice();
+                subtotal += ((Album) o).getListPrice() - ((Album) o).getSalePrice();
             }
             if(o instanceof Track){
-                subtotal += ((Track)o).getListPrice();
+                subtotal += ((Track)o).getListPrice() - ((Track)o).getSalePrice();
             }
         }
         return subtotal;

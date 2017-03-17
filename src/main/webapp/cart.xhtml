@@ -59,7 +59,7 @@ and open the template in the editor.
                                         <h:inputText id="quantity-input" styleClass="form-control" value=""/>
                                         <!--<input type="email" class="form-control" id="exampleInputEmail1" value="3">-->
                                     </td>
-                                    <td class="col-sm-1 col-md-1 text-center"><strong>$#{albums.listPrice}</strong></td>
+                                    <td class="col-sm-1 col-md-1 text-center"><strong>$#{albums.listPrice - albums.salePrice}</strong></td>
                                     <td class="col-sm-1 col-md-1 text-center"><strong id="quantity-sum"></strong></td>
                                     <td class="col-sm-1 col-md-1 text-right">
                                         <h:form>
@@ -106,7 +106,7 @@ and open the template in the editor.
                                         <h:inputText id="quantity-input" styleClass="form-control" value=""/>
                                         <!--<input type="email" class="form-control" id="exampleInputEmail1" value="3">-->
                                     </td>
-                                    <td class="col-sm-1 col-md-1 text-center"><strong>$#{individual_tracks.listPrice}</strong></td>
+                                    <td class="col-sm-1 col-md-1 text-center"><strong>$#{individual_tracks.listPrice - individual_tracks.salePrice}</strong></td>
                                     <td class="col-sm-1 col-md-1 text-center"><strong id="quantity-sum"></strong></td>
                                     <td class="col-sm-1 col-md-1 text-right">
                                         <h:form>

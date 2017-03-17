@@ -86,4 +86,9 @@ public class CheckoutBackingBean implements Serializable {
     public void buildInvoice() {
 
     }
+    
+//    public double getFinalPrince(double listPrice, double salePrice)
+//    {
+//        return listPrice - salePrice;
+//    }
 }
