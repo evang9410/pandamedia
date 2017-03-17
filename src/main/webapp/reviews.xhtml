@@ -39,7 +39,7 @@
                     <p:column filterBy="#{item.reviewContent}" headerText="#{msgs.reviewContent}" filterMatchMode="contains">
                         <h:outputText value="#{item.reviewContent}"/>
                     </p:column>
-                    <p:column filterBy="#{item.approvalStatus}" headerText="#{msgs.approvalStatus}" filterMatchMode="contains">
+                    <p:column id="approvalStatusID" filterBy="#{item.approvalStatus}" headerText="#{msgs.approvalStatus}" filterMatchMode="contains">
                         <h:outputText value="#{item.approvalStatus}"/>
                     </p:column>
                     <p:column filterBy="#{item.trackId.title}" headerText="#{msgs.title}" filterMatchMode="contains">
