@@ -27,8 +27,8 @@
     </session-config>
     
     <welcome-file-list>
-        <welcome-file>finalization.xhtml</welcome-file>
-        <!--<welcome-file>mainpage.xhtml</welcome-file>-->
+        <!--<welcome-file>secure/finalization.xhtml</welcome-file>-->
+        <welcome-file>mainpage.xhtml</welcome-file>
     </welcome-file-list>
     
     <!-- web fonts -->

@@ -95,7 +95,7 @@ public class CreditCard {
         if (!isValidDate(month, year))
         {
             // Date in past
-            FacesMessage message = com.pandamedia.util.Messages.getMessage(
+            FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
                     "bundles.messages", "cardPastDateError", null);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
@@ -121,7 +121,7 @@ public class CreditCard {
         if (!number.matches(regex))
         {
             // Invalid character
-            FacesMessage message = com.pandamedia.util.Messages.getMessage(
+            FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
                     "bundles.messages", "cardNumIllegalChar", null);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
@@ -131,7 +131,7 @@ public class CreditCard {
         if ((number.length() != 13) && (number.length() != 16) && (number.length() != 19))
         {
             // Incorrect number of digits
-            FacesMessage message = com.pandamedia.util.Messages.getMessage(
+            FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
                     "bundles.messages", "cardNumWrongNumDigits", null);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
@@ -140,7 +140,7 @@ public class CreditCard {
         if (!luhnCheck(number))
         {
             // Luhn check failed
-            FacesMessage message = com.pandamedia.util.Messages.getMessage(
+            FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
                     "bundles.messages", "cardNumBadInput", null);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);

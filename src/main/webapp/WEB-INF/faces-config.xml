@@ -27,4 +27,8 @@
         <from-outcome>main</from-outcome>
         <to-view-id>../mainpage.xhtml</to-view-id>
     </navigation-case>
+    <navigation-case>
+        <from-outcome>finalization</from-outcome>
+        <to-view-id>secure/finalization.xhtml</to-view-id>
+    </navigation-case>
 </faces-config>
