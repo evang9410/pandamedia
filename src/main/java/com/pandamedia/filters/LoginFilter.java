@@ -18,7 +18,7 @@ import persistence.entities.ShopUser;
  *
  * @author Erika Bourque
  */
-@WebFilter(filterName = "LoginFilter", urlPatterns = {"/clientsecure/*"})
+//@WebFilter(filterName = "LoginFilter", urlPatterns = {"/clientsecure/*"})
 public class LoginFilter implements Filter{
     private static final Logger LOG = Logger.getLogger("LoginFilter.class");
     private ServletContext context;
