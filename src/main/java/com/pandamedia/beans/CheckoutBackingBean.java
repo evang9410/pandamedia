@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -94,7 +95,7 @@ public class CheckoutBackingBean implements Serializable {
         return total;
     }
 
-    public void buildInvoice() throws Exception {
+    public String buildInvoice() throws Exception {
         // TODO: verify that this actually works
         Invoice invoice = new Invoice();
         
@@ -112,7 +113,11 @@ public class CheckoutBackingBean implements Serializable {
         // Create invoice
         invoiceController.create(invoice);
         
+        // TODO: clear shopping cart here
+        
         // Redirect or forward to invoice summary page
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("invoice", invoice);
+        return "invoicesummary";
     }
     
 //    public double getFinalPrince(double listPrice, double salePrice)

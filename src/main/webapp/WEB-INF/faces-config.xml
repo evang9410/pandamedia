@@ -37,5 +37,13 @@
             <!-- Needs to be a redirect to pass through filter -->
             <redirect />
         </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <navigation-case>
+            <from-outcome>invoicesummary</from-outcome>
+            <to-view-id>/clientsecure/invoicesummary.xhtml</to-view-id>
+            <!-- Needs to be a redirect to pass through filter -->
+            <redirect />
+        </navigation-case>
     </navigation-rule>   
 </faces-config>

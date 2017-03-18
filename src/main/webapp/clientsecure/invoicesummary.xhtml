@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui">
+    <head>
+        <title>#{msgs.invoiceSummaryTitle}</title>
+        <meta name="author" content="Erika Bourque"/>
+    </head>
+    <body>
+        <div id="content">
+            <div id="invoiceDetails">
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>#{msgs.invoiceNumHeader}</p:column>
+                        <p:column>#{invoiceSum.invoice.id}</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>#{msgs.saleDateHeader}</p:column>
+                        <p:column>#{invoiceSum.invoice.saleDate}</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>#{msgs.subtotalHeader}</p:column>
+                        <p:column>#{invoiceSum.invoice.totalGrossValue}</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>#{msgs.gstLbl}</p:column>
+                        <p:column>#{invoiceSum.invoice.gstTax}</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>#{msgs.pstLbl}</p:column>
+                        <p:column>#{invoiceSum.invoice.pstTax}</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>#{msgs.hstLbl}</p:column>
+                        <p:column>#{invoiceSum.invoice.hstTax}</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>#{msgs.totalHeader}</p:column>
+                        <p:column>#{invoiceSum.invoice.totalNetValue}</p:column>
+                    </p:row>
+                </p:panelGrid>
+            </div>
+            <div id="billingInfo">
+                <p:panelGrid>
+                    <p:row>
+                        #{invoiceSum.invoice.userId.title} #{invoiceSum.invoice.userId.firstName} #{invoiceSum.invoice.userId.lastName}
+                    </p:row>
+                    <p:row>
+                        #{invoiceSum.invoice.userId.streetAddress}
+                    </p:row>
+                    <p:row>
+                        #{invoiceSum.invoice.userId.city}, #{invoiceSum.invoice.userId.provinceId.name} #{invoiceSum.invoice.userId.postalCode}
+                    </p:row>
+                    <p:row>
+                        #{invoiceSum.invoice.userId.country}
+                    </p:row>
+                    <p:row>
+                        #{invoiceSum.invoice.userId.homePhone} #{invoiceSum.invoice.userId.cellPhone}
+                    </p:row>
+                </p:panelGrid>               
+            </div>
+            <div id="invoicePurchases">
+                <p:dataTable  rendered="true" var="invoicetrack" value="#{invoiceSum.invoice.invoiceTrackList}" >
+                    <f:facet name="header">#{msgs.trackLbl}</f:facet>
+                    <p:column>
+                        <f:facet name="header">#{msgs.titleHeader}</f:facet>
+                            #{invoicetrack.track.title}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">#{msgs.artistHeader}</f:facet>
+                            #{invoicetrack.track.artistId.name}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">#{msgs.priceHeader}</f:facet>
+                            #{invoicetrack.finalPrice}
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable rendered="true" value="#{invoiceSum.invoice.invoiceAlbumList}" var="invoicealbum">
+                    <f:facet name="header">#{msgs.albumLbl}</f:facet>
+                    <p:column>
+                        <f:facet name="header">#{msgs.titleHeader}</f:facet>
+                            #{invoicealbum.album.title}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">#{msgs.artistHeader}</f:facet>
+                            #{invoicealbum.album.artistId.name}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">#{msgs.priceHeader}</f:facet>
+                            #{invoicealbum.finalPrice}
+                    </p:column>                      
+                </p:dataTable>
+            </div>
+        </div>
+    </body>
+</html>
