@@ -1,4 +1,4 @@
-package filters;
+package com.pandamedia.filters;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -18,7 +18,7 @@ import persistence.entities.ShopUser;
  *
  * @author Erika Bourque
  */
-@WebFilter(filterName = "LoginFilter", urlPatterns = {"/secure/*", "/faces/secure/*"})
+@WebFilter(filterName = "LoginFilter", urlPatterns = {"/clientsecure/*"})
 public class LoginFilter implements Filter{
     private static final Logger LOG = Logger.getLogger("LoginFilter.class");
     private ServletContext context;

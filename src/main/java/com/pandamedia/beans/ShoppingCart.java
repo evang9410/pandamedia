@@ -136,4 +136,9 @@ public class ShoppingCart implements Serializable{
         
     }
     
+    public void addAlbum(Album album)
+    {
+        cart.add(album);
+    }
+    
 }

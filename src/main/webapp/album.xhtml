@@ -30,7 +30,7 @@
                             </h3>
                             <h:form>
                                 <b:commandButton ajax="false" icon-awesome="cart-plus" iconAlign="right" value="#{albumBacking.album.listPrice}"
-                                                 look="success" action="#{cart.cart.add(albumBacking.album)}">
+                                                 look="success" action="#{cart.addAlbum(albumBacking.album)}">
                                     <f:ajax render="j_idt15:shopping-cart-count"/>
                                 </b:commandButton>
                             </h:form>
