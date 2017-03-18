@@ -157,8 +157,10 @@ public class CheckoutBackingBean implements Serializable {
         // Persist invoice
         invoiceController.create(invoice);
 
-        // TODO: clear shopping cart here
-        // Redirect or forward to invoice summary page
+        // Emptying the cart of all purchases
+        cart.clearCart();
+        
+        // Redirecting to invoice summary page
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("invoice", invoice);
         return "invoicesummary";
     }

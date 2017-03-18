@@ -174,4 +174,10 @@ public class ShoppingCart implements Serializable {
     public void addTrack(Track track) {
         tracks.add(track);
     }
+    
+    public void clearCart()
+    {
+        albums = new ArrayList<>();
+        tracks = new ArrayList<>();
+    }
 }
