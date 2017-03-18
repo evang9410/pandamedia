@@ -9,7 +9,15 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import persistence.controllers.InvoiceJpaController;
+import persistence.entities.Album;
+import persistence.entities.Invoice;
+import persistence.entities.InvoiceAlbum;
+import persistence.entities.InvoiceTrack;
 import persistence.entities.ShopUser;
+import persistence.entities.Track;
 
 /**
  *
@@ -24,6 +32,9 @@ public class CheckoutBackingBean implements Serializable {
 
     @Inject
     private ShopUser user;
+    
+    @Inject
+    private InvoiceJpaController invoiceController;
 
     private double gst;
     private double hst;
@@ -32,10 +43,10 @@ public class CheckoutBackingBean implements Serializable {
 
     @PostConstruct
     public void init() {
-//        gst = cart.getSubTotal() * user.getProvinceId().getGstRate();
-//        pst = cart.getSubTotal() * user.getProvinceId().getPstRate();
-//        hst = cart.getSubTotal() * user.getProvinceId().getHstRate();
-//        total = cart.getSubTotal() + gst + pst + hst;
+        gst = cart.getSubTotal() * user.getProvinceId().getGstRate();
+        pst = cart.getSubTotal() * user.getProvinceId().getPstRate();
+        hst = cart.getSubTotal() * user.getProvinceId().getHstRate();
+        total = cart.getSubTotal() + gst + pst + hst;
     }
 
     public List<SelectItem> getMonthSelector() {
@@ -83,12 +94,61 @@ public class CheckoutBackingBean implements Serializable {
         return total;
     }
 
-    public void buildInvoice() {
-
+    public void buildInvoice() throws Exception {
+        // TODO: verify that this actually works
+        Invoice invoice = new Invoice();
+        
+        // Setting invoice details
+        invoice.setSaleDate(Calendar.getInstance().getTime());
+        invoice.setTotalGrossValue(cart.getSubTotal());
+        invoice.setGstTax(gst);
+        invoice.setHstTax(hst);
+        invoice.setPstTax(pst);
+        invoice.setTotalNetValue(total);
+        invoice.setUserId(user);
+        invoice.setInvoiceAlbumList(createInvoiceAlbumList());
+        invoice.setInvoiceTrackList(createInvoiceTrackList());
+        
+        // Create invoice
+        invoiceController.create(invoice);
+        
+        // Redirect or forward to invoice summary page
     }
     
 //    public double getFinalPrince(double listPrice, double salePrice)
 //    {
 //        return listPrice - salePrice;
 //    }
+    
+    private List<InvoiceAlbum> createInvoiceAlbumList()
+    {
+        List<InvoiceAlbum> list = new ArrayList<>();
+        List<Album> albums = cart.getAlbumsFromCart();
+        
+        for(int i = 0; i < albums.size(); i++)
+        {
+            double finalCost = albums.get(i).getListPrice() - albums.get(i).getSalePrice();
+            list.add(new InvoiceAlbum());
+            list.get(i).setAlbum(albums.get(i));
+            list.get(i).setFinalPrice(finalCost);
+        }
+        
+        return list;
+    }
+    
+    private List<InvoiceTrack> createInvoiceTrackList()
+    {
+        List<InvoiceTrack> list = new ArrayList<>();
+        List<Track> tracks = cart.getTracksFromCart();
+        
+        for(int i = 0; i < tracks.size(); i++)
+        {
+            double finalCost = tracks.get(i).getListPrice() - tracks.get(i).getSalePrice();
+            list.add(new InvoiceTrack());
+            list.get(i).setTrack(tracks.get(i));
+            list.get(i).setFinalPrice(finalCost);
+        }
+        
+        return list;
+    }
 }
