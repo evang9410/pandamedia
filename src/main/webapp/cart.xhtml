@@ -64,7 +64,7 @@ and open the template in the editor.
                                     <td class="col-sm-1 col-md-1 text-right">
                                         <h:form>
 
-                                            <p:commandButton actionListener="#{cart.removeItem(albums)}"
+                                            <p:commandButton actionListener="#{cart.removeAlbumFromCart(albums)}"
                                                              update="cart" icon="fa fa-trash"
                                                              styleClass="btn btn-danger"/>
                                         </h:form>
@@ -110,7 +110,7 @@ and open the template in the editor.
                                     <td class="col-sm-1 col-md-1 text-center"><strong id="quantity-sum"></strong></td>
                                     <td class="col-sm-1 col-md-1 text-right">
                                         <h:form>
-                                            <p:commandButton actionListener="#{cart.removeItem(individual_tracks)}"
+                                            <p:commandButton actionListener="#{cart.removeTrackFromCart(individual_tracks)}"
                                                              update="cart" icon="fa fa-trash"
                                                              styleClass="btn btn-danger btn-lg"/>
                                         </h:form>
