@@ -56,6 +56,12 @@ public class UserSearch implements Serializable {
         notFound = "";
     }
     
+    /**
+     * Returns true if given query does not return empty or null
+     * else returns false and sets 404 as error message
+     * @param query
+     * @return 
+     */
     private boolean errorCheck(TypedQuery query){
         if (query.getResultList() != null && !query.getResultList().isEmpty()) {
             return true;
@@ -78,6 +84,12 @@ public class UserSearch implements Serializable {
     }
     */
     
+    /**
+     * Called when search button is pressed.
+     * Executes the correct search function depending on selected type
+     * 
+     * @return 
+     */
     public String executeSearch() {
         //If nothing entered, does not execute
         if(!parameters.isEmpty()){
@@ -99,11 +111,11 @@ public class UserSearch implements Serializable {
                     break;
             }
             return "searchpage";
-            }
+        }
         return null;
     }
   
-    public void searchTracks() {
+    private void searchTracks() {
         //Creates query that returns a list of tracks with a name relevant to "parameters"
         String q = "SELECT t FROM Track t WHERE t.title LIKE :var";
         TypedQuery<Track> query = em.createQuery(q, Track.class);
@@ -114,7 +126,7 @@ public class UserSearch implements Serializable {
         }
     }
 
-    public void searchAlbums() {
+    private void searchAlbums() {
         //Creates query that returns a list of albums with a name relevant to "parameters"
         String q = "SELECT a FROM Album a WHERE a.title LIKE :var";
         TypedQuery<Album> query = em.createQuery(q, Album.class);
@@ -125,7 +137,7 @@ public class UserSearch implements Serializable {
         
     }
 
-    public void searchArtists() {
+    private void searchArtists() {
         //Creates query that returns a list of artists with a name relevant to "parameters"
         String q = "SELECT a FROM Artist a WHERE a.name LIKE :var";
         TypedQuery<Artist> query = em.createQuery(q, Artist.class);
@@ -135,13 +147,12 @@ public class UserSearch implements Serializable {
         }
     }
 
-    public void searchDate() {
+    private void searchDate() {
         //Creates query that returns a list of tracks with a release date relevant to "parameters"
-
     }
 
     /*Getters and Setters*/
-
+    
     public void setParameters(String key) {
         this.parameters = key;
     }
@@ -189,7 +200,4 @@ public class UserSearch implements Serializable {
     public void setTypeSearched(String typeSearched) {
         this.typeSearched = typeSearched;
     }
-    
-    
-
 }
