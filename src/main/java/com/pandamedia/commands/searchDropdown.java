@@ -5,11 +5,11 @@
  */
 package com.pandamedia.commands;
 
+import java.io.Console;
 import java.io.Serializable;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.bean.ViewScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
@@ -18,25 +18,23 @@ import javax.inject.Named;
  * @author Pierre Azelart
  */
 @Named("searchDropdown")
-@RequestScoped
+@SessionScoped
 public class searchDropdown implements Serializable{
     
     private FacesContext context;
     private ResourceBundle msgs;
     private String toDisplay = "Type";
-    
     private String type;
 
     @PostConstruct
     public void init(){
-        
         try{
-            FacesContext context = FacesContext.getCurrentInstance();
-            ResourceBundle msgs = ResourceBundle.getBundle("bundles.messages", context.getViewRoot().getLocale());
-            String toDisplay = msgs.getString("tracks");
-            
             //Default search type
             type = "tracks";
+            //Displays chosen type in correct language
+            FacesContext context = FacesContext.getCurrentInstance();
+            ResourceBundle msgs = ResourceBundle.getBundle("bundles.messages", context.getViewRoot().getLocale());
+            String toDisplay = msgs.getString(type);
         }
         catch(java.lang.ClassCastException ex){
         }
@@ -49,7 +47,7 @@ public class searchDropdown implements Serializable{
     public void setType(String type) {
         this.type = type;
         
-        //Update the string diplayed to match selected language
+        //Update the diplayed type to match selected language
         setToDisplay(type);
     }
 
