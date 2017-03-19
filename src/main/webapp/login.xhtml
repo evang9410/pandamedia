@@ -34,7 +34,7 @@
                         </div>
                     </p:panel>
                     <h:commandButton class="btn btn-info btn-block" id="submitBtn"
-                                     value="#{msgs.loginHeader}" />
+                                     value="#{msgs.loginHeader}" action="#{userAction.login()}" />
                 </h:form>
                 <h:message for="loginForm" style="color:red"/>
             </div>

@@ -1,7 +1,9 @@
 package com.pandamedia.beans;
 
 import com.pandamedia.utilities.PasswordHelper;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,9 +31,12 @@ import persistence.entities.ShopUser;
 @Named("userAction")
 @SessionScoped
 public class UserActionBean implements Serializable {
+//    private static transient final java.util.logging.Logger log=
+//            java.util.logging.Logger.getLogger("UserActionBean.class");
+
     @Inject
     private UserActionController userActionController;
-    
+
     @Inject
     private ShopUserJpaController userController;
 
@@ -40,6 +45,8 @@ public class UserActionBean implements Serializable {
 
     @Inject
     private ProvinceJpaController provinceController;
+
+    private final PasswordHelper pwdHelper = new PasswordHelper();
 
     // Needed variables for login and registration
     private ShopUser currUser;
@@ -91,16 +98,58 @@ public class UserActionBean implements Serializable {
                     "registrationForm:emailInput", msg);
         }
     }
-    
+
     /**
      * Responsible for login in a user.
      */
-    public void login(){
-        currUser=userBean.getShopUser();
-        ShopUser userRecord=userActionController.findUserByEmail(
+    public void login() {
+        currUser = userBean.getShopUser();
+        ShopUser userRecord = userActionController.findUserByEmail(
                 currUser.getEmail());
-        
-        
+
+        byte[] hashRecord = userRecord.getHashedPw();
+        byte[] loginPwdHash = pwdHelper.hash(userBean.getConfirmPasswd(),
+                 userRecord.getSalt());
+
+        if (!Arrays.equals(hashRecord, loginPwdHash)) {
+            FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "invalidEmailOrPwd", null);
+            FacesContext.getCurrentInstance().addMessage("loginForm", msg);
+            currUser = null;
+        } else {
+            try {
+                currUser = userRecord;
+                FacesContext.getCurrentInstance().getExternalContext()
+                        .redirect("./mainpage.xhtml");
+            } catch (IOException ioe) {
+//               log.log(Level.WARNING,"Error when redirecting: {0}"
+//                       ,ioe.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Responsible for login out users.
+     */
+    public void logout() {
+        currUser = null;
+    }
+
+    /**
+     * Checks if a user is logged in.
+     *
+     * @return true if a user is logged in, false otherwise.
+     */
+    public boolean isLogin() {
+        return currUser != null;
+    }
+
+    /**
+     *
+     * @return the current logged in user.
+     */
+    public ShopUser getCurrUser() {
+        return currUser;
     }
 
     /**
@@ -111,7 +160,7 @@ public class UserActionBean implements Serializable {
      */
     private void setFields(ShopUser user) {
         //instantiating the class responsible for password security
-        PasswordHelper pwdHelper = new PasswordHelper();
+        // PasswordHelper pwdHelper = new PasswordHelper();
         String salt = pwdHelper.getSalt();
 
         byte[] hashedPwd = pwdHelper.hash(userBean.getConfirmPasswd(), salt);

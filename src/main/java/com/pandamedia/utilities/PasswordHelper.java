@@ -44,7 +44,7 @@ public class PasswordHelper {
         try {
             SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
 
-            PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 1024, 256);
+            PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 1024, 512);
 
             SecretKey key = skf.generateSecret(spec);
             byte[] hash = key.getEncoded();

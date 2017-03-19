@@ -1,18 +1,15 @@
 package persistence.controllers;
 
-import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.transaction.UserTransaction;
 import persistence.entities.ShopUser;
 
 /**
@@ -20,12 +17,9 @@ import persistence.entities.ShopUser;
  *
  * @author Hau Gilles Che
  */
+@Named
+@RequestScoped
 public class UserActionController {
-
-    @Inject
-    private ShopUserJpaController shopUserController;
-    @Resource
-    private UserTransaction utx;
     @PersistenceContext
     private EntityManager em;
 
