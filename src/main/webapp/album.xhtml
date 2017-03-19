@@ -29,8 +29,10 @@
                                 </h:outputText>
                             </h3>
                             <h:form>
-                                <b:commandButton ajax="true" icon-awesome="cart-plus" iconAlign="right" value="#{albumBacking.album.listPrice}"
-                                                 look="success" action="#{cart.cart.add(albumBacking.album)}"></b:commandButton>
+                                <b:commandButton ajax="false" icon-awesome="cart-plus" iconAlign="right" value="#{albumBacking.album.listPrice}"
+                                                 look="success" action="#{cart.cart.add(albumBacking.album)}">
+                                    <f:ajax render="j_idt15:shopping-cart-count"/>
+                                </b:commandButton>
                             </h:form>
                         </div>
                     </div>
@@ -61,8 +63,11 @@
                                 <td>#{tracks.playLength}</td>
                                 <td width="50">
                                     <h:form>
-                                        <b:commandButton ajax="true" icon-awesome="cart-plus" iconAlign="right" value="#{tracks.listPrice}" look="primary" 
-                                                         action="#{cart.cart.add(tracks)}"/>
+                                        <b:commandButton ajax="false" icon-awesome="cart-plus" iconAlign="right" value="#{tracks.listPrice}" look="primary" 
+                                                         action="#{cart.cart.add(tracks)}">
+                                            <f:ajax render="j_idt15:shopping-cart-count"/>
+                                        </b:commandButton>
+                                        
                                     </h:form>
                                 </td>
                             </tr>
