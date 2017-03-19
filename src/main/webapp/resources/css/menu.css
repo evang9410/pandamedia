@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins');
+body{
+    background-color: #17171b;
+}
 
 .navbar{
     height: 70px;
@@ -15,6 +18,14 @@
 .navbar-default .navbar-collapse, .navbar-default .navbar-form {
     background-color: #17171b;
     border: none;
+}
+
+#type-nav{
+    width: 12em;
+}
+
+#type-dropdown{
+    float: right;
 }
 
 #cart-link{
@@ -53,7 +64,10 @@
 
 .btn, .btn .btn-search{
     padding: 0px;
-    margin: 6px 12px;
+    margin-top: 6px;
+    margin-left: 12px;
+    margin-bottom: 6px;
+    
     border: none;
 }
 
@@ -114,7 +128,7 @@ img{
 
 .dropdown-menu{
     background-color: #17171b;
-    border: 2px solid white;
+    border: 1px solid rgba(255,255,255, 0.87);
 }
 
 .dropdown-menu > li > a{
