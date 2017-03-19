@@ -43,7 +43,7 @@ public class UserSearch implements Serializable {
      * 
      * 
      */
-    private void resetList(){
+    private void reset(){
         if (trackResultsList != null && !trackResultsList.isEmpty()) {
             trackResultsList.clear();
         }
@@ -53,6 +53,7 @@ public class UserSearch implements Serializable {
         if (artistResultsList != null && !artistResultsList.isEmpty()) {
             artistResultsList.clear();
         }
+        notFound = "";
     }
     
     private boolean errorCheck(TypedQuery query){
@@ -61,17 +62,28 @@ public class UserSearch implements Serializable {
         }
         else{
             //Displays error
-            notFound = "404"; //Need bundle
+            notFound = "404"; //if improved from 404, needs bundle
             return false;
         }
     }
+    
+    /*private String isResultSingle(){
+    
+        if(resultsList != null){
+            if(resultsList.size() > 1){
+                return //string url result page
+            }
+        }
+        return null;
+    }
+    */
     
     public String executeSearch() {
         //If nothing entered, does not execute
         if(!parameters.isEmpty()){
             String str = sd.getType();
             typeSearched = str;
-            resetList();
+            reset();
             switch (str) {
                 case "tracks":
                     searchTracks();
@@ -107,7 +119,7 @@ public class UserSearch implements Serializable {
         String q = "SELECT a FROM Album a WHERE a.title LIKE :var";
         TypedQuery<Album> query = em.createQuery(q, Album.class);
         query.setParameter("var", "%" + parameters + "%");
-        if (query.getResultList() != null && !query.getResultList().isEmpty()) {
+        if (errorCheck(query)) {
             albumResultsList = query.getResultList();
         }
         
@@ -118,34 +130,16 @@ public class UserSearch implements Serializable {
         String q = "SELECT a FROM Artist a WHERE a.name LIKE :var";
         TypedQuery<Artist> query = em.createQuery(q, Artist.class);
         query.setParameter("var", "%" + parameters + "%");
-        if (query.getResultList() != null && !query.getResultList().isEmpty()) {
+        if (errorCheck(query)) {
             artistResultsList = query.getResultList();
         }
-        }
+    }
 
     public void searchDate() {
         //Creates query that returns a list of tracks with a release date relevant to "parameters"
 
-        /**
-         *
-         *
-         *
-         */
     }
 
-    /*
-    public String isResultSingle(){
-    
-        if(resultsList != null){
-            if(resultsList.size() > 1){
-                return //string url result page
-            }
-        }
-        return null;
-    }
-     */
-    
-    
     /*Getters and Setters*/
 
     public void setParameters(String key) {

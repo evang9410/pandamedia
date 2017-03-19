@@ -5,7 +5,6 @@
  */
 package com.pandamedia.commands;
 
-import java.io.Console;
 import java.io.Serializable;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
@@ -47,7 +46,7 @@ public class searchDropdown implements Serializable{
     public void setType(String type) {
         this.type = type;
         
-        //Update the diplayed type to match selected language
+        //Updates the diplayed type to match selected language
         setToDisplay(type);
     }
 
