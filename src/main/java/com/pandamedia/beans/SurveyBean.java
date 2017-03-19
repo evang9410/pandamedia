@@ -11,6 +11,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import persistence.controllers.SurveyActionController;
 
 /**
  *
@@ -28,11 +29,14 @@ public class SurveyBean implements Serializable {
     
     @Inject
     private SurveyJpaController surveys;
+    @Inject
+    private SurveyActionController surveyActionController;
    
     
     @PostConstruct
     public void init(){
-        survey=surveys.findSurvey(1);
+        survey = surveyActionController.getCurrentSurvey();
+        //survey=surveys.findSurvey(1);
     
         createAnswerList();
         userAnswered=false;

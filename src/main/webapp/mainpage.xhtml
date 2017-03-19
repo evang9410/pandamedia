@@ -4,14 +4,16 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:outputStylesheet library="css" name="mainpage.css" />
+    
+    <ui:define name="css">
+        <h:outputStylesheet name="mainpage.css" library="css"/>
+    </ui:define>
 
     <ui:define name="WindowTitle">
         Home
     </ui:define>
-
     <ui:define name="page-content"> 
-        
+
         <div id="carousel" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
                 <li data-target="#carousel" data-slide-to="0" class="active"></li>
@@ -21,11 +23,11 @@
 
             <div class="carousel-inner">
                 <div class="item active">
-                    <a href="#">
+                    <h:link outcome="latest">
                         <div class="carousel-caption">
                             <h1>New Releases</h1>
                         </div>
-                    </a>
+                    </h:link>
                 </div>
                 <div class="item">
                     <a href="#">
@@ -51,16 +53,22 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </a>
         </div>
-        
+
         <div class="browse-wrapper">
-            <div class="browse-item" id="browse-albums">
-                <div class="browse-caption"><h2>1</h2></div>
-                <a class="browse-btn-link" href="#"><div class="browse-btn">Browse Albums</div></a>
-            </div>
-            <div class="browse-item" id="browse-artists">
-                <div class="browse-caption"><h2>2</h2></div>
-                <a class="browse-btn-link" href="#"><div class="browse-btn">Browse Artists</div></a>
-            </div>
+            <h:link outcome="browsealbums" styleClass="browse-btn-link">
+                <div class="browse-item" id="browse-albums">
+                    <div class="browse-caption">
+                        <span id="browse-album-caption">Albums</span>
+                    </div>
+                </div>
+            </h:link>
+            <h:link outcome="#" styleClass="browse-btn-link">
+                <div class="browse-item" id="browse-artists">
+                    <div class="browse-caption">
+                        <span id="browse-artist-caption">Artists</span>
+                    </div>
+                </div>
+            </h:link>
         </div>
     </ui:define>
 </ui:composition>
