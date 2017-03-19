@@ -10,6 +10,7 @@
     <h:head>
         <title>#{msgs.manReportSalesByTrack}</title>
         <meta name="author" content="Erika Bourque"/>
+        <h:outputStylesheet name="reports.css" library="css"/>
     </h:head>
     <h:body>
         #{msgs.manReportSalesByTrack}
@@ -36,37 +37,62 @@
             </p:inputText>
             <p:commandButton id="search" update="totalTable reportTable" value="#{msgs.searchBtn}" />
         </h:form>
-        <p:dataTable id="totalTable" value="#{reports.getSalesByTrackTotals(reportDates.startDate, reportDates.endDate, trackBacking.track)}" 
+        <p:dataTable styleClass="report-table" 
+                     id="totalTable" 
+                     value="#{reports.getSalesByTrackTotals(reportDates.startDate, reportDates.endDate, trackBacking.track)}" 
                      var="total">
+            <f:facet name="header">
+                #{msgs.totalSumHeader}
+            </f:facet>
             <p:column>
                 <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
-                #{total[0]}
+                <h:outputText value="#{total[0]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
-                #{total[1]}
+                <h:outputText value="#{total[1]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.profitHeader}</f:facet>
-                #{total[2]}
+                <h:outputText value="#{total[2]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
             </p:column>
         </p:dataTable>
-        <p:dataTable id="reportTable" value="#{reports.getSalesByTrack(reportDates.startDate, reportDates.endDate, trackBacking.track)}" var="invoice">
+        <p:dataTable styleClass="report-table" 
+                     id="reportTable" 
+                     value="#{reports.getSalesByTrack(reportDates.startDate, reportDates.endDate, trackBacking.track)}" 
+                     var="invoice">
+            <f:facet name="header">
+                #{msgs.detailHeader}
+            </f:facet>
             <p:column>
                 <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
-                #{invoice[0].saleDate}
+                <h:outputText value="#{invoice[0].saleDate}">
+                    <f:convertDateTime pattern="MMMM dd yyyy" />
+                </h:outputText>
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
-                #{invoice[1]}
+                <h:outputText value="#{invoice[1]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
-                #{invoice[2]}
+                <h:outputText value="#{invoice[2]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.profitHeader}</f:facet>
-                #{invoice[3]}
+                <h:outputText value="#{invoice[3]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>

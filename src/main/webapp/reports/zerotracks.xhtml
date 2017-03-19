@@ -10,6 +10,7 @@
     <h:head>
         <title>#{msgs.manReportZeroTrackTitle}</title>
         <meta name="author" content="Erika Bourque"/>
+        <h:outputStylesheet name="reports.css" library="css"/>
     </h:head>
     <h:body>
         #{msgs.manReportZeroTrackTitle}
@@ -19,7 +20,13 @@
             end="#{reportDates.endDate}" 
             updateTable="reportTable">
         </pm:reportcalendars>
-        <p:dataTable id="reportTable" value="#{reports.getZeroTracks(reportDates.startDate, reportDates.endDate)}" var="track">
+        <p:dataTable styleClass="report-table" 
+                     id="reportTable" 
+                     value="#{reports.getZeroTracks(reportDates.startDate, reportDates.endDate)}" 
+                     var="track">
+            <f:facet name="header">
+                #{msgs.detailTrackHeader}
+            </f:facet>
             <p:column>
                 <f:facet name="header">#{msgs.idHeader}</f:facet>
                 #{track.id}
@@ -46,7 +53,9 @@
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.releaseDateHeader}</f:facet>
-                #{track.releaseDate}
+                <h:outputText value="#{track.releaseDate}">
+                    <f:convertDateTime pattern="MMMM dd yyyy" />
+                </h:outputText>
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.playLengthHeader}</f:facet>
@@ -62,7 +71,9 @@
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.dateEnteredHeader}</f:facet>
-                #{track.dateEntered}
+                <h:outputText value="#{track.dateEntered}">
+                    <f:convertDateTime pattern="MMMM dd yyyy" />
+                </h:outputText>
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.partOfAlbumHeader}</f:facet>
@@ -70,15 +81,21 @@
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
-                #{track.costPrice}
+                <h:outputText value="#{track.costPrice}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.listPriceHeader}</f:facet>
-                #{track.listPrice}
+                <h:outputText value="#{track.listPrice}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.salePriceHeader}</f:facet>
-                #{track.salePrice}
+                <h:outputText value="#{track.salePrice}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
             </p:column>
         </p:dataTable>
     </h:body>

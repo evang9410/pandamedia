@@ -33,7 +33,7 @@
     <navigation-rule>
         <navigation-case>
             <from-outcome>finalization</from-outcome>
-            <to-view-id>/clientsecure/finalization.xhtml</to-view-id>
+            <to-view-id>/clientsecure/checkout.xhtml</to-view-id>
             <!-- Needs to be a redirect to pass through filter -->
             <redirect />
         </navigation-case>

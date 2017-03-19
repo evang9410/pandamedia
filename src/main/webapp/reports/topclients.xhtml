@@ -10,7 +10,7 @@
     <h:head>
         <title>#{msgs.manReportTopClientsTitle}</title>
         <meta name="author" content="Erika Bourque"></meta>
-        <!-- make sure that css makes table evenly spaced -->
+        <h:outputStylesheet name="reports.css" library="css"/>
     </h:head>
     <h:body>
         #{msgs.manReportTopClientsTitle}
@@ -20,10 +20,18 @@
             end="#{reportDates.endDate}" 
             updateTable="reportTable">
         </pm:reportcalendars>
-        <p:dataTable id="reportTable" value="#{reports.getTopClients(reportDates.startDate, reportDates.endDate)}" var="userVar">
+        <p:dataTable styleClass="report-table" 
+                     id="reportTable" 
+                     value="#{reports.getTopClients(reportDates.startDate, reportDates.endDate)}" 
+                     var="userVar">
+            <f:facet name="header">
+                #{msgs.detailClientHeader}
+            </f:facet>
             <p:column>
                 <f:facet name="header">#{msgs.totalSpentHeader}</f:facet>
-                #{userVar[0]}
+                <h:outputText value="#{userVar[0]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.idHeader}</f:facet>
