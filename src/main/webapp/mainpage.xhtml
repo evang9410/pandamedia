@@ -4,12 +4,14 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:outputStylesheet library="css" name="mainpage.css" />
+    
+    <ui:define name="css">
+        <h:outputStylesheet name="mainpage.css" library="css"/>
+    </ui:define>
 
     <ui:define name="WindowTitle">
         Home
     </ui:define>
-
     <ui:define name="page-content"> 
 
         <div id="carousel" class="carousel slide" data-ride="carousel">
@@ -21,11 +23,11 @@
 
             <div class="carousel-inner">
                 <div class="item active">
-                    <a href="#">
+                    <h:link outcome="latest">
                         <div class="carousel-caption">
                             <h1>New Releases</h1>
                         </div>
-                    </a>
+                    </h:link>
                 </div>
                 <div class="item">
                     <a href="#">
@@ -53,20 +55,20 @@
         </div>
 
         <div class="browse-wrapper">
-            <a class="browse-btn-link" href="#">
+            <h:link outcome="browsealbums" styleClass="browse-btn-link">
                 <div class="browse-item" id="browse-albums">
                     <div class="browse-caption">
                         <span id="browse-album-caption">Albums</span>
                     </div>
                 </div>
-            </a>
-            <a class="browse-btn-link" href="#">
+            </h:link>
+            <h:link outcome="#" styleClass="browse-btn-link">
                 <div class="browse-item" id="browse-artists">
                     <div class="browse-caption">
                         <span id="browse-artist-caption">Artists</span>
                     </div>
                 </div>
-            </a>
+            </h:link>
         </div>
         
         <!-- +white div to log in/survey-->

@@ -9,7 +9,7 @@
     </h:head>
     <h:body>
         <div class="rssFeed">
-            <p:feedReader value="#{feedManager.url}" var="feed">
+            <p:feedReader value="#{newsFeedBean.newsFeed.url}" var="feed">
             <!--<p:feedReader value="http://rss.cbc.ca/lineup/politics.xml" var="feed">-->
                 <h:outputText value="#{feed.title}" style="font-weight: bold;display:block"/>
                 <h:outputText value="#{feed.description.value}" escape="false"/>
