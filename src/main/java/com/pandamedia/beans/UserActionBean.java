@@ -1,7 +1,9 @@
 package com.pandamedia.beans;
 
 import com.pandamedia.utilities.PasswordHelper;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +18,7 @@ import javax.inject.Named;
 import jodd.mail.EmailAddress;
 import persistence.controllers.ProvinceJpaController;
 import persistence.controllers.ShopUserJpaController;
+import persistence.controllers.UserActionController;
 import persistence.entities.Province;
 import persistence.entities.ShopUser;
 
@@ -28,6 +31,11 @@ import persistence.entities.ShopUser;
 @Named("userAction")
 @SessionScoped
 public class UserActionBean implements Serializable {
+//    private static transient final java.util.logging.Logger log=
+//            java.util.logging.Logger.getLogger("UserActionBean.class");
+
+    @Inject
+    private UserActionController userActionController;
 
     @Inject
     private ShopUserJpaController userController;
@@ -38,8 +46,10 @@ public class UserActionBean implements Serializable {
     @Inject
     private ProvinceJpaController provinceController;
 
-    // Needed variables.
-    private ShopUser loggedUser;
+    private final PasswordHelper pwdHelper = new PasswordHelper();
+
+    // Needed variables for login and registration
+    private ShopUser currUser;
     private List<Province> provinces;
     private Province province;
 
@@ -47,33 +57,9 @@ public class UserActionBean implements Serializable {
     public void init() {
         provinces = provinceController.findProvinceEntities();
     }
-    
-    /**
-     * Responsible for creating a new user records
-     * @param province Id of the province chosen by the user.
-     */
-    public void register(String province) {
-        ShopUser user = userBean.getShopUser();
-        setFields(user);
-        int provinceId = Integer.parseInt(province);
-        Province prov = provinceController.findProvince(provinceId);
-        user.setProvinceId(prov);
-        try {
-            userController.create(user);
-            loggedUser = user;
-            Logger.getLogger(UserActionBean.class.getName()).log(
-                    Level.SEVERE, null, "User created");
-        } catch (Exception ex) {
-            FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
-                    "bundles.messages", "duplicateEmail", null);
-            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-            FacesContext.getCurrentInstance().addMessage(
-                    "registrationForm:emailInput", msg);
-        }
-    }
 
-    public ShopUser getLoggedUser() {
-        return loggedUser;
+    public ShopUser getcurrUser() {
+        return currUser;
     }
 
     public List<Province> getProvinces() {
@@ -87,15 +73,94 @@ public class UserActionBean implements Serializable {
     public void setProvince(Province province) {
         this.province = province;
     }
-    
+
     /**
-     * Sets the remaining fields that cannot be directly set by the user 
-     * through the form.
-     * @param user 
+     * Responsible for creating a new user records
+     *
+     * @param province Id of the province chosen by the user.
+     */
+    public void register(String province) {
+        ShopUser user = userBean.getShopUser();
+        setFields(user);
+        int provinceId = Integer.parseInt(province);
+        Province prov = provinceController.findProvince(provinceId);
+        user.setProvinceId(prov);
+        try {
+            userController.create(user);
+            currUser = user;
+            Logger.getLogger(UserActionBean.class.getName()).log(
+                    Level.SEVERE, null, "User created");
+        } catch (Exception ex) {
+            FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "duplicateEmail", null);
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            FacesContext.getCurrentInstance().addMessage(
+                    "registrationForm:emailInput", msg);
+        }
+    }
+
+    /**
+     * Responsible for login in a user.
+     */
+    public void login() {
+        currUser = userBean.getShopUser();
+        ShopUser userRecord = userActionController.findUserByEmail(
+                currUser.getEmail());
+
+        byte[] hashRecord = userRecord.getHashedPw();
+        byte[] loginPwdHash = pwdHelper.hash(userBean.getConfirmPasswd(),
+                 userRecord.getSalt());
+
+        if (!Arrays.equals(hashRecord, loginPwdHash)) {
+            FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "invalidEmailOrPwd", null);
+            FacesContext.getCurrentInstance().addMessage("loginForm", msg);
+            currUser = null;
+        } else {
+            try {
+                currUser = userRecord;
+                FacesContext.getCurrentInstance().getExternalContext()
+                        .redirect("./mainpage.xhtml");
+            } catch (IOException ioe) {
+//               log.log(Level.WARNING,"Error when redirecting: {0}"
+//                       ,ioe.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Responsible for login out users.
+     */
+    public void logout() {
+        currUser = null;
+    }
+
+    /**
+     * Checks if a user is logged in.
+     *
+     * @return true if a user is logged in, false otherwise.
+     */
+    public boolean isLogin() {
+        return currUser != null;
+    }
+
+    /**
+     *
+     * @return the current logged in user.
+     */
+    public ShopUser getCurrUser() {
+        return currUser;
+    }
+
+    /**
+     * Sets the remaining fields that cannot be directly set by the user through
+     * the form.
+     *
+     * @param user
      */
     private void setFields(ShopUser user) {
         //instantiating the class responsible for password security
-        PasswordHelper pwdHelper = new PasswordHelper();
+        // PasswordHelper pwdHelper = new PasswordHelper();
         String salt = pwdHelper.getSalt();
 
         byte[] hashedPwd = pwdHelper.hash(userBean.getConfirmPasswd(), salt);
@@ -105,9 +170,10 @@ public class UserActionBean implements Serializable {
 
         user.setPostalCode(userBean.getPostalCode().toString());
         user.setHomePhone(userBean.getHomePhone().toString());
-        
-        if(userBean.getCellPhone() != null)
+
+        if (userBean.getCellPhone() != null) {
             user.setCellPhone(userBean.getCellPhone().toString());
+        }
     }
 
     /**
