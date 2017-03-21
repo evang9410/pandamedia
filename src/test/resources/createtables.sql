@@ -1,3 +1,5 @@
+USE g4w17;
+
 DROP TABLE IF EXISTS front_page_settings;
 DROP TABLE IF EXISTS invoice_album;
 DROP TABLE IF EXISTS invoice_track;
@@ -16,37 +18,81 @@ DROP TABLE IF EXISTS cover_art;
 DROP TABLE IF EXISTS newsfeed;
 DROP TABLE IF EXISTS advertisement;
 
+-- Genre
 CREATE TABLE genre
 (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(255) NOT NULL
+	name VARCHAR(255) NOT NULL UNIQUE
 );
 
+-- Artist
 CREATE TABLE artist
 (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(255) NOT NULL
+	name VARCHAR(255) NOT NULL UNIQUE
 );
 
+-- Songwriter
 CREATE TABLE songwriter
 (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(255) NOT NULL
+	name VARCHAR(255) NOT NULL UNIQUE
 );
 
+-- Recording Label
 CREATE TABLE recording_label
 (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(255) NOT NULL
+	name VARCHAR(255) NOT NULL UNIQUE
 );
 
+-- Cover Art
 CREATE TABLE cover_art
 (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	image_path VARCHAR(255) NOT NULL
+	image_path VARCHAR(255) NOT NULL UNIQUE
 );
 
--- removal_date can be null, if not removed
+-- Survey
+CREATE TABLE survey
+(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	question VARCHAR(255) NOT NULL,
+	answer_a VARCHAR(255) NOT NULL,
+	answer_b VARCHAR(255) NOT NULL,
+	answer_c VARCHAR(255) NOT NULL,
+	answer_d VARCHAR(255) NOT NULL,
+	votes_a INT NOT NULL DEFAULT 0,
+	votes_b INT NOT NULL DEFAULT 0,
+	votes_c INT NOT NULL DEFAULT 0,
+	votes_d INT NOT NULL DEFAULT 0
+);
+
+-- Newsfeed
+CREATE TABLE newsfeed
+(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	url VARCHAR(255) NOT NULL UNIQUE
+);
+
+-- Advertisement
+CREATE TABLE advertisement
+(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	ad_path VARCHAR(255) NOT NULL UNIQUE
+);
+
+-- Province
+CREATE TABLE province
+(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(255) NOT NULL UNIQUE,
+	pst_rate DOUBLE NOT NULL DEFAULT 0.0,
+	gst_rate DOUBLE NOT NULL DEFAULT 0.0,
+	hst_rate DOUBLE NOT NULL DEFAULT 0.0
+);
+
+-- Album
 CREATE TABLE album
 (
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -67,11 +113,11 @@ CREATE TABLE album
 	FOREIGN KEY (genre_id) REFERENCES genre(id),
 	FOREIGN KEY (recording_label_id) REFERENCES recording_label(id),
 	FOREIGN KEY (cover_art_id) REFERENCES cover_art(id),
-	CHECK (num_tracks > 0),
+	CHECK (cost_price < list_price),
 	CHECK (sale_price < list_price)
 );
 
--- removal_date can be null, if not removed
+-- Track
 CREATE TABLE track
 (
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -98,19 +144,12 @@ CREATE TABLE track
 	FOREIGN KEY (cover_art_id) REFERENCES cover_art(id),
 	CHECK (play_length > 0.0),
 	CHECK (album_track_number > 0),
+	CHECK (cost_price < list_price),
 	CHECK (sale_price < list_price)
+	
 );
 
-CREATE TABLE province
-(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(255) NOT NULL,
-	pst_rate DOUBLE NOT NULL DEFAULT 0.0,
-	gst_rate DOUBLE NOT NULL DEFAULT 0.0,
-	hst_rate DOUBLE NOT NULL DEFAULT 0.0
-);
-
--- title refers to mr, mrs, ms, dr
+-- Shop User (Managers and Clients)
 CREATE TABLE shop_user
 (
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -126,7 +165,7 @@ CREATE TABLE shop_user
 	home_phone VARCHAR(15) NOT NULL,
 	cell_phone VARCHAR(15),
 	email VARCHAR(255) NOT NULL UNIQUE,
-	password VARCHAR(255) NOT NULL,
+	hashed_pw BINARY(64) NOT NULL,
 	salt VARCHAR(255) NOT NULL,
 	last_genre_searched INT,
 	is_manager TINYINT NOT NULL DEFAULT 0,
@@ -134,6 +173,7 @@ CREATE TABLE shop_user
 	FOREIGN KEY (last_genre_searched) REFERENCES genre(id)
 );
 
+-- Review
 CREATE TABLE review
 (
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -148,6 +188,7 @@ CREATE TABLE review
 	CHECK (rating >= 0 AND rating <= 5)
 );
 
+-- Invoice
 CREATE TABLE invoice
 (
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -163,6 +204,7 @@ CREATE TABLE invoice
 	FOREIGN KEY (user_id) REFERENCES shop_user(id)
 );
 
+-- Invoice Track
 CREATE TABLE invoice_track
 (
 	invoice_id INT NOT NULL,
@@ -175,6 +217,7 @@ CREATE TABLE invoice_track
 	FOREIGN KEY (track_id) REFERENCES track(id)
 );
 
+-- Invoice Album
 CREATE TABLE invoice_album
 (
 	invoice_id INT NOT NULL,
@@ -187,39 +230,14 @@ CREATE TABLE invoice_album
 	FOREIGN KEY (album_id) REFERENCES album(id)
 );
 
-CREATE TABLE survey
-(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	question VARCHAR(255) NOT NULL,
-	answer_a VARCHAR(255) NOT NULL,
-	answer_b VARCHAR(255) NOT NULL,
-	answer_c VARCHAR(255) NOT NULL,
-	answer_d VARCHAR(255) NOT NULL,
-	votes_a INT NOT NULL DEFAULT 0,
-	votes_b INT NOT NULL DEFAULT 0,
-	votes_c INT NOT NULL DEFAULT 0,
-	votes_d INT NOT NULL DEFAULT 0
-);
-
-CREATE TABLE newsfeed
-(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	url VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE advertisement
-(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	ad_path VARCHAR(255) NOT NULL
-);
-
+-- Front Page Settings
 CREATE TABLE front_page_settings
 (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	survey_id INT NOT NULL,
 	newsfeed_id INT NOT NULL,
-	advert_a_id INT NOT NULL,
+	ad_a_id INT NOT NULL,
 	FOREIGN KEY (survey_id) REFERENCES survey(id),
 	FOREIGN KEY (newsfeed_id) REFERENCES newsfeed(id),
-	FOREIGN KEY (advert_A_id) REFERENCES advertisement(id)
+	FOREIGN KEY (ad_a_id) REFERENCES advertisement(id)
 );

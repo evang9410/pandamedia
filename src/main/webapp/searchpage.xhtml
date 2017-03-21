@@ -11,7 +11,8 @@
 
     <ui:define name="page-content">
         <div class="searchResultContainer">
-            <div class="displaySearchResults">
+            <div class="displaySearchResults">      
+                <h2>#{Search.typeSearched}</h2>
                 <!--in case there are tracks in the list, else does not display anything -->
                 <ui:repeat value="#{Search.trackResultsList}" var="t">
                     #{t.title}
@@ -40,6 +41,9 @@
                     #{ar.name}
                     <br></br><br></br>
                 </ui:repeat>
+                
+                <h5>#{Search.notFound}</h5>
+
             </div>
         </div>
     </ui:define>

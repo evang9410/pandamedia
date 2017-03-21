@@ -10,6 +10,7 @@
     <h:head>
         <title>#{msgs.manReportZeroUserTitle}</title>
         <meta name="author" content="Erika Bourque"></meta>
+        <h:outputStylesheet name="reports.css" library="css"/>
     </h:head>
     <h:body>
         #{msgs.manReportZeroUserTitle}
@@ -19,7 +20,13 @@
             end="#{reportDates.endDate}" 
             updateTable="reportTable">
         </pm:reportcalendars>
-        <p:dataTable id="reportTable" value="#{reports.getZeroUsers(reportDates.startDate, reportDates.endDate)}" var="userVar">
+        <p:dataTable styleClass="report-table" 
+                     id="reportTable" 
+                     value="#{reports.getZeroUsers(reportDates.startDate, reportDates.endDate)}" 
+                     var="userVar">
+            <f:facet name="header">
+                #{msgs.detailClientHeader}
+            </f:facet>
             <p:column>
                 <f:facet name="header">#{msgs.idHeader}</f:facet>
                 #{userVar.id}
