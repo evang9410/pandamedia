@@ -45,7 +45,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <h:inputText class="form-control input-sm" id="companyInput" value="#{userBean.shopUser.companyName}"
                                          a:placeholder="#{msgs.companyHeader}"/>
@@ -61,12 +61,12 @@
                         </div>
 
                         <div class="row">
-                            
+
 
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group">
                                     <h:inputSecret class="form-control input-sm" id="confirmPwd" value="#{userBean.confirmPasswd}"
-                                                   required="true" a:placeholder="#{msgs.confirmPasswordHeader}*"/>
+                                                   required="true" a:placeholder="#{msgs.passwordHeader}*"/>
                                     <h:message for="confirmPwd" style="color:red"/>
                                 </div>
                             </div>
@@ -91,7 +91,7 @@
                                 <div class="form-group">
                                     <h:selectOneMenu  class="form-control input-sm" id="provinceListbox" binding="#{temp}" required="true" requiredMessage="#{msgs.requiredFieldMsg}">
                                         <f:selectItems value="#{userAction.provinces}" var="province" itemLabel="#{province.name}"
-                                                        a:placeholder="#{msgs.provinceHeader}*"/>
+                                                       a:placeholder="#{msgs.provinceHeader}*"/>
                                     </h:selectOneMenu>
                                     <h:message for="provinceListbox" style="color:red"/>
                                 </div>
@@ -122,7 +122,18 @@
                             <h:message for="cellPhoneInput" style="color:red"/>
                         </div>
                     </p:panel>
-                    <h:commandButton class="btn btn-info btn-block" id="submitBtn" value="#{msgs.registerBtn}" action="#{userAction.register(temp.value)}"/>
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <h:commandButton class="btn btn-info btn-block" id="loginBtn" value="#{msgs.loginHeader}" action="login.xhtml" immediate="true"/>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <h:commandButton class="btn btn-info btn-block" id="submitBtn" value="#{msgs.registerBtn}" action="#{userAction.register(temp.value)}"/>
+                            </div>
+                        </div>                       
+                    </div>
                 </h:form>
             </div>
         </div>

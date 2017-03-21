@@ -31,8 +31,6 @@ import persistence.entities.ShopUser;
 @Named("userAction")
 @SessionScoped
 public class UserActionBean implements Serializable {
-//    private static transient final java.util.logging.Logger log=
-//            java.util.logging.Logger.getLogger("UserActionBean.class");
 
     @Inject
     private UserActionController userActionController;
@@ -90,6 +88,11 @@ public class UserActionBean implements Serializable {
             currUser = user;
             Logger.getLogger(UserActionBean.class.getName()).log(
                     Level.SEVERE, null, "User created");
+            FacesContext.getCurrentInstance().getExternalContext()
+                    .redirect("./mainpage.xhtml");
+        } catch (IOException ioe) {
+            Logger.getLogger(UserActionBean.class.getName()).log(Level.WARNING, "Error when redirecting: {0}",
+                     ioe.getMessage());
         } catch (Exception ex) {
             FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
                     "bundles.messages", "duplicateEmail", null);
@@ -109,7 +112,7 @@ public class UserActionBean implements Serializable {
 
         byte[] hashRecord = userRecord.getHashedPw();
         byte[] loginPwdHash = pwdHelper.hash(userBean.getConfirmPasswd(),
-                 userRecord.getSalt());
+                userRecord.getSalt());
 
         if (!Arrays.equals(hashRecord, loginPwdHash)) {
             FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
@@ -120,10 +123,10 @@ public class UserActionBean implements Serializable {
             try {
                 currUser = userRecord;
                 FacesContext.getCurrentInstance().getExternalContext()
-                        .redirect("./mainpage.xhtml");
+                        .redirect("mainpage.xhtml");
             } catch (IOException ioe) {
-//               log.log(Level.WARNING,"Error when redirecting: {0}"
-//                       ,ioe.getMessage());
+                Logger.getLogger(UserActionBean.class.getName()).log(Level.WARNING, "Error when redirecting: {0}",
+                         ioe.getMessage());
             }
         }
     }
