@@ -1,4 +1,4 @@
-package converters;
+package com.pandamedia.converters;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +16,7 @@ import persistence.entities.Province;
  *
  * @author Hau Gilles Che
  */
-@Named("ProvinceConverter")
+@Named
 @ApplicationScoped
 public class ProvinceConverter implements Converter {
     @Inject
