@@ -7,7 +7,6 @@ package com.pandamedia.beans;
 
 import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import persistence.entities.Artist;
 

@@ -8,21 +8,30 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway"></link>
 
     <ui:define name="Window title">Search results</ui:define>
-
+    <head>
+        <h:outputStylesheet library="css" name="search_page.css"/>
+    </head>
     <ui:define name="page-content">
-        <div class="searchResultContainer">
+        <div class="container">
             <div class="displaySearchResults">      
                 <h2>#{Search.typeSearched}</h2>
                 <!--in case there are tracks in the list, else does not display anything -->
-                <ui:repeat value="#{Search.trackResultsList}" var="t">
-                    #{t.title}
-                    <br></br>
-                    #{t.costPrice}
-                    <br></br>
-                    #{t.albumId.title}
-                    <br></br><br></br>
-                </ui:repeat>
+                <div class="row">
+                    <ui:repeat value="#{Search.trackResultsList}" var="t">
 
+                        <div class="col-xs-18 col-sm-6 col-md-3">
+                            <div class="thumbnail">
+                                <img src="resources/coverart/#{t.coverArtId.imagePath}"></img>
+                                <div class="caption">
+                                    <h4>#{t.title}</h4>
+                                    <p>#{t.artistId.name}</p>
+                                    <a href="#" class="btn btn-info btn-xs" role="button">Button</a> <a href="#" class="btn btn-default btn-xs" role="button">Button</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </ui:repeat>
+                </div>
                 <!-- ___________________________________________________________________ -->  
                 <br></br>
                 <!--in case there are albums in the list, else does not display anything -->
@@ -41,11 +50,11 @@
                     #{ar.name}
                     <br></br><br></br>
                 </ui:repeat>
-                
-                <h5>#{Search.notFound}</h5>
 
+                <h5>#{Search.notFound}</h5>
             </div>
         </div>
+        <hr/>
     </ui:define>
 </ui:composition>
 
