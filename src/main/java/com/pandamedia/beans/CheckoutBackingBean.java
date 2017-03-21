@@ -14,7 +14,9 @@ import persistence.controllers.InvoiceJpaController;
 import persistence.entities.Album;
 import persistence.entities.Invoice;
 import persistence.entities.InvoiceAlbum;
+import persistence.entities.InvoiceAlbumPK;
 import persistence.entities.InvoiceTrack;
+import persistence.entities.InvoiceTrackPK;
 import persistence.entities.ShopUser;
 import persistence.entities.Track;
 
@@ -30,11 +32,12 @@ public class CheckoutBackingBean implements Serializable {
     private ShoppingCart cart;
 
     @Inject
-    private ShopUser user;
+    private UserActionBean uab;
 
     @Inject
     private InvoiceJpaController invoiceController;
 
+    private ShopUser user;
     private double gst;
     private double hst;
     private double pst;
@@ -48,10 +51,11 @@ public class CheckoutBackingBean implements Serializable {
      */
     @PostConstruct
     public void init() {
-//        gst = cart.getSubTotal() * user.getProvinceId().getGstRate();
-//        pst = cart.getSubTotal() * user.getProvinceId().getPstRate();
-//        hst = cart.getSubTotal() * user.getProvinceId().getHstRate();
-//        total = cart.getSubTotal() + gst + pst + hst;
+        user = uab.getCurrUser();
+        gst = cart.getSubTotal() * user.getProvinceId().getGstRate();
+        pst = cart.getSubTotal() * user.getProvinceId().getPstRate();
+        hst = cart.getSubTotal() * user.getProvinceId().getHstRate();
+        total = cart.getSubTotal() + gst + pst + hst;
     }
 
     /**
@@ -149,13 +153,14 @@ public class CheckoutBackingBean implements Serializable {
         // TODO: verify that finalizePurchase actually works
         // Create the invoice
         Invoice invoice = buildInvoice();
+        invoiceController.create(invoice);
 
         // Setting invoice purchases        
-        invoice.setInvoiceAlbumList(buildInvoiceAlbumList());
-        invoice.setInvoiceTrackList(buildInvoiceTrackList());
+        invoice.setInvoiceAlbumList(buildInvoiceAlbumList(invoice));
+        invoice.setInvoiceTrackList(buildInvoiceTrackList(invoice));
 
         // Persist invoice
-        invoiceController.create(invoice);
+        invoiceController.edit(invoice);
 
         // Emptying the cart of all purchases
         cart.clearCart();
@@ -195,13 +200,17 @@ public class CheckoutBackingBean implements Serializable {
      * @author Erika Bourque
      * @return  The list of InvoiceAlbums
      */
-    private List<InvoiceAlbum> buildInvoiceAlbumList() {
+    private List<InvoiceAlbum> buildInvoiceAlbumList(Invoice invoice) {
         List<InvoiceAlbum> list = new ArrayList<>();
         List<Album> albums = cart.getAlbumsFromCart();
 
         for (int i = 0; i < albums.size(); i++) {
             double finalCost = albums.get(i).getListPrice() - albums.get(i).getSalePrice();
             list.add(new InvoiceAlbum());
+            list.get(i).setInvoiceAlbumPK(new InvoiceAlbumPK());
+            list.get(i).getInvoiceAlbumPK().setAlbumId(albums.get(i).getId());
+            list.get(i).getInvoiceAlbumPK().setInvoiceId(invoice.getId());
+            list.get(i).setInvoice(invoice);
             list.get(i).setAlbum(albums.get(i));
             list.get(i).setFinalPrice(finalCost);
         }
@@ -216,13 +225,17 @@ public class CheckoutBackingBean implements Serializable {
      * @author Erika Bourque
      * @return  The list of InvoiceTracks
      */
-    private List<InvoiceTrack> buildInvoiceTrackList() {
+    private List<InvoiceTrack> buildInvoiceTrackList(Invoice invoice) {
         List<InvoiceTrack> list = new ArrayList<>();
         List<Track> tracks = cart.getTracksFromCart();
 
         for (int i = 0; i < tracks.size(); i++) {
             double finalCost = tracks.get(i).getListPrice() - tracks.get(i).getSalePrice();
             list.add(new InvoiceTrack());
+            list.get(i).setInvoiceTrackPK(new InvoiceTrackPK());
+            list.get(i).getInvoiceTrackPK().setTrackId(tracks.get(i).getId());
+            list.get(i).getInvoiceTrackPK().setInvoiceId(invoice.getId());
+            list.get(i).setInvoice(invoice);
             list.get(i).setTrack(tracks.get(i));
             list.get(i).setFinalPrice(finalCost);
         }

@@ -16,21 +16,23 @@
             <div id="billingInfo">
                 <!-- TODO: make sure this works -->
                 <p:panelGrid>
-                    <p:row>
-                        #{user.user.title} #{user.user.firstName} #{user.user.lastName}
+                    <p:column>
+                        <p:row>
+                        #{userAction.currUser.title} #{userAction.currUser.firstName} #{userAction.currUser.lastName}
                     </p:row>
                     <p:row>
-                        #{user.user.streetAddress}
+                        #{userAction.currUser.streetAddress}
                     </p:row>
                     <p:row>
-                        #{user.user.city}, #{user.user.provinceId.name} #{user.user.postalCode}
+                        #{userAction.currUser.city}, #{userAction.currUser.provinceId.name} #{userAction.currUser.postalCode}
                     </p:row>
                     <p:row>
-                        #{user.user.country}
+                        #{userAction.currUser.country}
                     </p:row>
                     <p:row>
-                        #{user.user.homePhone} #{user.user.cellPhone}
+                        #{userAction.currUser.homePhone} #{userAction.currUser.cellPhone}
                     </p:row>
+                    </p:column>                    
                 </p:panelGrid>               
             </div>
             <div id="orderSummary">
@@ -127,7 +129,7 @@
                         <p:message for="cardYear" styleClass="errorMessage"/>
 
                         <p:commandButton type="submit" ajax="false" value="#{msgs.cancelBtn}" action="cart.xhtml" immediate="true"/>
-                        <p:commandButton type="submit" value="#{msgs.purchaseBtn}" action="index.xhtml" ajax="false"/>                        
+                        <p:commandButton type="submit" value="#{msgs.purchaseBtn}" action="#{checkout.finalizePurchase()}" ajax="false"/>                        
                     </p:panelGrid>
                 </h:form>
             </div>
