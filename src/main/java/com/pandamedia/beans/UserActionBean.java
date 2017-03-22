@@ -91,7 +91,8 @@ public class UserActionBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext()
                     .redirect("mainpage.xhtml");
         } catch (IOException ioe) {
-            Logger.getLogger(UserActionBean.class.getName()).log(Level.WARNING, "Error when redirecting: {0}",
+            Logger.getLogger(UserActionBean.class.getName())
+                    .log(Level.WARNING, "Error when redirecting: {0}",
                      ioe.getMessage());
         } catch (Exception ex) {
             FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
@@ -125,7 +126,8 @@ public class UserActionBean implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext()
                         .redirect("mainpage.xhtml");
             } catch (IOException ioe) {
-                Logger.getLogger(UserActionBean.class.getName()).log(Level.WARNING, "Error when redirecting: {0}",
+                Logger.getLogger(UserActionBean.class.getName())
+                        .log(Level.WARNING, "Error when redirecting: {0}",
                          ioe.getMessage());
             }
         }
@@ -135,7 +137,20 @@ public class UserActionBean implements Serializable {
      * Responsible for login out users.
      */
     public void logout() {
+        //for security purposes, if an admin logout, redirects to index
+        if(currUser.getIsManager() == 1){
+            currUser=null;
+            try{
+                FacesContext.getCurrentInstance().getExternalContext()
+                        .redirect("mainpage.xhtml");
+            }catch(IOException ioe){
+                Logger.getLogger(UserActionBean.class.getName())
+                        .log(Level.WARNING, "Error when redirecting: {0}",
+                         ioe.getMessage());
+            }        
+        }
         currUser = null;
+        
     }
 
     /**
@@ -162,8 +177,6 @@ public class UserActionBean implements Serializable {
      * @param user
      */
     private void setFields(ShopUser user) {
-        //instantiating the class responsible for password security
-        // PasswordHelper pwdHelper = new PasswordHelper();
         String salt = pwdHelper.getSalt();
 
         byte[] hashedPwd = pwdHelper.hash(userBean.getPassword(), salt);
