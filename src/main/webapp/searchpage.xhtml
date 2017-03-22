@@ -13,8 +13,9 @@
     </head>
     <ui:define name="page-content">
         <div class="container">
-            <div class="displaySearchResults">      
+            <div class="displaySearchResults">
                 <h2>#{Search.typeSearched}</h2>
+                <h:form>
                 <!--in case there are tracks in the list, else does not display anything -->
                 <div class="row">
                     <ui:repeat value="#{Search.trackResultsList}" var="t">
@@ -23,9 +24,8 @@
                             <div class="thumbnail">
                                 <img src="resources/coverart/#{t.coverArtId.imagePath}"></img>
                                 <div class="caption">
-                                    <h4>#{t.title}</h4>
+                                    <h:commandLink action="#{trackBacking.trackPage(t)}"><h4>#{t.title}</h4> </h:commandLink>
                                     <p>#{t.artistId.name}</p>
-                                    <a href="#" class="btn btn-info btn-xs" role="button">Button</a> <a href="#" class="btn btn-default btn-xs" role="button">Button</a>
                                 </div>
                             </div>
                         </div>
@@ -36,10 +36,17 @@
                 <br></br>
                 <!--in case there are albums in the list, else does not display anything -->
                 <ui:repeat value="#{Search.albumResultsList}" var="al">
-                    #{al.title}
-                    <br></br>
-                    #{al.numTracks}
-                    <br></br><br></br>
+                    <div class="col-xs-18 col-sm-6 col-md-3">
+                        <div class="thumbnail">
+                            <h:commandLink action="#{albumBacking.albumPage(al)}">
+                            <img src="resources/coverart/#{al.coverArtId.imagePath}"></img>
+                            </h:commandLink>
+                            <div class="caption">
+                                <h:commandLink action="#{albumBacking.albumPage(al)}"><h4>#{al.title}</h4></h:commandLink>
+                                <p>#{al.artistId.name}</p>
+                            </div>
+                        </div>
+                    </div>
                 </ui:repeat>
 
                 <!-- __________________________________________________________________* -->     
@@ -52,6 +59,7 @@
                 </ui:repeat>
 
                 <h5>#{Search.notFound}</h5>
+                </h:form>
             </div>
         </div>
         <hr/>
