@@ -53,17 +53,21 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </a>
         </div>
-        <div class="container">
+        <div class="container" style="width:100%; padding: 0; margin: 0;">
             <div class="row">
-                <div class="browse-wrapper">
-                    <h:link outcome="browsealbums" styleClass="browse-btn-link">
-                        <div class="browse-item" id="browse-albums">
-                            <div class="browse-caption">
-                                <span id="browse-album-caption">Albums</span>
+                <div class="col-md-6">
+                    <div class="browse-wrapper" style="padding: 0; margin:0;">
+                        <h:link outcome="browsealbums" styleClass="browse-btn-link">
+                            <div class="browse-item" id="browse-albums">
+                                <div class="browse-caption">
+                                    <span id="browse-album-caption">Albums</span>
+                                </div>
                             </div>
-                        </div>
-                    </h:link>
-                    <h:link outcome="#" styleClass="browse-btn-link">
+                        </h:link>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h:link outcome="browsealbums" styleClass="browse-btn-link">
                         <div class="browse-item" id="browse-artists">
                             <div class="browse-caption">
                                 <span id="browse-artist-caption">Artists</span>
@@ -73,25 +77,23 @@
                 </div>
             </div>
         </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div id="browse-survey">
-                        <ui:insert name="survey">
-                            <ui:include src="./WEB-INF/sections/survey.xhtml"/>
-                        </ui:insert>
-                    </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div id="browse-survey">
+                    <ui:insert name="survey">
+                        <ui:include src="./WEB-INF/sections/survey.xhtml"/>
+                    </ui:insert>
                 </div>
-                <div class="col-md-6">
-                    <div id="browse-rss">
-                        <ui:insert name="rss">
-                            <ui:include src="./WEB-INF/sections/rssFeed.xhtml"/>
-                        </ui:insert>
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <div id="browse-rss">
+                    <ui:insert name="rss">
+                        <ui:include src="./WEB-INF/sections/rssFeed.xhtml"/>
+                    </ui:insert>
                 </div>
             </div>
         </div>
-
 
         <!-- +white div to log in/survey-->
     </ui:define>

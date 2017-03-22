@@ -70,8 +70,8 @@ h1{
 
 #browse-albums{
     display: inline-block;
-    width: 50%;
-    height: 100%;
+    width: 100%;
+    height: calc(50vh - 70px);
     float: left;
     
     background: url(../resources/images/image6.jpg) black no-repeat center center; 
@@ -88,15 +88,14 @@ h1{
 }
 #browse-rss{
     display: inline-block;
-    width: 100%;
     max-height: 50vh;
     overflow: auto;
 }
 
 #browse-artists{
-    height: 100%;
+    height: calc(50vh - 70px);
     display: inline-block;
-    width: 50%;
+    width: 100%;
     
     background: url(../resources/images/image3.jpg) black no-repeat center center; 
     -webkit-background-size: cover;
@@ -116,8 +115,6 @@ h1{
 }
 
 .browse-caption{
-    
-    
     position: relative;
     top: 65%;
     transform: translateY(-35%);
@@ -126,4 +123,9 @@ h1{
     font-weight: bold;
     font-size: 48px;
     color: rgba(255, 255, 255, .87);
+}
+
+.container-fix{
+    margin: 0;
+    padding: 0;
 }

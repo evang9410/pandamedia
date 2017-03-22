@@ -11,7 +11,9 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import persistence.controllers.FrontPageSettingsJpaController;
 import persistence.controllers.SurveyActionController;
+import persistence.entities.FrontPageSettings;
 
 /**
  *
@@ -31,13 +33,16 @@ public class SurveyBean implements Serializable {
     private SurveyJpaController surveys;
     @Inject
     private SurveyActionController surveyActionController;
+    @Inject
+    private FrontPageSettingsJpaController fpsController;
    
     
     @PostConstruct
     public void init(){
-        survey = surveyActionController.getCurrentSurvey();
+        //survey = surveyActionController.getCurrentSurvey();
         //survey=surveys.findSurvey(1);
-    
+        FrontPageSettings fps = fpsController.findFrontPageSettings(1);
+        survey = fps.getSurveyId();
         createAnswerList();
         userAnswered=false;
         showOptions=true;
