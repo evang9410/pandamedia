@@ -32,8 +32,18 @@
                 </div>
             </div>            
         </div>
-        <b:modal id="write-review-modal" title="#{msgs.reviewtitle} #{trackBacking.track.title}" styleClass="modalPseudoClass">
+        <b:modal id="write-review-modal" title="#{msgs.reviewtitle}" styleClass="modalPseudoClass">
             <div class="container">
+                <div class="row">
+                    <div class="col-md-2">
+                        <img src="resources/coverart/#{trackBacking.track.coverArtId.imagePath}" style="height: 150px; width: 150px;"/>
+                    </div>
+                    <div class="col-md-4" style="text-align: left;">
+                        <h3>#{trackBacking.track.title}</h3>
+                        <h4>#{trackBacking.track.artistId.name}</h4>
+                        <h7>#{trackBacking.track.albumId.recordingLabelId.name}</h7>
+                    </div>
+                </div>
                 <div class="col-md-5">
                     <div class="form-area">  
                         <h:form role="form" id="review-form">
@@ -75,36 +85,35 @@
 
         <div class="container">
             <div class="row">
-                <button id="btrigger" class="btn btn-info btn-lg" data-target="#write-review-modal" data-toggle="modal">#{msgs.addreview}</button>
-                <b:button value="Trigger (JSF passthrough)" look="warning" p:data-target="#write-review-modal" p:data-toggle="modal" onclick="return false;" size="lg"/>
                 <b:column span="3">
-        <b:button value="Trigger (JavaScript)" look="success" onclick="$('.modalPseudoClass').modal();return false;" size="lg"/>
-    </b:column>
+                    <b:button value="Write review" look="primary" onclick="$('.modalPseudoClass').modal();return false;" size="lg"/>
+                </b:column>
             </div>
-        </div>
 
-        <div style="width: 50vw; margin-left: 5%">
-            <section class="comments">
-                <ui:repeat value="#{trackBacking.approvedReviews}" var="review">
-                    <article class="comment">
-                        <div class="comment-body">
 
-                            <div class="text">
-                                <p>#{review.reviewContent}</p>
+            <div class="row" style="width: 50vw; margin-left: 5%">
+                <section class="comments">
+                    <ui:repeat value="#{trackBacking.approvedReviews}" var="review">
+                        <article class="comment">
+                            <div class="comment-body">
+
+                                <div class="text">
+                                    <p>#{review.reviewContent}</p>
+                                </div>
+                                <p class="attribution">
+                                    <ui:repeat value="#{trackBacking.getStarsList(review.rating)}" var="stars">
+                                        <i class="fa fa-star" aria-hidden="true" style="color:gold; font-size: 32px"></i>
+                                    </ui:repeat>
+                                    by #{review.userId.firstName} on <h:outputText value="#{review.dateEntered.time}"> 
+                                        <f:convertDateTime pattern="MMM dd, yyyy"/> 
+                                    </h:outputText>                                
+                                </p>
                             </div>
-                            <p class="attribution">
-                                <ui:repeat value="#{trackBacking.getStarsList(review.rating)}" var="stars">
-                                    <i class="fa fa-star" aria-hidden="true" style="color:gold; font-size: 32px"></i>
-                                </ui:repeat>
-                                by #{review.userId.firstName} on <h:outputText value="#{review.dateEntered.time}"> 
-                                    <f:convertDateTime pattern="MMM dd, yyyy"/> 
-                                </h:outputText>                                
-                            </p>
-                        </div>
-                    </article>
-                    <hr/>
-                </ui:repeat>
-            </section>
+                        </article>
+                        <hr/>
+                    </ui:repeat>
+                </section>
+            </div>
         </div>
         <script>
             $(document).ready(function () {
