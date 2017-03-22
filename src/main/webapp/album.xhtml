@@ -56,9 +56,8 @@
                             <th scope="row">#{tracks.albumTrackNumber}</th>
                             <td>
                                 <h:form>
-                                    <h:commandLink action="#{trackBacking.trackPage(tracks)}">
-                                        #{tracks.title}
-                                    </h:commandLink>                               
+                                    <h:commandButton action="#{trackBacking.trackPage(tracks)}" value="#{tracks.title}"/>
+                                                             
                                 </h:form>    
                             </td>                            
                             <td>#{tracks.playLength}</td>

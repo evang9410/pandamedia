@@ -67,7 +67,8 @@ public class AlbumBackingBean implements Serializable{
     @PostConstruct
     public void init()
     {
-        this.albums = albumController.findAlbumEntities();     
+        this.albums = albumController.findAlbumEntities(); 
+        //this.album = (Album) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("album");
     }
     
     /**
@@ -150,6 +151,8 @@ public class AlbumBackingBean implements Serializable{
      */
     public String albumPage(Album a){
         this.album = a;
+        System.out.println("hehe");
+        //FacesContext.getCurrentInstance().getExternalContext().getFlash().put("album", album);
         return "album";
     }   
     

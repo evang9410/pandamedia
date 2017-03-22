@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -57,6 +59,7 @@ public class TrackBackingBean implements Serializable{
     public void init()
     {
         this.tracks = trackController.findTrackEntities();     
+        //this.track = (Track) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("track");
     }
     
     /**
@@ -125,7 +128,9 @@ public class TrackBackingBean implements Serializable{
      * @return 
      */
     public String trackPage(Track t){
+        System.out.println("&&&&&&&&&&&&&hehe");
         track = t;
+        //FacesContext.getCurrentInstance().getExternalContext().getFlash().put("track", track);
         return "track";
     }
 
