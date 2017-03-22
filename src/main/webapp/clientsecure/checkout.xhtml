@@ -10,29 +10,17 @@
     <h:head>
         <title>#{msgs.finalizationTitle}</title>
         <meta name="author" content="Erika Bourque"/>
+        <h:outputStylesheet name="checkout.css" library="css"/>
     </h:head>
     <body>
         <div id="content">
             <div id="billingInfo">
-                <!-- TODO: make sure this works -->
-                <p:panelGrid>
-                    <p:column>
-                        <p:row>
-                        #{userAction.currUser.title} #{userAction.currUser.firstName} #{userAction.currUser.lastName}
-                    </p:row>
-                    <p:row>
-                        #{userAction.currUser.streetAddress}
-                    </p:row>
-                    <p:row>
-                        #{userAction.currUser.city}, #{userAction.currUser.provinceId.name} #{userAction.currUser.postalCode}
-                    </p:row>
-                    <p:row>
-                        #{userAction.currUser.country}
-                    </p:row>
-                    <p:row>
-                        #{userAction.currUser.homePhone} #{userAction.currUser.cellPhone}
-                    </p:row>
-                    </p:column>                    
+                <p:panelGrid columns="1">
+                    <p:outputLabel>#{userAction.currUser.title} #{userAction.currUser.firstName} #{userAction.currUser.lastName}</p:outputLabel>                    
+                    <p:outputLabel>#{userAction.currUser.streetAddress}</p:outputLabel>
+                    <p:outputLabel>#{userAction.currUser.city}, #{userAction.currUser.provinceId.name} #{userAction.currUser.postalCode}</p:outputLabel>
+                    <p:outputLabel>#{userAction.currUser.country}</p:outputLabel>
+                    <p:outputLabel>#{userAction.currUser.homePhone} #{userAction.currUser.cellPhone}</p:outputLabel>                  
                 </p:panelGrid>               
             </div>
             <div id="orderSummary">
@@ -66,32 +54,26 @@
                             #{album.listPrice - album.salePrice}
                     </p:column>                      
                 </p:dataTable>
-                <p:panelGrid>
-                    <p:row>
-                        <p:column>#{msgs.subtotalHeader}</p:column>
-                        <p:column>#{cart.subTotal}</p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>#{msgs.gstLbl}</p:column>
-                        <p:column>#{checkout.gst}</p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>#{msgs.pstLbl}</p:column>
-                        <p:column>#{checkout.pst}</p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>#{msgs.hstLbl}</p:column>
-                        <p:column>#{checkout.hst}</p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>#{msgs.totalHeader}</p:column>
-                        <p:column>#{checkout.total}</p:column>
-                    </p:row>
+                <p:panelGrid columnClasses="labels, output" columns="2">
+                    <p:outputLabel value="#{msgs.subtotalHeader}" />
+                    <p:outputLabel value="#{cart.subTotal}" />
+
+                    <p:outputLabel value="#{msgs.gstLbl}" />
+                    <p:outputLabel value="#{checkout.gst}" />
+                    
+                    <p:outputLabel value="#{msgs.pstLbl}" />
+                    <p:outputLabel value="#{checkout.pst}" />
+                    
+                    <p:outputLabel value="#{msgs.hstLbl}" />
+                    <p:outputLabel value="#{checkout.hst}" />
+                    
+                    <p:outputLabel value="#{msgs.totalHeader}" />
+                    <p:outputLabel value="#{checkout.total}" />
                 </p:panelGrid>
             </div>
             <div id="creditCardDetails">
                 <h:form>
-                    <p:panelGrid columns="3">
+                    <p:panelGrid columns="3" columnClasses="labels, input, errors">
                         <p:outputLabel for="cardType" value="#{msgs.cardTypeLbl}" />
                         <p:selectOneMenu id="cardType" required="true" value="#{creditCard.cardType}">
                             <f:selectItem itemLabel="Visa" itemValue="Visa"/>
