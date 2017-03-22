@@ -8,7 +8,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import persistence.controllers.FrontPageSettingsJpaController;
 import persistence.controllers.NewsfeedJpaController;
+import persistence.entities.FrontPageSettings;
 import persistence.entities.Newsfeed;
 
 /**
@@ -22,6 +24,8 @@ public class RSSFeedBackingBean implements Serializable{
     
     @Inject
     private NewsfeedJpaController newsFeedController;
+    @Inject
+    private FrontPageSettingsJpaController fpsController;
     private Newsfeed newsFeed;
     @PersistenceContext
     private EntityManager em;
@@ -74,9 +78,7 @@ public class RSSFeedBackingBean implements Serializable{
         catch(Exception e)
         {
             System.out.println(e.getMessage());
-        }
-        RSSFeedManager feedManager = new RSSFeedManager();
-        feedManager.setUrl(newsFeed.getUrl());
+        }       
         
         this.newsFeed = null;
         return null;
@@ -115,8 +117,18 @@ public class RSSFeedBackingBean implements Serializable{
     public String select(Integer id)
     {
         newsFeed = newsFeedController.findNewsfeed(id);
-        RSSFeedManager feedManager = new RSSFeedManager();
-        feedManager.setUrl(newsFeed.getUrl());
+        
+        FrontPageSettings fps = fpsController.findFrontPageSettings(1);
+        fps.setNewsfeedId(newsFeed);
+        
+        try
+        {
+            fpsController.edit(fps);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
         
         this.newsFeed = null;
         return null;

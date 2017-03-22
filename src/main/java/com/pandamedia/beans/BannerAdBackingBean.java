@@ -9,7 +9,9 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import persistence.controllers.AdvertisementJpaController;
+import persistence.controllers.FrontPageSettingsJpaController;
 import persistence.entities.Advertisement;
+import persistence.entities.FrontPageSettings;
 
 /**
  * This class will be used as the banner ad backing bean. It is used as a means
@@ -22,9 +24,12 @@ public class BannerAdBackingBean implements Serializable {
     
     @Inject
     private AdvertisementJpaController advertisementController;
+    @Inject
+    private FrontPageSettingsJpaController fpsController;
     private Advertisement advertisement;
     @PersistenceContext
     private EntityManager em;
+   
     
     /**
      * This method will return an ad if it exists already. Otherwise, it 
@@ -74,6 +79,7 @@ public class BannerAdBackingBean implements Serializable {
             System.out.println(e.getMessage());
         }
         
+        this.advertisement = null;
         return null;
     }
     
@@ -107,6 +113,21 @@ public class BannerAdBackingBean implements Serializable {
     public String select(Integer id)
     {
         advertisement = advertisementController.findAdvertisement(id);
+        
+        FrontPageSettings fps = fpsController.findFrontPageSettings(1);
+        fps.setAdAId(advertisement);
+        
+        try
+        {
+            fpsController.edit(fps);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        this.advertisement = null;
+        
         return null;
     }
     

@@ -13,31 +13,37 @@
                 <h1><h:outputText value="#{msgs.edit}"/></h1>
                 <p:panelGrid columns="2">
                     <p:outputLabel value="#{msgs.title}" for="title" />
-                    <p:inputText id="title" value="#{trackBacking.track.title}" title="Title" required="true" requiredMessage="The Title field is required."/>
+                    <p:inputText id="title" value="#{trackBacking.track.title}" title="Title" required="true" requiredMessage="The Title field is required.">
+                        <f:validateLength minimum="1" maximum="255" />
+                    </p:inputText>                 
                     <p:outputLabel value="#{msgs.releaseDate}" for="releaseDate" />
-                    <p:inputText id="releaseDate" value="#{trackBacking.track.releaseDate}" title="ReleaseDate" required="true" requiredMessage="The ReleaseDate field is required.">
+                    <p:inputText id="releaseDate" validator="#{dateValidation.validate}" value="#{trackBacking.track.releaseDate}" title="ReleaseDate" required="true" requiredMessage="The ReleaseDate field is required.">
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </p:inputText>
                     <p:outputLabel value="#{msgs.playLength}" for="playLength" />
-                    <p:inputText id="playLength" value="#{trackBacking.track.playLength}" title="PlayLength" required="true" requiredMessage="The PlayLength field is required."/>
-                    <p:outputLabel value="#{msgs.albumTrackNumber}" for="albumTrackNumber" />
-                    <p:inputText id="albumTrackNumber" value="#{trackBacking.track.albumTrackNumber}" title="AlbumTrackNumber" required="true" requiredMessage="The AlbumTrackNumber field is required."/>
+                    <p:inputText id="playLength" validator="#{playLengthValidation.validate}" value="#{trackBacking.track.playLength}" title="PlayLength" required="true" requiredMessage="The PlayLength field is required."/>
                     <p:outputLabel value="#{msgs.dateEntered}" for="dateEntered" />
-                    <p:inputText id="dateEntered" value="#{trackBacking.track.dateEntered}" title="DateEntered" required="true" requiredMessage="The DateEntered field is required.">
+                    <p:inputText id="dateEntered" validator="#{dateValidation.validate}" value="#{trackBacking.track.dateEntered}" title="DateEntered" required="true" requiredMessage="The DateEntered field is required.">
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </p:inputText>
                     <p:outputLabel value="#{msgs.partOfAlbum}" for="partOfAlbum" />
-                    <p:inputText id="partOfAlbum" value="#{trackBacking.track.partOfAlbum}" title="PartOfAlbum" required="true" requiredMessage="The PartOfAlbum field is required."/>
+                    <p:inputText id="partOfAlbum" value="#{trackBacking.track.partOfAlbum}" title="PartOfAlbum" required="true" requiredMessage="The PartOfAlbum field is required.">
+                        <f:validateLongRange minimum="0" maximum="1" />
+                    </p:inputText>
+                    <p:outputLabel value="#{msgs.albumTrackNumber}" for="albumTrackNumber" />
+                    <p:inputText id="albumTrackNumber" validator="#{numberValidation.validate}" value="#{trackBacking.track.albumTrackNumber}" title="AlbumTrackNumber" required="true" requiredMessage="The AlbumTrackNumber field is required."/>
                     <p:outputLabel value="#{msgs.costPrice}" for="costPrice" />
-                    <p:inputText id="costPrice" value="#{trackBacking.track.costPrice}" title="CostPrice" required="true" requiredMessage="The CostPrice field is required."/>
+                    <p:inputText id="costPrice" validator="#{pricesValidation.validate}" value="#{trackBacking.track.costPrice}" title="CostPrice" required="true" requiredMessage="The CostPrice field is required."/>
                     <p:outputLabel value="#{msgs.listPrice}" for="listPrice" />
-                    <p:inputText id="listPrice" value="#{trackBacking.track.listPrice}" title="ListPrice" required="true" requiredMessage="The ListPrice field is required."/>
-                    <p:outputLabel value="#{msgs.salePrice}" for="salePrice" />
-                    <p:inputText id="salePrice" value="#{trackBacking.track.salePrice}" title="SalePrice" required="true" requiredMessage="The SalePrice field is required."/>
+                    <p:inputText id="listPrice" validator="#{pricesValidation.validate}" value="#{trackBacking.track.listPrice}" title="ListPrice" required="true" requiredMessage="The ListPrice field is required."/>
+                    <p:outputLabel value="#{msgs.salePrice}" for="salePriceTrack" />
+                    <p:inputText id="salePriceTrack" validator="#{salePriceValidation.validate}" value="#{trackBacking.track.salePrice}" title="SalePrice" required="true" requiredMessage="The SalePrice field is required."/>
                     <p:outputLabel value="#{msgs.removalStatus}" for="removalStatus" />
-                    <p:inputText id="removalStatus" value="#{trackBacking.track.removalStatus}" title="RemovalStatus" required="true" requiredMessage="The RemovalStatus field is required."/>
+                    <p:inputText id="removalStatus" value="#{trackBacking.track.removalStatus}" title="RemovalStatus" required="true" requiredMessage="The RemovalStatus field is required.">
+                        <f:validateLongRange minimum="0" maximum="1" />
+                    </p:inputText>
                     <p:outputLabel value="#{msgs.removalDate}" for="removalDate" />
-                    <p:inputText id="removalDate" value="#{trackBacking.track.removalDate}" title="RemovalDate" >
+                    <p:inputText id="removalDate" validator="#{removalDateValidation.validate}" value="#{trackBacking.track.removalDate}" title="RemovalDate" >
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </p:inputText>
                     <p:outputLabel value="#{msgs.albumTitle}" for="albumId" />
@@ -64,7 +70,12 @@
                 <p:commandButton action="#{trackBacking.edit()}" value="#{msgs.edit}"/>
                 <p:commandButton action="#{trackBacking.back()}" value="#{msgs.back}" />
             </h:form>
-
+        <p:outputPanel autoUpdate="true">
+            <p:dialog id="msgDialog" widgetVar="messageDialog" modal="true"
+                      visible="#{facesContext.validationFailed}">
+                <p:messages id="messagesInDialog" />
+            </p:dialog>
+        </p:outputPanel>
         </f:view>
 
     </h:body>

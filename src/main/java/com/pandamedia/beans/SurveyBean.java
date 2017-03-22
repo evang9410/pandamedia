@@ -10,6 +10,8 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import persistence.controllers.FrontPageSettingsJpaController;
+import persistence.entities.FrontPageSettings;
 
 
 /**
@@ -20,6 +22,7 @@ import javax.inject.Named;
 @Named("surveyBean")
 @SessionScoped
 public class SurveyBean implements Serializable {
+
     private int surveyId=1;
     private String userChoice;
     private Survey survey;
@@ -27,6 +30,8 @@ public class SurveyBean implements Serializable {
     private boolean userAnswered;
     private boolean showOptions;
     
+    @Inject
+    private FrontPageSettingsJpaController fpsController;
     @Inject
     private SurveyJpaController surveys;
    
@@ -89,6 +94,7 @@ public class SurveyBean implements Serializable {
         {
             System.out.println(e.getMessage());
         }
+        this.survey = null;
         return null;
     }
     
@@ -123,6 +129,20 @@ public class SurveyBean implements Serializable {
     public String select(Integer id)
     {
         survey = surveys.findSurvey(id);
+        
+        FrontPageSettings fps = fpsController.findFrontPageSettings(1);
+        fps.setSurveyId(survey);
+        
+        try
+        {
+            fpsController.edit(fps);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        this.survey = null;
         return null;
     }
     

@@ -12,12 +12,20 @@
             <h:form>
                 <h1><h:outputText value="#{msgs.edit}"/></h1>
                 <p:panelGrid columns="2">
+                    <p:outputLabel id="listPriceLabel" value="#{msgs.listPrice}" />
+                    <p:outputLabel id="listPrice" value="#{trackBacking.track.listPrice}" />
                     <p:outputLabel value="#{msgs.salePrice}" for="salePrice" />
-                    <p:inputText id="salePrice" value="#{trackBacking.track.salePrice}" title="SalePrice" required="true" requiredMessage="The SalePrice field is required."/>
+                    <p:inputText validator="#{salePriceValidation.validate}" id="salePrice" value="#{trackBacking.track.salePrice}" title="SalePrice" required="true" requiredMessage="The SalePrice field is required."/>
                 </p:panelGrid>
                 <p:commandButton action="#{trackBacking.editSales()}" value="#{msgs.edit}"/>
                 <p:commandButton action="#{trackBacking.backSales()}" value="#{msgs.back}" />
             </h:form>
+        <p:outputPanel autoUpdate="true">
+            <p:dialog id="msgDialog" widgetVar="messageDialog" modal="true"
+                      visible="#{facesContext.validationFailed}">
+                <p:messages id="messagesInDialog" />
+            </p:dialog>
+        </p:outputPanel>
         </f:view>
     </h:body>
 </html>
