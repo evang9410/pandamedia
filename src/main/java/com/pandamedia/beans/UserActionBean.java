@@ -89,7 +89,7 @@ public class UserActionBean implements Serializable {
             Logger.getLogger(UserActionBean.class.getName()).log(
                     Level.SEVERE, null, "User created");
             FacesContext.getCurrentInstance().getExternalContext()
-                    .redirect("./mainpage.xhtml");
+                    .redirect("mainpage.xhtml");
         } catch (IOException ioe) {
             Logger.getLogger(UserActionBean.class.getName()).log(Level.WARNING, "Error when redirecting: {0}",
                      ioe.getMessage());
@@ -111,7 +111,7 @@ public class UserActionBean implements Serializable {
                 currUser.getEmail());
 
         byte[] hashRecord = userRecord.getHashedPw();
-        byte[] loginPwdHash = pwdHelper.hash(userBean.getConfirmPasswd(),
+        byte[] loginPwdHash = pwdHelper.hash(userBean.getPassword(),
                 userRecord.getSalt());
 
         if (!Arrays.equals(hashRecord, loginPwdHash)) {
@@ -166,7 +166,7 @@ public class UserActionBean implements Serializable {
         // PasswordHelper pwdHelper = new PasswordHelper();
         String salt = pwdHelper.getSalt();
 
-        byte[] hashedPwd = pwdHelper.hash(userBean.getConfirmPasswd(), salt);
+        byte[] hashedPwd = pwdHelper.hash(userBean.getPassword(), salt);
 
         user.setSalt(salt);
         user.setHashedPw(hashedPwd);
