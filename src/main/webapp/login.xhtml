@@ -35,7 +35,10 @@
                     </p:panel>
                     <h:commandButton class="btn btn-info btn-block" id="submitBtn"
                                      value="#{msgs.loginHeader}" action="#{userAction.login()}" />
+                    
                 </h:form>
+                <h:button class="btn btn-danger btn-block" value="Register" outcome="registration"/>
+                
                 <h:message for="loginForm" style="color:red"/>
             </div>
         </div>
