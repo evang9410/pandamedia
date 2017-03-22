@@ -90,6 +90,8 @@ public class UserActionBean implements Serializable {
             currUser = user;
             Logger.getLogger(UserActionBean.class.getName()).log(
                     Level.SEVERE, null, "User created");
+            FacesContext.getCurrentInstance().getExternalContext()
+                        .redirect("./mainpage.xhtml");
         } catch (Exception ex) {
             FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
                     "bundles.messages", "duplicateEmail", null);
