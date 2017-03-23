@@ -89,7 +89,6 @@ public class UserActionBean implements Serializable {
             Logger.getLogger(UserActionBean.class.getName()).log(
                     Level.SEVERE, null, "User created");
             FacesContext.getCurrentInstance().getExternalContext()
-
                     .redirect("mainpage.xhtml");
         } catch (IOException ioe) {
             Logger.getLogger(UserActionBean.class.getName())
