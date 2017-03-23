@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:b="http://bootsfaces.net/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:jsf="http://xmlns.jcp.org/jsf"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>Shopping cart</title>
-        <h:outputStylesheet name="css/bootstrap.css"/>
+<ui:composition template="/WEB-INF/templates/masterTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:p="http://primefaces.org/ui">
+    
+    <ui:define name="WindowTitle">
+        Cart | Pandamedia
+    </ui:define>
+    <ui:define name="css">
         <h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <meta name="author" content="Evangelo Glicakis"/>
-        <!-- probably the most disgusting use of tables i've ever done. I'm truley sorry. -->
-    </h:head>
-    <h:body>
+    </ui:define>
+    <ui:define name="page-content">        
         <div class="container">
             <div class="row">
                 <h:panelGroup rendered="#{cart.isCartEmpty}">
@@ -142,7 +136,7 @@ and open the template in the editor.
                                 </td>
                                 <td>
                                     <h:form>
-                                        <b:commandButton look="success" value="Checkout" icon-awesome="credit-card" action="#{userAction.redirectUser(finalization)}"/>
+                                        <b:commandButton look="success" value="Checkout" icon-awesome="credit-card" action="#{userAction.redirectUser('finalization')}"/>
                                     </h:form>
                                 </td>
                             </tr>
@@ -151,5 +145,5 @@ and open the template in the editor.
                 </div>
             </div>
         </div>
-    </h:body>
-</html>
+    </ui:define>
+</ui:composition>
