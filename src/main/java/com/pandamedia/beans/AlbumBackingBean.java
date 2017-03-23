@@ -130,7 +130,7 @@ public class AlbumBackingBean implements Serializable{
         query.orderBy(cb.asc(cb.sum(invoiceAlbumJoin.get(InvoiceAlbum_.finalPrice))));
         
         List<Album> albums = new ArrayList();
-        TypedQuery<Object[]> typedQuery = em.createQuery(query);
+        TypedQuery<Object[]> typedQuery = em.createQuery(query).setMaxResults(6);
         List<Object[]> l = typedQuery.getResultList();
         for(Object[] o: l){
             System.out.println(((Album)o[1]).getTitle());
