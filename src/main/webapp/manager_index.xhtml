@@ -17,9 +17,11 @@
             <ui:include src="./WEB-INF/sections/manager_menu.xhtml"/>
         </div>
         <f:view>
-            <h:outputLink value="AlbumFunctionality/addAlbum.xhtml">#{msgs.addAlbum}</h:outputLink>
+<!--            <h:link value="AlbumFunctionality/addAlbum.xhtml">#{msgs.addAlbum}</h:outputLink>-->
+            <h:link value="#{msgs.addAlbum}" outcome="AlbumFunctionality/addAlbum"/>
             <br/>
-            <h:outputLink value="TrackFunctionality/addTrack.xhtml">#{msgs.addTrack}</h:outputLink>
+<!--            <h:outputLink value="TrackFunctionality/addTrack.xhtml">#{msgs.addTrack}</h:outputLink>-->
+            <h:link value="#{msgs.addTrack}" outcome="TrackFunctionality/addTrack"/>
             <h:form id="albumFormID">
                 <h1><h:outputText value="#{msgs.albums}"/></h1>
                 <p:dataTable id="albumTable" value="#{albumBacking.all}" widgetVar="albumTable" filteredValue="#{albumBacking.filteredAlbums}"  var="item" paginator="true" rows="5">
