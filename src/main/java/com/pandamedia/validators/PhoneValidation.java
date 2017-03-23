@@ -22,7 +22,6 @@ public class PhoneValidation implements Validator {
     public void validate(FacesContext context, UIComponent component,
             Object value) {
         String cellNum = (String) value;
-        System.out.println(cellNum);
         if (cellNum != null && cellNum.length() != 0)
          if(!cellNum.matches("^\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{3})[-. )]*(\\d{3})[-. ]*(\\d{4})(?: *x(\\d+))?\\s*$"))
             throw new ValidatorException(new FacesMessage("Invalid number"));
