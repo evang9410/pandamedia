@@ -31,8 +31,6 @@ import persistence.entities.ShopUser;
 @Named("userAction")
 @SessionScoped
 public class UserActionBean implements Serializable {
-//    private static transient final java.util.logging.Logger log=
-//            java.util.logging.Logger.getLogger("UserActionBean.class");
 
     @Inject
     private UserActionController userActionController;
@@ -91,7 +89,13 @@ public class UserActionBean implements Serializable {
             Logger.getLogger(UserActionBean.class.getName()).log(
                     Level.SEVERE, null, "User created");
             FacesContext.getCurrentInstance().getExternalContext()
-                        .redirect("./mainpage.xhtml");
+
+                    .redirect("mainpage.xhtml");
+        } catch (IOException ioe) {
+            Logger.getLogger(UserActionBean.class.getName())
+                    .log(Level.WARNING, "Error when redirecting: {0}",
+                            ioe.getMessage());
+
         } catch (Exception ex) {
             FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
                     "bundles.messages", "duplicateEmail", null);
@@ -108,33 +112,53 @@ public class UserActionBean implements Serializable {
         currUser = userBean.getShopUser();
         ShopUser userRecord = userActionController.findUserByEmail(
                 currUser.getEmail());
-
-        byte[] hashRecord = userRecord.getHashedPw();
-        byte[] loginPwdHash = pwdHelper.hash(userBean.getConfirmPasswd(),
-                 userRecord.getSalt());
-
-        if (!Arrays.equals(hashRecord, loginPwdHash)) {
+        if (userRecord == null) {
             FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
-                    "bundles.messages", "invalidEmailOrPwd", null);
+                    "bundles.messages", "duplicateEmail", null);
             FacesContext.getCurrentInstance().addMessage("loginForm", msg);
-            currUser = null;
         } else {
-            try {
-                currUser = userRecord;
-                FacesContext.getCurrentInstance().getExternalContext()
-                        .redirect("./mainpage.xhtml");
-            } catch (IOException ioe) {
-//               log.log(Level.WARNING,"Error when redirecting: {0}"
-//                       ,ioe.getMessage());
+            byte[] hashRecord = userRecord.getHashedPw();
+            byte[] loginPwdHash = pwdHelper.hash(userBean.getPassword(),
+                    userRecord.getSalt());
+
+            if (!Arrays.equals(hashRecord, loginPwdHash)) {
+                FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
+                        "bundles.messages", "invalidEmailOrPwd", null);
+                FacesContext.getCurrentInstance().addMessage("loginForm", msg);
+                currUser = null;
+            } else {
+                try {
+                    currUser = userRecord;
+                    FacesContext.getCurrentInstance().getExternalContext()
+                            .redirect("mainpage.xhtml");
+                } catch (IOException ioe) {
+                    Logger.getLogger(UserActionBean.class.getName())
+                            .log(Level.WARNING, "Error when redirecting: {0}",
+                                    ioe.getMessage());
+                }
             }
         }
+
     }
 
     /**
      * Responsible for login out users.
      */
     public void logout() {
+        //for security purposes, if an admin logout, redirects to index
+        if (currUser.getIsManager() == 1) {
+            currUser = null;
+            try {
+                FacesContext.getCurrentInstance().getExternalContext()
+                        .redirect("mainpage.xhtml");
+            } catch (IOException ioe) {
+                Logger.getLogger(UserActionBean.class.getName())
+                        .log(Level.WARNING, "Error when redirecting: {0}",
+                                ioe.getMessage());
+            }
+        }
         currUser = null;
+
     }
 
     /**
@@ -161,11 +185,9 @@ public class UserActionBean implements Serializable {
      * @param user
      */
     private void setFields(ShopUser user) {
-        //instantiating the class responsible for password security
-        // PasswordHelper pwdHelper = new PasswordHelper();
         String salt = pwdHelper.getSalt();
 
-        byte[] hashedPwd = pwdHelper.hash(userBean.getConfirmPasswd(), salt);
+        byte[] hashedPwd = pwdHelper.hash(userBean.getPassword(), salt);
 
         user.setSalt(salt);
         user.setHashedPw(hashedPwd);
