@@ -98,7 +98,7 @@ CREATE TABLE `newsfeed` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `newsfeed` WRITE;
-INSERT INTO `newsfeed` VALUES (1,'bob');
+INSERT INTO `newsfeed` VALUES (1,'http://rss.cbc.ca/lineup/politics.xml');
 UNLOCK TABLES;
 
 CREATE TABLE `province` (
