@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet library="css" name="bootstrap.css"/>
+    </h:head>
+    <h:body>
+        <div class="container">
+            <div class="panel-heading">
+            </div>
+            <div class="panel-body">
+                <h:form id="loginForm">
+                    <p:panel id="loginPanel" header="#{msgs.loginHeader}" class="panel-title">
+                        <div class="form-group">
+                            <h:inputText class="form-control input-sm" id="emailInput" 
+                                         value="#{userBean.shopUser.email}" 
+                                         a:placeholder="#{msgs.emailHeader}" required="true"
+                                         requiredMessage="#{msgs.requiredFieldMsg}"
+                                         validator="#{userAction.validateEmail}">
+                                <f:ajax event="valueChange" render="emailError"/>
+                            </h:inputText>
+                            <h:message id="emailError" for="emailInput" style="color:red"/>
+                        </div>
+                        <div class="form-group">
+                            <h:inputSecret class="form-control input-sm" id="passwordInput"
+                                           value="#{userBean.password}"
+                                           a:placeholder="#{msgs.passwordHeader}" required="true"
+                                           requiredMessage="#{msgs.requiredFieldMsg}"/>
+                            <h:message for="passwordInput" style="code:red"/>
+                        </div>
+                        <h:message for="loginForm" style="color:red"/>
+                    </p:panel>
+
+                    <h:commandButton class="btn btn-info btn-block" id="submitBtn"
+                                     value="#{msgs.loginHeader}" action="#{userAction.login()}" />
+                    
+                </h:form>
+                <h:button class="btn btn-danger btn-block" value="Register" outcome="registration"/>
+                
+                <h:message for="loginForm" style="color:red"/>
+
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <h:commandButton class="btn btn-info btn-block"
+                                                 id="loginBtn" value="#{msgs.loginHeader}"
+                                                 action="#{userAction.login()}"/>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <h:commandButton class="btn btn-info btn-block"
+                                                 id="registerBtn" value="#{msgs.registerBtn}"
+                                                 action="userconnection/registration.xhtml"/>
+                            </div>
+                        </div>                       
+                    </div>
+                </h:form>
+
+            </div>
+        </div>
+    </h:body>
+</html>
