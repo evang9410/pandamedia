@@ -1,6 +1,7 @@
 
 package com.pandamedia.beans;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -151,8 +152,6 @@ public class AlbumBackingBean implements Serializable{
      */
     public String albumPage(Album a){
         this.album = a;
-        System.out.println("hehe");
-        //FacesContext.getCurrentInstance().getExternalContext().getFlash().put("album", album);
         return "album";
     }   
     
@@ -284,7 +283,17 @@ public class AlbumBackingBean implements Serializable{
     public String loadEditForIndex(Integer id)
     {
         this.album = albumController.findAlbum(id);
-        return "AlbumFunctionality/editAlbum.xhtml";
+        
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("AlbumFunctionality/editAlbum.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
     
     /**
@@ -305,7 +314,15 @@ public class AlbumBackingBean implements Serializable{
         }
         this.album = null;
         this.filteredAlbums = albumController.findAlbumEntities();
-        return "welcome_manager";
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
     
     /**
@@ -351,7 +368,17 @@ public class AlbumBackingBean implements Serializable{
     public String loadEditForSales(Integer id)
     {
         this.album = albumController.findAlbum(id);
-        return "AlbumFunctionality/editSalesAlbum.xhtml";
+        
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("AlbumFunctionality/editSalesAlbum.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
     
     /**
@@ -384,7 +411,15 @@ public class AlbumBackingBean implements Serializable{
             }
             this.album = null;
             this.filteredAlbums = albumController.findAlbumEntities();
-            return "welcome_sales";
+            try
+            {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/salesPage.xhtml");
+            }
+            catch(IOException e)
+            {
+                System.out.println(e.getMessage());
+            }
+            return null;
         }
     }
     
@@ -407,7 +442,17 @@ public class AlbumBackingBean implements Serializable{
         
         this.album = null;
         this.filteredAlbums = albumController.findAlbumEntities();
-        return "welcome_manager";
+        
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
     
     /**
@@ -420,7 +465,15 @@ public class AlbumBackingBean implements Serializable{
     {
         this.album = null;
         this.filteredAlbums = albumController.findAlbumEntities();
-        return "welcome_manager";
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
     
     /**
@@ -433,7 +486,17 @@ public class AlbumBackingBean implements Serializable{
     {
         this.album = null;
         this.filteredAlbums = albumController.findAlbumEntities();
-        return "welcome_sales";
+        
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/salesPage.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
     
     /**

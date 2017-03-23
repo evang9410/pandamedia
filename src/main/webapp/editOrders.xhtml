@@ -37,8 +37,8 @@
                         <f:selectItems value="#{userBacking.all}" var="userList" itemLabel="#{userList.email}" itemValue="#{userList}"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
-                <p:commandButton action="#{invoiceBacking.edit()}" value="#{msgs.edit}"/>
-                <p:commandButton action="#{invoiceBacking.back()}" value="#{msgs.back}" />
+                <p:commandButton ajax="false" action="#{invoiceBacking.edit()}" value="#{msgs.edit}"/>
+                <p:commandButton ajax="false" action="#{invoiceBacking.back()}" value="#{msgs.back}" />
             </h:form>
         </f:view>
 

@@ -15,10 +15,10 @@
                     <p:outputLabel id="listPriceLabel" value="#{msgs.listPrice}" />
                     <p:outputLabel id="listPrice" value="#{trackBacking.track.listPrice}" />
                     <p:outputLabel value="#{msgs.salePrice}" for="salePrice" />
-                    <p:inputText validator="#{salePriceValidation.validate}" id="salePrice" value="#{trackBacking.track.salePrice}" title="SalePrice" required="true" requiredMessage="The SalePrice field is required."/>
+                    <p:inputText value="#{trackBacking.track.salePrice}" validator="#{salePriceValidation.validate}" id="salePrice" title="SalePrice" required="true" requiredMessage="The SalePrice field is required."/>
                 </p:panelGrid>
-                <p:commandButton action="#{trackBacking.editSales()}" value="#{msgs.edit}"/>
-                <p:commandButton action="#{trackBacking.backSales()}" value="#{msgs.back}" />
+                <p:commandButton ajax="false" action="#{trackBacking.editSales()}" value="#{msgs.edit}"/>
+                <p:commandButton ajax="false" action="#{trackBacking.backSales()}" value="#{msgs.back}" />
             </h:form>
         <p:outputPanel autoUpdate="true">
             <p:dialog id="msgDialog" widgetVar="messageDialog" modal="true"

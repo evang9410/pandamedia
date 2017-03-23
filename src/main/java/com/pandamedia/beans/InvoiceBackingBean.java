@@ -1,5 +1,6 @@
 package com.pandamedia.beans;
 
+import java.io.IOException;
 import persistence.controllers.InvoiceJpaController;
 import persistence.entities.Invoice;
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -200,7 +202,18 @@ public class InvoiceBackingBean implements Serializable{
     public String loadEditForOrders(Integer id)
     {
         this.invoice = invoiceController.findInvoice(id);
-        return "editOrders.xhtml";
+        
+        
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/editOrders.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
     
     /**
@@ -214,7 +227,17 @@ public class InvoiceBackingBean implements Serializable{
     public String loadIndivTracks(Integer id)
     {
         this.invoice = invoiceController.findInvoice(id);
-        return "removeIndivTracks.xhtml";
+        
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/removeIndivTracks.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
     
     /**
@@ -285,7 +308,17 @@ public class InvoiceBackingBean implements Serializable{
         }
         this.invoice = null;
         this.filteredInvoices = invoiceController.findInvoiceEntities();
-        return "welcome_orders";
+        
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/orders.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
     
     /**
@@ -298,7 +331,17 @@ public class InvoiceBackingBean implements Serializable{
     {
         this.invoice = null;
         this.filteredInvoices = invoiceController.findInvoiceEntities();
-        return "welcome_orders";
+        
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/orders.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
     
     

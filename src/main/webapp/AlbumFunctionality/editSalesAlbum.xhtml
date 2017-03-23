@@ -12,12 +12,20 @@
             <h:form>
                 <h1><h:outputText value="#{msgs.edit}"/></h1>
                 <p:panelGrid columns="2">
+                    <p:outputLabel id="listPriceLabel" value="#{msgs.listPrice}" />
+                    <p:outputLabel id="listPrice" value="#{albumBacking.album.listPrice}" />
                     <p:outputLabel value="#{msgs.salePrice}" for="salePrice" />
-                    <p:inputText id="salePrice" value="#{albumBacking.album.salePrice}" title="SalePrice" required="true" requiredMessage="The SalePrice field is required."/>
+                    <p:inputText validator="#{salePriceValidation.validate}" id="salePrice" value="#{albumBacking.album.salePrice}" title="SalePrice" required="true" requiredMessage="The SalePrice field is required."/>
                 </p:panelGrid>
-                <p:commandButton action="#{albumBacking.editSales()}" value="#{msgs.edit}"/>
-                <p:commandButton action="#{albumBacking.backSales()}" value="#{msgs.back}" />
+                <p:commandButton ajax="false" action="#{albumBacking.editSales()}" value="#{msgs.edit}"/>
+                <p:commandButton ajax="false" action="#{albumBacking.backSales()}" value="#{msgs.back}" />
             </h:form>
+        <p:outputPanel autoUpdate="true">
+            <p:dialog id="msgDialog" widgetVar="messageDialog" modal="true"
+                      visible="#{facesContext.validationFailed}">
+                <p:messages id="messagesInDialog" />
+            </p:dialog>
+        </p:outputPanel>
         </f:view>
     </h:body>
 </html>

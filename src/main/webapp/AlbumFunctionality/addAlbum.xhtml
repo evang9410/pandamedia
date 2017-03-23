@@ -13,27 +13,31 @@
                 <h1><h:outputText value="#{msgs.addAlbum}"/></h1>
                 <p:panelGrid columns="2">
                     <p:outputLabel value="#{msgs.title}" for="title" />
-                    <p:inputText id="title" value="#{albumBacking.album.title}" title="Title" required="true" requiredMessage="The Title field is required."/>
+                    <p:inputText id="title" value="#{albumBacking.album.title}" title="Title" required="true" requiredMessage="The Title field is required.">
+                        <f:validateLength minimum="1" maximum="255" />
+                    </p:inputText>  
                     <p:outputLabel value="#{msgs.releaseDate}" for="releaseDate" />
-                    <p:inputText id="releaseDate" value="#{albumBacking.album.releaseDate}" title="ReleaseDate" required="true" requiredMessage="The ReleaseDate field is required.">
+                    <p:inputText id="releaseDate" validator="#{dateValidation.validate}" value="#{albumBacking.album.releaseDate}" title="ReleaseDate" required="true" requiredMessage="The ReleaseDate field is required.">
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </p:inputText>
                     <p:outputLabel value="#{msgs.numTracks}" for="numTracks" />
-                    <p:inputText id="numTracks" value="#{albumBacking.album.numTracks}" title="NumTracks" required="true" requiredMessage="The NumTracks field is required."/>
+                    <p:inputText id="numTracks" validator="#{numTracksValidation.validate}" value="#{albumBacking.album.numTracks}" title="NumTracks" required="true" requiredMessage="The NumTracks field is required."/>
                     <p:outputLabel value="#{msgs.dateEntered}" for="dateEntered" />
-                    <p:inputText id="dateEntered" value="#{albumBacking.album.dateEntered}" title="DateEntered" required="true" requiredMessage="The DateEntered field is required.">
+                    <p:inputText id="dateEntered" validator="#{dateValidation.validate}" value="#{albumBacking.album.dateEntered}" title="DateEntered" required="true" requiredMessage="The DateEntered field is required.">
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </p:inputText>
                     <p:outputLabel value="#{msgs.costPrice}" for="costPrice" />
-                    <p:inputText id="costPrice" value="#{albumBacking.album.costPrice}" title="CostPrice" required="true" requiredMessage="The CostPrice field is required."/>
+                    <p:inputText id="costPrice" validator="#{pricesValidation.validate}" value="#{albumBacking.album.costPrice}" title="CostPrice" required="true" requiredMessage="The CostPrice field is required."/>
                     <p:outputLabel value="#{msgs.listPrice}" for="listPrice" />
-                    <p:inputText id="listPrice" value="#{albumBacking.album.listPrice}" title="ListPrice" required="true" requiredMessage="The ListPrice field is required."/>
-                    <p:outputLabel value="#{msgs.salePrice}" for="salePrice" />
-                    <p:inputText id="salePrice" value="#{albumBacking.album.salePrice}" title="SalePrice" required="true" requiredMessage="The SalePrice field is required."/>
+                    <p:inputText id="listPrice" validator="#{pricesValidation.validate}" value="#{albumBacking.album.listPrice}" title="ListPrice" required="true" requiredMessage="The ListPrice field is required."/>
+                    <p:outputLabel value="#{msgs.salePrice}" for="salePriceAlbum" />
+                    <p:inputText id="salePriceAlbum" validator="#{salePriceValidation.validate}" value="#{albumBacking.album.salePrice}" title="SalePrice" required="true" requiredMessage="The SalePrice field is required."/>
                     <p:outputLabel value="#{msgs.removalStatus}" for="removalStatus" />
-                    <p:inputText id="removalStatus" value="#{albumBacking.album.removalStatus}" title="RemovalStatus" required="true" requiredMessage="The RemovalStatus field is required."/>
+                    <p:inputText id="removalStatus" value="#{albumBacking.album.removalStatus}" title="RemovalStatus" required="true" requiredMessage="The RemovalStatus field is required.">
+                        <f:validateLongRange minimum="0" maximum="1" />
+                    </p:inputText>
                     <p:outputLabel value="#{msgs.removalDate}" for="removalDate" />
-                    <p:inputText id="removalDate" value="#{albumBacking.album.removalDate}" title="RemovalDate" >
+                    <p:inputText id="removalDate" validator="#{removalDateValidation.validate}" value="#{albumBacking.album.removalDate}" title="RemovalDate" >
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </p:inputText>
                     <p:outputLabel value="#{msgs.artistName}" for="artistId" />
@@ -53,11 +57,15 @@
                         <f:selectItems value="#{coverArtBacking.all}" var="coverArt" itemLabel="#{coverArt.imagePath}" itemValue="#{coverArt}"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
-                <p:commandButton action="#{albumBacking.create()}" value="#{msgs.addAlbum}"/>
+                <p:commandButton ajax="false" action="#{albumBacking.create()}" value="#{msgs.addAlbum}"/>
             </h:form>
-
+        <p:outputPanel autoUpdate="true">
+            <p:dialog id="msgDialog" widgetVar="messageDialog" modal="true"
+                      visible="#{facesContext.validationFailed}">
+                <p:messages id="messagesInDialog" />
+            </p:dialog>
+        </p:outputPanel>
         </f:view>
-
     </h:body>
 </html>
 

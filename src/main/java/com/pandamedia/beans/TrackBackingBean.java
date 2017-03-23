@@ -1,6 +1,7 @@
 
 package com.pandamedia.beans;
 
+import java.io.IOException;
 import java.io.Serializable;
 import persistence.controllers.TrackJpaController;
 import persistence.entities.Track;
@@ -59,7 +60,6 @@ public class TrackBackingBean implements Serializable{
     public void init()
     {
         this.tracks = trackController.findTrackEntities();     
-        //this.track = (Track) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("track");
     }
     
     /**
@@ -128,9 +128,7 @@ public class TrackBackingBean implements Serializable{
      * @return 
      */
     public String trackPage(Track t){
-        System.out.println("&&&&&&&&&&&&&hehe");
         track = t;
-        //FacesContext.getCurrentInstance().getExternalContext().getFlash().put("track", track);
         return "track";
     }
 
@@ -223,7 +221,18 @@ public class TrackBackingBean implements Serializable{
     public String loadEditForIndex(Integer id)
     {
         this.track = trackController.findTrack(id);
-        return "TrackFunctionality/editTrack.xhtml";
+        
+        
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("TrackFunctionality/editTrack.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
     
     /**
@@ -244,7 +253,17 @@ public class TrackBackingBean implements Serializable{
         }
         this.track = null;
         this.filteredTracks = trackController.findTrackEntities();
-        return "welcome_manager";
+        
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
     
     /**
@@ -265,7 +284,17 @@ public class TrackBackingBean implements Serializable{
         }
         this.track = null;
         this.filteredTracks = trackController.findTrackEntities();
-        return "welcome_manager";
+        
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
    
     /**
@@ -278,7 +307,17 @@ public class TrackBackingBean implements Serializable{
     {
         this.track = null;
         this.filteredTracks = trackController.findTrackEntities();
-        return "welcome_manager";
+               
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
     
     /**
@@ -291,7 +330,17 @@ public class TrackBackingBean implements Serializable{
     {
         this.track = null;
         this.filteredTracks = trackController.findTrackEntities();
-        return "welcome_sales";
+        
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/salesPage.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
     
     
@@ -337,7 +386,17 @@ public class TrackBackingBean implements Serializable{
     public String loadEditForSales(Integer id)
     {
         this.track = trackController.findTrack(id);
-        return "TrackFunctionality/editSalesTrack.xhtml";
+        
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("TrackFunctionality/editSalesTrack.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
     
     /**
@@ -369,7 +428,18 @@ public class TrackBackingBean implements Serializable{
             }
             this.track = null;
             this.filteredTracks = trackController.findTrackEntities();
-            return "welcome_sales";
+            
+            try
+            {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/salesPage.xhtml");
+            }
+            catch(IOException e)
+            {
+                System.out.println(e.getMessage());
+            }
+            
+            
+            return null;
         }
     }
     

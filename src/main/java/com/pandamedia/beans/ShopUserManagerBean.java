@@ -1,6 +1,7 @@
 
 package com.pandamedia.beans;
 
+import java.io.IOException;
 import persistence.controllers.ShopUserJpaController;
 import persistence.entities.Invoice;
 import persistence.entities.ShopUser;
@@ -12,6 +13,7 @@ import java.text.NumberFormat;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -129,7 +131,17 @@ public class ShopUserManagerBean implements Serializable{
     public String loadEditForClients(Integer id)
     {
         this.user = userController.findShopUser(id);
-        return "ClientFunctionality/editClients.xhtml";
+        
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("ClientFunctionality/editClients.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
     
     /**
@@ -151,7 +163,17 @@ public class ShopUserManagerBean implements Serializable{
         
         this.user = null;
         this.filteredUsers = userController.findShopUserEntities();
-        return "welcome_clients";
+        
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/clients.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
     
     /**
@@ -164,7 +186,18 @@ public class ShopUserManagerBean implements Serializable{
     {
         this.user = null;
         this.filteredUsers = userController.findShopUserEntities();
-        return "welcome_clients";
+        
+        
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/clients.xhtml");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
     
     /**

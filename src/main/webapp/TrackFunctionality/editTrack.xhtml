@@ -67,8 +67,8 @@
                         <f:selectItems value="#{coverArtBacking.all}" var="coverArt" itemLabel="#{coverArt.imagePath}" itemValue="#{coverArt}"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
-                <p:commandButton action="#{trackBacking.edit()}" value="#{msgs.edit}"/>
-                <p:commandButton action="#{trackBacking.back()}" value="#{msgs.back}" />
+                <p:commandButton ajax="false" action="#{trackBacking.edit()}" value="#{msgs.edit}"/>
+                <p:commandButton ajax="false" action="#{trackBacking.back()}" value="#{msgs.back}" />
             </h:form>
         <p:outputPanel autoUpdate="true">
             <p:dialog id="msgDialog" widgetVar="messageDialog" modal="true"

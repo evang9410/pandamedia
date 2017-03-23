@@ -22,8 +22,6 @@
                     </p:inputText>
                     <p:outputLabel value="#{msgs.playLength}" for="playLength" />
                     <p:inputText id="playLength" validator="#{playLengthValidation.validate}" value="#{trackBacking.track.playLength}" title="PlayLength" required="true" requiredMessage="The PlayLength field is required."/>
-                    <p:outputLabel value="#{msgs.albumTrackNumber}" for="albumTrackNumber" />
-                    <p:inputText id="albumTrackNumber" validator="#{numberValidation.validate}" value="#{trackBacking.track.albumTrackNumber}" title="AlbumTrackNumber" required="true" requiredMessage="The AlbumTrackNumber field is required."/>
                     <p:outputLabel value="#{msgs.dateEntered}" for="dateEntered" />
                     <p:inputText id="dateEntered" validator="#{dateValidation.validate}" value="#{trackBacking.track.dateEntered}" title="DateEntered" required="true" requiredMessage="The DateEntered field is required.">
                         <f:convertDateTime pattern="MM/dd/yyyy" />
@@ -32,6 +30,8 @@
                     <p:inputText id="partOfAlbum" value="#{trackBacking.track.partOfAlbum}" title="PartOfAlbum" required="true" requiredMessage="The PartOfAlbum field is required.">
                         <f:validateLongRange minimum="0" maximum="1" />
                     </p:inputText>
+                    <p:outputLabel value="#{msgs.albumTrackNumber}" for="albumTrackNumber" />
+                    <p:inputText id="albumTrackNumber" validator="#{numberValidation.validate}" value="#{trackBacking.track.albumTrackNumber}" title="AlbumTrackNumber" required="true" requiredMessage="The AlbumTrackNumber field is required."/>
                     <p:outputLabel value="#{msgs.costPrice}" for="costPrice" />
                     <p:inputText id="costPrice" validator="#{pricesValidation.validate}" value="#{trackBacking.track.costPrice}" title="CostPrice" required="true" requiredMessage="The CostPrice field is required."/>
                     <p:outputLabel value="#{msgs.listPrice}" for="listPrice" />
