@@ -119,7 +119,6 @@ public class UserActionBean implements Serializable {
     currUser = userBean.getShopUser();
         ShopUser userRecord = userActionController.findUserByEmail(
                 currUser.getEmail());
-        currUser = userActionController.findUserByEmail("evang9410@gmail.com");
         ExternalContext external = FacesContext.getCurrentInstance().getExternalContext();
         external.getSessionMap().put("user", currUser);
 
@@ -135,7 +134,7 @@ public class UserActionBean implements Serializable {
                     userRecord.getSalt());
 
             if (!Arrays.equals(hashRecord, loginPwdHash)) {
-                System.out.println("PWD NOT EQUAL="+hashRecord.length+" PWD2="+loginPwdHash.length);
+                
                 FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
                         "bundles.messages", "invalidEmailOrPwd", null);
                 FacesContext.getCurrentInstance().addMessage("loginForm", msg);
@@ -151,7 +150,7 @@ public class UserActionBean implements Serializable {
                         FacesContext.getCurrentInstance().renderResponse();
                     } else {
                         FacesContext.getCurrentInstance().getExternalContext()
-                                .redirect("pandamedia/mainpage.xhtml");
+                                .redirect("/pandamedia/mainpage.xhtml");
                     }
 
                 } catch (IOException ioe) {
@@ -173,7 +172,7 @@ public class UserActionBean implements Serializable {
             currUser = null;
             try {
                 FacesContext.getCurrentInstance().getExternalContext()
-                        .redirect("pandamedia/mainpage.xhtml");
+                        .redirect("/pandamedia/mainpage.xhtml");
             } catch (IOException ioe) {
                 Logger.getLogger(UserActionBean.class.getName())
                         .log(Level.WARNING, "Error when redirecting: {0}",
