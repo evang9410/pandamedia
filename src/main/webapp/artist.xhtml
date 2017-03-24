@@ -14,6 +14,32 @@
         <h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
     </ui:define>
     <ui:define name="page-content">
-        yo
+        <div class="artist-header">
+            <div class="pos-name">
+                <h4>Albums by #{artistBacking.artist.name}</h4>
+            </div>
+        </div>
+        <div class="container albums">
+            <h:form>
+                <!--in case there are tracks in the list, else does not display anything -->
+                <div class="row">
+                    <ui:repeat value="#{albumBacking.albumsFromArtist(artistBacking.artist)}" var="al">
+
+                        <div class="col-xs-18 col-sm-6 col-md-3">
+                            <div class="thumbnail">
+                                <h:commandLink action="#{albumBacking.albumPage(al)}">
+                                    <img src="resources/coverart/#{al.coverArtId.imagePath}"></img>
+                                </h:commandLink>
+                                <div class="caption">
+                                    <h:commandLink action="#{albumBacking.albumPage(al)}"><h4>#{al.title}</h4></h:commandLink>
+                                    <p>#{al.artistId.name}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </ui:repeat>
+                </div>
+            </h:form>
+        </div>
     </ui:define>
 </ui:composition>

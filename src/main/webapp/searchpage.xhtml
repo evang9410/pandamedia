@@ -24,8 +24,9 @@
                             <div class="thumbnail">
                                 <img src="resources/coverart/#{t.coverArtId.imagePath}"></img>
                                 <div class="caption">
-                                    <h:commandLink action="#{trackBacking.trackPage(t)}"><h4>#{t.title}</h4> </h:commandLink>
-                                    <p>#{t.artistId.name}</p>
+                                    <h:commandLink action="#{trackBacking.trackPage(t)}"><h4>#{t.title}</h4></h:commandLink>
+                                    <h:commandLink action="#{albumBacking.albumPage(t.albumId)}"><h5>#{t.albumId.title}</h5></h:commandLink>
+                                    <h:commandLink action="#{artistBacking.artistPage(artistId)}"><p>#{t.artistId.name}</p></h:commandLink>
                                 </div>
                             </div>
                         </div>
@@ -43,7 +44,7 @@
                             </h:commandLink>
                             <div class="caption">
                                 <h:commandLink action="#{albumBacking.albumPage(al)}"><h4>#{al.title}</h4></h:commandLink>
-                                <p>#{al.artistId.name}</p>
+                                <h:commandLink action="#{artistBacking.artistPage(al.artistId)}"><p>#{al.artistId.name}</p></h:commandLink>
                             </div>
                         </div>
                     </div>

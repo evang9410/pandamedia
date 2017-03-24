@@ -14,7 +14,7 @@
     <ui:define name="page-content">
         <div class="container">
             <div><h2>Artists</h2></div>
-            <div class="row is-flex">
+            <div class="row">
                 <h:form>
                     <ui:repeat value="#{artistBacking.artistsList}" var="ar">
                         <div class="col-sm-2">
@@ -24,7 +24,6 @@
                                         <h5>#{ar.name}</h5>
                                     </div>
                             </h:commandLink>
-
                         </div>                
                     </ui:repeat>
                 </h:form>

@@ -25,6 +25,7 @@ import javax.persistence.criteria.Root;
 import persistence.controllers.AlbumJpaController;
 import persistence.entities.Album;
 import persistence.entities.Album_;
+import persistence.entities.Artist;
 import persistence.entities.Genre;
 import persistence.entities.InvoiceAlbum_;
 import persistence.entities.InvoiceTrack_;
@@ -180,6 +181,16 @@ public class AlbumBackingBean implements Serializable{
         TypedQuery<Album> query = em.createQuery(q, Album.class).setMaxResults(5);
         query.setParameter("genre_id", genre_id);
         return query.getResultList();
+    }
+    
+    public List<Album> albumsFromArtist(Artist a){
+        if(a != null){
+            String q = "SELECT a FROM Album a WHERE a.artistId.id = :artist_id";
+            TypedQuery<Album> query = em.createQuery(q, Album.class);
+            query.setParameter("artist_id", a.getId());
+            return query.getResultList();
+        }
+        return null;
     }
     
     private int getGenreId(String genre){
