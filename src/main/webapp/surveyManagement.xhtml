@@ -20,23 +20,41 @@
                 <h1><h:outputText value="#{msgs.add}"/></h1>
                 <p:panelGrid columns="2">
                     <p:outputLabel value="#{msgs.question}" for="question" />
-                    <p:inputText id="question" value="#{surveyBean.survey.question}" title="Question" required="true" requiredMessage="The Question field is required."/>
+                    <p:inputText id="question" value="#{surveyBean.survey.question}" title="Question" required="true" requiredMessage="The Question field is required.">
+                        <f:validateLength minimum="1" maximum="255" />
+                    </p:inputText>
                     <p:outputLabel value="#{msgs.answerA}" for="answerA" />
-                    <p:inputText id="answerA" value="#{surveyBean.survey.answerA}" title="AnswerA" required="true" requiredMessage="The AnswerA field is required."/>
+                    <p:inputText id="answerA" value="#{surveyBean.survey.answerA}" title="AnswerA" required="true" requiredMessage="The AnswerA field is required.">
+                        <f:validateLength minimum="1" maximum="255" />
+                    </p:inputText>
                     <p:outputLabel value="#{msgs.answerB}" for="answerB" />
-                    <p:inputText id="answerB" value="#{surveyBean.survey.answerB}" title="AnswerB" required="true" requiredMessage="The AnswerB field is required."/>
+                    <p:inputText id="answerB" value="#{surveyBean.survey.answerB}" title="AnswerB" required="true" requiredMessage="The AnswerB field is required.">
+                        <f:validateLength minimum="1" maximum="255" />
+                    </p:inputText>
                     <p:outputLabel value="#{msgs.answerC}" for="answerC" />
-                    <p:inputText id="answerC" value="#{surveyBean.survey.answerC}" title="AnswerC" required="true" requiredMessage="The AnswerC field is required."/>
+                    <p:inputText id="answerC" value="#{surveyBean.survey.answerC}" title="AnswerC" required="true" requiredMessage="The AnswerC field is required.">
+                        <f:validateLength minimum="1" maximum="255" />
+                    </p:inputText>
                     <p:outputLabel value="#{msgs.answerD}" for="answerD" />
-                    <p:inputText id="answerD" value="#{surveyBean.survey.answerD}" title="AnswerD" required="true" requiredMessage="The AnswerD field is required."/>
+                    <p:inputText id="answerD" value="#{surveyBean.survey.answerD}" title="AnswerD" required="true" requiredMessage="The AnswerD field is required.">
+                        <f:validateLength minimum="1" maximum="255" />
+                    </p:inputText>
                     <p:outputLabel value="#{msgs.votesA}" for="votesA" />
-                    <p:inputText id="votesA" value="#{surveyBean.survey.votesA}" title="VotesA" required="true" requiredMessage="The VotesA field is required."/>
+                    <p:inputText id="votesA" value="#{surveyBean.survey.votesA}" title="VotesA" required="true" requiredMessage="The VotesA field is required.">
+                        <f:validateLongRange minimum="0" maximum="2147483647" />
+                    </p:inputText>
                     <p:outputLabel value="#{msgs.votesB}" for="votesB" />
-                    <p:inputText id="votesB" value="#{surveyBean.survey.votesB}" title="VotesB" required="true" requiredMessage="The VotesB field is required."/>
+                    <p:inputText id="votesB" value="#{surveyBean.survey.votesB}" title="VotesB" required="true" requiredMessage="The VotesB field is required.">
+                        <f:validateLongRange minimum="0" maximum="2147483647" />
+                    </p:inputText>
                     <p:outputLabel value="#{msgs.votesC}" for="votesC" />
-                    <p:inputText id="votesC" value="#{surveyBean.survey.votesC}" title="VotesC" required="true" requiredMessage="The VotesC field is required."/>
+                    <p:inputText id="votesC" value="#{surveyBean.survey.votesC}" title="VotesC" required="true" requiredMessage="The VotesC field is required.">
+                        <f:validateLongRange minimum="0" maximum="2147483647" />
+                    </p:inputText>
                     <p:outputLabel value="#{msgs.votesD}" for="votesD" />
-                    <p:inputText id="votesD" value="#{surveyBean.survey.votesD}" title="VotesD" required="true" requiredMessage="The VotesD field is required."/>
+                    <p:inputText id="votesD" value="#{surveyBean.survey.votesD}" title="VotesD" required="true" requiredMessage="The VotesD field is required.">
+                        <f:validateLongRange minimum="0" maximum="2147483647" />
+                    </p:inputText>
                 </p:panelGrid>
                 <p:commandButton value="#{msgs.add}" action="#{surveyBean.save()}" update=":surveyFormID:surveyTableID" />
             </h:form>
@@ -115,7 +133,12 @@
                     </p:column>
                 </p:dataTable>
             </h:form>
-
+            <p:outputPanel autoUpdate="true">
+            <p:dialog id="msgDialog" widgetVar="messageDialog" modal="true"
+                      visible="#{facesContext.validationFailed}">
+                <p:messages id="messagesInDialog" />
+            </p:dialog>
+            </p:outputPanel>
         </f:view>
 
     </h:body>

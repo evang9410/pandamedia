@@ -20,7 +20,9 @@
                 <h1><h:outputText value="#{msgs.add}"/></h1>
                 <p:panelGrid columns="2">
                     <p:outputLabel value="#{msgs.url}" for="url" />
-                    <p:inputText id="url" value="#{rssFeedBacking.newsFeed.url}" title="Url" required="true" requiredMessage="The Url field is required."/>
+                    <p:inputText id="url" validator="#{rssFeedValidation.validate}" value="#{rssFeedBacking.newsFeed.url}" title="Url" required="true" requiredMessage="The Url field is required.">
+                        <f:validateLength minimum="1" maximum="255" />
+                    </p:inputText>
                 </p:panelGrid>
                 <p:commandButton value="#{msgs.add}" action="#{rssFeedBacking.save()}" update=":rssFormID:rssTableID" />
             </h:form>
@@ -50,6 +52,12 @@
                     </p:column>                   
                 </p:dataTable>
             </h:form>
+            <p:outputPanel autoUpdate="true">
+            <p:dialog id="msgDialog" widgetVar="messageDialog" modal="true"
+                      visible="#{facesContext.validationFailed}">
+                <p:messages id="messagesInDialog" />
+            </p:dialog>
+            </p:outputPanel>
         </f:view>
     </h:body>
 </html>

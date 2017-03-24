@@ -202,8 +202,7 @@ public class InvoiceBackingBean implements Serializable{
     public String loadEditForOrders(Integer id)
     {
         this.invoice = invoiceController.findInvoice(id);
-        
-        
+               
         try
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/editOrders.xhtml");

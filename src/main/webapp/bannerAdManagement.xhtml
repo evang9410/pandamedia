@@ -20,7 +20,9 @@
                 <h1><h:outputText value="#{msgs.add}"/></h1>
                 <p:panelGrid columns="2">
                     <p:outputLabel value="#{msgs.adPath}" for="adPath" />
-                    <p:inputText id="adPath" value="#{bannerAdBacking.advertisement.adPath}" title="AdPath" required="true" requiredMessage="The AdPath field is required."/>
+                    <p:inputText id="adPath" value="#{bannerAdBacking.advertisement.adPath}" title="AdPath" required="true" requiredMessage="The AdPath field is required.">
+                        <f:validateLength minimum="1" maximum="255" />
+                    </p:inputText>
                 </p:panelGrid>
                 <p:commandButton value="#{msgs.add}" action="${bannerAdBacking.save()}" update=":bannerFormID:bannerTableID" />
             </h:form>
@@ -51,6 +53,12 @@
                 </p:dataTable>
             </h:form>
 
+            <p:outputPanel autoUpdate="true">
+            <p:dialog id="msgDialog" widgetVar="messageDialog" modal="true"
+                      visible="#{facesContext.validationFailed}">
+                <p:messages id="messagesInDialog" />
+            </p:dialog>
+            </p:outputPanel>
         </f:view>
 
         

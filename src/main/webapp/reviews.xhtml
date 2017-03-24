@@ -54,9 +54,9 @@
                         <f:facet name="header">
                             <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <p:commandButton value="#{msgs.approve}" action="#{reviewBacking.approve(item.id)}" update=":reviewFormID:reviewTableID" />
-                        <p:commandButton value="#{msgs.disapprove}" action="#{reviewBacking.disapprove(item.id)}" update=":reviewFormID:reviewTableID" />
-                        <p:commandButton value="#{msgs.del}" action="#{reviewBacking.removeItem(item.id)}" update=":reviewFormID:reviewTableID"/>
+                        <p:commandButton ajax="false" value="#{msgs.approve}" action="#{reviewBacking.approve(item.id)}"/>
+                        <p:commandButton ajax="false" value="#{msgs.disapprove}" action="#{reviewBacking.disapprove(item.id)}"/>
+                        <p:commandButton ajax="false" value="#{msgs.del}" action="#{reviewBacking.removeItem(item.id)}"/>
                     </p:column>
                 </p:dataTable>
             </h:form>

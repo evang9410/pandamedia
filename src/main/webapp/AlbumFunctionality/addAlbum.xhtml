@@ -21,7 +21,9 @@
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </p:inputText>
                     <p:outputLabel value="#{msgs.numTracks}" for="numTracks" />
-                    <p:inputText id="numTracks" validator="#{numTracksValidation.validate}" value="#{albumBacking.album.numTracks}" title="NumTracks" required="true" requiredMessage="The NumTracks field is required."/>
+                    <p:inputText id="numTracks" value="#{albumBacking.album.numTracks}" title="NumTracks" required="true" requiredMessage="The NumTracks field is required.">
+                        <f:validateLongRange minimum="1" maximum="2147483647"/>
+                    </p:inputText>
                     <p:outputLabel value="#{msgs.dateEntered}" for="dateEntered" />
                     <p:inputText id="dateEntered" validator="#{dateValidation.validate}" value="#{albumBacking.album.dateEntered}" title="DateEntered" required="true" requiredMessage="The DateEntered field is required.">
                         <f:convertDateTime pattern="MM/dd/yyyy" />

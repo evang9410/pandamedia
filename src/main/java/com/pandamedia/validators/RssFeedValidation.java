@@ -17,18 +17,21 @@ import javax.inject.Named;
  */
 @Named
 @RequestScoped
-public class NumTracksValidation implements Validator {
+public class RssFeedValidation implements Validator {
     
-     @Override
+    @Override
     public void validate(FacesContext context, UIComponent component,
             Object value) {
         if (value == null) 
-           throw new ValidatorException(new FacesMessage("Number Tracks cannot be null"));         
+           throw new ValidatorException(new FacesMessage("Url cannot be null"));         
         
-        int numTracks = (int) value;
+        String rssFeed = (String) value;
         
-        if(numTracks <= 0)
-            throw new ValidatorException(new FacesMessage("Cannot be less or equal to 0"));
+        if(!rssFeed.startsWith("https://") && !rssFeed.startsWith("http://"))
+            throw new ValidatorException(new FacesMessage("RSS Feed is invalid"));
+        
+        if(!rssFeed.endsWith(".xml"))
+            throw new ValidatorException(new FacesMessage("RSS Feed is invalid"));
                
     }
     

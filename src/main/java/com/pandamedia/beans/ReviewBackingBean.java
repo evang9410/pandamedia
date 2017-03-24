@@ -138,6 +138,7 @@ public class ReviewBackingBean implements Serializable{
         }
         
         this.review = null;
+        this.reviews = reviewController.findReviewEntities();
         this.filteredReviews = reviewController.findReviewEntities();
         return null; 
     }
@@ -168,10 +169,10 @@ public class ReviewBackingBean implements Serializable{
             catch(Exception e)
             {
                 System.out.println(e.getMessage());
-            }
-                    
+            }                  
         }
         this.review = null;
+        this.reviews = reviewController.findReviewEntities();
         this.filteredReviews = reviewController.findReviewEntities();
         return null;
     }
@@ -206,6 +207,7 @@ public class ReviewBackingBean implements Serializable{
                     
         }
         this.review = null;
+        this.reviews = reviewController.findReviewEntities();
         this.filteredReviews = reviewController.findReviewEntities();
         return null;
     }
