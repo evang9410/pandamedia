@@ -60,3 +60,13 @@ table.track_list tr {
 table.track_list th, table.track_list td {
     width: 45%;
 }
+
+#suggested-header{
+    font-family: "Poppins", sans-serif;
+    color: white;
+}
+
+#suggested-title{
+    font-family: "Poppins", sans-serif;
+    color: white;
+}

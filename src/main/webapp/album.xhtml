@@ -28,6 +28,7 @@
                                     <f:convertDateTime pattern="yyyy"/>
                                 </h:outputText>
                             </h3>
+                            <h5>#{albumBacking.album.recordingLabelId.name}</h5>
                             <div>
                                 <h:form>
                                     <b:commandButton ajax="false" icon-awesome="cart-plus" iconAlign="right" value=""
@@ -86,6 +87,22 @@
                             </tbody>
                         </table>
                     </div>
+                </div>\
+                <div class="row">
+                    <h2 id="suggested-header">Suggested Albums</h2>
+                </div>
+                <div class="row">
+                    <ui:repeat value="#{albumBacking.getSuggestedAlbums(albumBacking.album.genreId.name)}" var="suggested">
+                        <div class="col-md-3">
+                            <h:form>
+                                <h:commandLink action="#{albumBacking.albumPage(suggested)}">
+                                    <img src="#{request.contextPath}/resources/coverart/#{suggested.coverArtId.imagePath}" style="width:150px; height: 150px;"/>
+                                    <h4 id="suggested-title">#{suggested.title}</h4>
+                                </h:commandLink>
+                            </h:form>
+
+                        </div>
+                    </ui:repeat>
                 </div>
             </div>
         </h:body>
