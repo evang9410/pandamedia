@@ -7,7 +7,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:b="http://bootsfaces.net/ui">
     <ui:define name="WindowTitle">
-        Artist | Pandamedia
+        #{artistBacking.artist.name} | Pandamedia
     </ui:define>
     <ui:define name="css">
         <h:outputStylesheet name="artist.css" library="css"/>
@@ -16,10 +16,10 @@
     <ui:define name="page-content">
         <div class="artist-header">
             <div class="pos-name">
-                <h4>Albums by #{artistBacking.artist.name}</h4>
+                <span class="pre-text">Albums by <h4>#{artistBacking.artist.name}</h4></span>
             </div>
         </div>
-        <div class="container albums">
+        <div class="container artists">
             <h:form>
                 <!--in case there are tracks in the list, else does not display anything -->
                 <div class="row">
@@ -41,5 +41,6 @@
                 </div>
             </h:form>
         </div>
+        <hr/>
     </ui:define>
 </ui:composition>
