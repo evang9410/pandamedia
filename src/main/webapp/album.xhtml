@@ -17,30 +17,28 @@
         <h:body class = "bodyClass">
             <div class="container">
                 <div class="row">
-                    <div class="album-info-wrapper">
-                        <div class="col-md-3 col-md-offset-4">
-                            <img class="albumArt" src="resources/coverart/#{albumBacking.album.coverArtId.imagePath}" style="height: 250px; width: 250px;"/>
-                        </div>
-                        <div class="col-md-3 album-info">
-                            <h1>#{albumBacking.album.title}</h1>
-                            <h3>#{albumBacking.album.artistId.name}, 
-                                <h:outputText value="#{albumBacking.album.releaseDate.time}">
-                                    <f:convertDateTime pattern="yyyy"/>
-                                </h:outputText>
-                            </h3>
-                            <h5>#{albumBacking.album.recordingLabelId.name}</h5>
-                            <div>
-                                <h:form>
-                                    <b:commandButton ajax="false" icon-awesome="cart-plus" iconAlign="right" value=""
-                                                     look="success" action="#{cart.addAlbum(albumBacking.album)}">
-                                        <h:outputText value="#{albumBacking.album.listPrice - albumBacking.album.salePrice}">
-                                            <f:convertNumber minFractionDigits="2"/>
-                                        </h:outputText>
+                    <div class="col-md-3 col-md-offset-4">
+                        <img class="albumArt" src="resources/coverart/#{albumBacking.album.coverArtId.imagePath}" style="height: 250px; width: 250px;"/>
+                    </div>
+                    <div class="col-md-3 album-info">
+                        <h1>#{albumBacking.album.title}</h1>
+                        <h3>#{albumBacking.album.artistId.name}, 
+                            <h:outputText value="#{albumBacking.album.releaseDate.time}">
+                                <f:convertDateTime pattern="yyyy"/>
+                            </h:outputText>
+                        </h3>
+                        <h5>#{albumBacking.album.recordingLabelId.name}</h5>
+                        <div>
+                            <h:form>
+                                <b:commandButton ajax="false" icon-awesome="cart-plus" iconAlign="right" value=""
+                                                 look="success" action="#{cart.addAlbum(albumBacking.album)}">
+                                    <h:outputText value="#{albumBacking.album.listPrice - albumBacking.album.salePrice}">
+                                        <f:convertNumber minFractionDigits="2"/>
+                                    </h:outputText>
 
-                                        <f:ajax render="j_idt15:shopping-cart-count"/>
-                                    </b:commandButton>
-                                </h:form>
-                            </div>
+                                    <f:ajax render="j_idt15:shopping-cart-count"/>
+                                </b:commandButton>
+                            </h:form>
                         </div>
                     </div>
                 </div>
@@ -49,7 +47,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="tracklist_container" style="width:40vw;">
+                    <div class="col-md-6 col-md-offset-3">
                         <table class="table table-inverse track_list" style="background-color: black; border: 2px solid lightgray;">
                             <thead>
                                 <tr>
@@ -87,13 +85,13 @@
                             </tbody>
                         </table>
                     </div>
-                </div>\
+                </div>
                 <div class="row">
                     <h2 id="suggested-header">Suggested Albums</h2>
                 </div>
                 <div class="row">
                     <ui:repeat value="#{albumBacking.getSuggestedAlbums(albumBacking.album.genreId.name)}" var="suggested">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <h:form>
                                 <h:commandLink action="#{albumBacking.albumPage(suggested)}">
                                     <img src="#{request.contextPath}/resources/coverart/#{suggested.coverArtId.imagePath}" style="width:150px; height: 150px;"/>
