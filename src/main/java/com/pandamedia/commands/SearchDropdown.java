@@ -18,7 +18,7 @@ import javax.inject.Named;
  */
 @Named("searchDropdown")
 @SessionScoped
-public class searchDropdown implements Serializable{
+public class SearchDropdown implements Serializable{
     
     private FacesContext context;
     private ResourceBundle msgs;

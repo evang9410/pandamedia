@@ -33,7 +33,7 @@ public class UserSearch implements Serializable {
     private String parameters;
 
     @Inject
-    private searchDropdown sd;
+    private SearchDropdown sd;
 
     @PersistenceContext
     private EntityManager em;

@@ -23,7 +23,10 @@
         <ui:insert name="menu">
             <ui:include src="../sections/menu.xhtml" />
         </ui:insert>
-        <ui:insert name="page-content"/>
+        <ui:insert name="browse-header">
+            <ui:include src="../sections/browse-header.xhtml" />
+        </ui:insert>
+        <ui:insert name="browse-content"/>
         <ui:insert name="footer">
             <ui:include src="../sections/footer.xhtml" />
         </ui:insert>
