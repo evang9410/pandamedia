@@ -16,51 +16,54 @@
             <div class="displaySearchResults">
                 <h2>#{Search.typeSearched}</h2>
                 <h:form>
-                <!--in case there are tracks in the list, else does not display anything -->
-                <div class="row">
-                    <ui:repeat value="#{Search.trackResultsList}" var="t">
+                    <!--in case there are tracks in the list, else does not display anything -->
+                    <div class="row">
+                        <ui:repeat value="#{Search.trackResultsList}" var="t">
 
-                        <div class="col-xs-18 col-sm-6 col-md-3">
-                            <div class="thumbnail">
-                                <img src="resources/coverart/#{t.coverArtId.imagePath}"></img>
-                                <div class="caption">
-                                    <h:commandLink action="#{trackBacking.trackPage(t)}"><h4>#{t.title}</h4></h:commandLink>
-                                    <h:commandLink action="#{albumBacking.albumPage(t.albumId)}"><h5>#{t.albumId.title}</h5></h:commandLink>
-                                    <h:commandLink action="#{artistBacking.artistPage(artistId)}"><p>#{t.artistId.name}</p></h:commandLink>
+                            <div class="col-xs-18 col-sm-6 col-md-3">
+                                <div class="thumbnail">
+                                    <img src="resources/coverart/#{t.coverArtId.imagePath}"></img>
+                                    <div class="caption">
+                                        <h:commandLink action="#{trackBacking.trackPage(t)}"><h4>#{t.title}</h4></h:commandLink>
+                                        <h:commandLink action="#{albumBacking.albumPage(t.albumId)}"><h5>#{t.albumId.title}</h5></h:commandLink>
+                                        <h:commandLink action="#{artistBacking.artistPage(t.artistId)}"><p>#{t.artistId.name}</p></h:commandLink>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                    </ui:repeat>
-                </div>
-                <!-- ___________________________________________________________________ -->  
-                <br></br>
-                <!--in case there are albums in the list, else does not display anything -->
-                <ui:repeat value="#{Search.albumResultsList}" var="al">
-                    <div class="col-xs-18 col-sm-6 col-md-3">
-                        <div class="thumbnail">
-                            <h:commandLink action="#{albumBacking.albumPage(al)}">
-                            <img src="resources/coverart/#{al.coverArtId.imagePath}"></img>
-                            </h:commandLink>
-                            <div class="caption">
-                                <h:commandLink action="#{albumBacking.albumPage(al)}"><h4>#{al.title}</h4></h:commandLink>
-                                <h:commandLink action="#{artistBacking.artistPage(al.artistId)}"><p>#{al.artistId.name}</p></h:commandLink>
-                            </div>
-                        </div>
+                        </ui:repeat>
                     </div>
-                </ui:repeat>
+                    <!-- ___________________________________________________________________ -->  
+                    <!--in case there are albums in the list, else does not display anything -->
+                    <div class="row">
+                        <ui:repeat value="#{Search.albumResultsList}" var="al">
+                            <div class="col-xs-18 col-sm-6 col-md-3">
+                                <div class="thumbnail">
+                                    <h:commandLink action="#{albumBacking.albumPage(al)}">
+                                        <img src="resources/coverart/#{al.coverArtId.imagePath}"></img>
+                                    </h:commandLink>
+                                    <div class="caption">
+                                        <h:commandLink action="#{albumBacking.albumPage(al)}"><h4>#{al.title}</h4></h:commandLink>
+                                        <h:commandLink action="#{artistBacking.artistPage(al.artistId)}"><p>#{al.artistId.name}</p></h:commandLink>
+                                    </div>
+                                </div>
+                            </div>
+                        </ui:repeat>
+                    </div>
 
-                <!-- __________________________________________________________________* -->     
-                <br></br>
+                    <!-- __________________________________________________________________* -->     
 
-                <!--in case there are artists in the list, else does not display anything-->
-                <ui:repeat value="#{Search.artistResultsList}" var="ar">
-                    #{ar.name}
-                    <br></br><br></br>
-                </ui:repeat>
+                    <!--in case there are artists in the list, else does not display anything-->
+                    <div class="row">
+                        <ui:repeat value="#{Search.artistResultsList}" var="ar">
+                            <div class="col-xs-18 col-sm-6 col-md-3">
+                                <h:commandLink action="#{artistBacking.artistPage(ar)}">#{ar.name}</h:commandLink>
+                            </div>
+                        </ui:repeat>
+                    </div>
+                </h:form>
 
                 <h5>#{Search.notFound}</h5>
-                </h:form>
             </div>
         </div>
         <hr/>
