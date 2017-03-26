@@ -18,7 +18,7 @@ import persistence.entities.ShopUser;
  *
  * @author Erika Bourque
  */
-//@WebFilter(filterName = "LoginFilter", urlPatterns = {"/clientsecure/*"})
+@WebFilter(filterName = "LoginFilter", urlPatterns = {"/clientsecure/*"})
 public class LoginFilter implements Filter{
     private static final Logger LOG = Logger.getLogger("LoginFilter.class");
     private ServletContext context;
@@ -42,7 +42,8 @@ public class LoginFilter implements Filter{
             String contextPath = ((HttpServletRequest) request)
                     .getContextPath();
             ((HttpServletResponse) response).sendRedirect(contextPath
-                    + "/registration.xhtml");
+                    + "/userconnection/registration.xhtml");
+            context.log(contextPath + "/userconnection/registration.xhtml");
         }
         else
         {

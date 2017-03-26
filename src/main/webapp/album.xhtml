@@ -15,65 +15,93 @@
     </ui:define>
     <ui:define name="page-content">
         <h:body class = "bodyClass">
-            <div class="album-info-wrapper">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-3 col-md-offset-4">
-                            <img class="albumArt" src="resources/coverart/#{albumBacking.album.coverArtId.imagePath}" style="height: 250px; width: 250px;"/>
-                        </div>
-                        <div class="col-md-3 album-info">
-                            <h1>#{albumBacking.album.title}</h1>
-                            <h3>#{albumBacking.album.artistId.name}, 
-                                <h:outputText value="#{albumBacking.album.releaseDate.time}">
-                                    <f:convertDateTime pattern="yyyy"/>
-                                </h:outputText>
-                            </h3>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-4">
+                        <img class="albumArt" src="resources/coverart/#{albumBacking.album.coverArtId.imagePath}" style="height: 250px; width: 250px;"/>
+                    </div>
+                    <div class="col-md-3 album-info">
+                        <h1>#{albumBacking.album.title}</h1>
+                        <h3>#{albumBacking.album.artistId.name}, 
+                            <h:outputText value="#{albumBacking.album.releaseDate.time}">
+                                <f:convertDateTime pattern="yyyy"/>
+                            </h:outputText>
+                        </h3>
+                        <h5>#{albumBacking.album.recordingLabelId.name}</h5>
+                        <div>
                             <h:form>
-                                <b:commandButton ajax="false" icon-awesome="cart-plus" iconAlign="right" value="#{albumBacking.album.listPrice}"
+                                <b:commandButton ajax="false" icon-awesome="cart-plus" iconAlign="right" value=""
                                                  look="success" action="#{cart.addAlbum(albumBacking.album)}">
+                                    <h:outputText value="#{albumBacking.album.listPrice - albumBacking.album.salePrice}">
+                                        <f:convertNumber minFractionDigits="2"/>
+                                    </h:outputText>
+
                                     <f:ajax render="j_idt15:shopping-cart-count"/>
                                 </b:commandButton>
                             </h:form>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <hr style="width:75%"/>
-                </div>            
-            </div>
-            <div class="tracklist_container">
-                <table class="table table-inverse track_list" style="background-color: black; border: 2px solid lightgray;">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>SONG</th>
-                            <th><i class="fa fa-circle-o-notch" aria-hidden="true"></i></th>
-                            <th style="text-align: right;"><i class="fa fa-shopping-cart" aria-hidden="true"></i></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ui:repeat value="#{albumBacking.album.trackList}" var="tracks">
-                            <tr>
-                                <th scope="row">#{tracks.albumTrackNumber}</th>
-                                <td>
-                                    <h:form>
-                                        <h:commandLink action="#{trackBacking.trackPage(tracks)}">
-                                            #{tracks.title}
-                                        </h:commandLink>                               
-                                    </h:form>    
-                                </td>                            
-                                <td>#{tracks.playLength}</td>
-                                <td width="50">
-                                    <h:form>
-                                        <b:commandButton ajax="false" icon-awesome="cart-plus" iconAlign="right" value="#{tracks.listPrice}" look="primary" 
-                                                         action="#{cart.addTrack(tracks)}">
-                                            <f:ajax render="j_idt15:shopping-cart-count"/>
-                                        </b:commandButton>
-                                        
-                                    </h:form>
-                                </td>
-                            </tr>
-                        </ui:repeat>
-                    </tbody>
-                </table>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <table class="table table-inverse track_list" style="background-color: black; border: 2px solid lightgray;">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>SONG</th>
+                                    <th style="text-align: left;"><i class="fa fa-circle-o-notch" aria-hidden="true"></i></th>
+                                    <th style="text-align: right;"><i class="fa fa-shopping-cart" aria-hidden="true"></i></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="scrollbar" id="style-1">
+                                <ui:repeat value="#{albumBacking.album.trackList}" var="tracks">
+                                    <tr>
+                                        <th scope="row">#{tracks.albumTrackNumber}</th>
+                                        <td>
+                                            <h:form>
+                                                <h:commandLink action="#{trackBacking.trackPage(tracks)}">
+                                                    #{tracks.title}
+                                                </h:commandLink>                               
+                                            </h:form>    
+                                        </td>                            
+                                        <td>#{tracks.playLength}</td>
+                                        <td width="50">
+                                            <h:form>
+                                                <b:commandButton ajax="false" icon-awesome="cart-plus" iconAlign="right" value="#{tracks.listPrice}" look="primary" 
+                                                                 action="#{cart.addTrack(tracks)}">
+                                                    <f:ajax render="j_idt15:shopping-cart-count"/>
+                                                </b:commandButton>
+
+                                            </h:form>
+                                        </td>
+                                    </tr>
+                                </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <h2 id="suggested-header">Suggested Albums</h2>
+                </div>
+                <div class="row">
+                    <ui:repeat value="#{albumBacking.getSuggestedAlbums(albumBacking.album.genreId.name)}" var="suggested">
+                        <div class="col-md-2">
+                            <h:form>
+                                <h:commandLink action="#{albumBacking.albumPage(suggested)}">
+                                    <img src="#{request.contextPath}/resources/coverart/#{suggested.coverArtId.imagePath}" style="width:150px; height: 150px;"/>
+                                    <h4 id="suggested-title">#{suggested.title}</h4>
+                                </h:commandLink>
+                            </h:form>
+
+                        </div>
+                    </ui:repeat>
+                </div>
             </div>
         </h:body>
     </ui:define>

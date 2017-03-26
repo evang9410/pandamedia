@@ -14,24 +14,68 @@
         <h:outputStylesheet name="track.css" library="css"/>
     </ui:define>
     <ui:define name="page-content">
-        <div class="track-info-wrapper well-lg">
-            <div class="container">
-                <div class="row">                   
-                    <div class="col-xs-12 col-md-4">
-                        <img class="albumArt" src="resources/coverart/#{trackBacking.track.coverArtId.imagePath}"/>
+        <div class="container">
+            <div class="row" style="margin: 2% 0 2%;">
+                <div class="track-info-wrapper">
+                    <div class="col-md-4 col-sm-12">
+                        <img class="albumArt" src="#{request.contextPath}/resources/coverart/#{trackBacking.track.coverArtId.imagePath}" style="width: 250px; height: 250px;"/>
                     </div>
-                    <div class="col-xs-6 col-md-4">
+                    <div class="col-md-6 col-sm-12" style="color:white
+                         ">
                         <h2>#{trackBacking.track.artistId.name}</h2>
                         <h3>#{trackBacking.track.title}</h3>
                         <h:form>
                             <b:commandButton ajax="true" iconAwesome="cart-plus" iconAlign="right"  look="success" value="#{trackBacking.track.listPrice}"
                                              action="#{cart.addTrack(trackBacking.track)}"/>  
                         </h:form>
-
                     </div>
                 </div>
             </div>            
+
+            <h:panelGroup rendered="#{userAction.isLogin()}">
+                <div class="row" style="margin-bottom: 2%;">
+                    <div class="col-md-12">
+                        <b:button value="Write review" look="primary" onclick="$('.modalPseudoClass').modal();return false;" size="lg"/>
+                    </div>
+                </div>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{not userAction.isLogin()}">
+                <div class="row" style="margin-bottom: 2%">
+                    <div class="col-md-12">
+                        <h:form>
+                            <h:commandLink action="#{userAction.redirectUser(track)}" value="Sign in to write a review"/>
+                        </h:form>
+                    </div>
+                </div>
+            </h:panelGroup>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <section class="comments">
+                        <ui:repeat value="#{trackBacking.approvedReviews}" var="review">
+                            <article class="comment">
+                                <div class="comment-body">
+
+                                    <div class="text">
+                                        <p>#{review.reviewContent}</p>
+                                    </div>
+                                    <p class="attribution">
+                                        <ui:repeat value="#{trackBacking.getStarsList(review.rating)}" var="stars">
+                                            <i class="fa fa-star" aria-hidden="true" style="color:gold; font-size: 32px"></i>
+                                        </ui:repeat>
+                                        by #{review.userId.firstName} on <h:outputText value="#{review.dateEntered.time}"> 
+                                            <f:convertDateTime pattern="MMM dd, yyyy"/> 
+                                        </h:outputText>                                
+                                    </p>
+                                </div>
+                            </article>
+                            <hr/>
+                        </ui:repeat>
+                    </section>
+                </div>
+            </div>
         </div>
+
         <b:modal id="write-review-modal" title="#{msgs.reviewtitle}" styleClass="modalPseudoClass">
             <div class="container">
                 <div class="row">
@@ -62,7 +106,6 @@
                             </div>
                             <div class="form-group">
                                 <h:inputTextarea class="form-control" id="message"
-
                                                  rows="7" a:maxlength="2000"
                                                  value="#{reviewBacking.review.reviewContent}"
                                                  validator="#{reviewBacking.validateReviewContent}"/>
@@ -76,6 +119,7 @@
                 </div>
             </div>
         </b:modal>
+
         <p:outputPanel autoUpdate="true">
             <p:dialog id="msgDialog" widgetVar="messageDialog" modal="true"
                       visible="#{facesContext.validationFailed}">
@@ -83,38 +127,6 @@
             </p:dialog>
         </p:outputPanel>
 
-        <div class="container">
-            <div class="row">
-                <b:column span="3">
-                    <b:button value="Write review" look="primary" onclick="$('.modalPseudoClass').modal();return false;" size="lg"/>
-                </b:column>
-            </div>
-
-
-            <div class="row" style="width: 50vw; margin-left: 5%">
-                <section class="comments">
-                    <ui:repeat value="#{trackBacking.approvedReviews}" var="review">
-                        <article class="comment">
-                            <div class="comment-body">
-
-                                <div class="text">
-                                    <p>#{review.reviewContent}</p>
-                                </div>
-                                <p class="attribution">
-                                    <ui:repeat value="#{trackBacking.getStarsList(review.rating)}" var="stars">
-                                        <i class="fa fa-star" aria-hidden="true" style="color:gold; font-size: 32px"></i>
-                                    </ui:repeat>
-                                    by #{review.userId.firstName} on <h:outputText value="#{review.dateEntered.time}"> 
-                                        <f:convertDateTime pattern="MMM dd, yyyy"/> 
-                                    </h:outputText>                                
-                                </p>
-                            </div>
-                        </article>
-                        <hr/>
-                    </ui:repeat>
-                </section>
-            </div>
-        </div>
         <script>
             $(document).ready(function () {
                 //  Check Radio-box

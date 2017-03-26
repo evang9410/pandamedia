@@ -174,13 +174,29 @@ public class AlbumBackingBean implements Serializable{
     public List<Album> getAlbumFromGenre(){
         System.out.println(genreString);
         if(genreString == null){
-            return null;
+            return null; 
         }
         int genre_id = getGenreId(genreString);
         String q = "SELECT a FROM Album a WHERE a.genreId.id = :genre_id";
         TypedQuery<Album> query = em.createQuery(q, Album.class).setMaxResults(5);
         query.setParameter("genre_id", genre_id);
         return query.getResultList();
+    }
+    /**
+     * Gets the suggested albums for the album page, matching similar albums 
+     * based on the genre of the current album.
+     * @param genre
+     * @return 
+     */
+    public List<Album> getSuggestedAlbums(String genre){
+        genreString = genre;
+        List<Album> list = getAlbumFromGenre();
+        // if the list contains a reference to the current album object, remove it
+        // from the suggested list.
+        if(list.contains(album)){
+            list.remove(album);
+        }
+        return list;
     }
     
     public List<Album> albumsFromArtist(Artist a){
@@ -197,8 +213,9 @@ public class AlbumBackingBean implements Serializable{
         String q = "SELECT g FROM Genre g WHERE g.name = :name";
         TypedQuery<Genre> query = em.createQuery(q, Genre.class);
         query.setParameter("name", genre);
-        return query.getResultList().get(0).getId();//this should be query.getSingleResult, however, since we have like 5 genres with the same name with the 
+//        return query.getResultList().get(0).getId();//this should be query.getSingleResult, however, since we have like 5 genres with the same name with the 
         // test data, we get a list and get the first result, test data should have been sanitized.
+        return query.getSingleResult().getId();
     }
     
      public String addItem(Integer id) throws Exception
