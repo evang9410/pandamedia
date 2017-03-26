@@ -40,10 +40,10 @@ public class UserSearch implements Serializable {
 
     /**
      * Clears lists if not empty (Because SessionScoped)
-     * 
-     * 
+     *
+     *
      */
-    private void reset(){
+    private void reset() {
         if (trackResultsList != null && !trackResultsList.isEmpty()) {
             trackResultsList.clear();
         }
@@ -55,44 +55,37 @@ public class UserSearch implements Serializable {
         }
         notFound = "";
     }
-    
+
     /**
-     * Returns true if given query does not return empty or null
-     * else returns false and sets 404 as error message
+     * Returns true if given query does not return empty or null else returns
+     * false and sets 404 as error message
+     *
      * @param query
-     * @return 
+     * @return
      */
-    private boolean errorCheck(TypedQuery query){
+    private boolean errorCheck(TypedQuery query) {
         if (query.getResultList() != null && !query.getResultList().isEmpty()) {
             return true;
-        }
-        else{
+        } else {
             //Displays error
             notFound = "404"; //if improved from 404, needs bundle
             return false;
         }
     }
-    
-    /*private String isResultSingle(){
-    
-        if(resultsList != null){
-            if(resultsList.size() > 1){
-                return //string url result page
-            }
-        }
-        return null;
+
+    private boolean isResultSingle(TypedQuery query) {
+        return query.getResultList().size() == 1;
     }
-    */
-    
+
     /**
-     * Called when search button is pressed.
-     * Executes the correct search function depending on selected type
-     * 
-     * @return 
+     * Called when search button is pressed. Executes the correct search
+     * function depending on selected type
+     *
+     * @return
      */
     public String executeSearch() {
         //If nothing entered, does not execute
-        if(!parameters.isEmpty()){
+        if (!parameters.isEmpty()) {
             String str = sd.getType();
             typeSearched = str;
             reset();
@@ -114,37 +107,49 @@ public class UserSearch implements Serializable {
         }
         return null;
     }
-  
-    private void searchTracks() {
+
+    private Track searchTracks() {
         //Creates query that returns a list of tracks with a name relevant to "parameters"
         String q = "SELECT t FROM Track t WHERE t.title LIKE :var";
         TypedQuery<Track> query = em.createQuery(q, Track.class);
         query.setParameter("var", "%" + parameters + "%");
-        
+
         if (errorCheck(query)) {
             trackResultsList = query.getResultList();
+            if (isResultSingle(query)) {
+                return trackResultsList.get(0);
+            }
         }
+        return null;
     }
 
-    private void searchAlbums() {
+    private Album searchAlbums() {
         //Creates query that returns a list of albums with a name relevant to "parameters"
         String q = "SELECT a FROM Album a WHERE a.title LIKE :var";
         TypedQuery<Album> query = em.createQuery(q, Album.class);
         query.setParameter("var", "%" + parameters + "%");
         if (errorCheck(query)) {
             albumResultsList = query.getResultList();
+            if (isResultSingle(query)) {
+                return albumResultsList.get(0);
+            }
         }
-        
+        return null;
+
     }
 
-    private void searchArtists() {
+    private Artist searchArtists() {
         //Creates query that returns a list of artists with a name relevant to "parameters"
         String q = "SELECT a FROM Artist a WHERE a.name LIKE :var";
         TypedQuery<Artist> query = em.createQuery(q, Artist.class);
         query.setParameter("var", "%" + parameters + "%");
         if (errorCheck(query)) {
             artistResultsList = query.getResultList();
+            if (isResultSingle(query)) {
+                return artistResultsList.get(0);
+            }
         }
+        return null;
     }
 
     private void searchDate() {
@@ -152,7 +157,6 @@ public class UserSearch implements Serializable {
     }
 
     /*Getters and Setters*/
-    
     public void setParameters(String key) {
         this.parameters = key;
     }
