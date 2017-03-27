@@ -57,7 +57,7 @@ public class ManagementTest {
     }
     
     @Test
-    public void testReviews() throws Exception 
+    public void testApprove() throws Exception 
     {
         ChromeDriverManager.getInstance().setup();
         
@@ -65,7 +65,55 @@ public class ManagementTest {
         driver.get("http://localhost:8080/pandamedia/reviews.xhtml");
         
         //test the approve btn
-        driver.findElement(By.name("reviewFormID:reviewTableID:0:j_idt46")).click();
+        driver.findElement(By.xpath("/form[@id=reviewFormID]/column[@id=options]/commandButton[id=approveBtn]"));
+        
+        //delete this when the bug is fixed
+        driver.findElement(By.xpath("/form[@id=reviewFormID]/column[@id=options]/commandButton[id=approveBtn]"));
+        
+        WebDriverWait wait = new WebDriverWait(driver,10);
+        
+        wait.until(new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver d)
+            {
+                return d.findElement(By.xpath("/form[@id=reviewFormID]/column[@id=approvalStatusID]/outputText[id=approvalStatusText]")).getText().contains("1");
+            }
+
+
+        });
+        
+        driver.quit();
+        
+        
+    }
+    
+    @Test
+    public void testDisapprove() throws Exception 
+    {
+        ChromeDriverManager.getInstance().setup();
+        
+        WebDriver driver = new ChromeDriver();
+        driver.get("http://localhost:8080/pandamedia/reviews.xhtml");
+        
+        //test the approve btn
+        driver.findElement(By.xpath("/form[@id=reviewFormID]/column[@id=options]/commandButton[id=disapproveBtn]"));
+        
+        //delete this when the bug is fixed
+        driver.findElement(By.xpath("/form[@id=reviewFormID]/column[@id=options]/commandButton[id=disapproveBtn]"));
+        
+        WebDriverWait wait = new WebDriverWait(driver,10);
+        
+        wait.until(new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver d)
+            {
+                return d.findElement(By.xpath("/form[@id=reviewFormID]/column[@id=approvalStatusID]/outputText[id=approvalStatusText]")).getText().contains("0");
+            }
+
+
+        });
+        
+        driver.quit();       
         
     }
     

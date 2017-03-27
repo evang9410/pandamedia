@@ -40,7 +40,7 @@
                         <h:outputText value="#{item.reviewContent}"/>
                     </p:column>
                     <p:column id="approvalStatusID" filterBy="#{item.approvalStatus}" headerText="#{msgs.approvalStatus}" filterMatchMode="contains">
-                        <h:outputText value="#{item.approvalStatus}"/>
+                        <h:outputText id="approvalStatusText" value="#{item.approvalStatus}"/>
                     </p:column>
                     <p:column filterBy="#{item.trackId.title}" headerText="#{msgs.title}" filterMatchMode="contains">
                         <h:outputText value="#{item.trackId.title}"/>
@@ -50,13 +50,13 @@
                         <br/>
                         <h:outputText value="#{item.userId.lastName}"/>
                     </p:column>
-                    <p:column>
+                    <p:column id="options">
                         <f:facet name="header">
                             <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <p:commandButton ajax="false" value="#{msgs.approve}" action="#{reviewBacking.approve(item.id)}"/>
-                        <p:commandButton ajax="false" value="#{msgs.disapprove}" action="#{reviewBacking.disapprove(item.id)}"/>
-                        <p:commandButton ajax="false" value="#{msgs.del}" action="#{reviewBacking.removeItem(item.id)}"/>
+                        <p:commandButton ajax="false" id="approveBtn" value="#{msgs.approve}" action="#{reviewBacking.approve(item.id)}"/>
+                        <p:commandButton ajax="false" id="disapproveBtn" value="#{msgs.disapprove}" action="#{reviewBacking.disapprove(item.id)}"/>
+                        <p:commandButton ajax="false" id="deleteBtn" value="#{msgs.del}" action="#{reviewBacking.removeItem(item.id)}"/>
                     </p:column>
                 </p:dataTable>
             </h:form>
