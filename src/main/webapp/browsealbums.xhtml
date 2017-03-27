@@ -15,8 +15,9 @@
         <h:outputScript library="js" name="ajaxfix.js" target="head"/>
         <br/>
         <div class="container">
-<!--            <div><h2>Popular Albums</h2></div>-->
-                <div><h2>Popular Albums</h2></div>
+            <div class = "row" style="text-align: left;">
+                <h2>Popular Albums</h2>
+            </div>
             <div class="row is-flex">
 
                 <ui:repeat value="#{albumBacking.popularAlbums}" var="pop">
@@ -37,12 +38,12 @@
             </div>
         </div>
         <div class="container">
-            <div><h2>Browse by Genre</h2></div>
-            <div class="row is-flex">                
+            <div class="row" style="text-align:left;"><h2>Browse by Genre</h2></div>
+            <div class="row" style="text-align: left;">                
                 <h:form>
                     <ui:repeat value="#{genreBacking.allGenresNames}" var="genres">
                         <h:commandLink action="#{albumBacking.setGenreString(genres)}" styleClass="genre-links"> 
-                            <h4 style="display:inline; margin: 2%;">#{genres}</h4>
+                            <h4 style="display: inline-block; margin: 2%;">#{genres}</h4>
                             <f:ajax render="album-genre"/>
                         </h:commandLink>
                     </ui:repeat>

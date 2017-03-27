@@ -19,7 +19,7 @@ public class UserBean implements Serializable {
     
     // User fields. 
     private ShopUser user;
-    private String confirmPwd;
+    private String password;
     private PostalCodeBean postalCode;
     private PhoneNumberBean homePhone;
     private PhoneNumberBean cellPhone;
@@ -35,14 +35,14 @@ public class UserBean implements Serializable {
         this.user = user;
     }
     
-    public String getConfirmPasswd() {
-        if(confirmPwd == null)
-            confirmPwd = "";
-        return confirmPwd;
+    public String getPassword() {
+        if(password == null)
+            password = "";
+        return password;
     }
 
-    public void setConfirmPasswd(String confirmPwd) {
-        this.confirmPwd = confirmPwd;
+    public void setPassword(String confirmPwd) {
+        this.password = confirmPwd;
     }
 
     public PostalCodeBean getPostalCode() {

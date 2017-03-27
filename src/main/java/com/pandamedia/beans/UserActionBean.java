@@ -11,6 +11,8 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
@@ -31,8 +33,6 @@ import persistence.entities.ShopUser;
 @Named("userAction")
 @SessionScoped
 public class UserActionBean implements Serializable {
-//    private static transient final java.util.logging.Logger log=
-//            java.util.logging.Logger.getLogger("UserActionBean.class");
 
     @Inject
     private UserActionController userActionController;
@@ -52,6 +52,8 @@ public class UserActionBean implements Serializable {
     private ShopUser currUser;
     private List<Province> provinces;
     private Province province;
+    // variable to hold previous page, used to navigate to after redirection
+    private UIViewRoot prevPage;
 
     @PostConstruct
     public void init() {
@@ -88,8 +90,19 @@ public class UserActionBean implements Serializable {
         try {
             userController.create(user);
             currUser = user;
-            Logger.getLogger(UserActionBean.class.getName()).log(
-                    Level.SEVERE, null, "User created");
+            if (prevPage != null) {
+                FacesContext.getCurrentInstance().setViewRoot(prevPage);
+                FacesContext.getCurrentInstance().renderResponse();
+            } else {
+                FacesContext.getCurrentInstance().getExternalContext()
+                        .redirect("pandamedia/mainpage.xhtml");
+            }
+            
+        } catch (IOException ioe) {
+            Logger.getLogger(UserActionBean.class.getName())
+                    .log(Level.WARNING, "Error when redirecting: {0}",
+                            ioe.getMessage());
+
         } catch (Exception ex) {
             FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
                     "bundles.messages", "duplicateEmail", null);
@@ -102,37 +115,74 @@ public class UserActionBean implements Serializable {
     /**
      * Responsible for login in a user.
      */
-    public void login() {
-        currUser = userBean.getShopUser();
+    public void login() throws IOException {
+    currUser = userBean.getShopUser();
         ShopUser userRecord = userActionController.findUserByEmail(
                 currUser.getEmail());
+        ExternalContext external = FacesContext.getCurrentInstance().getExternalContext();
+        external.getSessionMap().put("user", currUser);
 
-        byte[] hashRecord = userRecord.getHashedPw();
-        byte[] loginPwdHash = pwdHelper.hash(userBean.getConfirmPasswd(),
-                 userRecord.getSalt());
-
-        if (!Arrays.equals(hashRecord, loginPwdHash)) {
+        
+        if (userRecord == null) {
+            System.out.println("USER IS NULL");
             FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
-                    "bundles.messages", "invalidEmailOrPwd", null);
+                    "bundles.messages", "duplicateEmail", null);
             FacesContext.getCurrentInstance().addMessage("loginForm", msg);
-            currUser = null;
         } else {
-            try {
-                currUser = userRecord;
-                FacesContext.getCurrentInstance().getExternalContext()
-                        .redirect("./mainpage.xhtml");
-            } catch (IOException ioe) {
-//               log.log(Level.WARNING,"Error when redirecting: {0}"
-//                       ,ioe.getMessage());
+            byte[] hashRecord = userRecord.getHashedPw();
+            byte[] loginPwdHash = pwdHelper.hash(userBean.getPassword(),
+                    userRecord.getSalt());
+
+            if (!Arrays.equals(hashRecord, loginPwdHash)) {
+                
+                FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
+                        "bundles.messages", "invalidEmailOrPwd", null);
+                FacesContext.getCurrentInstance().addMessage("loginForm", msg);
+                currUser = null;
+            } else {
+                try {
+                    currUser = userRecord;
+                    external.getSessionMap().put("user", userRecord);
+                    // check to see if the user was being redirected from another
+                    // page. If they have  not, they should be redirected to the mainpage
+                    if (prevPage != null) {
+                        FacesContext.getCurrentInstance().setViewRoot(prevPage);
+                        FacesContext.getCurrentInstance().renderResponse();
+                    } else {
+                        FacesContext.getCurrentInstance().getExternalContext()
+                                .redirect("/pandamedia/mainpage.xhtml");
+                    }
+
+                } catch (IOException ioe) {
+                    Logger.getLogger(UserActionBean.class.getName())
+                            .log(Level.WARNING, "Error when redirecting: {0}",
+                                    ioe.getMessage());
+                }
             }
         }
+
     }
 
     /**
      * Responsible for login out users.
      */
     public void logout() {
+        //for security purposes, if an admin logout, redirects to index
+        if (currUser.getIsManager() == 1) {
+            currUser = null;
+            try {
+                FacesContext.getCurrentInstance().getExternalContext()
+                        .redirect("/pandamedia/mainpage.xhtml");
+            } catch (IOException ioe) {
+                Logger.getLogger(UserActionBean.class.getName())
+                        .log(Level.WARNING, "Error when redirecting: {0}",
+                                ioe.getMessage());
+            }
+        }
         currUser = null;
+        // destroy user object from session map.
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user",null);
+
     }
 
     /**
@@ -159,11 +209,9 @@ public class UserActionBean implements Serializable {
      * @param user
      */
     private void setFields(ShopUser user) {
-        //instantiating the class responsible for password security
-        // PasswordHelper pwdHelper = new PasswordHelper();
         String salt = pwdHelper.getSalt();
 
-        byte[] hashedPwd = pwdHelper.hash(userBean.getConfirmPasswd(), salt);
+        byte[] hashedPwd = pwdHelper.hash(userBean.getPassword(), salt);
 
         user.setSalt(salt);
         user.setHashedPw(hashedPwd);
@@ -191,6 +239,36 @@ public class UserActionBean implements Serializable {
                     "bundles.messages", "badEmailFormat", null);
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
+        }
+    }
+
+    /**
+     * Sets the previous page variable to the page that the user is currently
+     * on. The variable is used to hold a view to where the user used to be
+     * before they were redirected to the login page.
+     */
+    public void setPrevPage() {
+        prevPage = FacesContext.getCurrentInstance().getViewRoot();
+    }
+
+    /**
+     * Redirects the user to the login page if they're not logged in. It sets
+     * the users previous page for when the user is done with logging in /
+     * registering, they can easily be navigated to the page they were
+     * previously on.
+     *
+     * @author Evan Glicakis
+     * @param s the string representation of the page that the user is navigating to.
+     * @return
+     */
+    public String redirectUser(String s) {
+        if (this.isLogin()) {
+            return s;
+        } else {
+            //Sets the page where the user was previously on.
+            System.out.println("prev page");
+            this.prevPage = FacesContext.getCurrentInstance().getViewRoot();
+            return "userconnection/login";
         }
     }
 
