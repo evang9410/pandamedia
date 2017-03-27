@@ -32,7 +32,7 @@
         <developer>
             <id>tdb</id>
             <name>Pierre Azelart</name>
-            <email>tdb</email>
+            <email>pazelart@gmail.com</email>
         </developer>
         <developer>
             <id>1141669</id>
@@ -206,7 +206,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.23</version>
-            <scope>test</scope>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -240,6 +240,13 @@
             <groupId>org.webjars</groupId>
             <artifactId>font-awesome</artifactId>
             <version>4.7.0</version>
+        </dependency>
+        
+         <!-- ROME Reader for XML -->
+        <dependency>
+            <groupId>rome</groupId>
+            <artifactId>rome</artifactId>
+            <version>1.0</version>
         </dependency>
 
         

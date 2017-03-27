@@ -16,13 +16,6 @@ html, body {
     height: 100%;
 }
 
-.menu{
-    height: 86px;
-    border: 0;
-    margin: 0;
-    padding: 0;
-}
-
 .sloganContainer > h1{
     margin: 0;
     font-size: 40px;
@@ -76,25 +69,6 @@ html, body {
     border: 0;
     text-align: center;   
 }
-
-.dropdown dropdowm{
-    color: #fff;
-}
-
-
-.searchBar{
-    height: 25%;
-    border-radius: 15px;
-    color: #000;
-    border: none;
-}
-
-.searchBar:focus{
-    outline: none;
-    text-decoration: none;
-    border: none;
-}
-
 
 /*div containing button*/
 .accessButton{
@@ -287,4 +261,5 @@ about-heading{
     color:#222;
     font-size: 27px;
     text-decoration: underline;
+
 }

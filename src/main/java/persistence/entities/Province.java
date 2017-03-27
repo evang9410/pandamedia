@@ -147,7 +147,7 @@ public class Province implements Serializable {
 
     @Override
     public String toString() {
-        return "persistence.entities.Province[ id=" + id + " ]";
+        return "" + id + "";
     }
     
 }

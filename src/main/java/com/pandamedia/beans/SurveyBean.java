@@ -10,9 +10,6 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import persistence.controllers.FrontPageSettingsJpaController;
-import persistence.entities.FrontPageSettings;
-
 
 /**
  * This class will be used as the survey backing bean. It is used as a means
@@ -34,19 +31,23 @@ public class SurveyBean implements Serializable {
     private FrontPageSettingsJpaController fpsController;
     @Inject
     private SurveyJpaController surveys;
+    @Inject
+    private SurveyActionController surveyActionController;
+    @Inject
+    private FrontPageSettingsJpaController fpsController;
    
     
-//    @PostConstruct
-//    public void init(){
-//        survey=surveys.findSurvey(1);
-//    
-//        createAnswerList();
-//        userAnswered=false;
-//        showOptions=true;
-//        
-//    }
-    
-    /**
+    @PostConstruct
+    public void init(){
+        //survey = surveyActionController.getCurrentSurvey();
+        //survey=surveys.findSurvey(1);
+        FrontPageSettings fps = fpsController.findFrontPageSettings(1);
+        survey = fps.getSurveyId();
+        createAnswerList();
+        userAnswered=false;
+        showOptions=true;
+}
+/**
      * This method will return a survey if it exists already. Otherwise, it 
      * will return a new survey object.
      * @return survey object
@@ -97,7 +98,6 @@ public class SurveyBean implements Serializable {
         this.survey = null;
         return null;
     }
-    
         
     /**
      * This method will destroy the survey in the database and it sets the survey
@@ -161,6 +161,10 @@ public class SurveyBean implements Serializable {
 
     public void setSurveyId(int surveyId) {
         this.surveyId = surveyId;
+    }
+
+    public Survey getSurvey() {
+        return survey;
     }
 
     public void setSurvey(Survey survey) {

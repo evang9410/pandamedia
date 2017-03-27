@@ -1,0 +1,8 @@
+/* 
+    Created on : 18-Mar-2017, 10:57:05 PM
+    Author     : Erika Bourque
+*/
+.report-table {
+    table-layout: fixed;
+    word-wrap: break-word;
+}

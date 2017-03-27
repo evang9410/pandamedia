@@ -47,6 +47,15 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "ShopUser.findByIsManager", query = "SELECT s FROM ShopUser s WHERE s.isManager = :isManager")})
 public class ShopUser implements Serializable {
 
+    @Size(max = 255)
+    @Column(name = "street_address_2")
+    private String streetAddress2;
+    @Basic(optional = false)
+    @NotNull
+    @Lob
+    @Column(name = "hashed_pw")
+    private byte[] hashedPw;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -105,11 +114,6 @@ public class ShopUser implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "email")
     private String email;
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Column(name = "hashed_pw")
-    private byte[] hashedPw;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -329,7 +333,14 @@ public class ShopUser implements Serializable {
 
     @Override
     public String toString() {
-        return "persistence.entities.ShopUser[ id=" + id + " ]";
+        return "" + id + "";
     }
-    
+
+    public String getStreetAddress2() {
+        return streetAddress2;
+    }
+
+    public void setStreetAddress2(String streetAddress2) {
+        this.streetAddress2 = streetAddress2;
+    }    
 }
