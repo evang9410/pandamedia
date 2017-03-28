@@ -2,6 +2,10 @@ package com.pandamedia.arquillian.test;
 
 import com.pandamedia.beans.ReportBackingBean;
 import com.pandamedia.beans.ReportDateBean;
+import com.pandamedia.commands.ChangeLanguage;
+import com.pandamedia.converters.AlbumConverter;
+import com.pandamedia.filters.LoginFilter;
+import com.pandamedia.utilities.Messages;
 import persistence.controllers.InvoiceJpaController;
 import persistence.controllers.ProvinceJpaController;
 import persistence.controllers.ShopUserJpaController;
@@ -42,7 +46,9 @@ import java.util.Scanner;
 @RunWith(Arquillian.class)
 public class ReportUnitTest {
 //    private static final Logger LOG = Logger.getLogger("ShopUserJpaController.class");
-    
+
+    // TO TEST ON WALDO comment and uncomment the @Resources
+    // AND the persistence XMLs, both needed to work
 //    @Resource(name = "java:app/jdbc/waldo2g4w17")
     @Resource(name = "java:app/jdbc/pandamedialocal")
     private DataSource ds;
@@ -82,9 +88,13 @@ public class ReportUnitTest {
         final WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "test.war")
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
                 .addPackage(ReportBackingBean.class.getPackage())
-                .addPackage(RollbackFailureException.class.getPackage())
-                .addPackage(Track.class.getPackage())
+                .addPackage(ChangeLanguage.class.getPackage())
+                .addPackage(AlbumConverter.class.getPackage())
+                .addPackage(LoginFilter.class.getPackage())
+                .addPackage(Messages.class.getPackage())
                 .addPackage(ShopUserJpaController.class.getPackage())
+                .addPackage(RollbackFailureException.class.getPackage())
+                .addPackage(Track.class.getPackage())                
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/glassfish-resources.xml"), "glassfish-resources.xml")
                 .addAsResource(new File("src/test/resources-glassfish-remote/test-persistence.xml"), "META-INF/persistence.xml")
