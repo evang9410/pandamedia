@@ -57,6 +57,5 @@ public class CheckoutFilter implements Filter{
     @Override
     public void destroy() {
         // Nothing to do here
-    }
-    
+    }    
 }
