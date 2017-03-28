@@ -95,6 +95,17 @@ public class AlbumBackingBean implements Serializable{
         return "album";
     }
     /**
+     * Returns a list of albums that are on sale.
+     * Where in the database the sale_price column is not equal to 0
+     * @return 
+     */
+    public List<Album> getSaleAlbums(){
+        String q = "SELECT a FROM Album a WHERE a.salePrice != 0";
+        TypedQuery<Album> query = em.createQuery(q, Album.class);
+        return query.getResultList();
+        
+    }
+    /**
      * Gets the top selling albums of the current week.
      * @return 
      */
