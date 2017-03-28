@@ -42,6 +42,7 @@ public class AlbumBackingBean implements Serializable{
     private String genreString;
     private List<Album> genrelist;
     private int albumid;
+    private boolean isAlbumSale = true;
     
     public Album getAlbum(){
         if(album == null){
@@ -75,8 +76,6 @@ public class AlbumBackingBean implements Serializable{
         this.genrelist = genrelist;
     }
     
-    
-
     public String getGenreString() {
         return genreString;
     }
@@ -84,6 +83,13 @@ public class AlbumBackingBean implements Serializable{
     public void setGenreString(String genreString) {
         this.genreString = genreString;
     }
+
+    public boolean isIsAlbumSale() {
+        return isAlbumSale;
+    }
+    
+    
+    
     /**
      * sets the album variable and returns the string of the url to the album page
      * @param a
@@ -102,6 +108,9 @@ public class AlbumBackingBean implements Serializable{
     public List<Album> getSaleAlbums(){
         String q = "SELECT a FROM Album a WHERE a.salePrice != 0";
         TypedQuery<Album> query = em.createQuery(q, Album.class);
+        if(query.getResultList().isEmpty()){
+            isAlbumSale = false; //there are no albums on sale, do not render  
+        }
         return query.getResultList();
         
     }

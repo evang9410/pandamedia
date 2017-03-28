@@ -7,7 +7,17 @@ body{
     background-color: #17171b;
     font-family: "Poppins", sans-serif;
 }
-
-#albums-sale{
-    background-color: red;
+.header{
+    color: white;
+}
+#sale-car{
+    margin: 0 auto;
+}
+.carousel-control.left, .carousel-control.right {
+    background-image: none
+}
+.carousel-caption {
+    position: relative;
+    left: auto;
+    right: auto;
 }

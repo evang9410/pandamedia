@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import persistence.controllers.TrackJpaController;
+import persistence.entities.Album;
 import persistence.entities.Review;
 import persistence.entities.Track;
 
@@ -30,6 +31,7 @@ public class TrackBackingBean implements Serializable{
     private EntityManager em;
     private Track track;
     private String genre_string;
+    private boolean isTrackSales = true;
     
     public Track getTrack(){
         if(track == null){
@@ -46,6 +48,18 @@ public class TrackBackingBean implements Serializable{
         track = t;
         return "track";
     }
+    /**
+     * used to render the tracks on sale if there are any tracks on sale
+     * @return 
+     */
+    public boolean isIsTrackSales() {
+        return isTrackSales;
+    }
+
+    public void setIsTrackSales(boolean isTrackSales) {
+        this.isTrackSales = isTrackSales;
+    }
+    
 
     /**
      * Finds the Track from its id.
@@ -115,6 +129,19 @@ public class TrackBackingBean implements Serializable{
             l.add(i);
         }
         return l;
+    }
+    /**
+     * Returns a list of tracks that are on sale.
+     * checks the database for tracks that have a sale price that is not 0.
+     * @return 
+     */
+    public List<Track> getSaleTracks(){
+        String q = "SELECT t FROM Track t WHERE t.salePrice != 0";
+        TypedQuery<Track> query = em.createQuery(q, Track.class);
+        if(query.getResultList().isEmpty()){
+            isTrackSales = false; // there are no tracks on sale, render false.
+        }
+        return query.getResultList();
     }
      
 }
