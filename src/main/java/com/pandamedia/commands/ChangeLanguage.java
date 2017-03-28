@@ -15,7 +15,7 @@ import javax.inject.Named;
  *
  * @author Pierre Azelart
  */
-@Named
+@Named("ChangeLanguage")
 @SessionScoped
 public class ChangeLanguage implements Serializable {
     public String frenchAction() {

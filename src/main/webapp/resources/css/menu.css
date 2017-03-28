@@ -10,6 +10,14 @@
     display: inline;
 }
 
+#type-nav{
+    width: 12em;
+}
+
+#type-dropdown{
+    float: right;
+}
+
 .nd{
     background-color: #17171b;
     border: none;
@@ -133,7 +141,7 @@ img{
 
 .dropdown-menu{
     background-color: #17171b;
-    border: 2px solid white;
+    border: 2px solid rgba(255, 255, 255, 0.87);
 }
 
 .dropdown-menu > li > a{

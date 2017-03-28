@@ -20,15 +20,15 @@
                     <span class="icon-bar"></span>
                 </button>
                 <div class="brand-logo">
-                    <a class="navbar-brand nb" href="mainpage.xhtml"><img alt="navbar-brand" src="#{request.contextPath}/resources/images/favicon.png"/>Pandamedia</a>
+                    <a class="navbar-brand nb" href="#{request.contextPath}/mainpage.xhtml"><img alt="navbar-brand" src="#{request.contextPath}/resources/images/favicon.png"/>Pandamedia</a>
                 </div>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <h:form>
-                    <ul class="nav navbar-nav nn">
-                        <li class="dropdown">
+                    <ul class="nav navbar-nav nn" id="type-nav">
+                        <li class="dropdown" id="type-dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">#{searchDropdown.toDisplay}<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><h:commandLink action="#{searchDropdown.setType('albums')}">#{msgs.albums}</h:commandLink></li>
