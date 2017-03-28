@@ -83,35 +83,35 @@ public class CreditCard {
         this.cardName = cardName;
     }
     
-    public void validateDate(FacesContext context, UIComponent component,
-            Object value) {
-
-        // Must read this value from user interface
-        UIInput monthInput = (UIInput) component.findComponent("cardMonth");
-
-        int month = ((Integer) monthInput.getLocalValue());
-        int year = ((Integer) value);
-
-        if (!isValidDate(month, year))
-        {
-            // Date in past
-            FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
-                    "bundles.messages", "cardPastDateError", null);
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            throw new ValidatorException(message);
-        }
-    }
+//    public void validateDate(FacesContext context, UIComponent component,
+//            Object value) {
+//
+//        // Must read this value from user interface
+//        UIInput monthInput = (UIInput) component.findComponent("cardMonth");
+//
+//        int month = ((Integer) monthInput.getLocalValue());
+//        int year = ((Integer) value);
+//
+//        if (!isValidDate(month, year))
+//        {
+//            // Date in past
+//            FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+//                    "bundles.messages", "cardPastDateError", null);
+//            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+//            throw new ValidatorException(message);
+//        }
+//    }
     
-    private boolean isValidDate(int month, int year)
-    {
-        Calendar current = Calendar.getInstance();
-        
-        Calendar given = Calendar.getInstance();
-        given.set(Calendar.YEAR, year);
-        given.set(Calendar.MONTH, month);       
-        
-        return given.after(current);
-    }
+//    private boolean isValidDate(int month, int year)
+//    {
+//        Calendar current = Calendar.getInstance();
+//        
+//        Calendar given = Calendar.getInstance();
+//        given.set(Calendar.YEAR, year);
+//        given.set(Calendar.MONTH, month);       
+//        
+//        return given.after(current);
+//    }
     
     public void validateCardNum(FacesContext context, UIComponent component,
             Object value) {
