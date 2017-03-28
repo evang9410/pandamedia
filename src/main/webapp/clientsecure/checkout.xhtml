@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:b="http://bootsfaces.net/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:jsf="http://xmlns.jcp.org/jsf"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>#{msgs.finalizationTitle}</title>
-        <meta name="author" content="Erika Bourque"/>
+<ui:composition template="/WEB-INF/templates/masterTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:p="http://primefaces.org/ui">
+    <meta name="author" content="Erika Bourque"/>
+    <ui:define name="WindowTitle">#{msgs.finalizationTitle}</ui:define>
+    <ui:define name="css">
         <h:outputStylesheet name="checkout.css" library="css"/>
-    </h:head>
-    <body>
+    </ui:define>
+    <ui:define name="page-content">
         <div id="content">
             <div id="billingInfo">
                 <p:panelGrid columns="1">
@@ -60,13 +60,13 @@
 
                     <p:outputLabel value="#{msgs.gstLbl}" />
                     <p:outputLabel value="#{checkout.gst}" />
-                    
+
                     <p:outputLabel value="#{msgs.pstLbl}" />
                     <p:outputLabel value="#{checkout.pst}" />
-                    
+
                     <p:outputLabel value="#{msgs.hstLbl}" />
                     <p:outputLabel value="#{checkout.hst}" />
-                    
+
                     <p:outputLabel value="#{msgs.totalHeader}" />
                     <p:outputLabel value="#{checkout.total}" />
                 </p:panelGrid>
@@ -75,11 +75,11 @@
                 <h:form>
                     <p:panelGrid columns="3" columnClasses="labels, input, errors">
                         <p:outputLabel for="cardType" value="#{msgs.cardTypeLbl}" />
-                        <p:selectOneMenu id="cardType" required="true" value="#{creditCard.cardType}">
+                        <b:selectOneMenu id="cardType" required="true" value="#{creditCard.cardType}">
                             <f:selectItem itemLabel="Visa" itemValue="Visa"/>
                             <f:selectItem itemLabel="MasterCard" itemValue="MasterCard"/>
                             <!-- TODO: make these images? -->
-                        </p:selectOneMenu>
+                        </b:selectOneMenu>
                         <p:message for="cardType" />                        
 
                         <p:outputLabel for="cardNum" value="#{msgs.cardNumLbl}" />
@@ -101,12 +101,13 @@
 
                         <p:outputLabel for="cardMonth" value="#{msgs.cardExpDateLbl}" />
                         <h:panelGroup>
-                            <p:selectOneMenu id="cardMonth" required="true" value="#{creditCard.cardMonth}">
+                            <b:selectOneMenu id="cardMonth" required="true" value="#{creditCard.cardMonth}">
                                 <f:selectItems value="#{checkout.monthSelector}" />
-                            </p:selectOneMenu>
-                            <p:selectOneMenu id="cardYear" required="true" value="#{creditCard.cardYear}" validator="#{creditCard.validateDate}">
+                            </b:selectOneMenu>
+                            <b:selectOneMenu id="cardYear" required="true" value="#{creditCard.cardYear}">
                                 <f:selectItems value="#{checkout.yearSelector}" />
-                            </p:selectOneMenu>
+                                <f:validator validatorId="creditMonthValidator" />
+                            </b:selectOneMenu>
                         </h:panelGroup>
                         <p:message for="cardYear" styleClass="errorMessage"/>
 
@@ -116,5 +117,5 @@
                 </h:form>
             </div>
         </div>
-    </body>
-</html>
+    </ui:define>
+</ui:composition>
