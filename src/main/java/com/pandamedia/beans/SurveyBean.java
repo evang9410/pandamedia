@@ -10,6 +10,9 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import persistence.controllers.FrontPageSettingsJpaController;
+import persistence.controllers.SurveyActionController;
+import persistence.entities.FrontPageSettings;
 
 /**
  * This class will be used as the survey backing bean. It is used as a means
@@ -31,10 +34,6 @@ public class SurveyBean implements Serializable {
     private FrontPageSettingsJpaController fpsController;
     @Inject
     private SurveyJpaController surveys;
-    @Inject
-    private SurveyActionController surveyActionController;
-    @Inject
-    private FrontPageSettingsJpaController fpsController;
    
     
     @PostConstruct
@@ -161,10 +160,6 @@ public class SurveyBean implements Serializable {
 
     public void setSurveyId(int surveyId) {
         this.surveyId = surveyId;
-    }
-
-    public Survey getSurvey() {
-        return survey;
     }
 
     public void setSurvey(Survey survey) {

@@ -126,9 +126,6 @@ public class AlbumBackingBean implements Serializable{
         this.album = album;
     }
     
-    public AlbumBackingBean(){
-        genrelist = new ArrayList();
-    }
 
     public List<Album> getGenrelist() {
         return genrelist;

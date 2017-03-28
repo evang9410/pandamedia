@@ -54,7 +54,7 @@
                         <f:validateLongRange minimum="0" maximum="1" />
                     </p:inputText>
                     <p:outputLabel value="#{msgs.provinceHeader}" for="provinceId" />
-                    <p:selectOneMenu id="provinceId" value="#{userBacking.user.provinceId}" converter="#{provinceConverter}" required="true" requiredMessage="The ProvinceId field is required.">
+                    <p:selectOneMenu id="provinceId" value="#{userBacking.user.provinceId}" converter="#{provincePFConverter}" required="true" requiredMessage="The ProvinceId field is required.">
                         <f:selectItems value="#{provinceBacking.all}" var="province" itemLabel="#{province.name}" itemValue="#{province}"/>
                     </p:selectOneMenu>
                 </p:panelGrid>

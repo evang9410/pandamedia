@@ -2,6 +2,7 @@
 package com.pandamedia.selenium.tests;
 
 import io.github.bonigarcia.wdm.ChromeDriverManager;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,8 +16,17 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 public class ManagementTest {
     
-    
+    private WebDriver driver;
+    private WebDriverWait wait;
 
+    @Before
+    public void setUp()
+    {
+        ChromeDriverManager.getInstance().setup();
+        driver = new ChromeDriver();
+        wait = new WebDriverWait(driver,10);
+    }
+    
     /**
      * The most basic Selenium test method that tests to see if the page name
      * matches a specific name.
@@ -33,7 +43,7 @@ public class ManagementTest {
         // Create a new instance of the Chrome driver
         // Notice that the remainder of the code relies on the interface,
         // not the implementation.
-        WebDriver driver = new ChromeDriver();
+        driver = new ChromeDriver();
         //WebDriver driver = new FirefoxDriver();
 
         // And now use this to visit a web site
@@ -44,7 +54,7 @@ public class ManagementTest {
         // click search
         driver.findElement(By.name("btnG")).click();
 
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait = new WebDriverWait(driver, 10);
 
         wait.until(new ExpectedCondition<Boolean>() {
             @Override
@@ -61,7 +71,7 @@ public class ManagementTest {
     {
         ChromeDriverManager.getInstance().setup();
         
-        WebDriver driver = new ChromeDriver();
+        driver = new ChromeDriver();
         driver.get("http://localhost:8080/pandamedia/reviews.xhtml");
         
         //test the approve btn
@@ -70,7 +80,7 @@ public class ManagementTest {
         //delete this when the bug is fixed
         driver.findElement(By.xpath("/form[@id=reviewFormID]/column[@id=options]/commandButton[id=approveBtn]"));
         
-        WebDriverWait wait = new WebDriverWait(driver,10);
+        wait = new WebDriverWait(driver,10);
         
         wait.until(new ExpectedCondition<Boolean>() {
             @Override
@@ -92,7 +102,7 @@ public class ManagementTest {
     {
         ChromeDriverManager.getInstance().setup();
         
-        WebDriver driver = new ChromeDriver();
+        driver = new ChromeDriver();
         driver.get("http://localhost:8080/pandamedia/reviews.xhtml");
         
         //test the approve btn
@@ -101,7 +111,7 @@ public class ManagementTest {
         //delete this when the bug is fixed
         driver.findElement(By.xpath("/form[@id=reviewFormID]/column[@id=options]/commandButton[id=disapproveBtn]"));
         
-        WebDriverWait wait = new WebDriverWait(driver,10);
+        wait = new WebDriverWait(driver,10);
         
         wait.until(new ExpectedCondition<Boolean>() {
             @Override
