@@ -19,10 +19,10 @@ public class CreditCardMonthValidator implements Validator {
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         // Must read this value from user interface
-        UIInput monthInput = (UIInput) component.findComponent("cardMonth");
+        UIInput monthInput = (UIInput) component.findComponent("credit:cardMonth");
 
-        System.out.println(value.toString());
-        System.out.println(monthInput.toString());
+        System.out.println("Year: " + value);
+        System.out.println("Month: " + monthInput.getLocalValue());
         
         int month = ((Integer) monthInput.getLocalValue());
         int year = ((Integer) value);

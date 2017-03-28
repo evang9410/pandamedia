@@ -74,16 +74,16 @@ public class CheckoutBackingBean implements Serializable {
      * @author Erika Bourque
      * @return The list of months
      */
-    public List<SelectItem> getMonthSelector() {
-        List<SelectItem> list = new ArrayList<>();
+    public List<String> getMonthSelector() {
+        List<String> list = new ArrayList<>();
 
         for (int i = 1; i <= 12; i++) {
             if (i < 10) // For display purposes, adds a 0 in front
             {
-                list.add(new SelectItem(i, "0" + i));
+                list.add("0" + i);
             } else // Uses value as display by default
             {
-                list.add(new SelectItem(i));
+                list.add("" + i);
             }
         }
 
@@ -97,14 +97,15 @@ public class CheckoutBackingBean implements Serializable {
      * @author Erika Bourque
      * @return The list of years
      */
-    public List<SelectItem> getYearSelector() {
-        List<SelectItem> list = new ArrayList<>();
+    public List<String> getYearSelector() {
+        List<String> list = new ArrayList<>();
         int curYear = Calendar.getInstance().get(Calendar.YEAR);
         // Default max value of exp years = 10
         int maxYears = 10;
 
         for (int i = 0; i < maxYears; i++) {
-            list.add(new SelectItem(curYear + i));
+            int temp = curYear + i;
+            list.add("" + temp);
         }
 
         return list;
