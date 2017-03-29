@@ -76,11 +76,6 @@ public class ArtistBackingBean implements Serializable{
         LOG.info("New artist id: " + artist.getId());
         this.artist = artist;
     }
-    public void setArtist(Artist artist)
-    {
-        LOG.info("New artist id: " + artist.getId());
-        this.artist = artist;
-    }
     
     public List<Artist> getArtistsList(){
         String q = "SELECT a FROM Artist a";

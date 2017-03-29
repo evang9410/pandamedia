@@ -16,7 +16,7 @@
         <div>
             <ui:include src="./WEB-INF/sections/manager_menu.xhtml"/>
         </div>
-        <f:view>
+         <f:view locale="#{ChangeLanguage.locale}">
             <h:link value="#{msgs.addAlbum}" outcome="AlbumFunctionality/addAlbum"/>
             <br/>
             <h:link value="#{msgs.addTrack}" outcome="TrackFunctionality/addTrack"/>
@@ -92,9 +92,7 @@
                         <p:commandButton  value="#{msgs.del}" action="#{albumBacking.removeItem(item.id)}" update=":albumFormID:albumTable"/>
                     </p:column>
                 </p:dataTable>
-            </h:form>
-        </f:view>
-        <f:view>           
+            </h:form>         
             <h:form id="trackFormID">
                 <h1><h:outputText value="#{msgs.tracks}"/></h1>
                 <p:dataTable value="#{trackBacking.all}" id="trackTableID" widgetVar="trackTable" filteredValue="#{trackBacking.filteredTracks}" var="item" paginator="true" rows="5">

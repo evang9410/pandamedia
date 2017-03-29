@@ -18,15 +18,25 @@ import javax.inject.Named;
 @Named("ChangeLanguage")
 @SessionScoped
 public class ChangeLanguage implements Serializable {
+    
+    private Locale localValue;
+    
     public String frenchAction() {
         FacesContext context = FacesContext.getCurrentInstance();
-        context.getViewRoot().setLocale(Locale.CANADA_FRENCH);
+        localValue = Locale.CANADA_FRENCH;
+        context.getViewRoot().setLocale(localValue);
         return null;
     }
     public String englishAction() {
         FacesContext context = FacesContext.getCurrentInstance();
-        context.getViewRoot().setLocale(Locale.CANADA);
+        localValue = Locale.CANADA;
+        context.getViewRoot().setLocale(localValue);
         return null;
+    }
+    
+    public Locale getLocale()
+    {
+        return localValue;
     }
     
     

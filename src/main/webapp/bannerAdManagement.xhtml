@@ -15,7 +15,7 @@
         <div>
             <ui:include src="./WEB-INF/sections/manager_menu.xhtml"/>
         </div>
-        <f:view>
+        <f:view locale="#{ChangeLanguage.locale}">
             <h:form>
                 <h1><h:outputText value="#{msgs.add}"/></h1>
                 <p:panelGrid columns="2">

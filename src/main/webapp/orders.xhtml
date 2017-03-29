@@ -15,7 +15,7 @@
         <div>
             <ui:include src="./WEB-INF/sections/manager_menu.xhtml"/>
         </div>
-        <f:view>
+        <f:view locale="#{ChangeLanguage.locale}">
             <h:form id="invoiceFormID">
                 <h1><h:outputText value="#{msgs.orders}"/></h1>
                 <p:dataTable value="#{invoiceBacking.all}" id="invoiceTableID" widgetVar="invoiceTable" filteredValue="#{invoiceBacking.filteredInvoices}"  var="item" paginator="true" rows="5">

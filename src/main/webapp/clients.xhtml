@@ -15,7 +15,7 @@
         <div>
             <ui:include src="./WEB-INF/sections/manager_menu.xhtml"/>
         </div>
-        <f:view>
+        <f:view locale="#{ChangeLanguage.locale}">
             <h:form id="userFormID">
                 <h1><h:outputText value="#{msgs.clients}"/></h1>
                 <p:dataTable value="#{userBacking.all}" id="userTableID" widgetVar="userTable" filteredValue="#{userBacking.filteredUsers}"  var="item" paginator="true" rows="5">

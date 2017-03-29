@@ -15,7 +15,7 @@
         <div>
             <ui:include src="./WEB-INF/sections/manager_menu.xhtml"/>
         </div>
-        <f:view>
+        <f:view locale="#{ChangeLanguage.locale}">
             <h:form id="reviewFormID">
                 <h1><h:outputText value="#{msgs.reviews}"/></h1>
                 <p:dataTable value="#{reviewBacking.reviews}" id="reviewTableID" widgetVar="reviewTable" filteredValue="#{reviewBacking.filteredReviews}" var="item" paginator="true" rows="5">

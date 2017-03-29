@@ -15,7 +15,7 @@
         <div>
             <ui:include src="./WEB-INF/sections/manager_menu.xhtml"/>
         </div>
-        <f:view>
+        <f:view locale="#{ChangeLanguage.locale}">
             <h:form id="albumFormID">
                 <h1><h:outputText value="#{msgs.albums}"/></h1>
                 <p:dataTable value="#{albumBacking.all}" id="albumTable" widgetVar="albumTable" filteredValue="#{albumBacking.filteredAlbums}"  var="item" paginator="true" rows="5">
@@ -81,8 +81,6 @@
                     </p:column>
                 </p:dataTable>
             </h:form>
-        </f:view>
-        <f:view>
             <h:form id="trackFormID">
                 <h1><h:outputText value="#{msgs.tracks}"/></h1>
                 <p:dataTable value="#{trackBacking.all}" id="trackTableID" widgetVar="trackTable" filteredValue="#{trackBacking.filteredTracks}" var="item" paginator="true" rows="5">
