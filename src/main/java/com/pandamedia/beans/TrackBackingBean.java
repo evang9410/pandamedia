@@ -1,4 +1,3 @@
-==== BASE ====
 package com.pandamedia.beans;
 
 import java.io.IOException;
