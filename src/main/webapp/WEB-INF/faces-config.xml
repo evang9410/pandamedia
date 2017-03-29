@@ -1,3 +1,4 @@
+==== BASE ====
 <?xml version='1.0' encoding='UTF-8'?>
 <faces-config version="2.2"
               xmlns="http://xmlns.jcp.org/xml/ns/javaee"
@@ -26,11 +27,22 @@
     <navigation-rule>
         <navigation-case>
             <from-outcome>main</from-outcome>
-            <to-view-id>../mainpage.xhtml</to-view-id>
+            <to-view-id>/mainpage.xhtml</to-view-id>
         </navigation-case>
-    </navigation-rule>
-    <!-- Secured pages navigation rules -->
-    <navigation-rule>
+        <navigation-case>
+            <from-outcome>login</from-outcome>
+            <to-view-id>/userconnection/login.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>register</from-outcome>
+            <to-view-id>/userconnection/registration.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>cart</from-outcome>
+            <to-view-id>/cart.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <!-- Secured pages navigation rules -->
         <navigation-case>
             <from-outcome>finalization</from-outcome>
             <to-view-id>/clientsecure/checkout.xhtml</to-view-id>

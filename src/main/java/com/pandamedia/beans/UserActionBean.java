@@ -95,7 +95,7 @@ public class UserActionBean implements Serializable {
                 FacesContext.getCurrentInstance().renderResponse();
             } else {
                 FacesContext.getCurrentInstance().getExternalContext()
-                        .redirect("pandamedia/mainpage.xhtml");
+                        .redirect("/pandamedia/mainpage.xhtml");
             }
             
         } catch (IOException ioe) {

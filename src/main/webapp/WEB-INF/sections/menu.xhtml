@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <ui:composition    
     xmlns="http://www.w3.org/1999/xhtml"
@@ -21,15 +20,15 @@
                     <span class="icon-bar"></span>
                 </button>
                 <div class="brand-logo">
-                    <a class="navbar-brand nb" href="mainpage.xhtml"><img alt="navbar-brand" src="#{request.contextPath}/resources/images/favicon.png"/>Pandamedia</a>
+                    <h:link class="navbar-brand nb"  outcome="main"><img alt="navbar-brand" src="#{request.contextPath}/resources/images/favicon.png"/>Pandamedia</h:link>
                 </div>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <h:form>
-                    <ul class="nav navbar-nav nn">
-                        <li class="dropdown">
+                    <ul class="nav navbar-nav nn" id="type-nav">
+                        <li class="dropdown" id="type-dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">#{searchDropdown.toDisplay}<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><h:commandLink action="#{searchDropdown.setType('albums')}">#{msgs.albums}</h:commandLink></li>
@@ -59,8 +58,8 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">#{msgs.signIn}<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
 
-                                        <li><h:link outcome="userconnection/login"> Login</h:link></li>
-                                        <li><h:link outcome="userconnection/registration"> Register</h:link></li>
+                                        <li><h:link outcome="login"> Login</h:link></li>
+                                        <li><h:link outcome="register"> Register</h:link></li>
                                 </ul>
                             </ui:fragment>
                             <ui:fragment rendered="#{userAction.isLogin()}">
@@ -83,3 +82,4 @@
         </div><!-- /.container-fluid -->
     </nav>
 </ui:composition>
+==== BASE ====

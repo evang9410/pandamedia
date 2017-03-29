@@ -1,3 +1,4 @@
+==== BASE ====
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition template="/WEB-INF/templates/masterTemplate.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
@@ -36,7 +37,7 @@
                                         <f:convertNumber minFractionDigits="2"/>
                                     </h:outputText>
 
-                                    <f:ajax render="j_idt15:shopping-cart-count"/>
+<!--                                    <f:ajax render="j_idt15:shopping-cart-count"/>-->
                                 </b:commandButton>
                             </h:form>
                         </div>
@@ -99,23 +100,6 @@
                                 </h:commandLink>
                             </h:form>
 
-                <tbody>
-                    <ui:repeat value="#{albumBacking.album.trackList}" var="tracks">
-                        <tr>
-                            <th scope="row">#{tracks.albumTrackNumber}</th>
-                            <td>
-                                <h:form>
-                                    <h:commandButton action="#{trackBacking.trackPage(tracks)}" value="#{tracks.title}"/>
-                                                             
-                                </h:form>    
-                            </td>                            
-                            <td>#{tracks.playLength}</td>
-                            <td width="50">
-                                <h:form>
-                                    <b:commandButton ajax="true" icon-awesome="cart-plus" iconAlign="right" value="#{tracks.listPrice}" look="primary"/>                                    
-                                </h:form>
-                            </td>
-                        </tr>
                         </div>
                     </ui:repeat>
                 </div>
@@ -123,3 +107,4 @@
         </h:body>
     </ui:define>
 </ui:composition>
+==== BASE ====
