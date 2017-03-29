@@ -4503,6 +4503,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-color: #e7e7e7;
 }
 .pandaNavbar{
+    min-height: 0%;
     color: black;
 }
 .navbar-default .navbar-brand {

@@ -4,33 +4,17 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Reporting</title>
+        <title>#{msgs.reports}</title>
         <h:outputStylesheet name="css/bootstrap.css"/>
+        <h:outputStylesheet library="css" name="style.css"  />
     </h:head>
     <h:body>
-        <b:navBar brand="PandaMedia" brandHref="manager_index.xhtml" styleClass="navbar navbar-default pandaNavbar">
-            <b:navbarLinks pull="right">
-                <b:navLink value="Sales" href="salesPage.xhtml"></b:navLink>
-                <b:navLink value="Clients" href="clients.xhtml"></b:navLink>
-                <b:navLink value="Orders" href="orders.xhtml"></b:navLink>
-                <b:navLink value="Reviews" href="reviews.xhtml"></b:navLink>
-                <b:navLink value="Reporting" href="reporting.xhtml"></b:navLink>
-            </b:navbarLinks>
-        </b:navBar> 
-        <h:outputStylesheet library="css" name="style.css"  />
-        
-        
-        <h:outputLink value="">Total Sales</h:outputLink><br/>
-        <h:outputLink value="">Sales By Client</h:outputLink><br/>
-        <h:outputLink value="">Sales By Artist</h:outputLink><br/>
-        <h:outputLink value="">Sales By Track</h:outputLink><br/>
-        <h:outputLink value="">Sales By Album</h:outputLink><br/>
-        <h:outputLink value="">Top Sellers</h:outputLink><br/>
-        <h:outputLink value="">Top Clients</h:outputLink><br/>
-        <h:outputLink value="">Zero Tracks</h:outputLink><br/>
-        <h:outputLink value="">Zero Clients</h:outputLink>
+        <div>
+            <ui:include src="./WEB-INF/sections/manager_menu.xhtml"/>
+        </div>
         
         
     </h:body>

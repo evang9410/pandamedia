@@ -1,12 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.pandamedia.beans;
 
+import java.io.Serializable;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -16,19 +13,24 @@ import persistence.controllers.GenreJpaController;
 import persistence.entities.Genre;
 
 /**
- *
- * @author Evang
+ * This class will be used as the genre backing bean. It is used as a means
+ * of getting genres and querying them.
+ * @author Naasir Jusab, Evan Glicakis
  */
 @Named("genreBacking")
-@RequestScoped
-public class GenreBackingBean {
+@SessionScoped
+public class GenreBackingBean implements Serializable {
     @Inject
     private GenreJpaController genreController;
+    private Genre genre;
     @PersistenceContext
     private EntityManager em;
     
-    private Genre genre;
-    
+    /**
+     * This method will return a genre if it exists already. Otherwise, it will
+     * return a new genre object.
+     * @return genre object
+     */    
     public Genre getGenre(){
         if(genre == null){
             genre = new Genre();
@@ -40,6 +42,16 @@ public class GenreBackingBean {
         String q = "SELECT g.name FROM Genre g";
         TypedQuery query = em.createQuery(q, Genre.class).setMaxResults(5); // for testing this is set to 5 results max. In production, we should remove this limit.
         return query.getResultList();
+    }
+    
+    /**
+     * This method will return all the genres in the database so it can be 
+     * displayed on the data table.
+     * @return list of all the genres
+     */
+    public List<Genre> getAll()
+    {
+        return genreController.findGenreEntities();
     }
     
     

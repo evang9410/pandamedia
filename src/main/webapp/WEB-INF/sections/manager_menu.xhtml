@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:b="http://bootsfaces.net/ui"
+    xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:form>
+        <b:navBar brand="PandaMedia" brandHref="manager_index.xhtml" styleClass="navbar navbar-default pandaNavbar">
+            <b:navbarLinks pull="right">
+                <b:navLink value="#{msgs.sales}" href="salesPage.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.clients}" href="clients.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.orders}" href="orders.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.reviews}" href="reviews.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.reports}" href="reporting.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.newsFeed}" href="newsFeedManagement.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.survey}" href="surveyManagement.xhtml"></b:navLink>
+                <b:navLink value="#{msgs.banner}" href="bannerAdManagement.xhtml"></b:navLink>
+                <b:dropMenu value="#{msgs.selectLanguage}" styleClass="dropdown">
+                    <b:navCommandLink value="#{msgs.englishLanguage}" action="#{ChangeLanguage.englishAction()}"></b:navCommandLink>
+                    <b:navCommandLink value="#{msgs.frenchLanguage}" action="#{ChangeLanguage.frenchAction()}"></b:navCommandLink>
+                </b:dropMenu>
+            </b:navbarLinks>
+        </b:navBar>
+    </h:form>
+</ui:composition>
+

@@ -91,7 +91,7 @@
                                         <div class="media">
                                             <h:form>
                                                 <h:commandLink styleClass="thumbnail pull-left" action="#{trackBacking.trackPage(individual_tracks)}">
-                                                    <img class="media-object" src="resources/coverart/#{individual_tracks.coverArtId.imagePath}" style="width: 90px; height: 90px;"/>
+                                                    <img class="media-object" src="#{request.contextPath}/resources/coverart/#{individual_tracks.coverArtId.imagePath}" style="width: 90px; height: 90px;"/>
                                                 </h:commandLink>
                                             </h:form>
 

@@ -1,6 +1,7 @@
 package com.pandamedia.beans;
 
 import java.io.Serializable;
+import javax.enterprise.context.SessionScoped;
 import java.util.ArrayList;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -41,7 +42,7 @@ import persistence.entities.Track_;
  * @author Erika Bourque
  */
 @Named("reports")
-@RequestScoped
+@SessionScoped
 public class ReportBackingBean implements Serializable {
     // TODO: change logging?
     // TODO: add checks for was it valid during report time and now is removed

@@ -1,25 +1,25 @@
 
 package com.pandamedia.converters;
 
-import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
+import javax.inject.Named;
 import persistence.controllers.CoverArtJpaController;
 import persistence.entities.CoverArt;
 
 /**
- *
- * @author Naasir
+ * This class will be used as the cover art converter for the primefaces selectOneMenu
+ * so that the manager can choose a cover art from the list of cover arts.
+ * @author Naasir Jusab
  */
-@SessionScoped
-@FacesConverter("coverArtConverter")
-public class CoverArtConverter  implements Converter,Serializable {
+@RequestScoped
+@Named("coverArtConverter")
+public class CoverArtConverter  implements Converter {
     
     @Inject
     private CoverArtJpaController service;
