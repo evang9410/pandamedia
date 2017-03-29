@@ -1,4 +1,3 @@
-==== BASE ====
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition template="/WEB-INF/templates/masterTemplate.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
@@ -8,7 +7,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:b="http://bootsfaces.net/ui">
     <ui:define name="WindowTitle">
-        Album | Pandamedia
+        #{albumBacking.album.title} | Pandamedia
     </ui:define>
     <ui:define name="css">
         <h:outputStylesheet name="album.css" library="css"/>
@@ -37,7 +36,7 @@
                                         <f:convertNumber minFractionDigits="2"/>
                                     </h:outputText>
 
-<!--                                    <f:ajax render="j_idt15:shopping-cart-count"/>-->
+                                    <f:ajax render="j_idt15:shopping-cart-count"/>
                                 </b:commandButton>
                             </h:form>
                         </div>
@@ -99,7 +98,6 @@
                                     <h4 id="suggested-title">#{suggested.title}</h4>
                                 </h:commandLink>
                             </h:form>
-
                         </div>
                     </ui:repeat>
                 </div>
