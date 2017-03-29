@@ -1,4 +1,4 @@
-html{
+/*html{
     margin: 0;
     border: 0;
     height: 100%;
@@ -36,9 +36,9 @@ html, body {
 .homeContainer{
     display: inline-block;
     width: 100%;
-    /*stretching content under the navbar*/
+    stretching content under the navbar
     position: absolute;
-    /*86px is the height of the navbar*/
+    86px is the height of the navbar
     margin-top: 86px;
     height: auto;
     top:0px; 
@@ -70,12 +70,12 @@ html, body {
     text-align: center;   
 }
 
-/*div containing button*/
+div containing button
 .accessButton{
     margin-top: 80px;
     width: auto;
     
-    /*applying custom style*/
+    applying custom style
     background-color: #fff;
     color: #000;
     border: none;
@@ -142,8 +142,8 @@ html, body {
 .navbar-nav{
     font-size: 16px;
     margin: 0 -15px;
-    /*padding-top: 18px;
-    padding-bottom: 18px;*/
+    padding-top: 18px;
+    padding-bottom: 18px;
 }
 
 .navbar-nav .dropdown-menu{
@@ -161,7 +161,7 @@ html, body {
 }
 
 .navbar-default, .dropdown-menu{
-    background-color: #303030;
+
     color:#fff;
     margin-bottom:0;
     border-radius: 0;
@@ -172,7 +172,7 @@ html, body {
 .navbar-default .navbar-nav > li > a,
 a.navbar-brand,
 .navbar-default .navbar-brand{
-    color: #FFF; /* color of the letters on the navbar */
+    color: #FFF;  color of the letters on the navbar 
     transition: ease-in-out background-color 0.3s;
 }
 
@@ -262,4 +262,4 @@ about-heading{
     font-size: 27px;
     text-decoration: underline;
 
-}
+}*/
