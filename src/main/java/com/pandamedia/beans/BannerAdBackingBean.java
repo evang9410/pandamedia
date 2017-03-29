@@ -83,6 +83,7 @@ public class BannerAdBackingBean implements Serializable {
         return null;
     }
     
+    
     /**
      * This method will destroy the ad in the database and it sets the ad
      * object to null so that it does not stay in session scoped.
@@ -130,5 +131,17 @@ public class BannerAdBackingBean implements Serializable {
         
         return null;
     }
+    
+    public void setAd(Advertisement ad)
+    {
+        this.advertisement = ad;
+    }
+    
+    public Advertisement getAd()
+    {
+        return this.advertisement;
+    }
+    
+    
     
 }

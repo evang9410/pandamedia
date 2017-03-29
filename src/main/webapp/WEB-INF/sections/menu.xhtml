@@ -20,7 +20,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <div class="brand-logo">
-                    <h:link class="navbar-brand nb"  outcome="main"><img alt="navbar-brand" src="#{request.contextPath}/resources/images/favicon.png"/>Pandamedia</h:link>
+                    <a class="navbar-brand nb" href="#{request.contextPath}/mainpage.xhtml"><img alt="navbar-brand" src="#{request.contextPath}/resources/images/favicon.png"/>Pandamedia</a>
                 </div>
             </div>
 
@@ -58,8 +58,8 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">#{msgs.signIn}<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
 
-                                        <li><h:link outcome="login"> Login</h:link></li>
-                                        <li><h:link outcome="register"> Register</h:link></li>
+                                        <li><h:link outcome="userconnection/login"> Login</h:link></li>
+                                        <li><h:link outcome="userconnection/registration"> Register</h:link></li>
                                 </ul>
                             </ui:fragment>
                             <ui:fragment rendered="#{userAction.isLogin()}">
@@ -82,4 +82,3 @@
         </div><!-- /.container-fluid -->
     </nav>
 </ui:composition>
-

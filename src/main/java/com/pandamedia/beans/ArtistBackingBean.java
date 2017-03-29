@@ -78,9 +78,7 @@ public class ArtistBackingBean implements Serializable{
     }
     
     public List<Artist> getArtistsList(){
-        String q = "SELECT a FROM Artist a";
-        TypedQuery<Artist> query = em.createQuery(q, Artist.class);
-        this.artists = query.getResultList();
+        this.artists = getAll();
         return this.artists;
     }
     

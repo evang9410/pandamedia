@@ -270,11 +270,10 @@ public class TrackBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
-        
         return null;
     }
     
@@ -301,7 +300,7 @@ public class TrackBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -445,7 +444,7 @@ public class TrackBackingBean implements Serializable{
             {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/salesPage.xhtml");
             }
-            catch(IOException e)
+            catch(Exception e)
             {
                 System.out.println(e.getMessage());
             }
@@ -517,4 +516,5 @@ public class TrackBackingBean implements Serializable{
         return query.getResultList();
     }
      
+    
 }
