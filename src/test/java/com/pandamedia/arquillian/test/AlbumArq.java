@@ -46,6 +46,7 @@ import persistence.controllers.RecordingLabelJpaController;
 import persistence.controllers.ShopUserJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.Album;
+import persistence.entities.Artist;
 import persistence.entities.Track;
 
 /**
@@ -251,6 +252,29 @@ public class AlbumArq {
         albumBacking.setGenreString("Punk");
         List<Album> genreAlbums = albumBacking.getAlbumFromGenre();
         assertEquals(4, genreAlbums.size());
+    }
+    
+    @Test
+    public void testGetLatestAlbums(){
+        //I'm going to edit an album with the current date and check if that is
+        // the latest album, it should be.
+        Album a = albumController.findAlbum(5);
+        Date currDate = new Date();
+        a.setReleaseDate(currDate);
+        albumBacking.setAlbum(a);
+        albumBacking.edit();
+        List latest = albumBacking.getLatestAlbums();
+        assertEquals(latest.get(0), a);
+    }
+    
+    @Test
+    public void testGetAlbumsFromArtist(){
+        // select the number of albums from artist 88 finger louie
+        Artist artist = artistController.findArtist(1);
+        List artsitAlbums = albumBacking.albumsFromArtist(artist);
+        //should be one (1) album.
+        assertEquals(1, artsitAlbums.size());
+        
     }
     
 }
