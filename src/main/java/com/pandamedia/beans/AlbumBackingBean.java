@@ -254,7 +254,7 @@ public class AlbumBackingBean implements Serializable{
         }
         int genre_id = getGenreId(genreString);
         String q = "SELECT a FROM Album a WHERE a.genreId.id = :genre_id";
-        TypedQuery<Album> query = em.createQuery(q, Album.class).setMaxResults(5);
+        TypedQuery<Album> query = em.createQuery(q, Album.class);
         query.setParameter("genre_id", genre_id);
         return query.getResultList();
     }
@@ -407,7 +407,7 @@ public class AlbumBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -536,7 +536,7 @@ public class AlbumBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
