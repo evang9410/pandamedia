@@ -4,90 +4,63 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Reviews</title>
+        <title>#{msgs.reviews}</title>
         <h:outputStylesheet name="css/bootstrap.css"/>
+        <h:outputStylesheet library="css" name="style.css"/>
     </h:head>
     <h:body>
-        <b:navBar brand="PandaMedia" brandHref="manager_index.xhtml" styleClass="navbar navbar-default pandaNavbar">
-            <b:navbarLinks pull="right">
-                <b:navLink value="Sales" href="salesPage.xhtml"></b:navLink>
-                <b:navLink value="Clients" href="clients.xhtml"></b:navLink>
-                <b:navLink value="Orders" href="orders.xhtml"></b:navLink>
-                <b:navLink value="Reviews" href="reviews.xhtml"></b:navLink>
-                <b:navLink value="Reporting" href="reporting.xhtml"></b:navLink>
-            </b:navbarLinks>
-        </b:navBar> 
-        <h:outputStylesheet library="css" name="style.css"  />
-        
-        <f:view>
-
-
-
-            <h:form>
-                <h1><h:outputText value="Reviews"/></h1>
-                <p:dataTable value="#{reviewJpaController.all}" var="item">
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Id"/>
-                        </f:facet>
+        <div>
+            <ui:include src="./WEB-INF/sections/manager_menu.xhtml"/>
+        </div>
+        <f:view locale="#{ChangeLanguage.locale}">
+            <h:form id="reviewFormID">
+                <h1><h:outputText value="#{msgs.reviews}"/></h1>
+                <p:dataTable value="#{reviewBacking.reviews}" id="reviewTableID" widgetVar="reviewTable" filteredValue="#{reviewBacking.filteredReviews}" var="item" paginator="true" rows="5">
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="#{msgs.search}" />
+                            <p:inputText id="globalFilter" onkeyup="PF('reviewTable').filter()" style="width:150px" placeholder="#{msgs.keyword}"/>
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column filterBy="#{item.id}" headerText="#{msgs.id}" filterMatchMode="contains">
                         <h:outputText value="#{item.id}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="DateEntered"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.dateEntered}" headerText="#{msgs.dateEntered}" filterMatchMode="contains">
                         <h:outputText value="#{item.dateEntered}">
                             <f:convertDateTime pattern="MM/dd/yyyy" />
                         </h:outputText>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Rating"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.rating}" headerText="#{msgs.rating}" filterMatchMode="contains">
                         <h:outputText value="#{item.rating}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="ReviewContent"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.reviewContent}" headerText="#{msgs.reviewContent}" filterMatchMode="contains">
                         <h:outputText value="#{item.reviewContent}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="ApprovalStatus"/>
-                        </f:facet>
-                        <h:outputText value="#{item.approvalStatus}"/>
+                    <p:column id="approvalStatusID" filterBy="#{item.approvalStatus}" headerText="#{msgs.approvalStatus}" filterMatchMode="contains">
+                        <h:outputText id="approvalStatusText" value="#{item.approvalStatus}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="TrackId"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.trackId.title}" headerText="#{msgs.title}" filterMatchMode="contains">
                         <h:outputText value="#{item.trackId.title}"/>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="UserId"/>
-                        </f:facet>
+                    <p:column filterBy="#{item.userId.firstName}" headerText="#{msgs.name}" filterMatchMode="contains">
                         <h:outputText value="#{item.userId.firstName}"/>
                         <br/>
                         <h:outputText value="#{item.userId.lastName}"/>
                     </p:column>
-                    <p:column>
+                    <p:column id="options">
                         <f:facet name="header">
-                            <h:outputText value="Options"/>
+                            <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <h:commandButton value="Approve" action="#{reviewBacking.approve(item.id)}" />
-                        <h:commandButton value="Disapprove" action="#{reviewBacking.disapprove(item.id)}" />
-                        <h:commandButton value="Remove" action="#{reviewBacking.removeItem(item.id)}"/>
+                        <p:commandButton ajax="false" id="approveBtn" value="#{msgs.approve}" action="#{reviewBacking.approve(item.id)}"/>
+                        <p:commandButton ajax="false" id="disapproveBtn" value="#{msgs.disapprove}" action="#{reviewBacking.disapprove(item.id)}"/>
+                        <p:commandButton ajax="false" id="deleteBtn" value="#{msgs.del}" action="#{reviewBacking.removeItem(item.id)}"/>
                     </p:column>
                 </p:dataTable>
             </h:form>
-
-        </f:view>
-
-        
+        </f:view>       
     </h:body>
 </html>
 

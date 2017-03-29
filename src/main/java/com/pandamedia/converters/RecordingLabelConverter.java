@@ -1,25 +1,26 @@
 
 package com.pandamedia.converters;
 
-import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
+import javax.inject.Named;
 import persistence.controllers.RecordingLabelJpaController;
 import persistence.entities.RecordingLabel;
 
 /**
- *
- * @author Naasir
+ * This class will be used as the recordingLabel converter for the primefaces  
+ * selectOneMenu so that the manager can choose a recordingLabel from the list 
+ * of recordingLabels.
+ * @author Naasir Jusab
  */
-@SessionScoped
-@FacesConverter("recordingLabelConverter")
-public class RecordingLabelConverter  implements Converter,Serializable {
+@RequestScoped
+@Named("recordingLabelConverter")
+public class RecordingLabelConverter  implements Converter {
     
     @Inject
     private RecordingLabelJpaController service;

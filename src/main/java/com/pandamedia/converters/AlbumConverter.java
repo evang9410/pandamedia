@@ -1,3 +1,4 @@
+
 package com.pandamedia.converters;
 
 import java.io.Serializable;
@@ -13,24 +14,23 @@ import persistence.controllers.AlbumJpaController;
 import persistence.entities.Album;
 
 /**
- *
- * @author Erika Bourque
+ * This class will be used as the album converter for the primefaces selectOneMenu
+ * so that the manager can choose an album from the list of albums.
+ * @author Naasir Jusab
  */
 @RequestScoped
 @Named
-public class AlbumConverter implements Converter,Serializable {
-
-    // TODO: fix error msg
+public class AlbumConverter implements Converter {
     
     @Inject
     AlbumJpaController service;
     
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
+
         if(value != null && value.trim().length() > 0) {
             try {   
-                return service.findAlbum(Integer.parseInt(value));
-               
+                return service.findAlbum(Integer.parseInt(value));    
             } catch(NumberFormatException e) {
                 throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid theme."));
             }
@@ -48,5 +48,7 @@ public class AlbumConverter implements Converter,Serializable {
         else {
             return null;
         }
-    }
-}
+    }   
+}        
+
+

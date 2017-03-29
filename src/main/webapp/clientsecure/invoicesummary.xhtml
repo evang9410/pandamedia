@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:b="http://bootsfaces.net/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:jsf="http://xmlns.jcp.org/jsf"
-      xmlns:p="http://primefaces.org/ui">
-    <head>
-        <title>#{msgs.invoiceSummaryTitle}</title>
-        <meta name="author" content="Erika Bourque"/>
-    </head>
-    <body>
+<ui:composition template="/WEB-INF/templates/masterTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:p="http://primefaces.org/ui">
+    <meta name="author" content="Erika Bourque"/>
+    <ui:define name="WindowTitle">#{msgs.invoiceSummaryTitle}</ui:define>
+    <ui:define name="page-content">
         <div id="content">
             <div id="invoiceDetails">
                 <p:panelGrid>
@@ -46,22 +44,12 @@
                 </p:panelGrid>
             </div>
             <div id="billingInfo">
-                <p:panelGrid>
-                    <p:row>
-                        #{invoiceSum.invoice.userId.title} #{invoiceSum.invoice.userId.firstName} #{invoiceSum.invoice.userId.lastName}
-                    </p:row>
-                    <p:row>
-                        #{invoiceSum.invoice.userId.streetAddress}
-                    </p:row>
-                    <p:row>
-                        #{invoiceSum.invoice.userId.city}, #{invoiceSum.invoice.userId.provinceId.name} #{invoiceSum.invoice.userId.postalCode}
-                    </p:row>
-                    <p:row>
-                        #{invoiceSum.invoice.userId.country}
-                    </p:row>
-                    <p:row>
-                        #{invoiceSum.invoice.userId.homePhone} #{invoiceSum.invoice.userId.cellPhone}
-                    </p:row>
+                <p:panelGrid columns="1">
+                    <p:outputLabel>#{userAction.currUser.title} #{userAction.currUser.firstName} #{userAction.currUser.lastName}</p:outputLabel>                    
+                    <p:outputLabel>#{userAction.currUser.streetAddress}</p:outputLabel>
+                    <p:outputLabel>#{userAction.currUser.city}, #{userAction.currUser.provinceId.name} #{userAction.currUser.postalCode}</p:outputLabel>
+                    <p:outputLabel>#{userAction.currUser.country}</p:outputLabel>
+                    <p:outputLabel>#{userAction.currUser.homePhone} #{userAction.currUser.cellPhone}</p:outputLabel>                  
                 </p:panelGrid>               
             </div>
             <div id="invoicePurchases">
@@ -97,5 +85,5 @@
                 </p:dataTable>
             </div>
         </div>
-    </body>
-</html>
+    </ui:define>
+</ui:composition>
