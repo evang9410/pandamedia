@@ -67,7 +67,7 @@ public class AlbumBackingBean implements Serializable{
     public void init()
     {
         this.albums = albumController.findAlbumEntities(); 
-        //this.album = (Album) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("album");
+        
     }
     
     /**
@@ -377,7 +377,7 @@ public class AlbumBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("AlbumFunctionality/editAlbum.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -407,7 +407,7 @@ public class AlbumBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -462,7 +462,7 @@ public class AlbumBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("AlbumFunctionality/editSalesAlbum.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -504,7 +504,7 @@ public class AlbumBackingBean implements Serializable{
             {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/salesPage.xhtml");
             }
-            catch(IOException e)
+            catch(Exception e)
             {
                 System.out.println(e.getMessage());
             }
@@ -536,7 +536,7 @@ public class AlbumBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -558,7 +558,7 @@ public class AlbumBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -580,7 +580,7 @@ public class AlbumBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/salesPage.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }

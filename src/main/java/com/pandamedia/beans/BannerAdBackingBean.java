@@ -49,8 +49,7 @@ public class BannerAdBackingBean implements Serializable {
      * @return advertisement object
      */
     public Advertisement findAdvertisementById(int id){
-        advertisement = advertisementController.findAdvertisement(id);
-        return advertisement;
+        return advertisementController.findAdvertisement(id);
     }
     
     /**

@@ -48,8 +48,7 @@ public class RSSFeedBackingBean implements Serializable{
      * @return news feed object
      */
     public Newsfeed findNewsFeedById(int id){
-        newsFeed = newsFeedController.findNewsfeed(id); 
-        return newsFeed;
+        return newsFeedController.findNewsfeed(id);
     }
     
     /**

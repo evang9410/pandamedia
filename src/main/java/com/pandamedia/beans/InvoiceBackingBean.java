@@ -121,8 +121,7 @@ public class InvoiceBackingBean implements Serializable{
      * @return invoice object
      */
     public Invoice findInvoiceById(int id){
-        invoice = invoiceController.findInvoice(id); 
-        return invoice;
+        return invoiceController.findInvoice(id); 
     }
     
     /**
@@ -219,7 +218,7 @@ public class InvoiceBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/editOrders.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -243,7 +242,7 @@ public class InvoiceBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/removeIndivTracks.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -324,7 +323,7 @@ public class InvoiceBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/orders.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -347,7 +346,7 @@ public class InvoiceBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/orders.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }

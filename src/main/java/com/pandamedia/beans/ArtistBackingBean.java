@@ -53,8 +53,7 @@ public class ArtistBackingBean implements Serializable{
      * @return artist object
      */
     public Artist findArtistById(int id){
-        artist = artistController.findArtist(id); 
-        return artist;
+        return artistController.findArtist(id); 
     }
     
     /**

@@ -28,6 +28,7 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -182,11 +183,22 @@ public class RSSFeedArq {
         feedBacking.setNewsFeed(news);
         feedBacking.save();
         
+                
         List<Newsfeed> listBefore = feedBacking.getAll();
+        //id of the object added
+        Integer feedId = listBefore.get(listBefore.size()-1).getId();
         feedBacking.remove(listBefore.get(listBefore.size()-1).getId());
         List<Newsfeed> listAfter = feedBacking.getAll();
         
-        assertEquals(listBefore.size()-1, listAfter.size());
+        boolean isRemoved = true;
+        for(Newsfeed feed:listAfter)
+        {
+            if(feed.getId() == feedId)
+                isRemoved=false;
+        }
+        
+        
+        assertTrue(isRemoved);
     }
     
     @Test

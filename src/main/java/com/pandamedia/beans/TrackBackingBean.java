@@ -150,8 +150,7 @@ public class TrackBackingBean implements Serializable{
      * @return track object
      */
     public Track findTrackById(int id){
-        track = trackController.findTrack(id); 
-        return track;
+        return trackController.findTrack(id); 
     }
     
     /**
@@ -239,7 +238,7 @@ public class TrackBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("TrackFunctionality/editTrack.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -323,7 +322,7 @@ public class TrackBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -346,7 +345,7 @@ public class TrackBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/salesPage.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -402,7 +401,7 @@ public class TrackBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("TrackFunctionality/editSalesTrack.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }

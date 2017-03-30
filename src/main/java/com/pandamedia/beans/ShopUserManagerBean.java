@@ -136,7 +136,7 @@ public class ShopUserManagerBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("ClientFunctionality/editClients.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -168,7 +168,7 @@ public class ShopUserManagerBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/clients.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -192,7 +192,7 @@ public class ShopUserManagerBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/clients.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -230,6 +230,11 @@ public class ShopUserManagerBean implements Serializable{
             return "0.0";
         else
             return formatter.format(typedQuery.getResultList().get(0));
+    }
+    
+    public ShopUser findUserById(Integer id)
+    {
+        return userController.findShopUser();
     }
 
 }

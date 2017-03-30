@@ -1,8 +1,8 @@
 
 package com.pandamedia.arquillian.test;
 
-import com.pandamedia.beans.BannerAdBackingBean;
 import com.pandamedia.beans.ReportBackingBean;
+import com.pandamedia.beans.ReviewBackingBean;
 import com.pandamedia.commands.ChangeLanguage;
 import com.pandamedia.converters.AlbumConverter;
 import com.pandamedia.filters.LoginFilter;
@@ -32,28 +32,26 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import persistence.controllers.FrontPageSettingsJpaController;
 import persistence.controllers.ShopUserJpaController;
+import persistence.controllers.TrackJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
-import persistence.entities.Advertisement;
-import persistence.entities.FrontPageSettings;
+import persistence.entities.Review;
 import persistence.entities.Track;
-
-
 
 /**
  *
  * @author Naasir Jusab
  */
 @RunWith(Arquillian.class)
-public class BannerAdArq {
-    
+public class ReviewArq {
     @Resource(name = "java:app/jdbc/pandamedialocal")
     private DataSource ds;
     @Inject
-    private BannerAdBackingBean bannerBacking;
+    private ReviewBackingBean reviewBacking;
     @Inject
-    private FrontPageSettingsJpaController fpsController;
+    private TrackJpaController trackController;
+    @Inject
+    private ShopUserJpaController userController;
     
     @Deployment
     public static WebArchive deploy() {
@@ -164,52 +162,57 @@ public class BannerAdArq {
     }
     
     @Test
-    public void testSave()
-    {
-        Advertisement ad = new Advertisement();
-        ad.setAdPath("hehe");
-        bannerBacking.setAd(ad);
-        bannerBacking.save();
-        
-        List<Advertisement> list = bannerBacking.getAll();
-        assertEquals(list.get(list.size()-1), ad);
-            
-    }
-    
-    @Test
     public void testRemove()
-    {   
-        Advertisement ad = new Advertisement();
-        ad.setAdPath("hoho");
-        bannerBacking.setAd(ad);
-        bannerBacking.save();
+    {
+        Review review = reviewBacking.findReviewById(1);
+        reviewBacking.removeItem(1);
         
-        
-        List<Advertisement> listBefore = bannerBacking.getAll();
-        //id of the object added
-        Integer adId = listBefore.get(listBefore.size()-1).getId();
-        bannerBacking.remove(listBefore.get(listBefore.size()-1).getId());
-        List<Advertisement> listAfter = bannerBacking.getAll();
+        List<Review> list = reviewBacking.getAll();
         
         boolean isRemoved = true;
-        for(Advertisement advert:listAfter)
+        for(Review rev:list)
         {
-            if(advert.getId() == adId)
-                isRemoved=false;
+            if(rev.getId() == review.getId())
+                isRemoved = false;
         }
         
-        
         assertTrue(isRemoved);
+        
+    
     }
     
     @Test
-    public void testSelect()
+    public void testApprove()
     {
-        bannerBacking.select(1);
-        FrontPageSettings fps = fpsController.findFrontPageSettings(1);
-        Advertisement ad = bannerBacking.findAdvertisementById(1);
+        //id of review
+        reviewBacking.approve(1);
+        Review review = reviewBacking.findReviewById(1);
         
-        assertEquals(fps.getAdAId(), ad);
+        assertEquals(review.getApprovalStatus(), 1);
+    }
+    
+    @Test
+    public void testDisapprove()
+    {
+        //id of review
+        reviewBacking.disapprove(1);
+        Review review = reviewBacking.findReviewById(1);
+        
+        assertEquals(review.getApprovalStatus(), 0);
+    }
+    
+    @Test
+    public void testSubmitReview()
+    {
+        Review review = new Review();
+        review.setReviewContent("this track is baloney");
+        review.setRating(2);
+        reviewBacking.setReview(review);
+        reviewBacking.submitReview(trackController.findTrack(1), userController.findShopUser(1));
+        List<Review> list = reviewBacking.getAll();
+        System.out.println(list.get(list.size()-1).getReviewContent());
+        assertEquals(list.get(list.size()-1).getReviewContent(), "this track is baloney");
         
     }
+    
 }

@@ -1,7 +1,13 @@
 
 package com.pandamedia.arquillian.test;
 
-import com.pandamedia.beans.BannerAdBackingBean;
+/**
+ *
+ * @author Naasir Jusab
+ */
+
+
+import com.pandamedia.beans.ManagerSurveyBean;
 import com.pandamedia.beans.ReportBackingBean;
 import com.pandamedia.commands.ChangeLanguage;
 import com.pandamedia.converters.AlbumConverter;
@@ -28,6 +34,7 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,23 +42,17 @@ import org.junit.runner.RunWith;
 import persistence.controllers.FrontPageSettingsJpaController;
 import persistence.controllers.ShopUserJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
-import persistence.entities.Advertisement;
 import persistence.entities.FrontPageSettings;
+import persistence.entities.Survey;
 import persistence.entities.Track;
 
-
-
-/**
- *
- * @author Naasir Jusab
- */
 @RunWith(Arquillian.class)
-public class BannerAdArq {
+public class ManagerSurveyArq {
     
     @Resource(name = "java:app/jdbc/pandamedialocal")
     private DataSource ds;
     @Inject
-    private BannerAdBackingBean bannerBacking;
+    private ManagerSurveyBean managerSurveyBacking;
     @Inject
     private FrontPageSettingsJpaController fpsController;
     
@@ -166,35 +167,50 @@ public class BannerAdArq {
     @Test
     public void testSave()
     {
-        Advertisement ad = new Advertisement();
-        ad.setAdPath("hehe");
-        bannerBacking.setAd(ad);
-        bannerBacking.save();
+        Survey survey = new Survey();
+        survey.setQuestion("Why is JSF amazing?");
+        survey.setAnswerA("Because it is amazing");
+        survey.setAnswerB("Because Java is amazing");
+        survey.setAnswerC("Because beans are amazing");
+        survey.setAnswerD("No it is not amazing");
+        survey.setVotesA(0);
+        survey.setVotesB(0);
+        survey.setVotesC(0);
+        survey.setVotesD(0);
+        managerSurveyBacking.setSurvey(survey);
+        managerSurveyBacking.save();
         
-        List<Advertisement> list = bannerBacking.getAll();
-        assertEquals(list.get(list.size()-1), ad);
+        List<Survey> list = managerSurveyBacking.getAll();
+        assertEquals(list.get(list.size()-1), survey);
             
     }
     
     @Test
     public void testRemove()
     {   
-        Advertisement ad = new Advertisement();
-        ad.setAdPath("hoho");
-        bannerBacking.setAd(ad);
-        bannerBacking.save();
+        Survey survey = new Survey();
+        survey.setQuestion("Why is JSF so fun?");
+        survey.setAnswerA("Because it is fun");
+        survey.setAnswerB("Because it is Java");
+        survey.setAnswerC("Because beans are the way to go");
+        survey.setAnswerD("No it is not fun");
+        survey.setVotesA(0);
+        survey.setVotesB(0);
+        survey.setVotesC(0);
+        survey.setVotesD(0);
+        managerSurveyBacking.setSurvey(survey);
+        managerSurveyBacking.save();
         
-        
-        List<Advertisement> listBefore = bannerBacking.getAll();
+        List<Survey> listBefore = managerSurveyBacking.getAll();
         //id of the object added
-        Integer adId = listBefore.get(listBefore.size()-1).getId();
-        bannerBacking.remove(listBefore.get(listBefore.size()-1).getId());
-        List<Advertisement> listAfter = bannerBacking.getAll();
+        Integer surveyId = listBefore.get(listBefore.size()-1).getId();
+        managerSurveyBacking.remove(listBefore.get(listBefore.size()-1).getId());
+        List<Survey> listAfter = managerSurveyBacking.getAll();
         
         boolean isRemoved = true;
-        for(Advertisement advert:listAfter)
+        for(Survey surveyInList:listAfter)
         {
-            if(advert.getId() == adId)
+            if(surveyInList.getId() == surveyId)
                 isRemoved=false;
         }
         
@@ -205,11 +221,12 @@ public class BannerAdArq {
     @Test
     public void testSelect()
     {
-        bannerBacking.select(1);
+        managerSurveyBacking.select(1);
         FrontPageSettings fps = fpsController.findFrontPageSettings(1);
-        Advertisement ad = bannerBacking.findAdvertisementById(1);
+        Survey survey = managerSurveyBacking.findSurveyById(1);
         
-        assertEquals(fps.getAdAId(), ad);
+        assertEquals(fps.getSurveyId(), survey);
         
     }
+    
 }

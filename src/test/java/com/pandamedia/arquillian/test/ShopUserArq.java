@@ -1,8 +1,8 @@
 
 package com.pandamedia.arquillian.test;
 
-import com.pandamedia.beans.BannerAdBackingBean;
 import com.pandamedia.beans.ReportBackingBean;
+import com.pandamedia.beans.ShopUserManagerBean;
 import com.pandamedia.commands.ChangeLanguage;
 import com.pandamedia.converters.AlbumConverter;
 import com.pandamedia.filters.LoginFilter;
@@ -27,33 +27,29 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import persistence.controllers.FrontPageSettingsJpaController;
+import persistence.controllers.ProvinceJpaController;
 import persistence.controllers.ShopUserJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
-import persistence.entities.Advertisement;
-import persistence.entities.FrontPageSettings;
+import persistence.entities.ShopUser;
 import persistence.entities.Track;
-
-
 
 /**
  *
  * @author Naasir Jusab
  */
 @RunWith(Arquillian.class)
-public class BannerAdArq {
+public class ShopUserArq {
     
     @Resource(name = "java:app/jdbc/pandamedialocal")
     private DataSource ds;
+    
     @Inject
-    private BannerAdBackingBean bannerBacking;
+    private ShopUserManagerBean userBacking;
     @Inject
-    private FrontPageSettingsJpaController fpsController;
+    private ProvinceJpaController provinceController;
     
     @Deployment
     public static WebArchive deploy() {
@@ -163,53 +159,28 @@ public class BannerAdArq {
                 || line.startsWith("/*");
     }
     
-    @Test
-    public void testSave()
-    {
-        Advertisement ad = new Advertisement();
-        ad.setAdPath("hehe");
-        bannerBacking.setAd(ad);
-        bannerBacking.save();
-        
-        List<Advertisement> list = bannerBacking.getAll();
-        assertEquals(list.get(list.size()-1), ad);
-            
-    }
     
     @Test
-    public void testRemove()
-    {   
-        Advertisement ad = new Advertisement();
-        ad.setAdPath("hoho");
-        bannerBacking.setAd(ad);
-        bannerBacking.save();
+    public void testEdit()
+    {
+    
+        ShopUser user = userBacking.findUserById(1);
+        user.setTitle("Sir");
+        user.setLastName("Jus");
+        user.setFirstName("Nas");
+        user.setCompanyName("got jus");
+        user.setStreetAddress("9010 dmdmd");
+        user.setCity("MTL");
+        user.setCountry("Canada");
+        user.setPostalCode("P4N 3D2");
+        
+        user.setHomePhone("514-505 7070");
+        user.setEmail("loho@hot.co");
+        user.setProvinceId(provinceController.findProvince(1));
         
         
-        List<Advertisement> listBefore = bannerBacking.getAll();
-        //id of the object added
-        Integer adId = listBefore.get(listBefore.size()-1).getId();
-        bannerBacking.remove(listBefore.get(listBefore.size()-1).getId());
-        List<Advertisement> listAfter = bannerBacking.getAll();
-        
-        boolean isRemoved = true;
-        for(Advertisement advert:listAfter)
-        {
-            if(advert.getId() == adId)
-                isRemoved=false;
-        }
-        
-        
-        assertTrue(isRemoved);
     }
     
-    @Test
-    public void testSelect()
-    {
-        bannerBacking.select(1);
-        FrontPageSettings fps = fpsController.findFrontPageSettings(1);
-        Advertisement ad = bannerBacking.findAdvertisementById(1);
-        
-        assertEquals(fps.getAdAId(), ad);
-        
-    }
+
+    
 }
