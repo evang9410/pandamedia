@@ -48,8 +48,6 @@ public class ReportBackingBean implements Serializable {
     // TODO: add checks for was it valid during report time and now is removed
     // TODO: validate all values coming in are good ones
     // TODO: remove subquery from zero methods?
-    // TODO: format date
-    // TODO: format money
     // TODO: sales by track + album has null in input field
     // TODO: should sales by artist/track/album have defaults?
     private static final Logger LOG = Logger.getLogger("ReportBackingBean.class");

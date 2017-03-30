@@ -7,13 +7,11 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 import persistence.controllers.InvoiceAlbumJpaController;
 import persistence.controllers.InvoiceJpaController;
 import persistence.controllers.InvoiceTrackJpaController;
-import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.Album;
 import persistence.entities.Invoice;
 import persistence.entities.InvoiceAlbum;
@@ -160,19 +158,15 @@ public class CheckoutBackingBean implements Serializable {
      * @throws Exception    if the persist of the invoice fails
      */
     public String finalizePurchase() throws Exception {
-        // TODO: verify that finalizePurchase actually works
         // Create the invoice
         Invoice invoice = buildInvoice();
+        
+        // Persist invoice
         invoiceController.create(invoice);
 
-        // Setting invoice purchases        
+        // Persist invoice purchases and set in current object        
         invoice.setInvoiceAlbumList(buildInvoiceAlbumList(invoice));
         invoice.setInvoiceTrackList(buildInvoiceTrackList(invoice));
-//        buildInvoiceAlbumList(invoice);
-//        buildInvoiceTrackList(invoice);
-
-        // Persist invoice
-//        invoiceController.edit(invoice);
 
         // Emptying the cart of all purchases
         cart.clearCart();
@@ -225,13 +219,6 @@ public class CheckoutBackingBean implements Serializable {
             list.get(i).setInvoice(invoice);
             list.get(i).setAlbum(albums.get(i));
             list.get(i).setFinalPrice(finalCost);
-//            InvoiceAlbum temp = new InvoiceAlbum();
-//            temp.setInvoiceAlbumPK(new InvoiceAlbumPK());
-//            temp.getInvoiceAlbumPK().setAlbumId(albums.get(i).getId());
-//            temp.getInvoiceAlbumPK().setInvoiceId(invoice.getId());
-//            temp.setInvoice(invoice);
-//            temp.setAlbum(albums.get(i));
-//            temp.setFinalPrice(finalCost);
             invoiceAlbumController.create(list.get(i));
         }
         
@@ -250,7 +237,6 @@ public class CheckoutBackingBean implements Serializable {
         List<Track> tracks = cart.getTracksFromCart();
 
         for (int i = 0; i < tracks.size(); i++) {
-//            InvoiceTrack temp = new InvoiceTrack();
             double finalCost = tracks.get(i).getListPrice() - tracks.get(i).getSalePrice();
             list.add(new InvoiceTrack());
             list.get(i).setInvoiceTrackPK(new InvoiceTrackPK());
@@ -259,12 +245,6 @@ public class CheckoutBackingBean implements Serializable {
             list.get(i).setInvoice(invoice);
             list.get(i).setTrack(tracks.get(i));
             list.get(i).setFinalPrice(finalCost);
-//            temp.setInvoiceTrackPK(new InvoiceTrackPK());
-//            temp.getInvoiceTrackPK().setTrackId(tracks.get(i).getId());
-//            temp.getInvoiceTrackPK().setInvoiceId(invoice.getId());
-//            temp.setInvoice(invoice);
-//            temp.setTrack(tracks.get(i));
-//            temp.setFinalPrice(finalCost);
             invoiceTrackController.create(list.get(i));
         }
         

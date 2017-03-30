@@ -12,7 +12,7 @@
     <ui:define name="page-content">
         <div id="content">
             <ui:fragment rendered="#{not invoiceSum.invoiceExists()}">
-                <h:outputText>#{msgs.noInvoiceMsg}</h:outputText>
+                <h1>#{msgs.noInvoiceMsg}</h1>
             </ui:fragment>
             <ui:fragment rendered="#{invoiceSum.invoiceExists()}">
                 <div id="invoiceDetails">
