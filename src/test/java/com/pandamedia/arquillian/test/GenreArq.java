@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.pandamedia.arquillian.test;
 
 import com.pandamedia.beans.GenreBackingBean;
@@ -43,8 +38,10 @@ import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.Track;
 
 /**
- *
+ * One whole test file for a single test of retrieving the genre names as
+ * strings from the database.
  * @author Evan Glicakis
+ * 
  */
 @RunWith(Arquillian.class)
 public class GenreArq {
