@@ -27,12 +27,16 @@ import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import persistence.controllers.GenreJpaController;
 import persistence.controllers.ShopUserJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
@@ -42,7 +46,8 @@ import persistence.entities.Track;
  *
  * @author Evan Glicakis
  */
-public class genreArq {
+@RunWith(Arquillian.class)
+public class GenreArq {
     @Resource(name = "java:app/jdbc/pandamedialocal")
     private DataSource ds;
     @Inject
@@ -160,13 +165,16 @@ public class genreArq {
     
     @Test
     public void testGetGenreStrings(){
-        List<String> genreNames = genreBacking.getAllGenresNames();
-        List<String> genreNamesExpected = new ArrayList();
-        genreNamesExpected.add("Electronic");
-        genreNamesExpected.add("Metal");
-        genreNamesExpected.add("Punk");
-        genreNamesExpected.add("Rap");
-        genreNamesExpected.add("Rock");
+        List<String> actual = genreBacking.getAllGenresNames();
+        List<String> expected = new ArrayList();
+        boolean isEqual = true;
+        //expected genre strings to be in the database.
+        expected.add("Electronic");
+        expected.add("Metal");
+        expected.add("Punk");
+        expected.add("Rap");
+        expected.add("Rock");
+        assertEquals(actual.size(), expected.size());
     }
     
 }
