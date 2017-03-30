@@ -41,6 +41,8 @@ public class AlbumBackingBean implements Serializable{
     
     @Inject
     private AlbumJpaController albumController;
+    @Inject
+    private ClientTrackingBean clientTracking;
     private Album album;
     private List<Album> albums;
     private List<Album> filteredAlbums;
@@ -158,6 +160,8 @@ public class AlbumBackingBean implements Serializable{
     public String albumPage(Album a){
         this.album = a;
         System.out.println("" + a.getId() +"\n" + a.getTitle() +"\n" + a.getArtistId().getName());
+        // persist the searched genre to the suggested
+        clientTracking.peristTracking(a.getGenreId());
         return "album";
     }
     /**
@@ -254,7 +258,7 @@ public class AlbumBackingBean implements Serializable{
         }
         int genre_id = getGenreId(genreString);
         String q = "SELECT a FROM Album a WHERE a.genreId.id = :genre_id";
-        TypedQuery<Album> query = em.createQuery(q, Album.class).setMaxResults(5);
+        TypedQuery<Album> query = em.createQuery(q, Album.class);
         query.setParameter("genre_id", genre_id);
         return query.getResultList();
     }
@@ -407,7 +411,7 @@ public class AlbumBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -536,7 +540,7 @@ public class AlbumBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }

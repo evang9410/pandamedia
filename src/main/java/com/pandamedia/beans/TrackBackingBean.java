@@ -9,6 +9,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.logging.Level;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -42,6 +44,8 @@ import persistence.entities.Track_;
 public class TrackBackingBean implements Serializable{
     @Inject
     private TrackJpaController trackController;
+    @Inject
+    private ClientTrackingBean clientTracking;
     private Track track;
     private List<Track> tracks;
     private List<Track> filteredTracks;
@@ -129,6 +133,7 @@ public class TrackBackingBean implements Serializable{
      */
     public String trackPage(Track t){
         track = t;
+        clientTracking.peristTracking(t.getGenreId());
         return "track";
     }
     /**
@@ -152,6 +157,39 @@ public class TrackBackingBean implements Serializable{
     public Track findTrackById(int id){
         track = trackController.findTrack(id); 
         return track;
+    }
+    
+    public List<Track> getPopularTracks(){
+        Date startDate = new Date(); //get current date
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -7);
+        Date endDate = cal.getTime();
+        // Query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<Track> trackRoot = query.from(Track.class);
+        Join invoiceTrackJoin = trackRoot.join(Track_.invoiceTrackList);
+        Join invoiceJoin = invoiceTrackJoin.join(InvoiceTrack_.invoice);
+        query.multiselect(cb.sum(invoiceTrackJoin.get(InvoiceTrack_.finalPrice)), trackRoot);
+        query.groupBy(trackRoot.get(Track_.id));
+
+        // Where clause
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), endDate, startDate));
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+        predicates.add(cb.equal(invoiceTrackJoin.get(InvoiceTrack_.removalStatus), 0));
+        predicates.add(cb.equal(trackRoot.get(Track_.removalStatus), 0));
+        query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+
+        // Order by clause
+        query.orderBy(cb.desc(cb.sum(invoiceTrackJoin.get(InvoiceTrack_.finalPrice))));
+        List<Track> tracks = new ArrayList<>();
+        TypedQuery<Object[]> typedQuery = em.createQuery(query).setMaxResults(6);
+        List<Object[]> l = typedQuery.getResultList();
+        for(Object[] o : l){
+            tracks.add((Track)o[1]);
+        }
+        return tracks;
     }
     
     /**

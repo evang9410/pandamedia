@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -22,6 +24,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import persistence.controllers.InvoiceTrackJpaController;
+import persistence.controllers.exceptions.RollbackFailureException;
+import persistence.entities.Album;
 import persistence.entities.InvoiceTrack;
 import persistence.entities.InvoiceTrackPK;
 import persistence.entities.InvoiceTrack_;
@@ -29,6 +34,8 @@ import persistence.entities.Invoice_;
 import persistence.entities.ShopUser_;
 import persistence.entities.Track;
 import persistence.entities.Track_;
+import persistence.entities.Album_;
+import persistence.entities.InvoiceAlbum_;
 
 
 
@@ -42,11 +49,15 @@ import persistence.entities.Track_;
 public class InvoiceBackingBean implements Serializable{
     @Inject
     private InvoiceJpaController invoiceController;
+    @Inject
+    private UserActionBean uab;
     private Invoice invoice;
     private List<Invoice> invoices;
     private List<Invoice> filteredInvoices;
     @PersistenceContext
     private EntityManager em;
+    @Inject
+    private InvoiceTrackJpaController invoiceTrackController;
     
     /**
      * This method will initialize a list of invoices that will be used by the 
@@ -164,9 +175,23 @@ public class InvoiceBackingBean implements Serializable{
         if(invoice.getRemovalStatus() != 1)
         {
             short i = 1;
+            Date removalDate = Calendar.getInstance().getTime();
             invoice.setRemovalStatus(i);
-            invoice.setRemovalDate(Calendar.getInstance().getTime());
-
+            invoice.setRemovalDate(removalDate);
+            for(InvoiceTrack it : invoice.getInvoiceTrackList())
+            {
+                it.setRemovalStatus(i);
+                it.setRemovalDate(removalDate);
+                try 
+                {
+                    invoiceTrackController.edit(it);
+                }
+                catch (Exception ex) 
+                {
+                    
+                    Logger.getLogger(InvoiceBackingBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
             try
             {
                 invoiceController.edit(invoice);  
@@ -256,8 +281,8 @@ public class InvoiceBackingBean implements Serializable{
         query.select(invoiceTrackJoin);
         // Where clause
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(cb.equal(invoiceTrackJoin.get(Invoice_.removalStatus), 0));
-        predicates.add(cb.equal(invoiceJoin.get(InvoiceTrack_.removalStatus), 0));
+//        predicates.add(cb.equal(invoiceTrackJoin.get(Invoice_.removalStatus), 0));
+//        predicates.add(cb.equal(invoiceJoin.get(InvoiceTrack_.removalStatus), 0));
         predicates.add(cb.equal(invoiceRoot.get(Invoice_.id), invoice.getId()));
         
         query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
@@ -269,6 +294,7 @@ public class InvoiceBackingBean implements Serializable{
     }
     public List<Track> loadDownloadsTable()
     {
+        List<Track> ogTracks;
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Track> query = cb.createQuery(Track.class);
         Root<Track> trackRoot = query.from(Track.class);
@@ -280,13 +306,40 @@ public class InvoiceBackingBean implements Serializable{
         query.select(trackRoot);
         
         // Where clause
+        
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(cb.equal(clientJoin.get(ShopUser_.id),1 )); // hard coded will have to change this
+        predicates.add(cb.equal(clientJoin.get(ShopUser_.id),uab.getCurrUser().getId()));
         query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
         
         TypedQuery<Track> typedQuery = em.createQuery(query);
         
-        return typedQuery.getResultList();      
+        ogTracks = typedQuery.getResultList();
+        
+        // Query the invoice albums and add the tracks of that album to the 
+        // ogTracks list for downloading.
+        CriteriaBuilder cb2 = em.getCriteriaBuilder();
+        CriteriaQuery<Album> albumQ = cb2.createQuery(Album.class);
+        Root<Album> albumRoot = albumQ.from(Album.class);
+        Join albumJoin = albumRoot.join(Album_.invoiceAlbumList);
+        Join invoiceAlbumJoin = albumJoin.join(InvoiceAlbum_.invoice);
+        Join invoiceJoin2 = invoiceAlbumJoin.join(Invoice_.userId);
+        Join clientJoin2 = invoiceJoin2.join(ShopUser_.invoiceList);
+        
+        albumQ.select(albumRoot);
+        
+        // Where clause
+        
+        List<Predicate> predicates2 = new ArrayList<>();
+        predicates2.add(cb2.equal(clientJoin2.get(ShopUser_.id),uab.getCurrUser().getId()));
+        albumQ.where(cb2.and(predicates2.toArray(new Predicate[predicates2.size()])));
+        TypedQuery<Album> typedAlbumQuery = em.createQuery(albumQ);
+        List<Album> albums = typedAlbumQuery.getResultList();
+        System.out.println("ALBUM SIZE *********" + albums.size());
+        for(Album a : albums){
+            ogTracks.addAll(a.getTrackList());
+        }
+        
+        return ogTracks;
     }
 
     /**

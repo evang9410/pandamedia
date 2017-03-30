@@ -36,9 +36,8 @@ html, body {
 .homeContainer{
     display: inline-block;
     width: 100%;
-    stretching content under the navbar
+
     position: absolute;
-    86px is the height of the navbar
     margin-top: 86px;
     height: auto;
     top:0px; 
@@ -75,7 +74,6 @@ div containing button
     margin-top: 80px;
     width: auto;
     
-    applying custom style
     background-color: #fff;
     color: #000;
     border: none;
@@ -172,7 +170,7 @@ div containing button
 .navbar-default .navbar-nav > li > a,
 a.navbar-brand,
 .navbar-default .navbar-brand{
-    color: #FFF;  color of the letters on the navbar 
+    color: #FFF; 
     transition: ease-in-out background-color 0.3s;
 }
 
