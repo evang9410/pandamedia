@@ -84,10 +84,14 @@ h1{
 }
 
 #browse-survey{
+    font-family: "Poppins", sans-serif;
+    color: white;
     display: inline-block;
     height: 100%;
 }
 #browse-rss{
+    color: white;
+    font-family: "Poppins", sans-serif;
     display: inline-block;
     max-height: 50vh;
     overflow: auto;
