@@ -1,7 +1,11 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.pandamedia.arquillian.test;
 
-import com.pandamedia.beans.AlbumBackingBean;
+import com.pandamedia.beans.GenreBackingBean;
 import com.pandamedia.beans.ReportBackingBean;
 import com.pandamedia.commands.ChangeLanguage;
 import com.pandamedia.converters.AlbumConverter;
@@ -15,8 +19,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -24,47 +27,28 @@ import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import persistence.controllers.AlbumJpaController;
-import persistence.controllers.ArtistJpaController;
-import persistence.controllers.CoverArtJpaController;
 import persistence.controllers.GenreJpaController;
-import persistence.controllers.RecordingLabelJpaController;
 import persistence.controllers.ShopUserJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
-import persistence.entities.Album;
-import persistence.entities.Artist;
 import persistence.entities.Track;
 
 /**
  *
  * @author Evan Glicakis
  */
-@RunWith(Arquillian.class)
-public class AlbumArq {
+public class genreArq {
     @Resource(name = "java:app/jdbc/pandamedialocal")
     private DataSource ds;
     @Inject
-    private AlbumBackingBean albumBacking;
-    @Inject 
-    private AlbumJpaController albumController;
-    @Inject 
-    private ArtistJpaController artistController;
-    @Inject
     private GenreJpaController genreController;
     @Inject
-    private RecordingLabelJpaController recordingLabelController;
-    @Inject
-    private CoverArtJpaController coverartController;
+    private GenreBackingBean genreBacking;
     
     @Deployment
     public static WebArchive deploy() {
@@ -174,110 +158,15 @@ public class AlbumArq {
                 || line.startsWith("/*");
     }
     
-    /**
-     * Tests the method used to re-add item that has been removed.
-     */
     @Test
-    public void testAddItem(){
-        albumBacking.addItem(1);
-        Album a = albumController.findAlbum(1);
-        assertEquals(a.getRemovalStatus(), 0);
+    public void testGetGenreStrings(){
+        List<String> genreNames = genreBacking.getAllGenresNames();
+        List<String> genreNamesExpected = new ArrayList();
+        genreNamesExpected.add("Electronic");
+        genreNamesExpected.add("Metal");
+        genreNamesExpected.add("Punk");
+        genreNamesExpected.add("Rap");
+        genreNamesExpected.add("Rock");
     }
     
-     /**
-     * Tests the method used to remove an album.
-     */
-    @Test
-    public void testRemoveItem(){
-        albumBacking.removeItem(1);
-        Album a = albumController.findAlbum(1);
-        assertEquals(a.getRemovalStatus(), 1);
-    }
-   
-    @Test
-    public void testEditAlbum(){
-        short removalStatus = 1;
-        Album a = albumController.findAlbum(1);
-        Date releasedate = Calendar.getInstance().getTime();
-        Calendar cal = Calendar.getInstance(); 
-        cal.add(Calendar.DATE, 2);
-        Date dateEntered = cal.getTime();
-        
-        a.setTitle("Editied album");
-        a.setReleaseDate(releasedate);
-        a.setArtistId(artistController.findArtist(1));
-        a.setGenreId(genreController.findGenre(1));
-        a.setRecordingLabelId(recordingLabelController.findRecordingLabel(1));
-        a.setNumTracks(1);
-        a.setCoverArtId(coverartController.findCoverArt(1));
-        a.setDateEntered(dateEntered);
-        a.setCostPrice(1.00);
-        a.setSalePrice(0.5);
-        a.setListPrice(0.5);
-        a.setRemovalStatus(removalStatus);
-        a.setRemovalDate(dateEntered);
-        // get the track we just edited to compare if the edits worked.
-        albumBacking.setAlbum(a);
-        albumBacking.edit();
-        Album editedAlbum = albumController.findAlbum(1);
-        
-        assertEquals(a, editedAlbum);
-    }
-    @Test
-    public void testGetAlbumsOnSale(){
-        // currently on localhost database there is no albums on sale.
-        //adding two (2) albums with sales to database
-        Album a1 = albumController.findAlbum(1);
-        a1.setSalePrice(0.10);
-        albumBacking.setAlbum(a1);
-        albumBacking.edit();
-        
-        Album a2 = albumController.findAlbum(2);
-        a2.setSalePrice(0.15);
-        albumBacking.setAlbum(a2);
-        albumBacking.edit();
-        // get albums sales should be of size 2
-        List<Album> sales = albumBacking.getSaleAlbums();
-        assertEquals(2, sales.size());
-    }
-    
-    @Test
-    public void testGetAlbumsFromGenre(){
-        //set the genre of albums to grab to "Punk"
-        //there are 4 albums of the punk rock genre in the database.
-        albumBacking.setGenreString("Punk");
-        List<Album> genreAlbums = albumBacking.getAlbumFromGenre();
-        assertEquals(4, genreAlbums.size());
-    }
-    
-    @Test
-    public void testGetLatestAlbums(){
-        //I'm going to edit an album with the current date and check if that is
-        // the latest album, it should be.
-        Album a = albumController.findAlbum(5);
-        Date currDate = new Date();
-        a.setReleaseDate(currDate);
-        albumBacking.setAlbum(a);
-        albumBacking.edit();
-        List latest = albumBacking.getLatestAlbums();
-        assertEquals(latest.get(0), a);
-    }
-    
-    @Test
-    public void testGetAlbumsFromArtist(){
-        // select the number of albums from artist 88 finger louie
-        Artist artist = artistController.findArtist(1);
-        List artsitAlbums = albumBacking.albumsFromArtist(artist);
-        //should be one (1) album.
-        assertEquals(1, artsitAlbums.size());
-    }
-    
-    @Test
-    public void testGetAlbumSales(){
-        // total sales of album with id = 1 (.5 the gray chaper) is $668.30
-        String amount = albumBacking.getAlbumSales(1);
-        assertEquals(amount,"668.30");
-    }
-    
-    //TODO: TEST POPULAR ALBUMS
 }

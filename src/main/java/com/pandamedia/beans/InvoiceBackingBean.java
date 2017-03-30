@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -22,6 +24,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import persistence.controllers.InvoiceTrackJpaController;
+import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.InvoiceTrack;
 import persistence.entities.InvoiceTrackPK;
 import persistence.entities.InvoiceTrack_;
@@ -47,6 +51,8 @@ public class InvoiceBackingBean implements Serializable{
     private List<Invoice> filteredInvoices;
     @PersistenceContext
     private EntityManager em;
+    @Inject
+    private InvoiceTrackJpaController invoiceTrackController;
     
     /**
      * This method will initialize a list of invoices that will be used by the 
@@ -164,9 +170,23 @@ public class InvoiceBackingBean implements Serializable{
         if(invoice.getRemovalStatus() != 1)
         {
             short i = 1;
+            Date removalDate = Calendar.getInstance().getTime();
             invoice.setRemovalStatus(i);
-            invoice.setRemovalDate(Calendar.getInstance().getTime());
-
+            invoice.setRemovalDate(removalDate);
+            for(InvoiceTrack it : invoice.getInvoiceTrackList())
+            {
+                it.setRemovalStatus(i);
+                it.setRemovalDate(removalDate);
+                try 
+                {
+                    invoiceTrackController.edit(it);
+                }
+                catch (Exception ex) 
+                {
+                    
+                    Logger.getLogger(InvoiceBackingBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
             try
             {
                 invoiceController.edit(invoice);  
@@ -256,8 +276,8 @@ public class InvoiceBackingBean implements Serializable{
         query.select(invoiceTrackJoin);
         // Where clause
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(cb.equal(invoiceTrackJoin.get(Invoice_.removalStatus), 0));
-        predicates.add(cb.equal(invoiceJoin.get(InvoiceTrack_.removalStatus), 0));
+//        predicates.add(cb.equal(invoiceTrackJoin.get(Invoice_.removalStatus), 0));
+//        predicates.add(cb.equal(invoiceJoin.get(InvoiceTrack_.removalStatus), 0));
         predicates.add(cb.equal(invoiceRoot.get(Invoice_.id), invoice.getId()));
         
         query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
