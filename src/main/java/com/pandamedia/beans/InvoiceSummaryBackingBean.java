@@ -14,7 +14,6 @@ import persistence.entities.Invoice;
 @Named("invoiceSum")
 @RequestScoped
 public class InvoiceSummaryBackingBean {
-    @Inject
     Invoice invoice;
     
     @PostConstruct
@@ -25,5 +24,10 @@ public class InvoiceSummaryBackingBean {
     public Invoice getInvoice()
     {
         return invoice;
+    }
+    
+    public boolean invoiceExists()
+    {
+        return invoice != null;
     }
 }
