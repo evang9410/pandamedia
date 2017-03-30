@@ -1,7 +1,7 @@
 
 package com.pandamedia.arquillian.test;
 
-import com.pandamedia.beans.BannerAdBackingBean;
+import com.pandamedia.beans.InvoiceBackingBean;
 import com.pandamedia.beans.ReportBackingBean;
 import com.pandamedia.commands.ChangeLanguage;
 import com.pandamedia.converters.AlbumConverter;
@@ -31,28 +31,22 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import persistence.controllers.FrontPageSettingsJpaController;
 import persistence.controllers.ShopUserJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
-import persistence.entities.Advertisement;
-import persistence.entities.FrontPageSettings;
+import persistence.entities.Invoice;
 import persistence.entities.Track;
-
-
 
 /**
  *
  * @author Naasir Jusab
  */
 @RunWith(Arquillian.class)
-public class BannerAdArq {
+public class InvoiceArq {
     
     @Resource(name = "java:app/jdbc/pandamedialocal")
     private DataSource ds;
     @Inject
-    private BannerAdBackingBean bannerBacking;
-    @Inject
-    private FrontPageSettingsJpaController fpsController;
+    private InvoiceBackingBean invoiceBacking;
     
     @Deployment
     public static WebArchive deploy() {
@@ -93,7 +87,7 @@ public class BannerAdArq {
         return webArchive;
     }
     
-        /**
+    /**
      * This routine is courtesy of Bartosz Majsak who also solved my Arquillian
      * remote server problem
      */
@@ -163,41 +157,20 @@ public class BannerAdArq {
     }
     
     @Test
-    public void testSave()
+    public void testAdd()
     {
-        Advertisement ad = new Advertisement();
-        ad.setAdPath("hehe");
-        bannerBacking.setAd(ad);
-        bannerBacking.save();
-        
-        List<Advertisement> list = bannerBacking.getAll();
-        assertEquals(list.get(list.size()-1), ad);
-            
+        invoiceBacking.addItem(1);
+        Invoice invoice = invoiceBacking.findInvoiceById(1);
+        assertEquals(invoice.getRemovalStatus(),0);
     }
     
     @Test
-    public void testRemove()
-    {   
-        Advertisement ad = new Advertisement();
-        ad.setAdPath("hoho");
-        bannerBacking.setAd(ad);
-        bannerBacking.save();
-        
-        List<Advertisement> listBefore = bannerBacking.getAll();
-        bannerBacking.remove(listBefore.get(listBefore.size()-1).getId());
-        List<Advertisement> listAfter = bannerBacking.getAll();
-        
-        assertEquals(listBefore.size()-1, listAfter.size());
+    public void testRemoveItem()
+    {
+        invoiceBacking.removeItem(1);
+        Invoice invoice = invoiceBacking.findInvoiceById(1);
+        assertEquals(invoice.getRemovalStatus(),1);
     }
     
-    @Test
-    public void testSelect()
-    {
-        bannerBacking.select(1);
-        FrontPageSettings fps = fpsController.findFrontPageSettings(1);
-        Advertisement ad = bannerBacking.findAdvertisementById(1);
-        
-        assertEquals(fps.getAdAId(), ad);
-        
-    }
+    
 }

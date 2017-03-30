@@ -42,6 +42,8 @@ import persistence.entities.Track_;
 public class InvoiceBackingBean implements Serializable{
     @Inject
     private InvoiceJpaController invoiceController;
+    @Inject
+    private UserActionBean userBean;
     private Invoice invoice;
     private List<Invoice> invoices;
     private List<Invoice> filteredInvoices;
@@ -110,6 +112,16 @@ public class InvoiceBackingBean implements Serializable{
         if(invoice == null){
             invoice = new Invoice();
         }
+        return invoice;
+    }
+    
+        /**
+     * Finds the invoice from its id.
+     * @param id of the invoice
+     * @return invoice object
+     */
+    public Invoice findInvoiceById(int id){
+        invoice = invoiceController.findInvoice(id); 
         return invoice;
     }
     
@@ -281,7 +293,7 @@ public class InvoiceBackingBean implements Serializable{
         
         // Where clause
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(cb.equal(clientJoin.get(ShopUser_.id),1 )); // hard coded will have to change this
+        predicates.add(cb.equal(clientJoin.get(ShopUser_.id), userBean.getCurrUser().getId() )); 
         query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
         
         TypedQuery<Track> typedQuery = em.createQuery(query);

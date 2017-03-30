@@ -134,5 +134,11 @@ public class RSSFeedBackingBean implements Serializable{
         return null;
     }
     
+    public void setNewsFeed(Newsfeed newsFeed)
+    {
+        this.newsFeed = newsFeed;
+    }
+    
+    
     
 }

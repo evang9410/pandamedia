@@ -78,8 +78,7 @@ public class ArtistBackingBean implements Serializable{
     }
     
     public List<Artist> getArtistsList(){
-        this.artists = getAll();
-        return this.artists;
+       return getAll();
     }
     
     public void setArtistList(ArrayList<Artist> a){

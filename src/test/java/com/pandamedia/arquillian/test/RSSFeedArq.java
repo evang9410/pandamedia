@@ -1,7 +1,7 @@
 
 package com.pandamedia.arquillian.test;
 
-import com.pandamedia.beans.BannerAdBackingBean;
+import com.pandamedia.beans.RSSFeedBackingBean;
 import com.pandamedia.beans.ReportBackingBean;
 import com.pandamedia.commands.ChangeLanguage;
 import com.pandamedia.converters.AlbumConverter;
@@ -36,21 +36,20 @@ import persistence.controllers.ShopUserJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.Advertisement;
 import persistence.entities.FrontPageSettings;
+import persistence.entities.Newsfeed;
 import persistence.entities.Track;
-
-
 
 /**
  *
  * @author Naasir Jusab
  */
 @RunWith(Arquillian.class)
-public class BannerAdArq {
+public class RSSFeedArq {
     
     @Resource(name = "java:app/jdbc/pandamedialocal")
     private DataSource ds;
     @Inject
-    private BannerAdBackingBean bannerBacking;
+    private RSSFeedBackingBean feedBacking;
     @Inject
     private FrontPageSettingsJpaController fpsController;
     
@@ -165,27 +164,27 @@ public class BannerAdArq {
     @Test
     public void testSave()
     {
-        Advertisement ad = new Advertisement();
-        ad.setAdPath("hehe");
-        bannerBacking.setAd(ad);
-        bannerBacking.save();
+        Newsfeed news = new Newsfeed();
+        news.setUrl("http://www.hehe.com");
+        feedBacking.setNewsFeed(news);
+        feedBacking.save();
         
-        List<Advertisement> list = bannerBacking.getAll();
-        assertEquals(list.get(list.size()-1), ad);
+        List<Newsfeed> list = feedBacking.getAll();
+        assertEquals(list.get(list.size()-1), news);
             
     }
     
     @Test
     public void testRemove()
     {   
-        Advertisement ad = new Advertisement();
-        ad.setAdPath("hoho");
-        bannerBacking.setAd(ad);
-        bannerBacking.save();
+        Newsfeed news = new Newsfeed();
+        news.setUrl("http://www.hehe.com");
+        feedBacking.setNewsFeed(news);
+        feedBacking.save();
         
-        List<Advertisement> listBefore = bannerBacking.getAll();
-        bannerBacking.remove(listBefore.get(listBefore.size()-1).getId());
-        List<Advertisement> listAfter = bannerBacking.getAll();
+        List<Newsfeed> listBefore = feedBacking.getAll();
+        feedBacking.remove(listBefore.get(listBefore.size()-1).getId());
+        List<Newsfeed> listAfter = feedBacking.getAll();
         
         assertEquals(listBefore.size()-1, listAfter.size());
     }
@@ -193,11 +192,12 @@ public class BannerAdArq {
     @Test
     public void testSelect()
     {
-        bannerBacking.select(1);
+        feedBacking.select(1);
         FrontPageSettings fps = fpsController.findFrontPageSettings(1);
-        Advertisement ad = bannerBacking.findAdvertisementById(1);
+        Newsfeed news = feedBacking.findNewsFeedById(1);
         
-        assertEquals(fps.getAdAId(), ad);
+        assertEquals(fps.getNewsfeedId(), news);
         
     }
+    
 }
