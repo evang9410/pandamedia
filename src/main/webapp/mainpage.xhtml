@@ -80,10 +80,29 @@
             </div>
             <div>
                 <h:panelGroup rendered="#{clientTracking.isTracking}">
-                    <h3 style="color:white">Suggested</h3>
-                    <ui:repeat value="#{clientTracking.trackClient()}" var="sug">
-                        <p style="color:white">#{sug.title}</p>
-                    </ui:repeat>
+                    <div class="row">
+                        <div class="col-md-12">
+                        <h2 style="color:white;">#{msgs.suggested}</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <ui:repeat value="#{clientTracking.trackClient()}" var="sugg">
+                            <div class="col-md-2">
+                                <h:form>
+                                    <h:commandLink action="#{albumBacking.albumPage(sugg)}" styleClass="btn">
+                                        <figure class="figure card-wrapper">
+                                            <img src="resources/coverart/#{sugg.coverArtId.imagePath}" class="figure-img img-fluid" style="height:150px; width:150px;"/>
+                                            <div class="latest-caption">
+                                                <h4>#{sugg.title}</h4>
+                                                <h6>#{sugg.artistId.name}</h6>
+                                            </div>
+                                        </figure>
+                                    </h:commandLink>
+                                </h:form>
+
+                            </div>                
+                        </ui:repeat>
+                    </div>
                 </h:panelGroup>
             </div>
             <div class="row">
