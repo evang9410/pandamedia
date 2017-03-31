@@ -41,6 +41,8 @@ public class AlbumBackingBean implements Serializable{
     
     @Inject
     private AlbumJpaController albumController;
+    @Inject
+    private ClientTrackingBean clientTracking;
     private Album album;
     private List<Album> albums;
     private List<Album> filteredAlbums;
@@ -157,7 +159,9 @@ public class AlbumBackingBean implements Serializable{
      */
     public String albumPage(Album a){
         this.album = a;
-        System.out.println("" + a.getId() +"\n" + a.getTitle() +"\n" + a.getArtistId().getName());
+//        System.out.println("" + a.getId() +"\n" + a.getTitle() +"\n" + a.getArtistId().getName());
+        // persist the searched genre to the suggested
+        clientTracking.peristTracking(a.getGenreId());
         return "album";
     }
     /**
@@ -190,7 +194,7 @@ public class AlbumBackingBean implements Serializable{
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<Album> albumRoot = query.from(Album.class);
         Join invoiceAlbumJoin = albumRoot.join(Album_.invoiceAlbumList);
-        Join invoiceJoin = invoiceAlbumJoin.join(InvoiceTrack_.invoice);
+        Join invoiceJoin = invoiceAlbumJoin.join(InvoiceAlbum_.invoice);
         query.multiselect(cb.sum(invoiceAlbumJoin.get(InvoiceAlbum_.finalPrice)), albumRoot);
         query.groupBy(albumRoot);
 
@@ -203,13 +207,13 @@ public class AlbumBackingBean implements Serializable{
         query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
 
         // Order by clause
-        query.orderBy(cb.asc(cb.sum(invoiceAlbumJoin.get(InvoiceAlbum_.finalPrice))));
+        query.orderBy(cb.desc(cb.sum(invoiceAlbumJoin.get(InvoiceAlbum_.finalPrice))));
         
         List<Album> albums = new ArrayList();
         TypedQuery<Object[]> typedQuery = em.createQuery(query).setMaxResults(6);
         List<Object[]> l = typedQuery.getResultList();
         for(Object[] o: l){
-            System.out.println(((Album)o[1]).getTitle());
+//            System.out.println(((Album)o[1]).getTitle());
             albums.add((Album)o[1]);//retrieve the album id from the multiselect and cast the object, from id to album object.
         }
         return albums;

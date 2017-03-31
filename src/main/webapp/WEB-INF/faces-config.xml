@@ -40,13 +40,19 @@
         <!-- Secured pages navigation rules -->
         <navigation-case>
             <from-outcome>finalization</from-outcome>
-            <to-view-id>/clientsecure/checkout.xhtml</to-view-id>
+            <to-view-id>/clientsecure/purchase/checkout.xhtml</to-view-id>
             <!-- Needs to be a redirect to pass through filter -->
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>invoicesummary</from-outcome>
-            <to-view-id>/clientsecure/invoicesummary.xhtml</to-view-id>
+            <to-view-id>/clientsecure/summary/invoicesummary.xhtml</to-view-id>
+            <!-- Needs to be a redirect to pass through filter -->
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>downloads</from-outcome>
+            <to-view-id>/clientsecure/downloadsPage.xhtml</to-view-id>
             <!-- Needs to be a redirect to pass through filter -->
             <redirect />
         </navigation-case>

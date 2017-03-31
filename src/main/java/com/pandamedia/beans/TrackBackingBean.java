@@ -44,6 +44,8 @@ import persistence.entities.Track_;
 public class TrackBackingBean implements Serializable{
     @Inject
     private TrackJpaController trackController;
+    @Inject
+    private ClientTrackingBean clientTracking;
     private Track track;
     private List<Track> tracks;
     private List<Track> filteredTracks;
@@ -131,6 +133,7 @@ public class TrackBackingBean implements Serializable{
      */
     public String trackPage(Track t){
         track = t;
+        clientTracking.peristTracking(t.getGenreId());
         return "track";
     }
     /**
