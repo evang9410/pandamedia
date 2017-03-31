@@ -44,8 +44,7 @@ public class RecordingLabelBackingBean implements Serializable {
      * @return recording label object
      */
     public RecordingLabel findRecordingLabelById(int id){
-        recordingLabel = recordingLabelController.findRecordingLabel(id); 
-        return recordingLabel;
+        return recordingLabelController.findRecordingLabel(id); 
     }
     
     /**

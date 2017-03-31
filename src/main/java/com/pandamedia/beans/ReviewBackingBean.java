@@ -111,8 +111,7 @@ public class ReviewBackingBean implements Serializable{
      * @return review object
      */
     public Review findReviewById(int id){
-        review = reviewController.findReview(id); 
-        return review;
+        return reviewController.findReview(id); 
     }
     
     /**
@@ -284,6 +283,11 @@ public class ReviewBackingBean implements Serializable{
         if(obj == null){
             throw new ValidatorException(new FacesMessage("You must rate the track."));
         }
+    }
+    
+    public void setReview(Review review)
+    {
+        this.review = review;
     }
     
 }

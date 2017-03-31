@@ -4,6 +4,8 @@ package com.pandamedia.beans;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -48,8 +50,7 @@ public class RSSFeedBackingBean implements Serializable{
      * @return news feed object
      */
     public Newsfeed findNewsFeedById(int id){
-        newsFeed = newsFeedController.findNewsfeed(id); 
-        return newsFeed;
+        return newsFeedController.findNewsfeed(id);
     }
     
     /**
@@ -93,6 +94,8 @@ public class RSSFeedBackingBean implements Serializable{
      */
     public String remove(Integer id)
     {
+          if(fpsController.findFrontPageSettings(1).getNewsfeedId().equals(newsFeedController.findNewsfeed(id)))
+            throw new ValidatorException( new FacesMessage("This news feed is used in the front page, select another one to delete this"));
         try
         {
             newsFeedController.destroy(id);
@@ -133,6 +136,12 @@ public class RSSFeedBackingBean implements Serializable{
         this.newsFeed = null;
         return null;
     }
+    
+    public void setNewsFeed(Newsfeed newsFeed)
+    {
+        this.newsFeed = newsFeed;
+    }
+    
     
     
 }
