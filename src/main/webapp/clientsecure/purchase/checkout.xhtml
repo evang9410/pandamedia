@@ -87,31 +87,27 @@
             </div>
             <div id="creditCardDetails">
                 <h:form id="credit">
-                    <b:panelGrid columns="3" columnClasses="labels, input, errors">
+                    <b:panelGrid columns="2" columnClasses="labels, input">
                         <h:outputLabel for="cardType" value="#{msgs.cardTypeLbl}" />
                         <b:selectOneMenu id="cardType" required="true" value="#{creditCard.cardType}">
                             <f:selectItem itemLabel="Visa" itemValue="Visa"/>
                             <f:selectItem itemLabel="MasterCard" itemValue="MasterCard"/>
                             <!-- TODO: make these images? -->
                         </b:selectOneMenu>
-                        <b:message for="cardType" />                        
 
                         <h:outputLabel for="cardNum" value="#{msgs.cardNumLbl}" />
                         <b:inputText id="cardNum" required="true" value="#{creditCard.cardNum}">
                             <f:validator validatorId="creditNumValidator" />
                         </b:inputText>
-                        <b:message for="cardNum" />
 
                         <h:outputLabel for="cardName" value="#{msgs.cardNameLbl}" />
                         <b:inputText id="cardName" required="true" value="#{creditCard.cardName}"/>
-                        <b:message for="cardName" />
 
                         <h:outputLabel for="cardCode" value="#{msgs.cardCodeLbl}" />
                         <b:inputText id="cardCode" required="true" value="#{creditCard.cardCode}">
                             <!-- TODO make sure this is the right kind of validation -->
                             <f:validateLongRange minimum="0" maximum="9999" />
                         </b:inputText>
-                        <b:message for="cardCode" />
 
                         <h:outputLabel for="cardMonth" value="#{msgs.cardExpDateLbl}" />
                         <h:panelGroup>
@@ -123,10 +119,16 @@
                                 <f:validator validatorId="creditMonthValidator" />
                             </h:selectOneMenu>
                         </h:panelGroup>
-                        <b:message for="cardYear" styleClass="errorMessage"/>
 
                         <b:commandButton type="submit" ajax="false" value="#{msgs.cancelBtn}" action="cart.xhtml" immediate="true"/>
-                        <b:commandButton type="submit" value="#{msgs.purchaseBtn}" action="#{checkout.finalizePurchase()}" ajax="false"/>                        
+                        <b:commandButton type="submit" value="#{msgs.purchaseBtn}" action="#{checkout.finalizePurchase()}" ajax="false" update="credit"/>
+                        <b:growl allowDismiss="true"  
+                             animation-enter="animated bounceInDown" 
+                             placement-align="center" 
+                             placementFrom="top" 
+                             show-detail="true" 
+                             showSummary="false" 
+                             globalOnly="true" />
                     </b:panelGrid>
                 </h:form>
             </div>

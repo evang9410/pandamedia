@@ -43,6 +43,8 @@ import persistence.entities.Track_;
 public class ReportBackingBean implements Serializable {
     // TODO: change logging?
     // TODO: add checks for was it valid during report time and now is removed
+    // TODO: styling of calendars, missing arrows
+    // TODO: styling of report pages
     private static final Logger LOG = Logger.getLogger("ReportBackingBean.class");
 
     @PersistenceContext
