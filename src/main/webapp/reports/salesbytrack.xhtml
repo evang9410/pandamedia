@@ -19,27 +19,27 @@
             id="reportStartDate" 
             mode="inline" 
             navigator="true" 
-            maxdate="#{reportDates.defaultEndDate}"
-            value="#{reportDates.startDate}">
+            maxdate="#{reportData.defaultEndDate}"
+            value="#{reportData.startDate}">
                 <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate track" immediate="true" update="reportTable"/>--> 
             </p:calendar>
             <p:calendar 
                 id="reportEndDate" 
                 mode="inline" 
                 navigator="true" 
-                maxdate="#{reportDates.defaultEndDate}"
-                value="#{reportDates.endDate}">
+                maxdate="#{reportData.defaultEndDate}"
+                value="#{reportData.endDate}">
                 <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate track" immediate="true" update="reportTable"/>-->
             </p:calendar>
             <label for="trackId">#{msgs.trackIdLbl}</label>
-            <p:inputText id="trackId" value="#{trackBacking.track}" converter="#{trackConverter}">
+            <p:inputText id="trackId" value="#{reportData.track}" converter="#{trackConverter}">
                 <!--<p:ajax event="change" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
             </p:inputText>
             <p:commandButton id="search" update="totalTable reportTable" value="#{msgs.searchBtn}" />
         </h:form>
         <p:dataTable styleClass="report-table" 
                      id="totalTable" 
-                     value="#{reports.getSalesByTrackTotals(reportDates.startDate, reportDates.endDate, trackBacking.track)}" 
+                     value="#{reports.getSalesByTrackTotals(reportData.startDate, reportData.endDate, reportData.track)}" 
                      var="total">
             <f:facet name="header">
                 #{msgs.totalSumHeader}
@@ -65,7 +65,7 @@
         </p:dataTable>
         <p:dataTable styleClass="report-table" 
                      id="reportTable" 
-                     value="#{reports.getSalesByTrack(reportDates.startDate, reportDates.endDate, trackBacking.track)}" 
+                     value="#{reports.getSalesByTrack(reportData.startDate, reportData.endDate, reportData.track)}" 
                      var="invoice">
             <f:facet name="header">
                 #{msgs.detailHeader}

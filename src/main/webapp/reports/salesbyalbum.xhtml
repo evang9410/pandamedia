@@ -19,20 +19,20 @@
                 id="reportStartDate" 
                 mode="inline" 
                 navigator="true" 
-                maxdate="#{reportDates.defaultEndDate}"
-                value="#{reportDates.startDate}">
+                maxdate="#{reportData.defaultEndDate}"
+                value="#{reportData.startDate}">
                 <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/>--> 
             </p:calendar>
             <p:calendar 
                 id="reportEndDate" 
                 mode="inline" 
                 navigator="true" 
-                maxdate="#{reportDates.defaultEndDate}"
-                value="#{reportDates.endDate}">
+                maxdate="#{reportData.defaultEndDate}"
+                value="#{reportData.endDate}">
                 <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/>-->
             </p:calendar>
             <label for="albumId">#{msgs.albumIdLbl}</label>
-            <p:inputText  id="albumId" value="#{albumBacking.album}" converter="#{albumConverter}" required="true" />
+            <p:inputText  id="albumId" value="#{reportData.album}" converter="#{albumConverter}" required="true" />
                 <!--<p:ajax event="change" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
 <!--            </p:inputText>-->
 <!--            <p:watermark for="albumId" value="Search with a keyword" id="watermark" />-->
@@ -40,7 +40,7 @@
         </h:form>
         <p:dataTable styleClass="report-table" 
                      id="totalTable" 
-                     value="#{reports.getSalesByAlbumTotals(reportDates.startDate, reportDates.endDate, albumBacking.album)}" 
+                     value="#{reports.getSalesByAlbumTotals(reportData.startDate, reportData.endDate, reportData.album)}" 
                      var="total">
             <f:facet name="header">
                 #{msgs.totalSumHeader}
@@ -66,7 +66,7 @@
         </p:dataTable>        
         <p:dataTable styleClass="report-table" 
                      id="reportTable" 
-                     value="#{reports.getSalesByAlbum(reportDates.startDate, reportDates.endDate, albumBacking.album)}" 
+                     value="#{reports.getSalesByAlbum(reportData.startDate, reportData.endDate, reportData.album)}" 
                      var="invoice">
             <f:facet name="header">
                 #{msgs.detailHeader}

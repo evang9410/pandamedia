@@ -175,7 +175,7 @@ public class CheckoutBackingBean implements Serializable {
         cart.clearCart();
         
         // Send email of invoice details
-        emailer.sendInvoiceEmail(user.getEmail(), invoice);
+//        emailer.sendInvoiceEmail(user.getEmail(), invoice);
         
         // Redirecting to invoice summary page
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("invoice", invoice);

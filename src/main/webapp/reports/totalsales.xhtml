@@ -15,14 +15,14 @@
     <h:body>
         #{msgs.manReportTotalSalesTitle}
         <pm:reportcalendars 
-            max="#{reportDates.defaultEndDate}" 
-            start="#{reportDates.startDate}" 
-            end="#{reportDates.endDate}" 
+            max="#{reportData.defaultEndDate}" 
+            start="#{reportData.startDate}" 
+            end="#{reportData.endDate}" 
             updateTable="trackTotalTable albumTotalTable trackTable albumTable">
         </pm:reportcalendars>
         <p:dataTable styleClass="report-table" 
                      id="trackTotalTable" 
-                     value="#{reports.getTotalSalesTracks(reportDates.startDate, reportDates.endDate)}" 
+                     value="#{reports.getTotalSalesTracks(reportData.startDate, reportData.endDate)}" 
                      var="trackTotal">
             <f:facet name="header">
                 #{msgs.totalSumTrackHeader}
@@ -48,7 +48,7 @@
         </p:dataTable>
         <p:dataTable styleClass="report-table" 
                      id="albumTotalTable" 
-                     value="#{reports.getTotalSalesAlbums(reportDates.startDate, reportDates.endDate)}" 
+                     value="#{reports.getTotalSalesAlbums(reportData.startDate, reportData.endDate)}" 
                      var="albumTotal">
             <f:facet name="header">
                 #{msgs.totalSumAlbumHeader}
@@ -74,7 +74,7 @@
         </p:dataTable>
         <p:dataTable styleClass="report-table" 
                      id="trackTable" 
-                     value="#{reports.getTotalSalesTracksDetails(reportDates.startDate, reportDates.endDate)}" 
+                     value="#{reports.getTotalSalesTracksDetails(reportData.startDate, reportData.endDate)}" 
                      var="track">
             <f:facet name="header">
                 #{msgs.salesDetailTrackHeader}
@@ -118,7 +118,7 @@
         </p:dataTable>
         <p:dataTable styleClass="report-table" 
                      id="albumTable" 
-                     value="#{reports.getTotalSalesAlbumsDetails(reportDates.startDate, reportDates.endDate)}" 
+                     value="#{reports.getTotalSalesAlbumsDetails(reportData.startDate, reportData.endDate)}" 
                      var="album">
             <f:facet name="header">
                 #{msgs.detailAlbumHeader}

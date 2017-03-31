@@ -50,5 +50,55 @@
             <!-- Needs to be a redirect to pass through filter -->
             <redirect />
         </navigation-case>
+        
+        <!-- Report pages navigation rules -->
+        <navigation-case>
+            <from-outcome>reptrack</from-outcome>
+            <to-view-id>/reports/salesbytrack.xhtml</to-view-id>
+            <!-- Needs to be a redirect to pass through filter -->
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>repalbum</from-outcome>
+            <to-view-id>/reports/salesbyalbum.xhtml</to-view-id>
+            <!-- Needs to be a redirect to pass through filter -->
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>repartist</from-outcome>
+            <to-view-id>/reports/salesbyartist.xhtml</to-view-id>
+            <!-- Needs to be a redirect to pass through filter -->
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>reptopclients</from-outcome>
+            <to-view-id>/reports/topclients.xhtml</to-view-id>
+            <!-- Needs to be a redirect to pass through filter -->
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>reptopsellers</from-outcome>
+            <to-view-id>/reports/topsellers.xhtml</to-view-id>
+            <!-- Needs to be a redirect to pass through filter -->
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>reptotal</from-outcome>
+            <to-view-id>/reports/totalsales.xhtml</to-view-id>
+            <!-- Needs to be a redirect to pass through filter -->
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>repzeroclients</from-outcome>
+            <to-view-id>/reports/zeroclients.xhtml</to-view-id>
+            <!-- Needs to be a redirect to pass through filter -->
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>repzerotracks</from-outcome>
+            <to-view-id>/reports/zerotracks.xhtml</to-view-id>
+            <!-- Needs to be a redirect to pass through filter -->
+            <redirect />
+        </navigation-case>
     </navigation-rule>   
 </faces-config>

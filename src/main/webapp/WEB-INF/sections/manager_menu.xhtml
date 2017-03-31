@@ -11,7 +11,16 @@
                 <b:navLink value="#{msgs.clients}" href="clients.xhtml"></b:navLink>
                 <b:navLink value="#{msgs.orders}" href="orders.xhtml"></b:navLink>
                 <b:navLink value="#{msgs.reviews}" href="reviews.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.reports}" href="reporting.xhtml"></b:navLink>
+                <b:dropMenu value="#{msgs.reports}" styleClass="dropdown">
+                    <b:navCommandLink value="#{msgs.manReportTotalSalesTitle}" action="reptotal" />
+                    <b:navCommandLink value="#{msgs.manReportTopSellersTitle}" action="reptopsellers" />
+                    <b:navCommandLink value="#{msgs.manReportTopClientsTitle}" action="reptopclients" />
+                    <b:navCommandLink value="#{msgs.manReportSalesByTrack}" action="reptrack" />
+                    <b:navCommandLink value="#{msgs.manReportSalesByAlbum}" action="repalbum" />
+                    <b:navCommandLink value="#{msgs.manReportSalesByArtist}" action="repartist" />
+                    <b:navCommandLink value="#{msgs.manReportZeroTrackTitle}" action="repzerotracks" />
+                    <b:navCommandLink value="#{msgs.manReportZeroUserTitle}" action="repzeroclients" />
+                </b:dropMenu>
                 <b:navLink value="#{msgs.newsFeed}" href="newsFeedManagement.xhtml"></b:navLink>
                 <b:navLink value="#{msgs.survey}" href="surveyManagement.xhtml"></b:navLink>
                 <b:navLink value="#{msgs.banner}" href="bannerAdManagement.xhtml"></b:navLink>

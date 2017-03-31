@@ -16,77 +16,83 @@
             </ui:fragment>
             <ui:fragment rendered="#{invoiceSum.invoiceExists()}">
                 <div id="invoiceDetails">
-                    <p:panelGrid>
-                        <p:row>
-                            <p:column>#{msgs.invoiceNumHeader}</p:column>
-                            <p:column>#{invoiceSum.invoice.id}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>#{msgs.saleDateHeader}</p:column>
-                            <p:column>#{invoiceSum.invoice.saleDate}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>#{msgs.subtotalHeader}</p:column>
-                            <p:column>#{invoiceSum.invoice.totalGrossValue}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>#{msgs.gstLbl}</p:column>
-                            <p:column>#{invoiceSum.invoice.gstTax}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>#{msgs.pstLbl}</p:column>
-                            <p:column>#{invoiceSum.invoice.pstTax}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>#{msgs.hstLbl}</p:column>
-                            <p:column>#{invoiceSum.invoice.hstTax}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>#{msgs.totalHeader}</p:column>
-                            <p:column>#{invoiceSum.invoice.totalNetValue}</p:column>
-                        </p:row>
-                    </p:panelGrid>
+                    <b:panelGrid columnClasses="labels, output" columns="2">
+                        <h:outputLabel value="#{msgs.invoiceNumHeader}"/>
+                        <h:outputLabel value="#{invoiceSum.invoice.id}"/>
+
+                        <h:outputLabel value="#{msgs.saleDateHeader}"/>
+                        <h:outputLabel value="#{invoiceSum.invoice.saleDate}"/>
+
+                        <h:outputLabel value="#{msgs.subtotalHeader}"/>
+                        <h:outputLabel value="#{invoiceSum.invoice.totalGrossValue}">
+                            <f:convertNumber type="currency" />
+                        </h:outputLabel>
+
+                        <h:outputLabel value="#{msgs.gstLbl}"/>
+                        <h:outputLabel value="#{invoiceSum.invoice.gstTax}">
+                            <f:convertNumber type="currency" />
+                        </h:outputLabel>
+
+                        <h:outputLabel value="#{msgs.pstLbl}"/>
+                        <h:outputLabel value="#{invoiceSum.invoice.pstTax}">
+                            <f:convertNumber type="currency" />
+                        </h:outputLabel>
+
+                        <h:outputLabel value="#{msgs.hstLbl}"/>
+                        <h:outputLabel value="#{invoiceSum.invoice.hstTax}">
+                            <f:convertNumber type="currency" />
+                        </h:outputLabel>
+
+                        <h:outputLabel value="#{msgs.totalHeader}"/>
+                        <h:outputLabel value="#{invoiceSum.invoice.totalNetValue}">
+                            <f:convertNumber type="currency" />
+                        </h:outputLabel>
+                    </b:panelGrid>
                 </div>
                 <div id="billingInfo">
-                    <p:panelGrid columns="1">
-                        <p:outputLabel>#{userAction.currUser.title} #{userAction.currUser.firstName} #{userAction.currUser.lastName}</p:outputLabel>                    
-                        <p:outputLabel>#{userAction.currUser.streetAddress}</p:outputLabel>
-                        <p:outputLabel>#{userAction.currUser.city}, #{userAction.currUser.provinceId.name} #{userAction.currUser.postalCode}</p:outputLabel>
-                        <p:outputLabel>#{userAction.currUser.country}</p:outputLabel>
-                        <p:outputLabel>#{userAction.currUser.homePhone} #{userAction.currUser.cellPhone}</p:outputLabel>                  
-                    </p:panelGrid>               
+                    <b:panelGrid columns="1">
+                        <h:outputLabel>#{userAction.currUser.title} #{userAction.currUser.firstName} #{userAction.currUser.lastName}</h:outputLabel>                    
+                        <h:outputLabel>#{userAction.currUser.streetAddress}</h:outputLabel>
+                        <h:outputLabel>#{userAction.currUser.city}, #{userAction.currUser.provinceId.name} #{userAction.currUser.postalCode}</h:outputLabel>
+                        <h:outputLabel>#{userAction.currUser.country}</h:outputLabel>
+                        <h:outputLabel>#{userAction.currUser.homePhone} #{userAction.currUser.cellPhone}</h:outputLabel>                  
+                    </b:panelGrid>               
                 </div>
                 <div id="invoicePurchases">
-                    <p:dataTable  rendered="true" var="invoicetrack" value="#{invoiceSum.invoice.invoiceTrackList}" >
+                    <b:dataTable  rendered="true" var="invoicetrack" value="#{invoiceSum.invoice.invoiceTrackList}" >
                         <f:facet name="header">#{msgs.trackLbl}</f:facet>
-                        <p:column>
+                        <b:column>
                             <f:facet name="header">#{msgs.titleHeader}</f:facet>
                                 #{invoicetrack.track.title}
-                        </p:column>
-                        <p:column>
+                        </b:column>
+                        <b:column>
                             <f:facet name="header">#{msgs.artistHeader}</f:facet>
                                 #{invoicetrack.track.artistId.name}
-                        </p:column>
-                        <p:column>
+                        </b:column>
+                        <b:column>
                             <f:facet name="header">#{msgs.priceHeader}</f:facet>
-                                #{invoicetrack.finalPrice}
-                        </p:column>
-                    </p:dataTable>
-                    <p:dataTable rendered="true" value="#{invoiceSum.invoice.invoiceAlbumList}" var="invoicealbum">
+                            <h:outputText value="#{invoicetrack.finalPrice}">
+                                <f:convertNumber type="currency" />
+                            </h:outputText>
+                        </b:column>
+                    </b:dataTable>
+                    <b:dataTable rendered="true" value="#{invoiceSum.invoice.invoiceAlbumList}" var="invoicealbum">
                         <f:facet name="header">#{msgs.albumLbl}</f:facet>
-                        <p:column>
+                        <b:column>
                             <f:facet name="header">#{msgs.titleHeader}</f:facet>
                                 #{invoicealbum.album.title}
-                        </p:column>
-                        <p:column>
+                        </b:column>
+                        <b:column>
                             <f:facet name="header">#{msgs.artistHeader}</f:facet>
                                 #{invoicealbum.album.artistId.name}
-                        </p:column>
-                        <p:column>
+                        </b:column>
+                        <b:column>
                             <f:facet name="header">#{msgs.priceHeader}</f:facet>
-                                #{invoicealbum.finalPrice}
-                        </p:column>                      
-                    </p:dataTable>
+                            <h:outputText value="#{invoicealbum.finalPrice}">
+                                <f:convertNumber type="currency" />
+                            </h:outputText>
+                        </b:column>                      
+                    </b:dataTable>
                 </div>
             </ui:fragment>
         </div>

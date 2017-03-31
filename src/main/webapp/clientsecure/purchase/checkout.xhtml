@@ -26,18 +26,20 @@
             <div id="orderSummary">
                 <b:dataTable  rendered="true" var="track" value="#{cart.tracksFromCart}" >
                     <f:facet name="header">#{msgs.trackLbl}</f:facet>
-                    <p:column>
+                    <b:column>
                         <f:facet name="header">#{msgs.titleHeader}</f:facet>
                             #{track.title}
-                    </p:column>
-                    <p:column>
+                    </b:column>
+                    <b:column>
                         <f:facet name="header">#{msgs.artistHeader}</f:facet>
                             #{track.artistId.name}
-                    </p:column>
-                    <p:column>
+                    </b:column>
+                    <b:column>
                         <f:facet name="header">#{msgs.priceHeader}</f:facet>
-                            #{track.listPrice - track.salePrice}
-                    </p:column>
+                        <h:outputText value="#{track.listPrice - track.salePrice}">
+                            <f:convertNumber type="currency" />
+                        </h:outputText>
+                    </b:column>
                 </b:dataTable>
                 <b:dataTable rendered="true" value="#{cart.albumsFromCart}" var="album">
                     <f:facet name="header">#{msgs.albumLbl}</f:facet>
@@ -51,24 +53,36 @@
                     </b:column>
                     <b:column>
                         <f:facet name="header">#{msgs.priceHeader}</f:facet>
-                            #{album.listPrice - album.salePrice}
+                        <h:outputText value="#{album.listPrice - album.salePrice}">
+                            <f:convertNumber type="currency" />
+                        </h:outputText>
                     </b:column>                      
                 </b:dataTable>
                 <b:panelGrid columnClasses="labels, output" columns="2">
                     <h:outputLabel value="#{msgs.subtotalHeader}" />
-                    <h:outputLabel value="#{cart.subTotal}" />
+                    <h:outputLabel value="#{cart.subTotal}">
+                        <f:convertNumber type="currency" />
+                    </h:outputLabel>
 
                     <h:outputLabel value="#{msgs.gstLbl}" />
-                    <h:outputLabel value="#{checkout.gst}" />
+                    <h:outputLabel value="#{checkout.gst}">
+                        <f:convertNumber type="currency" />
+                    </h:outputLabel>
 
                     <h:outputLabel value="#{msgs.pstLbl}" />
-                    <h:outputLabel value="#{checkout.pst}" />
+                    <h:outputLabel value="#{checkout.pst}">
+                        <f:convertNumber type="currency" />
+                    </h:outputLabel>
 
                     <h:outputLabel value="#{msgs.hstLbl}" />
-                    <h:outputLabel value="#{checkout.hst}" />
+                    <h:outputLabel value="#{checkout.hst}">
+                        <f:convertNumber type="currency" />
+                    </h:outputLabel>
 
                     <h:outputLabel value="#{msgs.totalHeader}" />
-                    <h:outputLabel value="#{checkout.total}" />
+                    <h:outputLabel value="#{checkout.total}">
+                        <f:convertNumber type="currency" />
+                    </h:outputLabel>
                 </b:panelGrid>
             </div>
             <div id="creditCardDetails">

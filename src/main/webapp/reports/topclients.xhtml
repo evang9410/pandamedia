@@ -15,14 +15,14 @@
     <h:body>
         #{msgs.manReportTopClientsTitle}
         <pm:reportcalendars 
-            max="#{reportDates.defaultEndDate}" 
-            start="#{reportDates.startDate}" 
-            end="#{reportDates.endDate}" 
+            max="#{reportData.defaultEndDate}" 
+            start="#{reportData.startDate}" 
+            end="#{reportData.endDate}" 
             updateTable="reportTable">
         </pm:reportcalendars>
         <p:dataTable styleClass="report-table" 
                      id="reportTable" 
-                     value="#{reports.getTopClients(reportDates.startDate, reportDates.endDate)}" 
+                     value="#{reports.getTopClients(reportData.startDate, reportData.endDate)}" 
                      var="userVar">
             <f:facet name="header">
                 #{msgs.detailClientHeader}
