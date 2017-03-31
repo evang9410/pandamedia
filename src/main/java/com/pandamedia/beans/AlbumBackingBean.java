@@ -624,4 +624,20 @@ public class AlbumBackingBean implements Serializable{
         else
             return formatter.format(typedQuery.getResultList().get(0));
     }
+    
+    public String loadCreateAlbum()
+    {
+         this.album = new Album();
+               
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("AlbumFunctionality/addAlbum.xhtml");
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
+    }
 }

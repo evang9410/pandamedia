@@ -516,4 +516,20 @@ public class TrackBackingBean implements Serializable{
     }
      
     
+     public String loadCreateTrack()
+    {
+         this.track = new Track();
+         
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("TrackFunctionality/addTrack.xhtml");
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
+    }
+    
 }

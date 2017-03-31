@@ -38,10 +38,13 @@ import persistence.controllers.AlbumJpaController;
 import persistence.controllers.ArtistJpaController;
 import persistence.controllers.CoverArtJpaController;
 import persistence.controllers.GenreJpaController;
+import persistence.controllers.InvoiceJpaController;
+import persistence.controllers.InvoiceTrackJpaController;
 import persistence.controllers.ReviewJpaController;
 import persistence.controllers.ShopUserJpaController;
 import persistence.controllers.SongwriterJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
+import persistence.entities.InvoiceTrack;
 import persistence.entities.Review;
 import persistence.entities.Track;
 
@@ -71,6 +74,10 @@ public class TrackArq {
    private ShopUserJpaController userController;
    @Inject
    private ReviewJpaController reviewController;
+   @Inject
+   private InvoiceJpaController invoiceController;
+   @Inject
+   private InvoiceTrackJpaController invoiceTrackController;
     
     @Deployment
     public static WebArchive deploy() {
@@ -280,7 +287,7 @@ public class TrackArq {
         {
             System.out.println(e.getMessage());
         }
-        
+        trackBacking.setTrack(trackBacking.findTrackById(1));
         List<Review> approvedReviews = trackBacking.getApprovedReviews();
 
         boolean isValid = false;
@@ -310,9 +317,49 @@ public class TrackArq {
     @Test
     public void testTrackSales()
     {
-        String sales = trackBacking.getTrackSales(1);
-        //the 44.16 is the value of all the purchases of a track from the db
-        assertEquals(sales,"44.16");
+        Date date = Calendar.getInstance().getTime();
+        short status = 1;
+        short removalStatus = 0;
+        Track t = new Track();
+        
+        t.setTitle("hehe");
+        t.setReleaseDate(date);
+        t.setPlayLength("1:45");
+        t.setDateEntered(date);
+        t.setPartOfAlbum(status);
+        t.setAlbumTrackNumber(1);
+        t.setCostPrice(1.0);
+        t.setListPrice(1.5);
+        t.setSalePrice(0);
+        t.setRemovalStatus(removalStatus);
+        t.setRemovalDate(null);
+        t.setAlbumId(albumController.findAlbum(1));
+        t.setArtistId(artistController.findArtist(1));
+        t.setSongwriterId(songwriterController.findSongwriter(1));
+        t.setGenreId(genreController.findGenre(1));
+        t.setCoverArtId(coverArtController.findCoverArt(1));  
+        
+        trackBacking.setTrack(t);
+        trackBacking.create();
+        
+        List<Track> list = trackBacking.getAll();
+        
+        InvoiceTrack invT = new InvoiceTrack();
+        invT.setTrack(list.get(list.size()-1));
+        invT.setRemovalStatus(removalStatus);
+        invT.setRemovalDate(null);
+        invT.setInvoice(invoiceController.findInvoice(1));
+        invT.setFinalPrice(23.00);
+        
+        try
+        {
+            invoiceTrackController.create(invT);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        assertEquals(trackBacking.getTrackSales(list.get(list.size()-1).getId()), "23.00");    
     
     }
     

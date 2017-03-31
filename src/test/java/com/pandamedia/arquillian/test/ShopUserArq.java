@@ -24,6 +24,7 @@ import javax.sql.DataSource;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import static org.junit.Assert.assertEquals;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
@@ -178,6 +179,19 @@ public class ShopUserArq {
         user.setEmail("loho@hot.co");
         user.setProvinceId(provinceController.findProvince(1));
         
+        userBacking.setShopUser(user);
+        userBacking.edit();
+        
+         ShopUser editedUser = userBacking.findUserById(1);
+        
+        assertEquals(user,editedUser);
+        
+        
+    }
+    
+    @Test
+    public void testGetClientSales()
+    {
         
     }
     

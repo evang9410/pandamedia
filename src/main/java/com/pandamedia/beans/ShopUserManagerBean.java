@@ -234,7 +234,12 @@ public class ShopUserManagerBean implements Serializable{
     
     public ShopUser findUserById(Integer id)
     {
-        return userController.findShopUser();
+        return userController.findShopUser(id);
+    }
+    
+    public void setShopUser(ShopUser user)
+    {
+        this.user = user;
     }
 
 }
