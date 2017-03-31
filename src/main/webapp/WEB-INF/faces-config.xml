@@ -103,48 +103,43 @@
         <!-- Manager pages navigation rules -->
         <!-- Use redirects to pass through login and manager filter -->
         <navigation-case>
-            <from-view-id>*</from-view-id>
-            <from-outcome>welcome_manager</from-outcome>
-            <to-view-id>/manager_index.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
             <from-outcome>manindex</from-outcome>
-            <to-view-id>/manager_index.xhtml</to-view-id>
+            <to-view-id>/manager/manager_index.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>mansales</from-outcome>
-            <to-view-id>/salesPage.xhtml</to-view-id>
+            <to-view-id>/manager/salesPage.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>manclients</from-outcome>
-            <to-view-id>/clients.xhtml</to-view-id>
+            <to-view-id>/manager/clients.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>manorders</from-outcome>
-            <to-view-id>/orders.xhtml</to-view-id>
+            <to-view-id>/manager/orders.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>manreviews</from-outcome>
-            <to-view-id>/reviews.xhtml</to-view-id>
+            <to-view-id>/manager/reviews.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>mannewsfeeds</from-outcome>
-            <to-view-id>/newsFeedManagement.xhtml</to-view-id>
+            <to-view-id>/manager/newsFeedManagement.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>mansurveys</from-outcome>
-            <to-view-id>/surveyManagement.xhtml</to-view-id>
+            <to-view-id>/manager/surveyManagement.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>manbanners</from-outcome>
-            <to-view-id>/bannerAdManagement.xhtml</to-view-id>
+            <to-view-id>/manager/bannerAdManagement.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         
