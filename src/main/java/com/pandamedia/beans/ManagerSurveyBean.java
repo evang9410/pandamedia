@@ -28,6 +28,7 @@ public class ManagerSurveyBean implements Serializable {
     private FrontPageSettingsJpaController fpsController;
     
     private Survey survey;
+    private boolean removeException = false;
     
     /**
      * Finds the survey from its id.
@@ -37,6 +38,12 @@ public class ManagerSurveyBean implements Serializable {
     public Survey findSurveyById(int id){
         return surveyController.findSurvey(id); 
     }
+
+    public boolean isRemoveException() {
+        return removeException;
+    }
+    
+    
     
     /**
      * This method will save the survey to the database and select
@@ -66,8 +73,11 @@ public class ManagerSurveyBean implements Serializable {
      */
     public String remove(Integer id)
     {
-        if(fpsController.findFrontPageSettings(1).getSurveyId().equals(surveyController.findSurvey(id)))
-            throw new ValidatorException( new FacesMessage("This survey is used in the front page, select another one to delete this"));
+
+        if(fpsController.findFrontPageSettings(1).getSurveyId().equals(surveyController.findSurvey(id))){
+            removeException = true;
+            //throw new ValidatorException( new FacesMessage("This survey is used in the front page, select another one to delete this"));
+        }
         try
         {
             surveyController.destroy(id);
