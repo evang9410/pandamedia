@@ -6,7 +6,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:jsf="http://xmlns.jcp.org/jsf">
     <ui:define name="WindowTitle">
-        Browse Albums | Pandamedia
+        #{msgs.browsealbums} | Pandamedia
     </ui:define>
     <ui:define name="css">
         <h:outputStylesheet name="browsealbums.css" library="css"/>
@@ -16,7 +16,7 @@
         <br/>
         <div class="container">
             <div class = "row" style="text-align: left;">
-                <h2>Popular Albums</h2>
+                <h2>#{msgs.popularalbums}</h2>
             </div>
             <div class="row is-flex">
 
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="container">
-            <div class="row" style="text-align:left;"><h2>Browse by Genre</h2></div>
+            <div class="row" style="text-align:left;"><h2>#{msgs.browsegenre}</h2></div>
             <div class="row" style="text-align: left;">                
                 <h:form>
                     <ui:repeat value="#{genreBacking.allGenresNames}" var="genres">

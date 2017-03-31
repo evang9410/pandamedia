@@ -25,21 +25,21 @@
                 <div class="item active">
                     <h:link outcome="latest">
                         <div class="carousel-caption">
-                            <h1>New Releases</h1>
+                            <h1>#{msgs.newReleases}</h1>
                         </div>
                     </h:link>
                 </div>
                 <div class="item">
                     <h:link outcome="onsale">
                         <div class="carousel-caption">
-                            <h1>On sale right now</h1>
+                            <h1>#{msgs.onsale}</h1>
                         </div>
                     </h:link>
                 </div>
                 <div class="item">
                     <h:link outcome="popular">
                         <div class="carousel-caption">
-                            <h1>Popular</h1>
+                            <h1>#{msgs.popular}</h1>
                         </div>
                     </h:link>
                 </div>
@@ -61,7 +61,7 @@
                             <h:commandLink action="#{browseChange.browseAlbums}" styleClass="browse-btn-link">
                                 <div class="browse-item" id="browse-albums">
                                     <div class="browse-caption">
-                                        <span id="browse-album-caption">Albums</span>
+                                        <span id="browse-album-caption">#{msgs.albumLbl}</span>
                                     </div>
                                 </div>
                             </h:commandLink>
@@ -71,7 +71,7 @@
                         <h:commandLink action="#{browseChange.browseArtists()}" styleClass="browse-btn-link">
                             <div class="browse-item" id="browse-artists">
                                 <div class="browse-caption">
-                                    <span id="browse-artist-caption">Artists</span>
+                                    <span id="browse-artist-caption">#{msgs.artists}</span>
                                 </div>
                             </div>
                         </h:commandLink>

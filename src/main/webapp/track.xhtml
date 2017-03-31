@@ -45,7 +45,7 @@
                 <div class="row" style="margin-bottom: 2%">
                     <div class="col-md-12">
                         <h:form>
-                            <h:commandLink action="#{userAction.redirectUser(track)}" value="Sign in to write a review"/>
+                            <h:commandLink action="#{userAction.redirectUser(track)}" value="#{msgs.signinreview}"/>
                         </h:form>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                             <br style="clear:both"/>   
                             <div class="form-group">
                                 <div class="rating" style="color:black">
-                                    <label>Rating: </label>
+                                    <label>#{msgs.rating}: </label>
                                     <h:selectOneRadio value="#{reviewBacking.review.rating}" validator="#{reviewBacking.validateRating}">
                                         <f:selectItem itemValue="5" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
                                         <f:selectItem itemValue="4" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
@@ -112,7 +112,7 @@
                                                  value="#{reviewBacking.review.reviewContent}"
                                                  validator="#{reviewBacking.validateReviewContent}"/>
                             </div>
-                            <h:commandButton value="submit review" action="#{reviewBacking.submitReview(trackBacking.track, user.findUser(5))}" 
+                            <h:commandButton value="#{msgs.sumbitreview}" action="#{reviewBacking.submitReview(trackBacking.track, user.findUser(5))}" 
                                              styleClass="btn btn-primary">
                                 <!--                                <f:ajax execute="@form" render="@form"/>-->
                             </h:commandButton>
