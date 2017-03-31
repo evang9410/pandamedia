@@ -65,6 +65,9 @@ public class ClientTrackingBean implements Serializable{
         
     public void peristTracking(Genre g){
         if(uab.isLogin()){
+            System.out.println("USER LOGGED IN -- PERSISTING");
+            System.out.println("GENRE: " + g.getName());
+            System.out.println("USER: " + uab.getCurrUser().getEmail());
             ShopUser user = uab.getCurrUser();
             user.setLastGenreSearched(g);
             try {
