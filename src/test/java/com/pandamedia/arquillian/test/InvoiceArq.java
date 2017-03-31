@@ -15,9 +15,12 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -31,9 +34,13 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import persistence.controllers.InvoiceJpaController;
+import persistence.controllers.InvoiceTrackJpaController;
 import persistence.controllers.ShopUserJpaController;
+import persistence.controllers.TrackJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.Invoice;
+import persistence.entities.InvoiceTrack;
 import persistence.entities.Track;
 
 /**
@@ -47,6 +54,14 @@ public class InvoiceArq {
     private DataSource ds;
     @Inject
     private InvoiceBackingBean invoiceBacking;
+    @Inject
+    private ShopUserJpaController userController;
+    @Inject
+    private TrackJpaController trackController;
+    @Inject
+    private InvoiceJpaController invoiceController;
+    @Inject
+    private InvoiceTrackJpaController invoiceTrackController;
     
     @Deployment
     public static WebArchive deploy() {
@@ -170,6 +185,50 @@ public class InvoiceArq {
         invoiceBacking.removeItem(1);
         Invoice invoice = invoiceBacking.findInvoiceById(1);
         assertEquals(invoice.getRemovalStatus(),1);
+    }
+    
+    @Test
+    public void testLoadTracksTable()
+    {
+       short i = 0;
+       Invoice inv = new Invoice();
+       inv.setSaleDate(Calendar.getInstance().getTime());
+       inv.setTotalNetValue(24);
+       inv.setPstTax(10);
+       inv.setGstTax(10);
+       inv.setHstTax(10);
+       inv.setTotalGrossValue(35);
+       inv.setRemovalStatus(i);
+       inv.setRemovalDate(null);
+       inv.setUserId(userController.findShopUser(1));
+       
+        try {
+            invoiceController.create(inv);
+        } catch (Exception ex) {
+           System.out.println(ex.getMessage());
+        }
+       
+       List<Invoice> list = invoiceBacking.getAll();
+       
+        short removalStatus = 0;
+        InvoiceTrack invT = new InvoiceTrack();
+        invT.setTrack(trackController.findTrack(1));
+        invT.setRemovalStatus(removalStatus);
+        invT.setRemovalDate(null);
+        invT.setInvoice(list.get(list.size()-1));
+        invT.setFinalPrice(23.00);
+        
+        try {
+            invoiceTrackController.create(invT);
+        }  catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        invoiceBacking.loadTable();
+        
+        
+        
+        
     }
     
     
