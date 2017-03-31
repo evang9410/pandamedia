@@ -1,8 +1,9 @@
 
 package com.pandamedia.arquillian.test;
 
+import com.pandamedia.beans.InvoiceBackingBean;
 import com.pandamedia.beans.ReportBackingBean;
-import com.pandamedia.beans.TrackBackingBean;
+import com.pandamedia.beans.UserActionBean;
 import com.pandamedia.commands.ChangeLanguage;
 import com.pandamedia.converters.AlbumConverter;
 import com.pandamedia.filters.LoginFilter;
@@ -16,10 +17,11 @@ import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -30,22 +32,18 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import persistence.controllers.AlbumJpaController;
-import persistence.controllers.ArtistJpaController;
-import persistence.controllers.CoverArtJpaController;
-import persistence.controllers.GenreJpaController;
 import persistence.controllers.InvoiceJpaController;
 import persistence.controllers.InvoiceTrackJpaController;
-import persistence.controllers.ReviewJpaController;
+import persistence.controllers.ProvinceJpaController;
 import persistence.controllers.ShopUserJpaController;
-import persistence.controllers.SongwriterJpaController;
+import persistence.controllers.TrackJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
+import persistence.entities.Invoice;
 import persistence.entities.InvoiceTrack;
-import persistence.entities.Review;
+import persistence.entities.ShopUser;
 import persistence.entities.Track;
 
 /**
@@ -53,31 +51,24 @@ import persistence.entities.Track;
  * @author Naasir Jusab
  */
 @RunWith(Arquillian.class)
-public class TrackArq {
+public class InvoiceArq {
     
-            
     @Resource(name = "java:app/jdbc/pandamedialocal")
     private DataSource ds;
     @Inject
-    private TrackBackingBean trackBacking;
+    private InvoiceBackingBean invoiceBacking;
     @Inject
-    private AlbumJpaController albumController;
+    private ShopUserJpaController userController;
     @Inject
-    private ArtistJpaController artistController;
+    private TrackJpaController trackController;
     @Inject
-    private SongwriterJpaController songwriterController;
+    private InvoiceJpaController invoiceController;
     @Inject
-    private GenreJpaController genreController;
+    private InvoiceTrackJpaController invoiceTrackController;
     @Inject
-    private CoverArtJpaController coverArtController;
-   @Inject
-   private ShopUserJpaController userController;
-   @Inject
-   private ReviewJpaController reviewController;
-   @Inject
-   private InvoiceJpaController invoiceController;
-   @Inject
-   private InvoiceTrackJpaController invoiceTrackController;
+    private UserActionBean userActionBean;
+    @Inject
+    private ProvinceJpaController provinceController;
     
     @Deployment
     public static WebArchive deploy() {
@@ -186,202 +177,140 @@ public class TrackArq {
         return line.startsWith("--") || line.startsWith("//")
                 || line.startsWith("/*");
     }
-
     
     @Test
-    public void testAddItem()
+    public void testAdd()
     {
-        trackBacking.addItem(1);
-        Track track = trackBacking.findTrackById(1);
-        assertEquals(track.getRemovalStatus(),0);
+        invoiceBacking.addItem(1);
+        Invoice invoice = invoiceBacking.findInvoiceById(1);
+        assertEquals(invoice.getRemovalStatus(),0);
     }
     
     @Test
     public void testRemoveItem()
     {
-        trackBacking.removeItem(1);
-        Track track = trackBacking.findTrackById(1);
-        assertEquals(track.getRemovalStatus(),1);
+        invoiceBacking.removeItem(1);
+        Invoice invoice = invoiceBacking.findInvoiceById(1);
+        assertEquals(invoice.getRemovalStatus(),1);
     }
     
     @Test
-    public void testEdit()
+    public void testLoadTracksTable()
     {
-        Date date = Calendar.getInstance().getTime();
-        short status = 1;
-        Track t = trackBacking.findTrackById(1);
-        
-        t.setTitle("haha");
-        t.setReleaseDate(date);
-        t.setPlayLength("1:46");
-        t.setDateEntered(date);
-        t.setPartOfAlbum(status);
-        t.setAlbumTrackNumber(1);
-        t.setCostPrice(1.0);
-        t.setListPrice(1.5);
-        t.setSalePrice(0);
-        t.setRemovalStatus(status);
-        t.setRemovalDate(date);
-        t.setAlbumId(albumController.findAlbum(1));
-        t.setArtistId(artistController.findArtist(1));
-        t.setSongwriterId(songwriterController.findSongwriter(1));
-        t.setGenreId(genreController.findGenre(1));
-        t.setCoverArtId(coverArtController.findCoverArt(1));
-        
-        trackBacking.setTrack(t);
-        trackBacking.edit();
-        Track editedTrack = trackBacking.findTrackById(1);
-        
-        assertEquals(t,editedTrack);
-    }
-    
-    @Test
-    public void testCreate()
-    {
-        Date date = Calendar.getInstance().getTime();
-        short status = 1;
-        Track t = new Track();
-        
-        t.setTitle("hehe");
-        t.setReleaseDate(date);
-        t.setPlayLength("1:45");
-        t.setDateEntered(date);
-        t.setPartOfAlbum(status);
-        t.setAlbumTrackNumber(1);
-        t.setCostPrice(1.0);
-        t.setListPrice(1.5);
-        t.setSalePrice(0);
-        t.setRemovalStatus(status);
-        t.setRemovalDate(date);
-        t.setAlbumId(albumController.findAlbum(1));
-        t.setArtistId(artistController.findArtist(1));
-        t.setSongwriterId(songwriterController.findSongwriter(1));
-        t.setGenreId(genreController.findGenre(1));
-        t.setCoverArtId(coverArtController.findCoverArt(1));      
-        
-        trackBacking.setTrack(t);
-        trackBacking.create();
-        List<Track> list = trackBacking.getAll();
-        assertEquals(list.get(list.size()-1), t);
-
-    }
-    
-    @Test
-    public void testApprovedReviews()
-    {
-        Date date = Calendar.getInstance().getTime();
-        short status = 1;
-        Review review = new Review();
-        review.setDateEntered(date);
-        review.setRating(1);
-        review.setReviewContent("ahhahaha hohoho");
-        review.setApprovalStatus(status);
-        review.setTrackId(trackBacking.findTrackById(1));
-        review.setUserId(userController.findShopUser(1));
-        
-        try
-        {
-            reviewController.create(review);
+       short i = 0;
+       Invoice inv = new Invoice();
+       inv.setSaleDate(Calendar.getInstance().getTime());
+       inv.setTotalNetValue(24);
+       inv.setPstTax(10);
+       inv.setGstTax(10);
+       inv.setHstTax(10);
+       inv.setTotalGrossValue(35);
+       inv.setRemovalStatus(i);
+       inv.setRemovalDate(null);
+       inv.setUserId(userController.findShopUser(1));
+       
+        try {
+            invoiceController.create(inv);
+        } catch (Exception ex) {
+           System.out.println(ex.getMessage());
         }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-        trackBacking.setTrack(trackBacking.findTrackById(1));
-        List<Review> approvedReviews = trackBacking.getApprovedReviews();
-
-        boolean isValid = false;
-        for(Review approvedReview:approvedReviews)
-        {
-            if(approvedReview.equals(review))
-                isValid = true;
-            
-        }
-        assertTrue(isValid);
-        
-    }
-    
-    @Test
-    public void testEditSales()
-    {      
-        Track t = trackBacking.findTrackById(1);
-        t.setSalePrice(0);
-        
-        trackBacking.setTrack(t);
-        trackBacking.edit();
-        Track editedTrack = trackBacking.findTrackById(1);
-        
-        assertEquals(t,editedTrack);
-    }
-    
-    @Test
-    public void testTrackSales()
-    {
-        Date date = Calendar.getInstance().getTime();
-        short status = 1;
+       
+       List<Invoice> list = invoiceBacking.getAll();
+       
         short removalStatus = 0;
-        Track t = new Track();
-        
-        t.setTitle("hehe");
-        t.setReleaseDate(date);
-        t.setPlayLength("1:45");
-        t.setDateEntered(date);
-        t.setPartOfAlbum(status);
-        t.setAlbumTrackNumber(1);
-        t.setCostPrice(1.0);
-        t.setListPrice(1.5);
-        t.setSalePrice(0);
-        t.setRemovalStatus(removalStatus);
-        t.setRemovalDate(null);
-        t.setAlbumId(albumController.findAlbum(1));
-        t.setArtistId(artistController.findArtist(1));
-        t.setSongwriterId(songwriterController.findSongwriter(1));
-        t.setGenreId(genreController.findGenre(1));
-        t.setCoverArtId(coverArtController.findCoverArt(1));  
-        
-        trackBacking.setTrack(t);
-        trackBacking.create();
-        
-        List<Track> list = trackBacking.getAll();
-        
         InvoiceTrack invT = new InvoiceTrack();
-        invT.setTrack(list.get(list.size()-1));
+        invT.setTrack(trackController.findTrack(1));
         invT.setRemovalStatus(removalStatus);
         invT.setRemovalDate(null);
-        invT.setInvoice(invoiceController.findInvoice(1));
+        invT.setInvoice(list.get(list.size()-1));
         invT.setFinalPrice(23.00);
         
-        try
+        try 
         {
             invoiceTrackController.create(invT);
-        }
-        catch(Exception e)
+        } 
+        
+        catch (Exception ex)
         {
-            System.out.println(e.getMessage());
+            System.out.println(ex.getMessage());
         }
-        assertEquals(trackBacking.getTrackSales(list.get(list.size()-1).getId()), "23.00");    
-    
+        invoiceBacking.setInvoice(inv);
+        
+        System.out.println(invoiceBacking.loadTable().get(0) +"DODO");
+        assertEquals(invoiceBacking.loadTable().get(0),invT);   
     }
     
     @Test
-    public void testSaleTrack()
+    public void testDownloadsTable()
     {
-        Track t1= trackBacking.findTrackById(1);
-        t1.setSalePrice(0.55);
-        trackBacking.setTrack(t1);
-        trackBacking.edit();
+        ShopUser user = new ShopUser();
+        user.setTitle("Sir");
+        user.setLastName("Jus");
+        user.setFirstName("Nas");
+        user.setCompanyName("got jus");
+        user.setStreetAddress("9010 dmdmd");
+        user.setCity("MTL");
+        user.setCountry("Canada");
+        user.setPostalCode("P4N 3D2");
         
-        Track t2= trackBacking.findTrackById(2);
-        t2.setSalePrice(0.69);
-        trackBacking.setTrack(t2);
-        trackBacking.edit();
+        user.setHomePhone("514-505 7070");
+        user.setEmail("loho@hot.co");
+        user.setProvinceId(provinceController.findProvince(1));
         
-        List<Track> saleTracks = trackBacking.getSaleTracks();
+       try
+       {
+           userController.create(user);
+       }
+       catch(Exception e)
+       {
+           System.out.println(e.getMessage());
+       }
+       
+       List<ShopUser> list = userController.findShopUserEntities();
         
-        assertEquals(saleTracks.size(),2);
+       short i = 0;
+       Invoice inv = new Invoice();
+       inv.setSaleDate(Calendar.getInstance().getTime());
+       inv.setTotalNetValue(24);
+       inv.setPstTax(10);
+       inv.setGstTax(10);
+       inv.setHstTax(10);
+       inv.setTotalGrossValue(35);
+       inv.setRemovalStatus(i);
+       inv.setRemovalDate(null);
+       inv.setUserId(userController.findShopUser(1));
+       
+          try {
+            invoiceController.create(inv);
+        } catch (Exception ex) {
+           System.out.println(ex.getMessage());
+        }
+       
+       List<Invoice> listInvoice = invoiceBacking.getAll();
+       
+        short removalStatus = 0;
+        InvoiceTrack invT = new InvoiceTrack();
+        invT.setTrack(trackController.findTrack(1));
+        invT.setRemovalStatus(removalStatus);
+        invT.setRemovalDate(null);
+        invT.setInvoice(listInvoice.get(listInvoice.size()-1));
+        invT.setFinalPrice(23.00);
+        
+        try 
+        {
+            invoiceTrackController.create(invT);
+        } 
+        
+        catch (Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+        
+        userActionBean.setUser(userController.findShopUser(1));
+        System.out.println("dodo" + invoiceBacking.loadDownloadsTable().size());
+        assertEquals(invoiceBacking.loadDownloadsTable().get(0), trackController.findTrack(1));
+        
     }
     
     
-    
-
 }

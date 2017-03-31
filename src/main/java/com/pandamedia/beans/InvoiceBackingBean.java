@@ -51,6 +51,7 @@ public class InvoiceBackingBean implements Serializable{
     private InvoiceJpaController invoiceController;
     @Inject
     private UserActionBean uab;
+
     private Invoice invoice;
     private List<Invoice> invoices;
     private List<Invoice> filteredInvoices;
@@ -122,6 +123,15 @@ public class InvoiceBackingBean implements Serializable{
             invoice = new Invoice();
         }
         return invoice;
+    }
+    
+        /**
+     * Finds the invoice from its id.
+     * @param id of the invoice
+     * @return invoice object
+     */
+    public Invoice findInvoiceById(int id){
+        return invoiceController.findInvoice(id); 
     }
     
     /**
@@ -232,7 +242,7 @@ public class InvoiceBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/editOrders.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -256,7 +266,7 @@ public class InvoiceBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/removeIndivTracks.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -291,6 +301,7 @@ public class InvoiceBackingBean implements Serializable{
         
         return typedQuery.getResultList();
         
+        
     }
     public List<Track> loadDownloadsTable()
     {
@@ -308,7 +319,9 @@ public class InvoiceBackingBean implements Serializable{
         // Where clause
         
         List<Predicate> predicates = new ArrayList<>();
+
         predicates.add(cb.equal(clientJoin.get(ShopUser_.id),uab.getCurrUser().getId()));
+
         query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
         
         TypedQuery<Track> typedQuery = em.createQuery(query);
@@ -365,7 +378,7 @@ public class InvoiceBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/orders.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -388,12 +401,17 @@ public class InvoiceBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/orders.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
         
         return null;
+    }
+    
+    public void setInvoice(Invoice invoice)
+    {
+        this.invoice = invoice;
     }
     
     

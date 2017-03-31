@@ -69,7 +69,7 @@ public class AlbumBackingBean implements Serializable{
     public void init()
     {
         this.albums = albumController.findAlbumEntities(); 
-        //this.album = (Album) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("album");
+        
     }
     
     /**
@@ -381,7 +381,7 @@ public class AlbumBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("AlbumFunctionality/editAlbum.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -466,7 +466,7 @@ public class AlbumBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("AlbumFunctionality/editSalesAlbum.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -508,7 +508,7 @@ public class AlbumBackingBean implements Serializable{
             {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/salesPage.xhtml");
             }
-            catch(IOException e)
+            catch(Exception e)
             {
                 System.out.println(e.getMessage());
             }
@@ -562,7 +562,7 @@ public class AlbumBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -584,7 +584,7 @@ public class AlbumBackingBean implements Serializable{
         {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/salesPage.xhtml");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -627,5 +627,21 @@ public class AlbumBackingBean implements Serializable{
             return "0.0";
         else
             return formatter.format(typedQuery.getResultList().get(0));
+    }
+    
+    public String loadCreateAlbum()
+    {
+         this.album = new Album();
+               
+        try
+        {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("AlbumFunctionality/addAlbum.xhtml");
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
     }
 }
