@@ -276,10 +276,10 @@ public class InvoiceBackingBean implements Serializable{
      * tracks he wants to remove from an order. 
      * @return list of tracks linked to an invoice
      */
-    public List<InvoiceTrack> loadTable()
+    public List<Track> loadTable()
     {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<InvoiceTrack> query = cb.createQuery(InvoiceTrack.class);
+        CriteriaQuery<Track> query = cb.createQuery(Track.class);
         Root<Invoice> invoiceRoot = query.from(Invoice.class);
         Join invoiceTrackJoin = invoiceRoot.join(Invoice_.invoiceTrackList);
         Join  invoiceJoin = invoiceTrackJoin.join(InvoiceTrack_.invoice);
@@ -287,13 +287,16 @@ public class InvoiceBackingBean implements Serializable{
         query.select(invoiceTrackJoin);
         // Where clause
         List<Predicate> predicates = new ArrayList<>();
+//        predicates.add(cb.equal(invoiceTrackJoin.get(Invoice_.removalStatus), 0));
+//        predicates.add(cb.equal(invoiceJoin.get(InvoiceTrack_.removalStatus), 0));
         predicates.add(cb.equal(invoiceRoot.get(Invoice_.id), invoice.getId()));
         
         query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
         
-        TypedQuery<InvoiceTrack> typedQuery = em.createQuery(query);
+        TypedQuery<Track> typedQuery = em.createQuery(query);
         
         return typedQuery.getResultList();
+        
         
     }
     public List<Track> loadDownloadsTable()
@@ -370,6 +373,11 @@ public class InvoiceBackingBean implements Serializable{
         }
         
         return null;
+    }
+    
+    public void setInvoice(Invoice invoice)
+    {
+        this.invoice = invoice;
     }
     
     

@@ -271,5 +271,10 @@ public class UserActionBean implements Serializable {
             return "userconnection/login";
         }
     }
+    
+    public void setUser(ShopUser user)
+    {
+        this.currUser = user;
+    }
 
 }

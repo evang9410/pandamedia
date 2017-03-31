@@ -3,6 +3,7 @@ package com.pandamedia.arquillian.test;
 
 import com.pandamedia.beans.InvoiceBackingBean;
 import com.pandamedia.beans.ReportBackingBean;
+import com.pandamedia.beans.UserActionBean;
 import com.pandamedia.commands.ChangeLanguage;
 import com.pandamedia.converters.AlbumConverter;
 import com.pandamedia.filters.LoginFilter;
@@ -36,11 +37,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import persistence.controllers.InvoiceJpaController;
 import persistence.controllers.InvoiceTrackJpaController;
+import persistence.controllers.ProvinceJpaController;
 import persistence.controllers.ShopUserJpaController;
 import persistence.controllers.TrackJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.Invoice;
 import persistence.entities.InvoiceTrack;
+import persistence.entities.ShopUser;
 import persistence.entities.Track;
 
 /**
@@ -62,6 +65,10 @@ public class InvoiceArq {
     private InvoiceJpaController invoiceController;
     @Inject
     private InvoiceTrackJpaController invoiceTrackController;
+    @Inject
+    private UserActionBean userActionBean;
+    @Inject
+    private ProvinceJpaController provinceController;
     
     @Deployment
     public static WebArchive deploy() {
@@ -218,16 +225,90 @@ public class InvoiceArq {
         invT.setInvoice(list.get(list.size()-1));
         invT.setFinalPrice(23.00);
         
-        try {
+        try 
+        {
             invoiceTrackController.create(invT);
-        }  catch (Exception ex) {
+        } 
+        
+        catch (Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+        invoiceBacking.setInvoice(inv);
+        
+        System.out.println(invoiceBacking.loadTable().get(0) +"DODO");
+        assertEquals(invoiceBacking.loadTable().get(0),invT);   
+    }
+    
+    @Test
+    public void testDownloadsTable()
+    {
+        ShopUser user = new ShopUser();
+        user.setTitle("Sir");
+        user.setLastName("Jus");
+        user.setFirstName("Nas");
+        user.setCompanyName("got jus");
+        user.setStreetAddress("9010 dmdmd");
+        user.setCity("MTL");
+        user.setCountry("Canada");
+        user.setPostalCode("P4N 3D2");
+        
+        user.setHomePhone("514-505 7070");
+        user.setEmail("loho@hot.co");
+        user.setProvinceId(provinceController.findProvince(1));
+        
+       try
+       {
+           userController.create(user);
+       }
+       catch(Exception e)
+       {
+           System.out.println(e.getMessage());
+       }
+       
+       List<ShopUser> list = userBacking.getAll();
+        
+       short i = 0;
+       Invoice inv = new Invoice();
+       inv.setSaleDate(Calendar.getInstance().getTime());
+       inv.setTotalNetValue(24);
+       inv.setPstTax(10);
+       inv.setGstTax(10);
+       inv.setHstTax(10);
+       inv.setTotalGrossValue(35);
+       inv.setRemovalStatus(i);
+       inv.setRemovalDate(null);
+       inv.setUserId(userController.findShopUser(1));
+       
+          try {
+            invoiceController.create(inv);
+        } catch (Exception ex) {
+           System.out.println(ex.getMessage());
+        }
+       
+       List<Invoice> list = invoiceBacking.getAll();
+       
+        short removalStatus = 0;
+        InvoiceTrack invT = new InvoiceTrack();
+        invT.setTrack(trackController.findTrack(1));
+        invT.setRemovalStatus(removalStatus);
+        invT.setRemovalDate(null);
+        invT.setInvoice(list.get(list.size()-1));
+        invT.setFinalPrice(23.00);
+        
+        try 
+        {
+            invoiceTrackController.create(invT);
+        } 
+        
+        catch (Exception ex)
+        {
             System.out.println(ex.getMessage());
         }
         
-        invoiceBacking.loadTable();
-        
-        
-        
+        userActionBean.setUser(userController.findShopUser(1));
+        System.out.println("dodo" + invoiceBacking.loadDownloadsTable().size());
+        assertEquals(invoiceBacking.loadDownloadsTable().get(0), trackController.findTrack(1));
         
     }
     
