@@ -73,7 +73,11 @@ public class EmailBean {
         StringBuilder builder = new StringBuilder();
         
         // Email body start
-        builder.append("<html><META http-equiv=Content-Type content=\"text/html; charset=utf-8\"><body>");
+        builder.append("<html><META http-equiv=Content-Type content=\"text/html; charset=utf-8\"><body><h3>");
+        builder.append(Messages.getString("bundles.messages", "emailGreeting", new Object[]{invoice.getUserId().getFirstName()}));
+        builder.append("</h3><p>");
+        builder.append(Messages.getString("bundles.messages", "emailThanks", null));
+        builder.append("</p>");
         
         // Add the invoice details
         invoiceDetailsTable(builder);        
