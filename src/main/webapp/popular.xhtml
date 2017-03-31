@@ -6,7 +6,7 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html">
     <ui:define name="WindowTitle">
-        On Sale | Pandamedia
+        Popular | Pandamedia
     </ui:define>
     <ui:define name="css">
         <h:outputStylesheet library="css" name="onsale.css"/>
@@ -15,19 +15,17 @@
         <div class = "container">
             <div class="row">
                 <div class="header">
-                    <h1>On Sale</h1>
+                    <h1>Popular</h1>
                 </div>
             </div>
-            <h:panelGroup rendered="#{albumBacking.isAlbumSale}">
-                <div class="row">
-                    <h2 class="header">Albums</h2>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-
+            <div class="row">
+                <h2 class="header">Albums</h2>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
                         <b:carousel class="sale-car" style="width:50%; margin: 0 auto;" interval="2500">
                             <!-- using a JTSL tag as this has to be rendered before the carosel is rendered -->
-                            <c:forEach items="#{albumBacking.saleAlbums}" var='sale'>
+                            <c:forEach items="#{albumBacking.popularAlbums}" var='sale'>
                                 <b:carouselItem>
                                     <h:form>
                                         <h:commandLink action="#{albumBacking.albumPage(sale)}">
@@ -43,21 +41,17 @@
 
                             </c:forEach>
                         </b:carousel>
-
-                    </div>
                 </div>
-            </h:panelGroup>
+            </div>
             <hr/>
-            <h:panelGroup rendered="#{trackBacking.isTrackSales}">
-                <div class="row">
-                    <h2 class="header">Tracks</h2>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-
-                        <b:carousel class="sale-car" style="width:50%" interval="2500">
+            <div class="row">
+                <h2 class="header">Tracks</h2>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                        <b:carousel class="sale-car" style="width:50%; margin: 0 auto;" interval="2500">
                             <!-- using a JTSL tag as this has to be rendered before the carosel is rendered -->
-                            <c:forEach items="#{trackBacking.saleTracks}" var='tsale'>
+                            <c:forEach items="#{trackBacking.popularTracks}" var='tsale'>
                                 <b:carouselItem>
                                     <img src="#{request.contextPath}/resources/coverart/#{tsale.coverArtId.imagePath}" style="height:250px; width:250px; 
                                          display: block;margin-left: auto; margin-right: auto;"/>
@@ -69,10 +63,8 @@
 
                             </c:forEach>
                         </b:carousel>
-
-                    </div>
                 </div>
-            </h:panelGroup>
+            </div>
         </div>
     </ui:define>
 </ui:composition>

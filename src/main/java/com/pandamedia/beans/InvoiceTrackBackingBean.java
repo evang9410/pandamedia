@@ -3,12 +3,15 @@ package com.pandamedia.beans;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import persistence.controllers.InvoiceTrackJpaController;
+import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.InvoiceTrack;
 import persistence.entities.InvoiceTrackPK;
 
@@ -41,6 +44,7 @@ public class InvoiceTrackBackingBean implements Serializable{
         return invoiceTrack;
     }
     
+    
     /**
      * This method will remove an invoice track by searching its embedded id
      * then changing its removal status to 1 and the removal date to the date
@@ -70,6 +74,23 @@ public class InvoiceTrackBackingBean implements Serializable{
         }
         return null; 
         
+    }
+    
+    public String addInvoiceTrack(InvoiceTrackPK invTrackPK){
+        InvoiceTrack invTrack = invoiceTrackController.findInvoiceTrack(invTrackPK);
+        if(invTrack.getRemovalStatus() != 0){
+            short removalStatus = 0;
+            invTrack.setRemovalStatus(removalStatus);
+            invTrack.setRemovalDate(null);
+            
+            try {
+                invoiceTrackController.edit(invTrack);
+            } catch (Exception ex) {
+                Logger.getLogger(InvoiceTrackBackingBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        return null;
     }
     
     
