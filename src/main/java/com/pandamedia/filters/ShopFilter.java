@@ -19,9 +19,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Erika Bourque
  */
-@WebFilter(filterName = "LoginFilter", urlPatterns = {"/manager/*"})
-public class ManagerFilter implements Filter{
-    private static final Logger LOG = Logger.getLogger("ManagerFilter.class");
+@WebFilter(filterName = "ShopFilter", urlPatterns = {"/shop/*"})
+public class ShopFilter implements Filter{
+    private static final Logger LOG = Logger.getLogger("ShopFilter.class");
     private ServletContext context;
     
     @Inject
@@ -36,21 +36,21 @@ public class ManagerFilter implements Filter{
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         context.log("In the filer");
         
-        // Making sure user is logged in and is a manager
+        // Making sure that logged in user is not a manager
         if ((uab.isLogin()) && (uab.getCurrUser().getIsManager() == 1))
         {
-            context.log("User is logged in and is a manager.  id = " + uab.getCurrUser().getId());
-            chain.doFilter(request, response);
-            
+            context.log("User is a manager. id = " + uab.getCurrUser().getId());
+            String contextPath = ((HttpServletRequest) request)
+                    .getContextPath();
+            // TODO: change this to new management location once moved
+            ((HttpServletResponse) response).sendRedirect(contextPath
+                    + "/userconnection/login.xhtml");
+            context.log(contextPath + "/userconnection/login.xhtml");            
         }
         else
         {
-            context.log("User not logged in or is not a manager.");
-            String contextPath = ((HttpServletRequest) request)
-                    .getContextPath();
-            ((HttpServletResponse) response).sendRedirect(contextPath
-                    + "/userconnection/login.xhtml");
-            context.log(contextPath + "/userconnection/login.xhtml");
+            context.log("User is not logged in or is not a manager.");
+            chain.doFilter(request, response);
         }
     }
 

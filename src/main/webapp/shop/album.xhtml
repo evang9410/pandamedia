@@ -18,7 +18,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-3 col-md-offset-4">
-                        <img class="albumArt" src="resources/coverart/#{albumBacking.album.coverArtId.imagePath}" style="height: 250px; width: 250px;"/>
+                        <img class="albumArt" src="../resources/coverart/#{albumBacking.album.coverArtId.imagePath}" style="height: 250px; width: 250px;"/>
                     </div>
                     <div class="col-md-3 album-info">
                         <h1>#{albumBacking.album.title}</h1>
@@ -94,7 +94,7 @@
                         <div class="col-md-2">
                             <h:form>
                                 <h:commandLink action="#{albumBacking.albumPage(suggested)}">
-                                    <img src="#{request.contextPath}/resources/coverart/#{suggested.coverArtId.imagePath}" style="width:150px; height: 150px;"/>
+                                    <img src="../resources/coverart/#{suggested.coverArtId.imagePath}" style="width:150px; height: 150px;"/>
                                     <h4 id="suggested-title">#{suggested.title}</h4>
                                 </h:commandLink>
                             </h:form>

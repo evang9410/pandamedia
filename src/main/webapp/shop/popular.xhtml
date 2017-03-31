@@ -29,7 +29,7 @@
                                 <b:carouselItem>
                                     <h:form>
                                         <h:commandLink action="#{albumBacking.albumPage(sale)}">
-                                            <img src="#{request.contextPath}/resources/coverart/#{sale.coverArtId.imagePath}" style="height:250px; width:250px; 
+                                            <img src="../resources/coverart/#{sale.coverArtId.imagePath}" style="height:250px; width:250px; 
                                                  display: block;margin-left: auto; margin-right: auto;"/>
                                             <b:carouselCaption>
                                                 <h3>#{sale.title}</h3>
@@ -53,7 +53,7 @@
                             <!-- using a JTSL tag as this has to be rendered before the carosel is rendered -->
                             <c:forEach items="#{trackBacking.popularTracks}" var='tsale'>
                                 <b:carouselItem>
-                                    <img src="#{request.contextPath}/resources/coverart/#{tsale.coverArtId.imagePath}" style="height:250px; width:250px; 
+                                    <img src="../resources/coverart/#{tsale.coverArtId.imagePath}" style="height:250px; width:250px; 
                                          display: block;margin-left: auto; margin-right: auto;"/>
                                     <b:carouselCaption>
                                         <h3>#{tsale.title}</h3>

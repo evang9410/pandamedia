@@ -22,7 +22,7 @@
 
                             <div class="col-xs-18 col-sm-6 col-md-3">
                                 <div class="thumbnail">
-                                    <img src="resources/coverart/#{t.coverArtId.imagePath}"></img>
+                                    <img src="../resources/coverart/#{t.coverArtId.imagePath}"></img>
                                     <div class="caption">
                                         <h:commandLink action="#{trackBacking.trackPage(t)}"><h4>#{t.title}</h4></h:commandLink>
                                         <h:commandLink action="#{albumBacking.albumPage(t.albumId)}"><h5>#{t.albumId.title}</h5></h:commandLink>
@@ -40,7 +40,7 @@
                             <div class="col-xs-18 col-sm-6 col-md-3">
                                 <div class="thumbnail">
                                     <h:commandLink action="#{albumBacking.albumPage(al)}">
-                                        <img src="resources/coverart/#{al.coverArtId.imagePath}"></img>
+                                        <img src="../resources/coverart/#{al.coverArtId.imagePath}"></img>
                                     </h:commandLink>
                                     <div class="caption">
                                         <h:commandLink action="#{albumBacking.albumPage(al)}"><h4>#{al.title}</h4></h:commandLink>

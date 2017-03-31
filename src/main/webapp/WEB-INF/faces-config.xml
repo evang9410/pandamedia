@@ -10,20 +10,69 @@
         </resource-bundle>
     </application>
     <navigation-rule>        
+        <!-- Client Pages -->
         <navigation-case>
-            <from-view-id>*</from-view-id>
             <from-outcome>welcome</from-outcome>
             <to-view-id>/index.xhtml</to-view-id>
+            <redirect />
         </navigation-case>        
         <navigation-case>
-            <from-view-id>*</from-view-id>
-            <from-outcome>welcome_manager</from-outcome>
-            <to-view-id>/manager_index.xhtml</to-view-id>
+            <from-outcome>main</from-outcome>
+            <to-view-id>/shop/mainpage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>        
+        <navigation-case>
+            <from-outcome>cart</from-outcome>
+            <to-view-id>/shop/cart.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
         <navigation-case>
-            <from-outcome>main</from-outcome>
-            <to-view-id>/mainpage.xhtml</to-view-id>
+            <!-- Not using redirect -->
+            <from-outcome>album</from-outcome>
+            <to-view-id>/shop/album.xhtml</to-view-id>
         </navigation-case>
+        <navigation-case>
+            <!-- Not using redirect -->
+            <from-outcome>artist</from-outcome>
+            <to-view-id>/shop/artist.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>browsealbum</from-outcome>
+            <to-view-id>/shop/browsealbums.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>browseartist</from-outcome>
+            <to-view-id>/shop/browseartists.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>latest</from-outcome>
+            <to-view-id>/shop/latest.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>onsale</from-outcome>
+            <to-view-id>/shop/onsale.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>popular</from-outcome>
+            <to-view-id>/shop/popular.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <!-- Not using redirect -->
+            <from-outcome>search</from-outcome>
+            <to-view-id>/shop/searchpage.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <!-- Not using redirect -->
+            <from-outcome>track</from-outcome>
+            <to-view-id>/shop/track.xhtml</to-view-id>
+        </navigation-case>
+        
+        <!-- User connection pages -->
         <navigation-case>
             <from-outcome>login</from-outcome>
             <to-view-id>/userconnection/login.xhtml</to-view-id>
@@ -31,11 +80,6 @@
         <navigation-case>
             <from-outcome>register</from-outcome>
             <to-view-id>/userconnection/registration.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>cart</from-outcome>
-            <to-view-id>/cart.xhtml</to-view-id>
-            <redirect />
         </navigation-case>
         
         <!-- Client Secure pages navigation rules -->
@@ -50,9 +94,19 @@
             <to-view-id>/clientsecure/invoicesummary.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>downloads</from-outcome>
+            <to-view-id>/clientsecure/downloadsPage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
         
         <!-- Manager pages navigation rules -->
         <!-- Use redirects to pass through login and manager filter -->
+        <navigation-case>
+            <from-view-id>*</from-view-id>
+            <from-outcome>welcome_manager</from-outcome>
+            <to-view-id>/manager_index.xhtml</to-view-id>
+        </navigation-case>
         <navigation-case>
             <from-outcome>manindex</from-outcome>
             <to-view-id>/manager_index.xhtml</to-view-id>
@@ -94,7 +148,7 @@
             <redirect />
         </navigation-case>
         
-        <!-- Report pages navigation rules -->
+        <!-- Manager report pages navigation rules -->
         <!-- Use redirects to pass through login and manager filter -->
         <navigation-case>
             <from-outcome>reptrack</from-outcome>
@@ -134,12 +188,6 @@
         <navigation-case>
             <from-outcome>repzerotracks</from-outcome>
             <to-view-id>/manager/reports/zerotracks.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>downloads</from-outcome>
-            <to-view-id>/clientsecure/downloadsPage.xhtml</to-view-id>
-            <!-- Needs to be a redirect to pass through filter -->
             <redirect />
         </navigation-case>
     </navigation-rule>   

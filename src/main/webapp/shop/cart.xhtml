@@ -40,7 +40,7 @@
                                         <div class="media">
                                             <h:form>
                                                 <h:commandLink styleClass="thumbnail pull-left" action="#{albumBacking.albumPage(albums)}">
-                                                    <img class="media-object" src="#{request.contextPath}/resources/coverart/#{albums.coverArtId.imagePath}" style="width: 150px; height: 150px;"/>
+                                                    <img class="media-object" src="../resources/coverart/#{albums.coverArtId.imagePath}" style="width: 150px; height: 150px;"/>
                                                 </h:commandLink>
                                             </h:form>
 
@@ -91,7 +91,7 @@
                                         <div class="media">
                                             <h:form>
                                                 <h:commandLink styleClass="thumbnail pull-left" action="#{trackBacking.trackPage(individual_tracks)}">
-                                                    <img class="media-object" src="#{request.contextPath}/resources/coverart/#{individual_tracks.coverArtId.imagePath}" style="width: 90px; height: 90px;"/>
+                                                    <img class="media-object" src="../resources/coverart/#{individual_tracks.coverArtId.imagePath}" style="width: 90px; height: 90px;"/>
                                                 </h:commandLink>
                                             </h:form>
 
