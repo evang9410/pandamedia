@@ -1,7 +1,7 @@
-
 package com.pandamedia.arquillian.test;
 
 import com.pandamedia.beans.AlbumBackingBean;
+import com.pandamedia.beans.InvoiceBackingBean;
 import com.pandamedia.beans.ReportBackingBean;
 import com.pandamedia.commands.ChangeLanguage;
 import com.pandamedia.converters.AlbumConverter;
@@ -15,11 +15,14 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -38,11 +41,15 @@ import persistence.controllers.AlbumJpaController;
 import persistence.controllers.ArtistJpaController;
 import persistence.controllers.CoverArtJpaController;
 import persistence.controllers.GenreJpaController;
+import persistence.controllers.InvoiceAlbumJpaController;
+import persistence.controllers.InvoiceJpaController;
 import persistence.controllers.RecordingLabelJpaController;
 import persistence.controllers.ShopUserJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.Album;
 import persistence.entities.Artist;
+import persistence.entities.Invoice;
+import persistence.entities.InvoiceAlbum;
 import persistence.entities.Track;
 
 /**
@@ -51,13 +58,14 @@ import persistence.entities.Track;
  */
 @RunWith(Arquillian.class)
 public class AlbumArq {
+
     @Resource(name = "java:app/jdbc/pandamedialocal")
     private DataSource ds;
     @Inject
     private AlbumBackingBean albumBacking;
-    @Inject 
+    @Inject
     private AlbumJpaController albumController;
-    @Inject 
+    @Inject
     private ArtistJpaController artistController;
     @Inject
     private GenreJpaController genreController;
@@ -65,7 +73,15 @@ public class AlbumArq {
     private RecordingLabelJpaController recordingLabelController;
     @Inject
     private CoverArtJpaController coverartController;
-    
+    @Inject
+    private ShopUserJpaController userController;
+    @Inject
+    private InvoiceBackingBean invoiceBacking;
+    @Inject
+    private InvoiceJpaController invoiceController;
+    @Inject
+    private InvoiceAlbumJpaController invoiceAlbumController;
+
     @Deployment
     public static WebArchive deploy() {
 
@@ -92,19 +108,18 @@ public class AlbumArq {
                 .addPackage(Messages.class.getPackage())
                 .addPackage(ShopUserJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
-                .addPackage(Track.class.getPackage())                
+                .addPackage(Track.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/glassfish-resources.xml"), "glassfish-resources.xml")
                 .addAsResource(new File("src/test/resources-glassfish-remote/test-persistence.xml"), "META-INF/persistence.xml")
-//                .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
+                //                .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
                 .addAsResource("createtestdatabase.sql")
                 .addAsLibraries(dependencies);
 
 //        System.out.println(webArchive.toString(true));
-        
         return webArchive;
     }
-    
+
     /**
      * This routine is courtesy of Bartosz Majsak who also solved my Arquillian
      * remote server problem
@@ -120,7 +135,7 @@ public class AlbumArq {
                 connection.prepareStatement(statement).execute();
                 System.out.println("Statement successful: " + statement);
             }
-            
+
 //            for (String statement : splitStatements(new StringReader(
 //                    seedDataScript), ";")) {
 //                connection.prepareStatement(statement).execute();
@@ -173,36 +188,36 @@ public class AlbumArq {
         return line.startsWith("--") || line.startsWith("//")
                 || line.startsWith("/*");
     }
-    
+
     /**
      * Tests the method used to re-add item that has been removed.
      */
     @Test
-    public void testAddItem(){
+    public void testAddItem() {
         albumBacking.addItem(1);
         Album a = albumController.findAlbum(1);
         assertEquals(a.getRemovalStatus(), 0);
     }
-    
-     /**
+
+    /**
      * Tests the method used to remove an album.
      */
     @Test
-    public void testRemoveItem(){
+    public void testRemoveItem() {
         albumBacking.removeItem(1);
         Album a = albumController.findAlbum(1);
         assertEquals(a.getRemovalStatus(), 1);
     }
-   
+
     @Test
-    public void testEditAlbum(){
+    public void testEditAlbum() {
         short removalStatus = 1;
         Album a = albumController.findAlbum(1);
         Date releasedate = Calendar.getInstance().getTime();
-        Calendar cal = Calendar.getInstance(); 
+        Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, 2);
         Date dateEntered = cal.getTime();
-        
+
         a.setTitle("Editied album");
         a.setReleaseDate(releasedate);
         a.setArtistId(artistController.findArtist(1));
@@ -220,18 +235,19 @@ public class AlbumArq {
         albumBacking.setAlbum(a);
         albumBacking.edit();
         Album editedAlbum = albumController.findAlbum(1);
-        
+
         assertEquals(a, editedAlbum);
     }
+
     @Test
-    public void testGetAlbumsOnSale(){
+    public void testGetAlbumsOnSale() {
         // currently on localhost database there is no albums on sale.
         //adding two (2) albums with sales to database
         Album a1 = albumController.findAlbum(1);
         a1.setSalePrice(0.10);
         albumBacking.setAlbum(a1);
         albumBacking.edit();
-        
+
         Album a2 = albumController.findAlbum(2);
         a2.setSalePrice(0.15);
         albumBacking.setAlbum(a2);
@@ -240,18 +256,18 @@ public class AlbumArq {
         List<Album> sales = albumBacking.getSaleAlbums();
         assertEquals(2, sales.size());
     }
-    
+
     @Test
-    public void testGetAlbumsFromGenre(){
+    public void testGetAlbumsFromGenre() {
         //set the genre of albums to grab to "Punk"
         //there are 4 albums of the punk rock genre in the database.
         albumBacking.setGenreString("Punk");
         List<Album> genreAlbums = albumBacking.getAlbumFromGenre();
         assertEquals(4, genreAlbums.size());
     }
-    
+
     @Test
-    public void testGetLatestAlbums(){
+    public void testGetLatestAlbums() {
         //I'm going to edit an album with the current date and check if that is
         // the latest album, it should be.
         Album a = albumController.findAlbum(5);
@@ -262,22 +278,87 @@ public class AlbumArq {
         List latest = albumBacking.getLatestAlbums();
         assertEquals(latest.get(0), a);
     }
-    
+
     @Test
-    public void testGetAlbumsFromArtist(){
+    public void testGetAlbumsFromArtist() {
         // select the number of albums from artist 88 finger louie
         Artist artist = artistController.findArtist(1);
         List artsitAlbums = albumBacking.albumsFromArtist(artist);
         //should be one (1) album.
         assertEquals(1, artsitAlbums.size());
     }
-    
+
     @Test
-    public void testGetAlbumSales(){
+    public void testGetAlbumSales() {
         // total sales of album with id = 1 (.5 the gray chaper) is $668.30
         String amount = albumBacking.getAlbumSales(1);
-        assertEquals(amount,"668.30");
+        assertEquals(amount, "668.30");
     }
-    
+
     //TODO: TEST POPULAR ALBUMS
+    @Test
+    public void testPopularAlbums() {
+        /*
+        Alright so for popular albums, we get the most popular album of that week,
+        our local database does not have any invoices from this week, or anyweek of testing
+        so we need to create an invoice within this week (current date = March 31) and set the
+        invoice album final price to be something absurdly high, the invoice_album should  have two albums
+        that will be checked to test
+         */
+        short i = 0;
+        Invoice inv = new Invoice();
+        // only the date is important here as the invoice table is just used to
+        // find by date
+        inv.setSaleDate(Calendar.getInstance().getTime());
+        inv.setTotalNetValue(24);
+        inv.setPstTax(10);
+        inv.setGstTax(10);
+        inv.setHstTax(10);
+        inv.setTotalGrossValue(35);
+        inv.setRemovalStatus(i);
+        inv.setRemovalDate(null);
+        inv.setUserId(userController.findShopUser(1));
+
+        try {
+            invoiceController.create(inv);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        List<Invoice> list = invoiceBacking.getAll();
+        // get the last invoice
+        inv = list.get(list.size() - 1);
+
+        short rmsai = 0;
+        // create an invoice of an album
+        InvoiceAlbum ia = new InvoiceAlbum();
+        ia.setAlbum(albumController.findAlbum(14));//Album: Title: Mobilize
+        ia.setInvoice(inv);
+        ia.setRemovalDate(null);
+        ia.setRemovalStatus(rmsai);
+        ia.setFinalPrice(900.99); // should be highest
+
+        InvoiceAlbum ia2 = new InvoiceAlbum();
+        ia2.setAlbum(albumController.findAlbum(6));//Album: Title: Back on the Streets
+        ia2.setInvoice(inv);
+        ia2.setRemovalDate(null);
+        ia2.setRemovalStatus(rmsai);
+        ia2.setFinalPrice(850.89); // second highest
+
+        try {
+            invoiceAlbumController.create(ia2);
+            invoiceAlbumController.create(ia);
+        } catch (Exception ex) {
+            Logger.getLogger(AlbumArq.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        List<Album> expected = new ArrayList(); // expected highest seeling albums to be 14 and 6 since they have really high invoice album sales prices
+        expected.add(albumController.findAlbum(14));
+        expected.add(albumController.findAlbum(6));
+        
+        List<Album> actual = albumBacking.getPopularAlbums().subList(0, 2);
+        
+        assertEquals(expected, actual);
+
+    }
 }
