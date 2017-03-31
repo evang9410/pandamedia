@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.pandamedia.beans;
 
 import java.io.IOException;
@@ -168,15 +163,39 @@ public class ShoppingCart implements Serializable {
     }
 
     public void addAlbum(Album album) {
-        albums.add(album);
+        if (!albums.contains(album)) {
+            albums.add(album);
+        }
     }
 
     public void addTrack(Track track) {
-        tracks.add(track);
+        // if the user already has the album of the track they are trying to add,
+        // do not add the track. Super dirty and gross, sorry.
+        if (albums.contains(track.getAlbumId())) {
+            return;
+        }
+        // get the album that the track belongs to.
+        Album album = track.getAlbumId();
+        // list of tracks that are in the album.
+        List<Track> album_tracks = new ArrayList();
+        if (!tracks.contains(track)) {
+            tracks.add(track);
+            int i = 0;
+            for (Track t : tracks) {
+                if (t.getAlbumId().getId() == album.getId()) {
+                    album_tracks.add(t);
+                    i++;
+                }
+            }
+            if(tracks.containsAll(album.getTrackList())){
+                tracks.removeAll(album_tracks);
+                albums.add(album);
+            }
+        }
+
     }
-    
-    public void clearCart()
-    {
+
+    public void clearCart() {
         albums = new ArrayList<>();
         tracks = new ArrayList<>();
     }
