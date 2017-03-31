@@ -1,5 +1,6 @@
-package com.pandamedia.beans;
+package com.pandamedia.beans.purchasing;
 
+import com.pandamedia.beans.UserActionBean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,7 +23,9 @@ import persistence.entities.ShopUser;
 import persistence.entities.Track;
 
 /**
- *
+ * This class provides the methods through which a client can pay 
+ * for their purchases and receive their invoice by email.
+ * 
  * @author Erika Bourque
  */
 @Named("checkout")
@@ -175,6 +178,7 @@ public class CheckoutBackingBean implements Serializable {
         cart.clearCart();
         
         // Send email of invoice details
+        // TODO: fix email so it works :(
 //        emailer.sendInvoiceEmail(user.getEmail(), invoice);
         
         // Redirecting to invoice summary page
@@ -216,6 +220,7 @@ public class CheckoutBackingBean implements Serializable {
         List<InvoiceAlbum> list = new ArrayList<>();
         List<Album> albums = cart.getAlbumsFromCart();
 
+        // Create each InvoiceAlbum object
         for (int i = 0; i < albums.size(); i++) {
             double finalCost = albums.get(i).getListPrice() - albums.get(i).getSalePrice();
             list.add(new InvoiceAlbum());
@@ -242,6 +247,7 @@ public class CheckoutBackingBean implements Serializable {
         List<InvoiceTrack> list = new ArrayList<>();
         List<Track> tracks = cart.getTracksFromCart();
 
+        // Create each InvoiceTrack object
         for (int i = 0; i < tracks.size(); i++) {
             double finalCost = tracks.get(i).getListPrice() - tracks.get(i).getSalePrice();
             list.add(new InvoiceTrack());

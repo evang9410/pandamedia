@@ -1,10 +1,12 @@
-package com.pandamedia.beans;
+package com.pandamedia.beans.purchasing;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
 /**
- *
+ * This class represents a credit card object, with getters and setters 
+ * for the card numbers, cardholder name, type, security code, and expiry date.
+ * 
  * @author Erika Bourque
  */
 @Named

@@ -1,4 +1,4 @@
-package com.pandamedia.beans;
+package com.pandamedia.beans.purchasing;
 
 import com.pandamedia.utilities.Messages;
 import java.util.List;
@@ -15,7 +15,9 @@ import persistence.entities.InvoiceTrack;
 import persistence.entities.ShopUser;
 
 /**
- *
+ * This class provides methods to send an invoice by email
+ * to a client.
+ * 
  * @author Erika Bourque
  */
 @Named
@@ -27,11 +29,21 @@ public class EmailBean {
     private final String smtpServerName="smtp.gmail.com";
     private Invoice invoice;
     
+    /**
+     * Default constructor.
+     */
     public EmailBean()
     {
         super();
     }
     
+    /**
+     * This method prepares and sends the email.
+     * 
+     * @author Erika Bourque
+     * @param userEmail
+     * @param invoice 
+     */
     public void sendInvoiceEmail(String userEmail, Invoice invoice)
     {
         this.invoice = invoice;
@@ -48,8 +60,16 @@ public class EmailBean {
     }
     
     
+    /**
+     * This method prepares the content of the email.
+     * 
+     * @author Erika Bourque
+     * @return The content of the email
+     */
     private String buildMessage()
     {
+        // TODO: make sure email tables work
+        // TODO: add title and footer to email?
         LOG.info("Building email.");
         StringBuilder builder = new StringBuilder();
         
@@ -72,8 +92,6 @@ public class EmailBean {
             builder.append("<br/>");
         }
         
-        // do stuff here
-        
         // Email body end
         builder.append("</body></html>");
         
@@ -82,6 +100,8 @@ public class EmailBean {
     
     /**
      * This method sends the email through the Jodd Mail API.
+     * 
+     * @author Erika Bourque
      */
     private void send(Email email)
     {
@@ -97,6 +117,12 @@ public class EmailBean {
         session.close();
     }
     
+    /**
+     * This method builds the invoice details table in html.
+     * 
+     * @author Erika Bourque
+     * @param builder the StringBuilder being used for the email content
+     */
     private void invoiceDetailsTable(StringBuilder builder)
     {
         String[] headers = {"invoiceNumHeader", "saleDateHeader", "subtotalHeader", 
@@ -122,6 +148,12 @@ public class EmailBean {
         builder.append("</table>");
     }
     
+    /**
+     * This method builds the billing info table in html.
+     * 
+     * @author Erika Bourque
+     * @param builder the StringBuilder being used for the email content
+     */
     private void billingInfoTable(StringBuilder builder)
     {
         ShopUser user = invoice.getUserId();
@@ -148,6 +180,12 @@ public class EmailBean {
         builder.append("</table>");
     }
     
+    /**
+     * This method builds the track purchase details table in html.
+     * 
+     * @author Erika Bourque
+     * @param builder the StringBuilder being used for the email content
+     */
     private void trackInfoTable(StringBuilder builder)
     {
         List<InvoiceTrack> tracks = invoice.getInvoiceTrackList();
@@ -178,6 +216,12 @@ public class EmailBean {
         builder.append("</table>");
     }
     
+    /**
+     * This method builds the album purchase details table in html.
+     * 
+     * @author Erika Bourque
+     * @param builder the StringBuilder being used for the email content
+     */
     private void albumInfoTable(StringBuilder builder)
     {
         List<InvoiceAlbum> albums = invoice.getInvoiceAlbumList();
