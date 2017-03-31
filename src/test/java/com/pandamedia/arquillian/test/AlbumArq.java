@@ -295,7 +295,6 @@ public class AlbumArq {
         assertEquals(amount, "668.30");
     }
 
-    //TODO: TEST POPULAR ALBUMS
     @Test
     public void testPopularAlbums() {
         /*
