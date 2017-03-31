@@ -41,6 +41,8 @@ public class AlbumBackingBean implements Serializable{
     
     @Inject
     private AlbumJpaController albumController;
+    @Inject
+    private ClientTrackingBean clientTracking;
     private Album album;
     private List<Album> albums;
     private List<Album> filteredAlbums;
@@ -158,6 +160,8 @@ public class AlbumBackingBean implements Serializable{
     public String albumPage(Album a){
         this.album = a;
         System.out.println("" + a.getId() +"\n" + a.getTitle() +"\n" + a.getArtistId().getName());
+        // persist the searched genre to the suggested
+        clientTracking.peristTracking(a.getGenreId());
         return "album";
     }
     /**

@@ -78,7 +78,14 @@
                     </div>
                 </h:form>
             </div>
-
+            <div>
+                <h:panelGroup rendered="#{clientTracking.isTracking}">
+                    <h3 style="color:white">Suggested</h3>
+                    <ui:repeat value="#{clientTracking.trackClient()}" var="sug">
+                        <p style="color:white">#{sug.title}</p>
+                    </ui:repeat>
+                </h:panelGroup>
+            </div>
             <div class="row">
                 <div class="col-md-6">
                     <div id="browse-survey">

@@ -136,5 +136,11 @@
             <to-view-id>/manager/reports/zerotracks.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>downloads</from-outcome>
+            <to-view-id>/clientsecure/downloadsPage.xhtml</to-view-id>
+            <!-- Needs to be a redirect to pass through filter -->
+            <redirect />
+        </navigation-case>
     </navigation-rule>   
 </faces-config>
