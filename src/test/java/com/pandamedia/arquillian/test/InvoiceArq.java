@@ -266,7 +266,7 @@ public class InvoiceArq {
            System.out.println(e.getMessage());
        }
        
-       List<ShopUser> list = userBacking.getAll();
+       List<ShopUser> list = userController.findShopUserEntities();
         
        short i = 0;
        Invoice inv = new Invoice();
@@ -286,14 +286,14 @@ public class InvoiceArq {
            System.out.println(ex.getMessage());
         }
        
-       List<Invoice> list = invoiceBacking.getAll();
+       List<Invoice> listInvoice = invoiceBacking.getAll();
        
         short removalStatus = 0;
         InvoiceTrack invT = new InvoiceTrack();
         invT.setTrack(trackController.findTrack(1));
         invT.setRemovalStatus(removalStatus);
         invT.setRemovalDate(null);
-        invT.setInvoice(list.get(list.size()-1));
+        invT.setInvoice(listInvoice.get(listInvoice.size()-1));
         invT.setFinalPrice(23.00);
         
         try 
