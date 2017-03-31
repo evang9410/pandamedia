@@ -88,8 +88,8 @@
                             <h:outputText value="#{msgs.options}"/>
                         </f:facet>
                         <p:commandButton id="editAlbumBtn"  value="#{msgs.edit}" action="#{albumBacking.loadEditForIndex(item.id)}" update=":albumFormID:albumTable"/>
-                        <p:commandButton value="#{msgs.add}" action="#{albumBacking.addItem(item.id)}" update=":albumFormID:albumTable"/>
-                        <p:commandButton  value="#{msgs.del}" action="#{albumBacking.removeItem(item.id)}" update=":albumFormID:albumTable"/>
+                        <p:commandButton id="addAlbumBtn" value="#{msgs.add}" action="#{albumBacking.addItem(item.id)}" update=":albumFormID:albumTable"/>
+                        <p:commandButton  id="removeAlbumBtn" value="#{msgs.del}" action="#{albumBacking.removeItem(item.id)}" update=":albumFormID:albumTable"/>
                     </p:column>
                 </p:dataTable>
             </h:form>         

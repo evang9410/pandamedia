@@ -2,6 +2,8 @@
 package com.pandamedia.selenium.tests;
 
 import io.github.bonigarcia.wdm.ChromeDriverManager;
+import java.util.Calendar;
+import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -28,7 +30,7 @@ public class ManagementTest {
     
     
     @Test
-    public void testApprove() throws Exception 
+    public void testApproveReviews() throws Exception 
     {
 
         driver.get("http://localhost:8080/pandamedia/reviews.xhtml");
@@ -54,13 +56,11 @@ public class ManagementTest {
 
         });
         
-        driver.quit();
-        
-        
+        driver.quit();   
     }
     
     @Test
-    public void testDisapprove() throws Exception 
+    public void testDisapproveReviews() throws Exception 
     {
 
         driver.get("http://localhost:8080/pandamedia/reviews.xhtml");
@@ -91,7 +91,7 @@ public class ManagementTest {
     }
     
     @Test
-    public void testCreateTrack() throws Exception
+    public void testEditAlbum() throws Exception
     {
         driver.get("http://localhost:8080/pandamedia/manager_index.xhtml");
         
@@ -125,6 +125,8 @@ public class ManagementTest {
         driver.findElement(By.id("editAlbumForm:removalStatus")).clear();
         driver.findElement(By.id("editAlbumForm:removalStatus")).sendKeys("0");
          
+        driver.findElement(By.id("editAlbumForm:removalDate")).clear();
+        
          driver.findElement(By.id("editAlbumForm:editAlbumBtn")).click();
                
           wait = new WebDriverWait(driver,10);
@@ -152,5 +154,41 @@ public class ManagementTest {
         
           driver.quit();            
     }
+    
+    @Test
+    public void testRemovalAlbum() throws Exception 
+    {
+
+        driver.get("http://localhost:8080/pandamedia/manager_index.xhtml");
+        
+        
+        wait = new WebDriverWait(driver,10);
+        
+        //test the disapprove btn
+        driver.findElement(By.id("albumFormID:albumTable:0:removeAlbumBtn")).click();
+        
+        //delete this when the bug is fixed
+        driver.findElement(By.id("albumFormID:albumTable:0:removeAlbumBtn")).click();
+        
+        wait = new WebDriverWait(driver,10);
+        
+        wait.until(new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver d)
+            {
+                 boolean isValid = false;
+                 isValid = d.findElement(By.id("albumFormID:albumTable:0:removalStatus")).getText().contains("1");
+                 Date date = new Date();
+                 isValid = d.findElement(By.id("albumFormID:albumTable:0:removalDate")).getText().equals(date);
+                 return isValid;
+            }
+
+
+        });
+        
+        driver.quit();       
+        
+    }
+    
     
 }
