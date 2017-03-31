@@ -1,9 +1,8 @@
 
 package com.pandamedia.arquillian.test;
 
-import com.pandamedia.beans.InvoiceBackingBean;
+import com.pandamedia.beans.InvoiceTrackBackingBean;
 import com.pandamedia.beans.ReportBackingBean;
-import com.pandamedia.beans.UserActionBean;
 import com.pandamedia.commands.ChangeLanguage;
 import com.pandamedia.converters.AlbumConverter;
 import com.pandamedia.filters.LoginFilter;
@@ -16,12 +15,9 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -37,13 +33,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import persistence.controllers.InvoiceJpaController;
 import persistence.controllers.InvoiceTrackJpaController;
-import persistence.controllers.ProvinceJpaController;
 import persistence.controllers.ShopUserJpaController;
 import persistence.controllers.TrackJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
-import persistence.entities.Invoice;
 import persistence.entities.InvoiceTrack;
-import persistence.entities.ShopUser;
+import persistence.entities.InvoiceTrackPK;
 import persistence.entities.Track;
 
 /**
@@ -51,24 +45,17 @@ import persistence.entities.Track;
  * @author Naasir Jusab
  */
 @RunWith(Arquillian.class)
-public class InvoiceArq {
-    
+public class InvoiceTrackArq {
     @Resource(name = "java:app/jdbc/pandamedialocal")
     private DataSource ds;
     @Inject
-    private InvoiceBackingBean invoiceBacking;
+    private InvoiceTrackBackingBean invoiceTrackBacking;
     @Inject
-    private ShopUserJpaController userController;
+    private InvoiceTrackJpaController invoiceTrackController;
     @Inject
     private TrackJpaController trackController;
     @Inject
     private InvoiceJpaController invoiceController;
-    @Inject
-    private InvoiceTrackJpaController invoiceTrackController;
-    @Inject
-    private UserActionBean userActionBean;
-    @Inject
-    private ProvinceJpaController provinceController;
     
     @Deployment
     public static WebArchive deploy() {
@@ -178,167 +165,57 @@ public class InvoiceArq {
                 || line.startsWith("/*");
     }
     
-    @Test
-    public void testAdd()
-    {
-        invoiceBacking.addItem(1);
-        Invoice invoice = invoiceBacking.findInvoiceById(1);
-        assertEquals(invoice.getRemovalStatus(),0);
-    }
     
     @Test
-    public void testRemoveItem()
+    public void testRemoveInvoiceTrack()
     {
-        invoiceBacking.removeItem(1);
-        Invoice invoice = invoiceBacking.findInvoiceById(1);
-        assertEquals(invoice.getRemovalStatus(),1);
-    }
-    
-    @Test
-    public void testLoadTracksTable()
-    {
-       short i = 0;
-       Invoice inv = new Invoice();
-       inv.setSaleDate(Calendar.getInstance().getTime());
-       inv.setTotalNetValue(24);
-       inv.setPstTax(10);
-       inv.setGstTax(10);
-       inv.setHstTax(10);
-       inv.setTotalGrossValue(35);
-       inv.setRemovalStatus(i);
-       inv.setRemovalDate(null);
-       inv.setUserId(userController.findShopUser(1));
-       
-        try {
-            invoiceController.create(inv);
-        } catch (Exception ex) {
-           System.out.println(ex.getMessage());
-        }
-       
-       List<Invoice> list = invoiceBacking.getAll();
-       
         short removalStatus = 0;
         InvoiceTrack invT = new InvoiceTrack();
         invT.setTrack(trackController.findTrack(1));
         invT.setRemovalStatus(removalStatus);
         invT.setRemovalDate(null);
-        invT.setInvoice(list.get(list.size()-1));
+        invT.setInvoice(invoiceController.findInvoice(1));
         invT.setFinalPrice(23.00);
-        
-        try 
+        try
         {
             invoiceTrackController.create(invT);
-        } 
-        
-        catch (Exception ex)
-        {
-            System.out.println(ex.getMessage());
         }
-        invoiceBacking.setInvoice(inv);
-        assertEquals(invoiceBacking.loadTable().get(0),invT);   
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        InvoiceTrackPK invPK = new InvoiceTrackPK();
+        invPK.setInvoiceId(1);
+        invPK.setTrackId(1);
+        invoiceTrackBacking.removeInvoiceTrack(invPK);
+        
+        assertEquals(invoiceTrackController.findInvoiceTrack(invPK).getRemovalStatus(), 1);
     }
     
     @Test
-    public void testDownloadsTable()
+    public void testAddInvoiceTrack()
     {
-        ShopUser user = new ShopUser();
-        user.setTitle("Sir");
-        user.setLastName("Jus");
-        user.setFirstName("Nas");
-        user.setCompanyName("got jus");
-        user.setStreetAddress("9010 dmdmd");
-        user.setCity("MTL");
-        user.setCountry("Canada");
-        user.setPostalCode("P4N 3D2");
-        user.setHashedPw(new byte[]{1,1,1,1,1,1});
-        user.setSalt("hehe");
-        
-        user.setHomePhone("514-505 7070");
-        user.setEmail("loho@hot.co");
-        user.setProvinceId(provinceController.findProvince(1));
-        
-       try
-       {
-           userController.create(user);
-       }
-       catch(Exception e)
-       {
-           System.out.println(e.getMessage());
-       }
-       
-       List<ShopUser> list = userController.findShopUserEntities();
-        
-       short i = 0;
-       Invoice inv = new Invoice();
-       inv.setSaleDate(Calendar.getInstance().getTime());
-       inv.setTotalNetValue(24);
-       inv.setPstTax(10);
-       inv.setGstTax(10);
-       inv.setHstTax(10);
-       inv.setTotalGrossValue(35);
-       inv.setRemovalStatus(i);
-       inv.setRemovalDate(null);
-       inv.setUserId(list.get(list.size()-1));
-       
-       try 
-       {
-            invoiceController.create(inv);
-        } 
-       catch (Exception ex)
-       {
-           System.out.println(ex.getMessage());
-        }
-       
-       List<Invoice> listInvoice = invoiceBacking.getAll();
-       
-        short removalStatus = 0;
+        short removalStatus = 1;
         InvoiceTrack invT = new InvoiceTrack();
         invT.setTrack(trackController.findTrack(1));
         invT.setRemovalStatus(removalStatus);
         invT.setRemovalDate(null);
-        invT.setInvoice(listInvoice.get(listInvoice.size()-1));
+        invT.setInvoice(invoiceController.findInvoice(1));
         invT.setFinalPrice(23.00);
-        
-        try 
+        try
         {
             invoiceTrackController.create(invT);
-        } 
-        
-        catch (Exception ex)
-        {
-            System.out.println(ex.getMessage());
         }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        InvoiceTrackPK invPK = new InvoiceTrackPK();
+        invPK.setInvoiceId(1);
+        invPK.setTrackId(1);
+        invoiceTrackBacking.addInvoiceTrack(invPK);
         
-        userActionBean.setUser(list.get(list.size()-1));
-        System.out.println("dodo" + invoiceBacking.loadDownloadsTable().size());
-        assertEquals(invoiceBacking.loadDownloadsTable().get(0), trackController.findTrack(1));
-        
+        assertEquals(invoiceTrackController.findInvoiceTrack(invPK).getRemovalStatus(), 0);
     }
-    
-    @Test
-    public void testEdit()
-    {
-       short i = 0;
-       Invoice inv = invoiceBacking.findInvoiceById(1);
-       inv.setSaleDate(Calendar.getInstance().getTime());
-       inv.setTotalNetValue(24);
-       inv.setPstTax(10);
-       inv.setGstTax(10);
-       inv.setHstTax(10);
-       inv.setTotalGrossValue(35);
-       inv.setRemovalStatus(i);
-       inv.setRemovalDate(null);
-       inv.setUserId(userController.findShopUser(1));
-       
-       invoiceBacking.setInvoice(inv);
-       
-       invoiceBacking.edit();
-       
-       Invoice editedInv = invoiceBacking.findInvoiceById(1);
-       
-       assertEquals(inv,editedInv);
-       
-    }
-    
     
 }

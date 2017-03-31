@@ -17,9 +17,9 @@
             <ui:include src="./WEB-INF/sections/manager_menu.xhtml"/>
         </div>
          <f:view locale="#{ChangeLanguage.locale}">
-             <p:commandButton value="#{msgs.addTrack}" action="#{trackBacking.loadCreateTrack()}" />
+             <p:commandButton id="createTrack" value="#{msgs.addTrack}" action="#{trackBacking.loadCreateTrack()}" />
             <br/>
-            <p:commandButton value="#{msgs.addAlbum}" action="#{albumBacking.loadCreateAlbum()}" />
+            <p:commandButton id="createAlbum" value="#{msgs.addAlbum}" action="#{albumBacking.loadCreateAlbum()}" />
             <h:form id="albumFormID">
                 <h1><h:outputText value="#{msgs.albums}"/></h1>
                 <p:dataTable id="albumTable" value="#{albumBacking.all}" widgetVar="albumTable" filteredValue="#{albumBacking.filteredAlbums}"  var="item" paginator="true" rows="5">
@@ -30,52 +30,52 @@
                         </p:outputPanel>
                     </f:facet>
                     <p:column filterBy="#{item.id}" headerText="#{msgs.id}" filterMatchMode="contains">
-                        <h:outputText value="#{item.id}"/>
+                        <h:outputText id="id" value="#{item.id}"/>
                     </p:column>
                     <p:column filterBy="#{item.title}" headerText="#{msgs.title}" filterMatchMode="contains">
-                        <h:outputText value="#{item.title}"/>
+                        <h:outputText id="title" value="#{item.title}"/>
                     </p:column>
                     <p:column filterBy="#{item.releaseDate}" headerText="#{msgs.releaseDate}" filterMatchMode="contains">
-                        <h:outputText value="#{item.releaseDate}">
+                        <h:outputText id="releaseDate" value="#{item.releaseDate}">
                             <f:convertDateTime pattern="MM/dd/yyyy" />
                         </h:outputText>
                     </p:column>
                     <p:column filterBy="#{item.numTracks}" headerText="#{msgs.numTracks}" filterMatchMode="contains">
-                        <h:outputText value="#{item.numTracks}"/>
+                        <h:outputText id="numTracks" value="#{item.numTracks}"/>
                     </p:column>
                     <p:column filterBy="#{item.dateEntered}" headerText="#{msgs.dateEntered}" filterMatchMode="contains">
-                        <h:outputText value="#{item.dateEntered}">
+                        <h:outputText id="dateEntered" value="#{item.dateEntered}">
                             <f:convertDateTime pattern="MM/dd/yyyy" />
                         </h:outputText>
                     </p:column>
                     <p:column filterBy="#{item.costPrice}" headerText="#{msgs.costPrice}" filterMatchMode="contains">
-                        <h:outputText value="#{item.costPrice}"/>
+                        <h:outputText id="costPrice" value="#{item.costPrice}"/>
                     </p:column>
                     <p:column filterBy="#{item.listPrice}" headerText="#{msgs.listPrice}" filterMatchMode="contains">
-                        <h:outputText value="#{item.listPrice}"/>
+                        <h:outputText id="listPrice" value="#{item.listPrice}"/>
                     </p:column>
                     <p:column filterBy="#{item.salePrice}" headerText="#{msgs.salePrice}" filterMatchMode="contains">
-                        <h:outputText value="#{item.salePrice}"/>
+                        <h:outputText id="salePrice" value="#{item.salePrice}"/>
                     </p:column>
                     <p:column filterBy="#{item.removalStatus}" headerText="#{msgs.removalStatus}" filterMatchMode="contains">
-                        <h:outputText value="#{item.removalStatus}"/>
+                        <h:outputText id="removalStatus" value="#{item.removalStatus}"/>
                     </p:column>
                     <p:column filterBy="#{item.removalDate}" headerText="#{msgs.removalDate}" filterMatchMode="contains">
-                        <h:outputText value="#{item.removalDate}">
+                        <h:outputText id="removalDate" value="#{item.removalDate}">
                             <f:convertDateTime pattern="MM/dd/yyyy" />
                         </h:outputText>
                     </p:column>
                     <p:column filterBy="#{item.artistId.name}" headerText="#{msgs.artistName}" filterMatchMode="contains">
-                        <h:outputText value="#{item.artistId.name}"/>
+                        <h:outputText id="artist" value="#{item.artistId.name}"/>
                     </p:column>
                     <p:column filterBy="#{item.genreId.name}" headerText="#{msgs.genreName}" filterMatchMode="contains">
-                        <h:outputText value="#{item.genreId.name}"/>
+                        <h:outputText id="genre" value="#{item.genreId.name}"/>
                     </p:column>
                     <p:column filterBy="#{item.recordingLabelId.name}" headerText="#{msgs.recLabelName}" filterMatchMode="contains">
-                        <h:outputText value="#{item.recordingLabelId.name}"/>
+                        <h:outputText id="recordingLabel" value="#{item.recordingLabelId.name}"/>
                     </p:column>
                     <p:column filterBy="#{item.coverArtId.imagePath}" headerText="#{msgs.artPath}" filterMatchMode="contains">
-                        <h:outputText value="#{item.coverArtId.imagePath}"/>
+                        <h:outputText id="coverArt" value="#{item.coverArtId.imagePath}"/>
                     </p:column>
                     <p:column>
                         <f:facet name="header">
@@ -87,7 +87,7 @@
                         <f:facet name="header">
                             <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <p:commandButton  value="#{msgs.edit}" action="#{albumBacking.loadEditForIndex(item.id)}" update=":albumFormID:albumTable"/>
+                        <p:commandButton id="editAlbumBtn"  value="#{msgs.edit}" action="#{albumBacking.loadEditForIndex(item.id)}" update=":albumFormID:albumTable"/>
                         <p:commandButton value="#{msgs.add}" action="#{albumBacking.addItem(item.id)}" update=":albumFormID:albumTable"/>
                         <p:commandButton  value="#{msgs.del}" action="#{albumBacking.removeItem(item.id)}" update=":albumFormID:albumTable"/>
                     </p:column>

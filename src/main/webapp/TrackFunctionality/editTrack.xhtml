@@ -9,7 +9,7 @@
     </h:head>
     <h:body>
         <f:view locale="#{ChangeLanguage.locale}">
-            <h:form>
+            <h:form id="editTrackForm">
                 <h1><h:outputText value="#{msgs.edit}"/></h1>
                 <p:panelGrid columns="2">
                     <p:outputLabel value="#{msgs.title}" for="title" />
@@ -67,7 +67,7 @@
                         <f:selectItems value="#{coverArtBacking.all}" var="coverArt" itemLabel="#{coverArt.imagePath}" itemValue="#{coverArt}"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
-                <p:commandButton ajax="false" action="#{trackBacking.edit()}" value="#{msgs.edit}"/>
+                <p:commandButton id="editTrackBtn" ajax="false" action="#{trackBacking.edit()}" value="#{msgs.edit}"/>
                 <p:commandButton ajax="false" action="#{trackBacking.back()}" value="#{msgs.back}" />
             </h:form>
         <p:outputPanel autoUpdate="true">
