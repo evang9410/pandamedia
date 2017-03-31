@@ -10,9 +10,15 @@
     <h:head>
         <title>#{msgs.manReportTopSellersTitle}</title>
         <meta name="author" content="Erika Bourque"/>
+        <h:outputScript library="js" name="ajaxfix.js" target="head"/>
         <h:outputStylesheet name="reports.css" library="css"/>
+        <h:outputStylesheet name="css/bootstrap.css"/>
+        <h:outputStylesheet library="css" name="style.css"/>
     </h:head>
     <h:body>
+        <div>
+            <ui:include src="/WEB-INF/sections/manager_menu.xhtml"/>
+        </div>
         #{msgs.manReportTopSellersTitle}
         <pm:reportcalendars 
             max="#{reportData.defaultEndDate}" 

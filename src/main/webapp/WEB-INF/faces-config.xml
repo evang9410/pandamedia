@@ -37,67 +37,103 @@
             <to-view-id>/cart.xhtml</to-view-id>
             <redirect />
         </navigation-case>
-        <!-- Secured pages navigation rules -->
+        
+        <!-- Client Secure pages navigation rules -->
+        <!-- Use redirects to pass through login and checkout filters -->
         <navigation-case>
             <from-outcome>finalization</from-outcome>
             <to-view-id>/clientsecure/purchase/checkout.xhtml</to-view-id>
-            <!-- Needs to be a redirect to pass through filter -->
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>invoicesummary</from-outcome>
             <to-view-id>/clientsecure/invoicesummary.xhtml</to-view-id>
-            <!-- Needs to be a redirect to pass through filter -->
+            <redirect />
+        </navigation-case>
+        
+        <!-- Manager pages navigation rules -->
+        <!-- Use redirects to pass through login and manager filter -->
+        <navigation-case>
+            <from-outcome>manindex</from-outcome>
+            <to-view-id>/manager_index.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>mansales</from-outcome>
+            <to-view-id>/salesPage.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>manclients</from-outcome>
+            <to-view-id>/clients.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>manorders</from-outcome>
+            <to-view-id>/orders.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>manreviews</from-outcome>
+            <to-view-id>/reviews.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>mannewsfeeds</from-outcome>
+            <to-view-id>/newsFeedManagement.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>mansurveys</from-outcome>
+            <to-view-id>/surveyManagement.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>manbanners</from-outcome>
+            <to-view-id>/bannerAdManagement.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         
         <!-- Report pages navigation rules -->
+        <!-- Use redirects to pass through login and manager filter -->
         <navigation-case>
             <from-outcome>reptrack</from-outcome>
             <to-view-id>/reports/salesbytrack.xhtml</to-view-id>
-            <!-- Needs to be a redirect to pass through filter -->
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>repalbum</from-outcome>
             <to-view-id>/reports/salesbyalbum.xhtml</to-view-id>
-            <!-- Needs to be a redirect to pass through filter -->
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>repartist</from-outcome>
             <to-view-id>/reports/salesbyartist.xhtml</to-view-id>
-            <!-- Needs to be a redirect to pass through filter -->
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>reptopclients</from-outcome>
             <to-view-id>/reports/topclients.xhtml</to-view-id>
-            <!-- Needs to be a redirect to pass through filter -->
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>reptopsellers</from-outcome>
             <to-view-id>/reports/topsellers.xhtml</to-view-id>
-            <!-- Needs to be a redirect to pass through filter -->
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>reptotal</from-outcome>
             <to-view-id>/reports/totalsales.xhtml</to-view-id>
-            <!-- Needs to be a redirect to pass through filter -->
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>repzeroclients</from-outcome>
             <to-view-id>/reports/zeroclients.xhtml</to-view-id>
-            <!-- Needs to be a redirect to pass through filter -->
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>repzerotracks</from-outcome>
             <to-view-id>/reports/zerotracks.xhtml</to-view-id>
-            <!-- Needs to be a redirect to pass through filter -->
             <redirect />
         </navigation-case>
     </navigation-rule>   

@@ -7,10 +7,10 @@
     <h:form>
         <b:navBar brand="PandaMedia" brandHref="manager_index.xhtml" styleClass="navbar navbar-default pandaNavbar">
             <b:navbarLinks pull="right">
-                <b:navLink value="#{msgs.sales}" href="salesPage.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.clients}" href="clients.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.orders}" href="orders.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.reviews}" href="reviews.xhtml"></b:navLink>
+                <b:navCommandLink value="#{msgs.sales}" action="mansales" />
+                <b:navCommandLink value="#{msgs.clients}" action="manclients" />
+                <b:navCommandLink value="#{msgs.orders}" action="manorders" />
+                <b:navCommandLink value="#{msgs.reviews}" action="manreviews" />
                 <b:dropMenu value="#{msgs.reports}" styleClass="dropdown">
                     <b:navCommandLink value="#{msgs.manReportTotalSalesTitle}" action="reptotal" />
                     <b:navCommandLink value="#{msgs.manReportTopSellersTitle}" action="reptopsellers" />
@@ -21,9 +21,9 @@
                     <b:navCommandLink value="#{msgs.manReportZeroTrackTitle}" action="repzerotracks" />
                     <b:navCommandLink value="#{msgs.manReportZeroUserTitle}" action="repzeroclients" />
                 </b:dropMenu>
-                <b:navLink value="#{msgs.newsFeed}" href="newsFeedManagement.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.survey}" href="surveyManagement.xhtml"></b:navLink>
-                <b:navLink value="#{msgs.banner}" href="bannerAdManagement.xhtml"></b:navLink>
+                <b:navCommandLink value="#{msgs.newsFeed}" action="mannewsfeeds" />
+                <b:navCommandLink value="#{msgs.survey}" action="mansurveys" />
+                <b:navCommandLink value="#{msgs.banner}" action="manbanners" />
                 <b:dropMenu value="#{msgs.selectLanguage}" styleClass="dropdown">
                     <b:navCommandLink value="#{msgs.englishLanguage}" action="#{ChangeLanguage.englishAction()}"></b:navCommandLink>
                     <b:navCommandLink value="#{msgs.frenchLanguage}" action="#{ChangeLanguage.frenchAction()}"></b:navCommandLink>
@@ -32,4 +32,3 @@
         </b:navBar>
     </h:form>
 </ui:composition>
-
