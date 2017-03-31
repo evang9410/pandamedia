@@ -3,6 +3,8 @@ package com.pandamedia.beans;
 import com.pandamedia.utilities.Messages;
 import java.util.List;
 import java.util.logging.Logger;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import jodd.mail.Email;
 import jodd.mail.SendMailSession;
 import jodd.mail.SmtpServer;
@@ -16,6 +18,8 @@ import persistence.entities.ShopUser;
  *
  * @author Erika Bourque
  */
+@Named
+@RequestScoped
 public class EmailBean {
     private static final Logger LOG = Logger.getLogger("EmailBean.class");
     private final String emailAddress="ebourquesend@gmail.com";
@@ -32,12 +36,13 @@ public class EmailBean {
     {
         this.invoice = invoice;
         Email email = new Email();
+        String subject = Messages.getString("bundles.messages", "emailSubject", null);
         
         // Preparing the email fields
-        email.to(userEmail).from(emailAddress).subject(Messages.
-                getString("bundles.messages", "emailSubject", null));        
-        email.addHtml(buildMessage());
-        
+        email.to(userEmail).from(emailAddress).subject(subject);        
+//        email.addHtml(buildMessage());
+        email.addText("bob");
+
         // Send email
         send(email);
     }
@@ -81,15 +86,12 @@ public class EmailBean {
     private void send(Email email)
     {
         LOG.info("Sending email.");        
-        // Create the server
         SmtpServer<SmtpSslServer> smtpServer = SmtpSslServer
                 .create(smtpServerName)
                 .authenticateWith(emailAddress, emailPassword);
-        
-        // Create the session
+        // Display Java Mail debug conversation with the server
+        smtpServer.debug(true);
         SendMailSession session = smtpServer.createSession();
-        
-        // Open session, send email, and close session
         session.open();
         session.sendMail(email);
         session.close();
