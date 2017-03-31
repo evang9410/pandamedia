@@ -8,7 +8,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:pm="http://pandamedia.com/facelets">
     <h:head>
-        <title>#{msgs.manReportTopClientsTitle}</title>
+        <title>#{msgs.manReportZeroUserTitle}</title>
         <meta name="author" content="Erika Bourque"></meta>
         <h:outputScript library="js" name="ajaxfix.js" target="head"/>
         <h:outputStylesheet name="reports.css" library="css"/>
@@ -19,7 +19,7 @@
         <div>
             <ui:include src="/WEB-INF/sections/manager_menu.xhtml"/>
         </div>
-        #{msgs.manReportTopClientsTitle}
+        <h1><h:outputText value="#{msgs.manReportZeroUserTitle}"/></h1>
         <pm:reportcalendars 
             max="#{reportData.defaultEndDate}" 
             start="#{reportData.startDate}" 
@@ -28,77 +28,72 @@
         </pm:reportcalendars>
         <p:dataTable styleClass="report-table" 
                      id="reportTable" 
-                     value="#{reports.getTopClients(reportData.startDate, reportData.endDate)}" 
+                     value="#{reports.getZeroUsers(reportData.startDate, reportData.endDate)}" 
                      var="userVar">
             <f:facet name="header">
                 #{msgs.detailClientHeader}
             </f:facet>
             <p:column>
-                <f:facet name="header">#{msgs.totalSpentHeader}</f:facet>
-                <h:outputText value="#{userVar[0]}">                    
-                    <f:convertNumber type="currency" />
-                </h:outputText>
-            </p:column>
-            <p:column>
                 <f:facet name="header">#{msgs.idHeader}</f:facet>
-                #{userVar[1].id}
+                #{userVar.id}
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.titleHeader}</f:facet>
-                #{userVar[1].title}
+                #{userVar.title}
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.lastNameHeader}</f:facet>
-                #{userVar[1].lastName}
+                #{userVar.lastName}
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.firstNameHeader}</f:facet>
-                #{userVar[1].firstName}
+                #{userVar.firstName}
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.companyHeader}</f:facet>
-                #{userVar[1].companyName}
+                #{userVar.companyName}
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.streetHeader}</f:facet>
-                #{userVar[1].streetAddress}
+                #{userVar.streetAddress}
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.cityHeader}</f:facet>
-                #{userVar[1].city}
+                #{userVar.city}
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.provinceHeader}</f:facet>
-                #{userVar[1].provinceId.name}
+                #{userVar.provinceId.name}
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.countryHeader}</f:facet>
-                #{userVar[1].country}
+                #{userVar.country}
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.postalCodeHeader}</f:facet>
-                #{userVar[1].postalCode}
+                #{userVar.postalCode}
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.homePhoneHeader}</f:facet>
-                #{userVar[1].homePhone}
+                #{userVar.homePhone}
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.cellPhoneHeader}</f:facet>
-                #{userVar[1].cellPhone}
+                #{userVar.cellPhone}
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.emailHeader}</f:facet>
-                #{userVar[1].email}
+                #{userVar.email}
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.lastGenreHeader}</f:facet>
-                #{userVar[1].lastGenreSearched.name}
+                #{userVar.lastGenreSearched.name}
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.isManagerHeader}</f:facet>
-                #{userVar[1].isManager}
+                #{userVar.isManager}
             </p:column>
         </p:dataTable>
     </h:body>
 </html>
+

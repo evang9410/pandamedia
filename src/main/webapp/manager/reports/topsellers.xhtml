@@ -19,7 +19,7 @@
         <div>
             <ui:include src="/WEB-INF/sections/manager_menu.xhtml"/>
         </div>
-        #{msgs.manReportTopSellersTitle}
+        <h1><h:outputText value="#{msgs.manReportTopSellersTitle}"/></h1>
         <pm:reportcalendars 
             max="#{reportData.defaultEndDate}" 
             start="#{reportData.startDate}" 

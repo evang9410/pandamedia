@@ -19,9 +19,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Erika Bourque
  */
-@WebFilter(filterName = "LoginFilter", urlPatterns = {"/clientsecure/*"})
-public class LoginFilter implements Filter{
-    private static final Logger LOG = Logger.getLogger("LoginFilter.class");
+@WebFilter(filterName = "LoginFilter", urlPatterns = {"/manager/*"})
+public class ManagerFilter implements Filter{
+    private static final Logger LOG = Logger.getLogger("ManagerFilter.class");
     private ServletContext context;
     
     @Inject
@@ -36,25 +36,27 @@ public class LoginFilter implements Filter{
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         context.log("In the filer");
         
-        // Making sure user is not null or not persisted to db
-        if (!uab.isLogin())
+        // Making sure user is logged in and is a manager
+        if ((uab.isLogin()) && (uab.getCurrUser().getIsManager() == 1))
         {
-            context.log("User not logged in.");
+            context.log("User is logged in and is a manager.  id = " + uab.getCurrUser().getId());
+            chain.doFilter(request, response);
+            
+        }
+        else
+        {
+            context.log("User not logged in or is not a manager.");
             String contextPath = ((HttpServletRequest) request)
                     .getContextPath();
             ((HttpServletResponse) response).sendRedirect(contextPath
                     + "/userconnection/login.xhtml");
             context.log(contextPath + "/userconnection/login.xhtml");
         }
-        else
-        {
-            context.log("User is logged in.  id = " + uab.getCurrUser().getId());
-            chain.doFilter(request, response);
-        }
     }
 
     @Override
     public void destroy() {
         // Nothing to do here
-    }   
+    }
+    
 }
