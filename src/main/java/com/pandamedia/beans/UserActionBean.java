@@ -179,6 +179,19 @@ public class UserActionBean implements Serializable {
                                 ioe.getMessage());
             }
         }
+        UIViewRoot currentPage = FacesContext.getCurrentInstance().getViewRoot();
+        System.out.println(currentPage.getViewId());
+        if(currentPage.getViewId().startsWith("/clientsecure/")){
+            try{
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/mainpage.xhtml");
+            }catch(Exception e){
+                 Logger.getLogger(UserActionBean.class.getName())
+                        .log(Level.WARNING, "Error when redirecting: {0}",
+                                e.getMessage());
+            }
+            
+            
+        }
         currUser = null;
         // destroy user object from session map.
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user",null);

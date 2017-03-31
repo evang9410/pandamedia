@@ -65,7 +65,8 @@
                             <ui:fragment rendered="#{userAction.isLogin()}">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">#{userAction.currUser.firstName}<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                        <li><h:commandLink action="#{userAction.logout()}" value="Logout"/></li>
+                                    <li><h:link outcome="downloads" value="Downloads"/></li>
+                                    <li><h:commandLink action="#{userAction.logout()}" value="Logout"/></li>
                                 </ul>
                             </ui:fragment>
                         </li>
