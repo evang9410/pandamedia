@@ -101,18 +101,31 @@ public class ManagementTest {
           //test the create track btn
         driver.findElement(By.id("albumFormID:albumTable:0:editAlbumBtn")).click();
         
-        driver.findElement(By.id("editTrackForm:title")).sendKeys("Evan sucks");
-        driver.findElement(By.id("editTrackForm:releaseDate")).sendKeys("1/1/1900");
-        driver.findElement(By.id("editTrackForm:playLength")).sendKeys("1:45");
-        driver.findElement(By.id("editTrackForm:dateEntered")).sendKeys("1/1/1900");
-        driver.findElement(By.id("editTrackForm:partOfAlbum")).sendKeys("0");
-        driver.findElement(By.id("editTrackForm:albumTrackNumber")).sendKeys("0");
-        driver.findElement(By.id("editTrackForm:costPrice")).sendKeys("1.00");
-        driver.findElement(By.id("editTrackForm:listPrice")).sendKeys("1.50");
-        driver.findElement(By.id("editTrackForm:salePrice")).sendKeys("1.00");
-        driver.findElement(By.id("editTrackForm:removalStatus")).sendKeys("0");
+        driver.findElement(By.id("editAlbumForm:title")).clear();
+        driver.findElement(By.id("editAlbumForm:title")).sendKeys("Evan sucks");
+        
+        driver.findElement(By.id("editAlbumForm:releaseDate")).clear();
+        driver.findElement(By.id("editAlbumForm:releaseDate")).sendKeys("1/1/1900");
+        
+        driver.findElement(By.id("editAlbumForm:numTracks")).clear();
+        driver.findElement(By.id("editAlbumForm:numTracks")).sendKeys("12");
+        
+        driver.findElement(By.id("editAlbumForm:dateEntered")).clear();
+        driver.findElement(By.id("editAlbumForm:dateEntered")).sendKeys("1/1/1900");
+        
+        driver.findElement(By.id("editAlbumForm:costPrice")).clear();
+        driver.findElement(By.id("editAlbumForm:costPrice")).sendKeys("1.00");
+        
+        driver.findElement(By.id("editAlbumForm:listPrice")).clear();
+        driver.findElement(By.id("editAlbumForm:listPrice")).sendKeys("1.50");
+        
+        driver.findElement(By.id("editAlbumForm:salePriceAlbum")).clear();
+        driver.findElement(By.id("editAlbumForm:salePriceAlbum")).sendKeys("1.00");
+        
+        driver.findElement(By.id("editAlbumForm:removalStatus")).clear();
+        driver.findElement(By.id("editAlbumForm:removalStatus")).sendKeys("0");
          
-         driver.findElement(By.id("editTrackForm:editTrackBtn")).click();
+         driver.findElement(By.id("editAlbumForm:editAlbumBtn")).click();
                
           wait = new WebDriverWait(driver,10);
         
@@ -122,15 +135,14 @@ public class ManagementTest {
             {
                 boolean isValid = false;
                 isValid = d.findElement(By.id("albumFormID:albumTable:0:title")).getText().contains("Evan sucks");
-                isValid = d.findElement(By.id("albumFormID:albumTable:0:releaseDate")).getText().contains("Evan sucks");
-                isValid = d.findElement(By.id("albumFormID:albumTable:0:playLength")).getText().contains("Evan sucks");
-                isValid = d.findElement(By.id("albumFormID:albumTable:0:dateEntered")).getText().contains("Evan sucks");
-                isValid = d.findElement(By.id("albumFormID:albumTable:0:partOfAlbum")).getText().contains("Evan sucks");
+                isValid = d.findElement(By.id("albumFormID:albumTable:0:releaseDate")).getText().contains("01/01/1900");
+                isValid = d.findElement(By.id("albumFormID:albumTable:0:numTracks")).getText().contains("12");
+                isValid = d.findElement(By.id("albumFormID:albumTable:0:dateEntered")).getText().contains("01/01/1900");
+                isValid = d.findElement(By.id("albumFormID:albumTable:0:costPrice")).getText().contains("1.0");
                 
-                isValid = d.findElement(By.id("albumFormID:albumTable:0:albumTrackNumber")).getText().contains("Evan sucks");
-                isValid = d.findElement(By.id("albumFormID:albumTable:0:costPrice")).getText().contains("Evan sucks");
-                isValid = d.findElement(By.id("albumFormID:albumTable:0:listPrice")).getText().contains("Evan sucks");
-                isValid = d.findElement(By.id("albumFormID:albumTable:0:salePrice")).getText().contains("Evan sucks");
+                isValid = d.findElement(By.id("albumFormID:albumTable:0:listPrice")).getText().contains("1.5");
+                isValid = d.findElement(By.id("albumFormID:albumTable:0:salePrice")).getText().contains("1.0");
+                isValid = d.findElement(By.id("albumFormID:albumTable:0:removalStatus")).getText().contains("0");
 
                 return isValid;             
             }
@@ -138,10 +150,7 @@ public class ManagementTest {
 
           });
         
-          driver.quit();       
-        
-        
-        
+          driver.quit();            
     }
     
 }
