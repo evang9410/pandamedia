@@ -94,6 +94,7 @@ public class UserActionBean implements Serializable {
                 FacesContext.getCurrentInstance().setViewRoot(prevPage);
                 FacesContext.getCurrentInstance().renderResponse();
             } else {
+                // TODO: fix so its not absolute path
                 FacesContext.getCurrentInstance().getExternalContext()
                         .redirect("/pandamedia/mainpage.xhtml");
             }
@@ -149,6 +150,7 @@ public class UserActionBean implements Serializable {
                         FacesContext.getCurrentInstance().setViewRoot(prevPage);
                         FacesContext.getCurrentInstance().renderResponse();
                     } else {
+                        // TODO: fix so its not absolute path
                         FacesContext.getCurrentInstance().getExternalContext()
                                 .redirect("/pandamedia/mainpage.xhtml");
                     }
@@ -261,6 +263,7 @@ public class UserActionBean implements Serializable {
      * before they were redirected to the login page.
      */
     public void setPrevPage() {
+        // TODO: use this everywhere somehow :O
         prevPage = FacesContext.getCurrentInstance().getViewRoot();
     }
 

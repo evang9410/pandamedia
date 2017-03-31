@@ -52,8 +52,7 @@ public class EmailBean {
         
         // Preparing the email fields
         email.to(userEmail).from(emailAddress).subject(subject);        
-//        email.addHtml(buildMessage());
-        email.addText("bob");
+        email.addHtml(buildMessage());
 
         // Send email
         send(email);
