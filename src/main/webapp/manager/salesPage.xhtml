@@ -1,20 +1,18 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:b="http://bootsfaces.net/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
-        <title>#{msgs.sales}</title>
-        <h:outputStylesheet name="css/bootstrap.css"/>
-        <h:outputStylesheet library="css" name="manager_style.css"/>
-    </h:head>
-    <h:body styleClass="bodyClass">       
-        <div>
-            <ui:include src="./WEB-INF/sections/manager_menu.xhtml"/>
-        </div>
+<ui:composition
+    template="/WEB-INF/templates/managerTemplate.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:b="http://bootsfaces.net/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <meta name="author" content="Naasir Jusab" />
+    
+    <ui:define name="WindowTitle">#{msgs.sales}</ui:define>
+    
+    <ui:define name="page-content">
         <f:view locale="#{ChangeLanguage.locale}">
             <h:form id="albumFormID">
                 <h1><h:outputText value="#{msgs.albums}"/></h1>
@@ -156,7 +154,5 @@
                 </p:dataTable>
             </h:form>
         </f:view>
-
-    </h:body>
-</html>
-
+    </ui:define>
+</ui:composition>
