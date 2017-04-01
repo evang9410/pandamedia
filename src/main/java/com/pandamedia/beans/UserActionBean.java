@@ -96,9 +96,10 @@ public class UserActionBean implements Serializable {
             } else {
                 // TODO: fix so its not absolute path
                 FacesContext.getCurrentInstance().getExternalContext()
-                        .redirect("/pandamedia/mainpage.xhtml");
+                                .redirect(FacesContext.getCurrentInstance().
+                                        getExternalContext().getRequestContextPath() + "/shop/mainpage.xhtml");
             }
-            
+
         } catch (IOException ioe) {
             Logger.getLogger(UserActionBean.class.getName())
                     .log(Level.WARNING, "Error when redirecting: {0}",
@@ -117,13 +118,12 @@ public class UserActionBean implements Serializable {
      * Responsible for login in a user.
      */
     public void login() throws IOException {
-    currUser = userBean.getShopUser();
+        currUser = userBean.getShopUser();
         ShopUser userRecord = userActionController.findUserByEmail(
                 currUser.getEmail());
         ExternalContext external = FacesContext.getCurrentInstance().getExternalContext();
         external.getSessionMap().put("user", currUser);
 
-        
         if (userRecord == null) {
             System.out.println("USER IS NULL");
             FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
@@ -135,7 +135,7 @@ public class UserActionBean implements Serializable {
                     userRecord.getSalt());
 
             if (!Arrays.equals(hashRecord, loginPwdHash)) {
-                
+
                 FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
                         "bundles.messages", "invalidEmailOrPwd", null);
                 FacesContext.getCurrentInstance().addMessage("loginForm", msg);
@@ -150,9 +150,9 @@ public class UserActionBean implements Serializable {
                         FacesContext.getCurrentInstance().setViewRoot(prevPage);
                         FacesContext.getCurrentInstance().renderResponse();
                     } else {
-                        // TODO: fix so its not absolute path
                         FacesContext.getCurrentInstance().getExternalContext()
-                                .redirect("/pandamedia/mainpage.xhtml");
+                                .redirect(FacesContext.getCurrentInstance().
+                                        getExternalContext().getRequestContextPath() + "/shop/mainpage.xhtml");
                     }
 
                 } catch (IOException ioe) {
@@ -174,7 +174,8 @@ public class UserActionBean implements Serializable {
             currUser = null;
             try {
                 FacesContext.getCurrentInstance().getExternalContext()
-                        .redirect("/pandamedia/mainpage.xhtml");
+                        .redirect(FacesContext.getCurrentInstance().
+                                getExternalContext().getRequestContextPath() + "/shop/mainpage.xhtml");
             } catch (IOException ioe) {
                 Logger.getLogger(UserActionBean.class.getName())
                         .log(Level.WARNING, "Error when redirecting: {0}",
@@ -183,20 +184,21 @@ public class UserActionBean implements Serializable {
         }
         UIViewRoot currentPage = FacesContext.getCurrentInstance().getViewRoot();
         System.out.println(currentPage.getViewId());
-        if(currentPage.getViewId().startsWith("/clientsecure/")){
-            try{
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/mainpage.xhtml");
-            }catch(Exception e){
-                 Logger.getLogger(UserActionBean.class.getName())
+        if (currentPage.getViewId().startsWith("/clientsecure/")) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext()
+                                .redirect(FacesContext.getCurrentInstance().
+                                        getExternalContext().getRequestContextPath() + "/shop/mainpage.xhtml");
+            } catch (Exception e) {
+                Logger.getLogger(UserActionBean.class.getName())
                         .log(Level.WARNING, "Error when redirecting: {0}",
                                 e.getMessage());
             }
-            
-            
+
         }
         currUser = null;
         // destroy user object from session map.
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user",null);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", null);
 
     }
 
@@ -274,7 +276,8 @@ public class UserActionBean implements Serializable {
      * previously on.
      *
      * @author Evan Glicakis
-     * @param s the string representation of the page that the user is navigating to.
+     * @param s the string representation of the page that the user is
+     * navigating to.
      * @return
      */
     public String redirectUser(String s) {
@@ -287,9 +290,8 @@ public class UserActionBean implements Serializable {
             return "userconnection/login";
         }
     }
-    
-    public void setUser(ShopUser user)
-    {
+
+    public void setUser(ShopUser user) {
         this.currUser = user;
     }
 

@@ -4,14 +4,15 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:b="http://bootsfaces.net/ui"
     xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <meta name="author" content="Naasir Jusab" />
     <h:form>
-        <b:navBar brand="PandaMedia" brandHref="manager_index.xhtml" styleClass="navbar navbar-default pandaNavbar">
+        <b:navBar brand="PandaMedia" brandHref="manager_index.xhtml">
             <b:navbarLinks pull="right">
                 <b:navCommandLink value="#{msgs.sales}" action="mansales" />
                 <b:navCommandLink value="#{msgs.clients}" action="manclients" />
                 <b:navCommandLink value="#{msgs.orders}" action="manorders" />
                 <b:navCommandLink value="#{msgs.reviews}" action="manreviews" />
-                <b:dropMenu value="#{msgs.reports}" styleClass="dropdown">
+                <b:dropMenu value="#{msgs.reports}">
                     <b:navCommandLink value="#{msgs.manReportTotalSalesTitle}" action="reptotal" />
                     <b:navCommandLink value="#{msgs.manReportTopSellersTitle}" action="reptopsellers" />
                     <b:navCommandLink value="#{msgs.manReportTopClientsTitle}" action="reptopclients" />
@@ -24,9 +25,9 @@
                 <b:navCommandLink value="#{msgs.newsFeed}" action="mannewsfeeds" />
                 <b:navCommandLink value="#{msgs.survey}" action="mansurveys" />
                 <b:navCommandLink value="#{msgs.banner}" action="manbanners" />
-                <b:dropMenu value="#{msgs.selectLanguage}" styleClass="dropdown">
-                    <b:navCommandLink value="#{msgs.englishLanguage}" action="#{ChangeLanguage.englishAction()}"></b:navCommandLink>
-                    <b:navCommandLink value="#{msgs.frenchLanguage}" action="#{ChangeLanguage.frenchAction()}"></b:navCommandLink>
+                <b:dropMenu value="#{msgs.selectLanguage}">
+                    <b:navCommandLink value="#{msgs.englishLanguage}" action="#{ChangeLanguage.englishAction()}" />
+                    <b:navCommandLink value="#{msgs.frenchLanguage}" action="#{ChangeLanguage.frenchAction()}" />
                 </b:dropMenu>
             </b:navbarLinks>
         </b:navBar>

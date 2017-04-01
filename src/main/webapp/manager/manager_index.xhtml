@@ -8,12 +8,11 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:b="http://bootsfaces.net/ui"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <meta name="author" content="Naasir Jusab" />
+    
     <ui:define name="WindowTitle">#{msgs.inventory}</ui:define>
+    
     <ui:define name="page-content">
-        <h:outputStylesheet name="css/bootstrap.css"/>
-        <h:outputStylesheet library="css" name="manager_style.css"/>
-        <h:outputScript library="js" name="ajaxfix.js" target="head"/>
-
         <f:view locale="#{ChangeLanguage.locale}">
             <p:commandButton value="#{msgs.addTrack}" action="#{trackBacking.loadCreateTrack()}" />
             <br/>
