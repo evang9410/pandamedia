@@ -103,7 +103,7 @@ public class UserSearch implements Serializable {
                     searchDate();
                     break;
             }
-            return "searchpage";
+            return "search";
         }
         return null;
     }

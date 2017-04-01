@@ -375,18 +375,8 @@ public class AlbumBackingBean implements Serializable{
      */
     public String loadEditForIndex(Integer id)
     {
-        this.album = albumController.findAlbum(id);
-        
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("AlbumFunctionality/editAlbum.xhtml");
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-        
-        return null;
+        this.album = albumController.findAlbum(id);        
+        return "maneditalbum";
     }
     
     /**
@@ -407,15 +397,7 @@ public class AlbumBackingBean implements Serializable{
         }
         this.album = null;
         this.filteredAlbums = albumController.findAlbumEntities();
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        return "manindex";
     }
     
     /**
@@ -460,18 +442,8 @@ public class AlbumBackingBean implements Serializable{
      */
     public String loadEditForSales(Integer id)
     {
-        this.album = albumController.findAlbum(id);
-        
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("AlbumFunctionality/editSalesAlbum.xhtml");
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-        
-        return null;
+        this.album = albumController.findAlbum(id);        
+        return "maneditsalesalbum";
     }
     
     /**
@@ -504,15 +476,7 @@ public class AlbumBackingBean implements Serializable{
             }
             this.album = null;
             this.filteredAlbums = albumController.findAlbumEntities();
-            try
-            {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/salesPage.xhtml");
-            }
-            catch(Exception e)
-            {
-                System.out.println(e.getMessage());
-            }
-            return null;
+            return "mansales";
         }
     }
     
@@ -534,18 +498,8 @@ public class AlbumBackingBean implements Serializable{
         }
         
         this.album = null;
-        this.filteredAlbums = albumController.findAlbumEntities();
-        
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-        
-        return null;
+        this.filteredAlbums = albumController.findAlbumEntities();        
+        return "manindex";
     }
     
     /**
@@ -558,15 +512,7 @@ public class AlbumBackingBean implements Serializable{
     {
         this.album = null;
         this.filteredAlbums = albumController.findAlbumEntities();
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        return "manindex";
     }
     
     /**
@@ -578,18 +524,8 @@ public class AlbumBackingBean implements Serializable{
     public String backSales()
     {
         this.album = null;
-        this.filteredAlbums = albumController.findAlbumEntities();
-        
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/salesPage.xhtml");
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-        
-        return null;
+        this.filteredAlbums = albumController.findAlbumEntities();        
+        return "mansales";
     }
     
     /**
@@ -631,17 +567,7 @@ public class AlbumBackingBean implements Serializable{
     
     public String loadCreateAlbum()
     {
-         this.album = new Album();
-               
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("AlbumFunctionality/addAlbum.xhtml");
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-        
-        return null;
+        this.album = new Album();        
+        return "manaddalbum";
     }
 }

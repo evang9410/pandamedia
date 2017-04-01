@@ -1,6 +1,6 @@
 package com.pandamedia.filters;
 
-import com.pandamedia.beans.ShoppingCart;
+import com.pandamedia.beans.purchasing.ShoppingCart;
 import com.pandamedia.beans.UserActionBean;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -44,8 +44,8 @@ public class CheckoutFilter implements Filter{
             String contextPath = ((HttpServletRequest) request)
                     .getContextPath();
             ((HttpServletResponse) response).sendRedirect(contextPath
-                    + "/cart.xhtml");
-            context.log(contextPath + "/cart.xhtml");
+                    + "/shop/cart.xhtml");
+            context.log(contextPath + "/shop/cart.xhtml");
         }
         else
         {
