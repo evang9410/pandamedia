@@ -142,6 +142,51 @@
             <to-view-id>/manager/bannerAdManagement.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>manordersedit</from-outcome>
+            <to-view-id>/manager/editOrders.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>manremoveindivtrack</from-outcome>
+            <to-view-id>/manager/removeIndivTracks.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>manaddalbum</from-outcome>
+            <to-view-id>/manager/album/addAlbum.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>maneditalbum</from-outcome>
+            <to-view-id>/manager/album/editAlbum.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>maneditsalesalbum</from-outcome>
+            <to-view-id>/manager/album/editSalesAlbum.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>maneditclient</from-outcome>
+            <to-view-id>/manager/client/editClients.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>manaddtrack</from-outcome>
+            <to-view-id>/manager/track/addTrack.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>maneditsalestrack</from-outcome>
+            <to-view-id>/manager/track/editSalesTrack.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>manedittrack</from-outcome>
+            <to-view-id>/manager/track/editTrack.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
         
         <!-- Manager report pages navigation rules -->
         <!-- Use redirects to pass through login and manager filter -->
