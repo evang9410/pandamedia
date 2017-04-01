@@ -4,6 +4,7 @@ body{
     bottom: 0;
     width: 100%;
     background-color: #17171b;
+    font-family: "Poppins", sans-serif;
 }
 
 h1{
@@ -133,4 +134,13 @@ h1{
 .container-fix{
     margin: 0;
     padding: 0;
+}
+
+.card-wrapper{
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 2px;
+}
+.card-wrapper:hover{
+    background-color: #02b875
 }

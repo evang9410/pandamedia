@@ -1,6 +1,7 @@
 
 package com.pandamedia.arquillian.test;
 
+import com.pandamedia.beans.InvoiceBackingBean;
 import com.pandamedia.beans.ReportBackingBean;
 import com.pandamedia.beans.TrackBackingBean;
 import com.pandamedia.commands.ChangeLanguage;
@@ -15,11 +16,14 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -44,6 +48,9 @@ import persistence.controllers.ReviewJpaController;
 import persistence.controllers.ShopUserJpaController;
 import persistence.controllers.SongwriterJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
+import persistence.entities.Album;
+import persistence.entities.Invoice;
+import persistence.entities.InvoiceAlbum;
 import persistence.entities.InvoiceTrack;
 import persistence.entities.Review;
 import persistence.entities.Track;
@@ -78,6 +85,8 @@ public class TrackArq {
    private InvoiceJpaController invoiceController;
    @Inject
    private InvoiceTrackJpaController invoiceTrackController;
+   @Inject
+   private InvoiceBackingBean invoiceBacking;
     
     @Deployment
     public static WebArchive deploy() {
@@ -381,6 +390,72 @@ public class TrackArq {
         assertEquals(saleTracks.size(),2);
     }
     
+    @Test
+    /**
+     *@author Evan G.
+     */
+    public void testGetPopularTracks(){
+        /*
+        Alright so for popular tracks, we get the most popular tracks of that week,
+        our local database does not have any invoices from this week, or anyweek of testing
+        so we need to create an invoice within this week (current date = March 31) and set the
+        invoice track final price to be something absurdly high, the invoice_track should  have two albums
+        that will be checked to test
+         */
+        short i = 0;
+        Invoice inv = new Invoice();
+        // only the date is important here as the invoice table is just used to
+        // find by date
+        inv.setSaleDate(Calendar.getInstance().getTime());
+        inv.setTotalNetValue(24);
+        inv.setPstTax(10);
+        inv.setGstTax(10);
+        inv.setHstTax(10);
+        inv.setTotalGrossValue(35);
+        inv.setRemovalStatus(i);
+        inv.setRemovalDate(null);
+        inv.setUserId(userController.findShopUser(1));
+
+        try {
+            invoiceController.create(inv);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        List<Invoice> list = invoiceBacking.getAll();
+        // get the last invoice
+        inv = list.get(list.size() - 1);
+
+        short rmsai = 0;
+        // create an invoice of an album
+        InvoiceTrack it = new InvoiceTrack();
+        it.setTrack(trackBacking.findTrackById(17));//Track: Title: Boomin
+        it.setInvoice(inv);
+        it.setRemovalDate(null);
+        it.setRemovalStatus(rmsai);
+        it.setFinalPrice(900.99); // should be highest
+
+        InvoiceTrack it2 = new InvoiceTrack();
+        it2.setTrack(trackBacking.findTrackById(63));//Track: Title: Rather be
+        it2.setInvoice(inv);
+        it2.setRemovalDate(null);
+        it2.setRemovalStatus(rmsai);
+        it2.setFinalPrice(850.89); // second highest
+
+        try {
+            invoiceTrackController.create(it2);
+            invoiceTrackController.create(it);
+        } catch (Exception ex) {
+            Logger.getLogger(AlbumArq.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        List<Track> expected = new ArrayList(); // expected highest selling tracks to be 14 and 6 since they have really high invoice album sales prices
+        expected.add(trackBacking.findTrackById(17));
+        expected.add(trackBacking.findTrackById(63));    
+        List<Track> actual = trackBacking.getPopularTracks().subList(0, 2);
+        
+        assertEquals(expected, actual);
+    }
     
     
 

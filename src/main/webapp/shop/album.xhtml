@@ -7,7 +7,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:b="http://bootsfaces.net/ui">
     <ui:define name="WindowTitle">
-        Album | Pandamedia
+        #{albumBacking.album.title} | Pandamedia
     </ui:define>
     <ui:define name="css">
         <h:outputStylesheet name="album.css" library="css"/>
@@ -52,7 +52,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>SONG</th>
+                                    <th>#{msgs.songCAPS}</th>
                                     <th style="text-align: left;"><i class="fa fa-circle-o-notch" aria-hidden="true"></i></th>
                                     <th style="text-align: right;"><i class="fa fa-shopping-cart" aria-hidden="true"></i></th>
                                     <th></th>
