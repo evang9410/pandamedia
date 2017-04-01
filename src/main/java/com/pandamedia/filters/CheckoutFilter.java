@@ -44,8 +44,8 @@ public class CheckoutFilter implements Filter{
             String contextPath = ((HttpServletRequest) request)
                     .getContextPath();
             ((HttpServletResponse) response).sendRedirect(contextPath
-                    + "/cart.xhtml");
-            context.log(contextPath + "/cart.xhtml");
+                    + "/shop/cart.xhtml");
+            context.log(contextPath + "/shop/cart.xhtml");
         }
         else
         {

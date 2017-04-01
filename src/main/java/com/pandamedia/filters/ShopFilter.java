@@ -44,8 +44,8 @@ public class ShopFilter implements Filter{
                     .getContextPath();
             // TODO: change this to new management location once moved
             ((HttpServletResponse) response).sendRedirect(contextPath
-                    + "/userconnection/login.xhtml");
-            context.log(contextPath + "/userconnection/login.xhtml");            
+                    + "/manager/manager_index.xhtml");
+            context.log(contextPath + "/manager/manager_index.xhtml");            
         }
         else
         {

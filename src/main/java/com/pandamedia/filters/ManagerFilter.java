@@ -40,8 +40,7 @@ public class ManagerFilter implements Filter{
         if ((uab.isLogin()) && (uab.getCurrUser().getIsManager() == 1))
         {
             context.log("User is logged in and is a manager.  id = " + uab.getCurrUser().getId());
-            chain.doFilter(request, response);
-            
+            chain.doFilter(request, response);            
         }
         else
         {
