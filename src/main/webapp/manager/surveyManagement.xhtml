@@ -57,8 +57,6 @@
                 <p:commandButton value="#{msgs.add}" action="#{managerSurveyBean.save()}" update=":surveyFormID:surveyTableID" />
             </h:form>
 
-
-
             <h:form id="surveyFormID">
                 <h1><h:outputText value="#{msgs.survey}"/></h1>
                 <p:dataTable value="#{managerSurveyBean.all}" id="surveyTableID" var="item" paginator="true" rows="5">
