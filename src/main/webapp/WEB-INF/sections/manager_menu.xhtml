@@ -29,6 +29,9 @@
                     <b:navCommandLink value="#{msgs.englishLanguage}" action="#{ChangeLanguage.englishAction()}" />
                     <b:navCommandLink value="#{msgs.frenchLanguage}" action="#{ChangeLanguage.frenchAction()}" />
                 </b:dropMenu>
+                <b:dropMenu value="#{userAction.currUser.firstName}">
+                    <b:navCommandLink value="#{msgs.logout}" action="#{userAction.logout()}"/>
+                </b:dropMenu>
             </b:navbarLinks>
         </b:navBar>
     </h:form>

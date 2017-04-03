@@ -287,7 +287,7 @@ public class UserActionBean implements Serializable {
             //Sets the page where the user was previously on.
             System.out.println("prev page");
             this.prevPage = FacesContext.getCurrentInstance().getViewRoot();
-            return "userconnection/login";
+            return "login";
         }
     }
 
