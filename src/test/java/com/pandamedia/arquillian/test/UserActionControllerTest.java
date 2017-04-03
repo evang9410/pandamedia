@@ -167,6 +167,13 @@ public class UserActionControllerTest {
     }
     
     @Test
+    public void findUserByEmailNullInput(){
+        ShopUser result=userController.findUserByEmail(null);
+        assertThat(result).isNull();
+    }
+    
+    
+    @Test
     public void findUserByEmail() throws Exception{
         //create record to be looked for
         ShopUser test = createNewUser("Mr", "Marley", "Bob", "cats avenue", "catcity", 
@@ -177,6 +184,7 @@ public class UserActionControllerTest {
         
         assertThat(result.getEmail()).isEqualTo(test.getEmail());
     }
+
     
     private ShopUser createNewUser(String title, String lastName, String firstName, 
             String streetAddress, String city, String country, String postalCode, 
