@@ -41,6 +41,8 @@ public class AlbumBackingBean implements Serializable{
     
     @Inject
     private AlbumJpaController albumController;
+    @Inject
+    private ClientTrackingBean clientTracking;
     private Album album;
     private List<Album> albums;
     private List<Album> filteredAlbums;
@@ -57,18 +59,7 @@ public class AlbumBackingBean implements Serializable{
         genrelist = new ArrayList();
     }
     
-    /**
-     * This method will initialize a list of albums that will be used by the 
-     * data table. PostConstruct is used in methods that need to be executed after 
-     * dependency injection is done to perform any initialization. In this case,
-     * I need the list of albums after albumController has been injected.
-     */
-    @PostConstruct
-    public void init()
-    {
-        this.albums = albumController.findAlbumEntities(); 
-        //this.album = (Album) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("album");
-    }
+    
     
     /**
      * This method will return all the albums in a list so it can be displayed
@@ -157,7 +148,9 @@ public class AlbumBackingBean implements Serializable{
      */
     public String albumPage(Album a){
         this.album = a;
-        System.out.println("" + a.getId() +"\n" + a.getTitle() +"\n" + a.getArtistId().getName());
+//        System.out.println("" + a.getId() +"\n" + a.getTitle() +"\n" + a.getArtistId().getName());
+        // persist the searched genre to the suggested
+        clientTracking.peristTracking(a.getGenreId());
         return "album";
     }
     /**
@@ -190,7 +183,7 @@ public class AlbumBackingBean implements Serializable{
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<Album> albumRoot = query.from(Album.class);
         Join invoiceAlbumJoin = albumRoot.join(Album_.invoiceAlbumList);
-        Join invoiceJoin = invoiceAlbumJoin.join(InvoiceTrack_.invoice);
+        Join invoiceJoin = invoiceAlbumJoin.join(InvoiceAlbum_.invoice);
         query.multiselect(cb.sum(invoiceAlbumJoin.get(InvoiceAlbum_.finalPrice)), albumRoot);
         query.groupBy(albumRoot);
 
@@ -203,13 +196,13 @@ public class AlbumBackingBean implements Serializable{
         query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
 
         // Order by clause
-        query.orderBy(cb.asc(cb.sum(invoiceAlbumJoin.get(InvoiceAlbum_.finalPrice))));
+        query.orderBy(cb.desc(cb.sum(invoiceAlbumJoin.get(InvoiceAlbum_.finalPrice))));
         
         List<Album> albums = new ArrayList();
         TypedQuery<Object[]> typedQuery = em.createQuery(query).setMaxResults(6);
         List<Object[]> l = typedQuery.getResultList();
         for(Object[] o: l){
-            System.out.println(((Album)o[1]).getTitle());
+//            System.out.println(((Album)o[1]).getTitle());
             albums.add((Album)o[1]);//retrieve the album id from the multiselect and cast the object, from id to album object.
         }
         return albums;
@@ -254,7 +247,7 @@ public class AlbumBackingBean implements Serializable{
         }
         int genre_id = getGenreId(genreString);
         String q = "SELECT a FROM Album a WHERE a.genreId.id = :genre_id";
-        TypedQuery<Album> query = em.createQuery(q, Album.class).setMaxResults(5);
+        TypedQuery<Album> query = em.createQuery(q, Album.class);
         query.setParameter("genre_id", genre_id);
         return query.getResultList();
     }
@@ -324,7 +317,9 @@ public class AlbumBackingBean implements Serializable{
             }
         }
         this.album = null;
+        System.out.println(getAll().get(0).getRemovalStatus());
         this.filteredAlbums = albumController.findAlbumEntities();
+        System.out.println(filteredAlbums.get(0).getRemovalStatus());
         return null; 
     }
     
@@ -356,6 +351,7 @@ public class AlbumBackingBean implements Serializable{
                 System.out.println(e.getMessage());
             }
         }
+        System.out.println("Remove: " + album.getRemovalStatus());
         this.album = null;
         this.filteredAlbums = albumController.findAlbumEntities();
         return null; 
@@ -371,18 +367,8 @@ public class AlbumBackingBean implements Serializable{
      */
     public String loadEditForIndex(Integer id)
     {
-        this.album = albumController.findAlbum(id);
-        
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("AlbumFunctionality/editAlbum.xhtml");
-        }
-        catch(IOException e)
-        {
-            System.out.println(e.getMessage());
-        }
-        
-        return null;
+        this.album = albumController.findAlbum(id);        
+        return "maneditalbum";
     }
     
     /**
@@ -403,15 +389,7 @@ public class AlbumBackingBean implements Serializable{
         }
         this.album = null;
         this.filteredAlbums = albumController.findAlbumEntities();
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
-        }
-        catch(IOException e)
-        {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        return "manindex";
     }
     
     /**
@@ -456,18 +434,8 @@ public class AlbumBackingBean implements Serializable{
      */
     public String loadEditForSales(Integer id)
     {
-        this.album = albumController.findAlbum(id);
-        
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("AlbumFunctionality/editSalesAlbum.xhtml");
-        }
-        catch(IOException e)
-        {
-            System.out.println(e.getMessage());
-        }
-        
-        return null;
+        this.album = albumController.findAlbum(id);        
+        return "maneditsalesalbum";
     }
     
     /**
@@ -500,15 +468,7 @@ public class AlbumBackingBean implements Serializable{
             }
             this.album = null;
             this.filteredAlbums = albumController.findAlbumEntities();
-            try
-            {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/salesPage.xhtml");
-            }
-            catch(IOException e)
-            {
-                System.out.println(e.getMessage());
-            }
-            return null;
+            return "mansales";
         }
     }
     
@@ -530,18 +490,8 @@ public class AlbumBackingBean implements Serializable{
         }
         
         this.album = null;
-        this.filteredAlbums = albumController.findAlbumEntities();
-        
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
-        }
-        catch(IOException e)
-        {
-            System.out.println(e.getMessage());
-        }
-        
-        return null;
+        this.filteredAlbums = albumController.findAlbumEntities();        
+        return "manindex";
     }
     
     /**
@@ -554,15 +504,7 @@ public class AlbumBackingBean implements Serializable{
     {
         this.album = null;
         this.filteredAlbums = albumController.findAlbumEntities();
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/manager_index.xhtml");
-        }
-        catch(IOException e)
-        {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        return "manindex";
     }
     
     /**
@@ -574,18 +516,8 @@ public class AlbumBackingBean implements Serializable{
     public String backSales()
     {
         this.album = null;
-        this.filteredAlbums = albumController.findAlbumEntities();
-        
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/salesPage.xhtml");
-        }
-        catch(IOException e)
-        {
-            System.out.println(e.getMessage());
-        }
-        
-        return null;
+        this.filteredAlbums = albumController.findAlbumEntities();        
+        return "mansales";
     }
     
     /**
@@ -623,5 +555,11 @@ public class AlbumBackingBean implements Serializable{
             return "0.0";
         else
             return formatter.format(typedQuery.getResultList().get(0));
+    }
+    
+    public String loadCreateAlbum()
+    {
+        this.album = new Album();        
+        return "manaddalbum";
     }
 }

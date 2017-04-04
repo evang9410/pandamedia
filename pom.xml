@@ -15,7 +15,7 @@
     <!-- The version of the build. Any value is valid though a number and a
     string are common. SNAPSHOT means a project under development. FINAL is commonly
     used to refer to stable production version -->
-    <version>0.1</version>
+    <version>1.0.0-FINAL</version>
 
     <!-- Default value is jar but may be war or ear -->
     <packaging>war</packaging>
@@ -45,9 +45,9 @@
             <email>tdb</email>
         </developer>        
         <developer>
-            <id>tdb</id>
+            <id>1432581</id>
             <name>Evangelo Glicakis</name>
-            <email>tdb</email>
+            <email>evang9410@gmail.com</email>
         </developer>
         <developer>
             <id>1433545</id>
@@ -254,7 +254,7 @@
         <dependency>
             <groupId>org.jodd</groupId>
             <artifactId>jodd-mail</artifactId>
-            <version>3.7.1</version>
+            <version>3.8.1</version>
         </dependency>
     </dependencies>
 
@@ -279,6 +279,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.0.0</version>
+                <configuration>
+                    <warName>g4w17</warName>
+                </configuration>
             </plugin>
 
             <plugin>

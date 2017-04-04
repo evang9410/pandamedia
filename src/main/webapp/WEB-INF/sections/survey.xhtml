@@ -7,11 +7,11 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:b="http://bootsfaces.net/ui">
     <head>
-        <h:outputStylesheet library="css" name="style.css"/>
+<!--        <h:outputStylesheet library="css" name="style.css"/>-->
     </head>
 
         <h:form>
-            <h3>Survey</h3>
+            <h3>#{msgs.survey}</h3>
             <p:outputLabel for="survey" value="#{surveyBean.survey.question}" id="surveyQuestionLbl"/>
             <div id="surveyFormDiv">
                 <p:panel id="surveyOptionsPanel" rendered="#{surveyBean.showOptions}">

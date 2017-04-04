@@ -40,7 +40,7 @@ public class GenreBackingBean implements Serializable {
     
     public List<String> getAllGenresNames(){
         String q = "SELECT g.name FROM Genre g";
-        TypedQuery query = em.createQuery(q, Genre.class).setMaxResults(5); // for testing this is set to 5 results max. In production, we should remove this limit.
+        TypedQuery query = em.createQuery(q, Genre.class);
         return query.getResultList();
     }
     

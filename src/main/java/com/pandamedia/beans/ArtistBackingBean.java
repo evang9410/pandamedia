@@ -53,8 +53,7 @@ public class ArtistBackingBean implements Serializable{
      * @return artist object
      */
     public Artist findArtistById(int id){
-        artist = artistController.findArtist(id); 
-        return artist;
+        return artistController.findArtist(id); 
     }
     
     /**
@@ -78,10 +77,7 @@ public class ArtistBackingBean implements Serializable{
     }
     
     public List<Artist> getArtistsList(){
-        String q = "SELECT a FROM Artist a";
-        TypedQuery<Artist> query = em.createQuery(q, Artist.class);
-        this.artists = query.getResultList();
-        return this.artists;
+       return getAll();
     }
     
     public void setArtistList(ArrayList<Artist> a){

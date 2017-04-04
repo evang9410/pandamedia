@@ -2,6 +2,7 @@ body{
     position: relative;
     width: 100%;
     background-color: #17171b;
+    font-family: "Poppins", sans-serif;
     padding-bottom: 190px;
 }
 
@@ -138,7 +139,16 @@ h1{
     margin: 0;
     padding: 0;
 }
+.card-wrapper{
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 2px;
+}
+.card-wrapper:hover{
+    background-color: #02b875
+}
 
 .page-content-wrapper{
     padding-top: 70px;
 }
+

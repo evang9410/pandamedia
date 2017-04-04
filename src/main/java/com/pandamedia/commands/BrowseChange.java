@@ -42,14 +42,14 @@ public class BrowseChange implements Serializable{
         context = FacesContext.getCurrentInstance();
         msgs = ResourceBundle.getBundle("bundles.messages", context.getViewRoot().getLocale());
         this.type = msgs.getString("albums");
-        return "browsealbums";
+        return "browsealbum";
     }
     
     public String browseArtists(){
         context = FacesContext.getCurrentInstance();
         msgs = ResourceBundle.getBundle("bundles.messages", context.getViewRoot().getLocale());
         this.type = msgs.getString("artists");
-        return "browseartists";
+        return "browseartist";
     }
 
     public String getType() {
