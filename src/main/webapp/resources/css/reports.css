@@ -6,3 +6,7 @@
     table-layout: fixed;
     word-wrap: break-word;
 }
+
+.glyphicon-arrow-right {
+    background-image: url(/images/icons/arrow-right.png) !important;
+}

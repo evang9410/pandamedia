@@ -4,16 +4,21 @@
     xmlns:p="http://primefaces.org/ui"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <meta name="author" content="Erika Bourque"/>
+    <h:outputStylesheet name="reports.css" library="css"/>
     <h:form id="calendars">
-            <p:calendar 
-            id="reportStartDate" 
-            mode="inline" 
-            navigator="true" 
-            maxdate="#{max}"
-            value="#{start}">
+        <h:panelGrid columns="2">
+            <p:outputLabel><h4>#{msgs.reportStart}</h4></p:outputLabel>
+            <p:outputLabel><h4>#{msgs.reportEnd}</h4></p:outputLabel>
+            
+            <p:calendar styleClass="report-cal"
+                id="reportStartDate" 
+                mode="inline" 
+                navigator="true" 
+                maxdate="#{max}"
+                value="#{start}">
                 <p:ajax event="dateSelect" process="reportStartDate reportEndDate" immediate="true" update="#{updateTable}"/> 
             </p:calendar>
-            <p:calendar 
+            <p:calendar styleClass="report-cal"
                 id="reportEndDate" 
                 mode="inline" 
                 navigator="true" 
@@ -21,5 +26,6 @@
                 value="#{end}">
                 <p:ajax event="dateSelect" process="reportStartDate reportEndDate" immediate="true" update="#{updateTable}"/>
             </p:calendar>
+        </h:panelGrid>
     </h:form>    
 </ui:composition>

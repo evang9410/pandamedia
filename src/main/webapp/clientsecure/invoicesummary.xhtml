@@ -9,6 +9,9 @@
                 xmlns:p="http://primefaces.org/ui">
     <meta name="author" content="Erika Bourque"/>
     <ui:define name="WindowTitle">#{msgs.invoiceSummaryTitle}</ui:define>
+    <ui:define name="css">
+        <h:outputStylesheet name="checkout.css" library="css"/>
+    </ui:define>
     <ui:define name="page-content">
         <div id="content">
             <ui:fragment rendered="#{not invoiceSum.invoiceExists()}">
@@ -16,6 +19,7 @@
             </ui:fragment>
             <ui:fragment rendered="#{invoiceSum.invoiceExists()}">
                 <div id="invoiceDetails">
+                    <h3>#{msgs.invoiceSummaryTitle}</h3>
                     <b:panelGrid columnClasses="labels, output" columns="2">
                         <h:outputLabel value="#{msgs.invoiceNumHeader}"/>
                         <h:outputLabel value="#{invoiceSum.invoice.id}"/>
@@ -50,6 +54,7 @@
                     </b:panelGrid>
                 </div>
                 <div id="billingInfo">
+                    <h3>#{msgs.billingTitle}</h3>
                     <b:panelGrid columns="1">
                         <h:outputLabel>#{userAction.currUser.title} #{userAction.currUser.firstName} #{userAction.currUser.lastName}</h:outputLabel>                    
                         <h:outputLabel>#{userAction.currUser.streetAddress}</h:outputLabel>
