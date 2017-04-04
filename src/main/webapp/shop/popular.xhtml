@@ -68,13 +68,13 @@
                 <h:form>
                     <ui:repeat value="#{trackBacking.popularTracks}" var="tsale">
                         <div class="col-xs-18 col-sm-6 col-md-3 card-wrap">
-                            <div class="thumbnail">
-                                <h:commandLink action="#{albumBacking.albumPage(al)}">
-                                    <img src="#{request.contextPath}/resources/coverart/#{tsale.coverArtId.imagePath}" class="img-cover"></img>
+                            <div class="thumbnail" style="min-height: 15em;">
+                                <h:commandLink action="#{albumBacking.albumPage(tsale.albumId)}">
+                                    <img src="#{request.contextPath}/resources/coverart/#{tsale.coverArtId.imagePath}" class="img-cover" style="width: 250px; height: 250px;"></img>
                                 </h:commandLink>
                                 <div class="caption">
-                                    <h:commandLink action="#{albumBacking.albumPage(al)}"><h4>#{tsale.title}</h4></h:commandLink>
-                                    <h:commandLink action="#{artistBacking.artistPage(al.artistId)}"><p>#{tsale.artistId.name}</p></h:commandLink>
+                                    <h:commandLink action="#{trackBacking.trackPage(tsale)}"><h4>#{tsale.title}</h4></h:commandLink>
+                                    <h:commandLink action="#{artistBacking.artistPage(tsale.artistId)}"><p>#{tsale.artistId.name}</p></h:commandLink>
                                 </div>
                             </div>
                         </div>
