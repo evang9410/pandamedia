@@ -47,9 +47,9 @@ public class ManagerFilter implements Filter{
             context.log("User not logged in or is not a manager.");
             String contextPath = ((HttpServletRequest) request)
                     .getContextPath();
-            ((HttpServletResponse) response).sendRedirect(contextPath
-                    + "/userconnection/login.xhtml");
             context.log(contextPath + "/userconnection/login.xhtml");
+            ((HttpServletResponse) response).sendRedirect(contextPath + "/userconnection/login.xhtml");
+            
         }
     }
 

@@ -57,8 +57,6 @@
                 <p:commandButton value="#{msgs.add}" action="#{managerSurveyBean.save()}" update=":surveyFormID:surveyTableID" />
             </h:form>
 
-
-
             <h:form id="surveyFormID">
                 <h1><h:outputText value="#{msgs.survey}"/></h1>
                 <p:dataTable value="#{managerSurveyBean.all}" id="surveyTableID" var="item" paginator="true" rows="5">
@@ -66,7 +64,8 @@
                         <f:facet name="header">
                             <h:outputText value="#{msgs.id}"/>
                         </f:facet>
-                        <h:outputText value="#{item.id}"/>
+                        <h:outputText value="#{item.id}">
+                        </h:outputText>
                     </p:column>
                     <p:column>
                         <f:facet name="header">
@@ -126,7 +125,7 @@
                         <f:facet name="header">
                             <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <p:commandButton value="#{msgs.del}" action="#{managerSurveyBean.remove(item.id)}" update=":surveyFormID:surveyTableID"/>
+                        <p:commandButton ajax="true" value="#{msgs.del}" action="#{managerSurveyBean.remove(item.id)}" update=":surveyFormID:surveyTableID"/>
                         <p:commandButton value="#{msgs.select}" action="#{managerSurveyBean.select(item.id)}" update=":surveyFormID:surveyTableID"/>
                     </p:column>
                 </p:dataTable>

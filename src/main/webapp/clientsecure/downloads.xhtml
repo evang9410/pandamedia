@@ -15,7 +15,7 @@
         <h:outputStylesheet library="css" name="style.css" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  
         <h:form id="downloadsFormID">
-            <h1><h:outputText value="#{msgs.downloads}"/></h1>
+            <h1 style="margin-top: 2%; margin-left:2%;"><h:outputText value="#{msgs.downloads}"/></h1>
             <p:dataTable value="#{invoiceBacking.loadDownloadsTable()}" id="downloadsTableID" var="item" paginator="true" rows="5">
                 <p:column>
                     <f:facet name="header">

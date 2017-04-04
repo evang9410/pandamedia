@@ -19,7 +19,7 @@
             <p:commandButton value="#{msgs.addAlbum}" action="#{albumBacking.loadCreateAlbum()}" />
             <h:form id="albumFormID">
                 <h1><h:outputText value="#{msgs.albums}"/></h1>
-                <p:dataTable id="albumTable" value="#{albumBacking.all}" widgetVar="albumTable" filteredValue="#{albumBacking.filteredAlbums}"  var="item" paginator="true" rows="5">
+                <p:dataTable id="albumTable" value="#{albumBacking.all}" widgetVar="albumTable" var="item" paginator="true" rows="5">
                     <f:facet name="header">
                         <p:outputPanel>
                             <h:outputText value="#{msgs.search}" />
@@ -84,9 +84,9 @@
                         <f:facet name="header">
                             <h:outputText value="#{msgs.options}"/>
                         </f:facet>
-                        <p:commandButton  value="#{msgs.edit}" action="#{albumBacking.loadEditForIndex(item.id)}" update=":albumFormID:albumTable"/>
-                        <p:commandButton value="#{msgs.add}" action="#{albumBacking.addItem(item.id)}" update=":albumFormID:albumTable"/>
-                        <p:commandButton  value="#{msgs.del}" action="#{albumBacking.removeItem(item.id)}" update=":albumFormID:albumTable"/>
+                        <b:commandButton value="#{msgs.edit}" action="#{albumBacking.loadEditForIndex(item.id)}"/>
+                        <b:commandButton value="#{msgs.add}" action="#{albumBacking.addItem(item.id)}" />
+                        <b:commandButton value="#{msgs.del}" action="#{albumBacking.removeItem(item.id)}"/>
                     </p:column>
                 </p:dataTable>
             </h:form>         
