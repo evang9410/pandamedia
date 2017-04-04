@@ -13,7 +13,7 @@
         <h:outputStylesheet name="checkout.css" library="css"/>
     </ui:define>
     <ui:define name="page-content">
-        <p:growl id="growl" showDetail="true" showSummary="false" />
+        <p:growl id="growl" showDetail="false" showSummary="true" life="5000" />
         <div id="content">
             <div id="billingInfo">
                 <h3>#{msgs.billingTitle}</h3>
