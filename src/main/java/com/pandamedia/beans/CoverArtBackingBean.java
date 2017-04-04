@@ -44,8 +44,7 @@ public class CoverArtBackingBean implements Serializable {
      * @return cover art object
      */
     public CoverArt findCoverArtById(int id){
-        coverArt = coverArtController.findCoverArt(id); 
-        return coverArt;
+        return coverArtController.findCoverArt(id); 
     }
     
     /**

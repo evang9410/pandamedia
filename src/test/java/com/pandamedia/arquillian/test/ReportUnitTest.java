@@ -1,7 +1,7 @@
 package com.pandamedia.arquillian.test;
 
 import com.pandamedia.beans.ReportBackingBean;
-import com.pandamedia.beans.ReportDateBean;
+import com.pandamedia.beans.ReportDataBean;
 import com.pandamedia.commands.ChangeLanguage;
 import com.pandamedia.converters.AlbumConverter;
 import com.pandamedia.filters.LoginFilter;
@@ -57,7 +57,7 @@ public class ReportUnitTest {
     private ReportBackingBean reports;
 
     @Inject
-    private ReportDateBean dates;
+    private ReportDataBean dates;
     
     @Inject
     private ShopUserJpaController userJpa;

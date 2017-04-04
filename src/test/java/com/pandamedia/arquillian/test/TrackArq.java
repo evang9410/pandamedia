@@ -1,16 +1,29 @@
 
 package com.pandamedia.arquillian.test;
 
+import com.pandamedia.beans.InvoiceBackingBean;
 import com.pandamedia.beans.ReportBackingBean;
 import com.pandamedia.beans.TrackBackingBean;
 import com.pandamedia.commands.ChangeLanguage;
 import com.pandamedia.converters.AlbumConverter;
 import com.pandamedia.filters.LoginFilter;
 import com.pandamedia.utilities.Messages;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -22,15 +35,24 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import persistence.controllers.AlbumJpaController;
 import persistence.controllers.ArtistJpaController;
 import persistence.controllers.CoverArtJpaController;
 import persistence.controllers.GenreJpaController;
+import persistence.controllers.InvoiceJpaController;
+import persistence.controllers.InvoiceTrackJpaController;
+import persistence.controllers.ReviewJpaController;
 import persistence.controllers.ShopUserJpaController;
 import persistence.controllers.SongwriterJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
+import persistence.entities.Album;
+import persistence.entities.Invoice;
+import persistence.entities.InvoiceAlbum;
+import persistence.entities.InvoiceTrack;
+import persistence.entities.Review;
 import persistence.entities.Track;
 
 /**
@@ -55,8 +77,16 @@ public class TrackArq {
     private GenreJpaController genreController;
     @Inject
     private CoverArtJpaController coverArtController;
-    
-    
+   @Inject
+   private ShopUserJpaController userController;
+   @Inject
+   private ReviewJpaController reviewController;
+   @Inject
+   private InvoiceJpaController invoiceController;
+   @Inject
+   private InvoiceTrackJpaController invoiceTrackController;
+   @Inject
+   private InvoiceBackingBean invoiceBacking;
     
     @Deployment
     public static WebArchive deploy() {
@@ -97,6 +127,75 @@ public class TrackArq {
         return webArchive;
     }
     
+    /**
+     * This routine is courtesy of Bartosz Majsak who also solved my Arquillian
+     * remote server problem
+     */
+    @Before
+    public void seedDatabase() {
+        final String seedCreateScript = loadAsString("createtestdatabase.sql");
+        //final String seedDataScript = loadAsString("inserttestingdata.sql");
+
+        try (Connection connection = ds.getConnection()) {
+            for (String statement : splitStatements(new StringReader(
+                    seedCreateScript), ";")) {
+                connection.prepareStatement(statement).execute();
+                System.out.println("Statement successful: " + statement);
+            }
+            
+//            for (String statement : splitStatements(new StringReader(
+//                    seedDataScript), ";")) {
+//                connection.prepareStatement(statement).execute();
+//            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed seeding database", e);
+        }
+        //System.out.println("Seeding works");
+    }
+
+    /**
+     * The following methods support the seedDatabse method
+     */
+    private String loadAsString(final String path) {
+        try (InputStream inputStream = Thread.currentThread()
+                .getContextClassLoader().getResourceAsStream(path)) {
+            return new Scanner(inputStream).useDelimiter("\\A").next();
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to close input stream.", e);
+        }
+    }
+
+    private List<String> splitStatements(Reader reader,
+            String statementDelimiter) {
+        final BufferedReader bufferedReader = new BufferedReader(reader);
+        final StringBuilder sqlStatement = new StringBuilder();
+        final List<String> statements = new LinkedList<>();
+        try {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || isComment(line)) {
+                    continue;
+                }
+                sqlStatement.append(line);
+                if (line.endsWith(statementDelimiter)) {
+                    statements.add(sqlStatement.toString());
+                    sqlStatement.setLength(0);
+                }
+            }
+//            System.out.println(statements);
+            return statements;
+        } catch (IOException e) {
+            throw new RuntimeException("Failed parsing sql", e);
+        }
+    }
+
+    private boolean isComment(final String line) {
+        return line.startsWith("--") || line.startsWith("//")
+                || line.startsWith("/*");
+    }
+
     
     @Test
     public void testAddItem()
@@ -118,19 +217,19 @@ public class TrackArq {
     public void testEdit()
     {
         Date date = Calendar.getInstance().getTime();
-        short i = 1;
+        short status = 1;
         Track t = trackBacking.findTrackById(1);
         
-        t.setTitle("hehe");
+        t.setTitle("haha");
         t.setReleaseDate(date);
-        t.setPlayLength("1:45");
+        t.setPlayLength("1:46");
         t.setDateEntered(date);
-        t.setPartOfAlbum(i);
+        t.setPartOfAlbum(status);
         t.setAlbumTrackNumber(1);
         t.setCostPrice(1.0);
         t.setListPrice(1.5);
         t.setSalePrice(0);
-        t.setRemovalStatus(i);
+        t.setRemovalStatus(status);
         t.setRemovalDate(date);
         t.setAlbumId(albumController.findAlbum(1));
         t.setArtistId(artistController.findArtist(1));
@@ -142,61 +241,26 @@ public class TrackArq {
         trackBacking.edit();
         Track editedTrack = trackBacking.findTrackById(1);
         
-        boolean isEdited = true;
-        
-        if(!editedTrack.getTitle().equals(t.getTitle()))
-            isEdited = false;
-        if(!editedTrack.getReleaseDate().equals(t.getReleaseDate()))
-            isEdited=false;
-        if(!editedTrack.getPlayLength().equals(t.getPlayLength()))
-            isEdited=false;
-        if(!editedTrack.getDateEntered().equals(t.getDateEntered()))
-            isEdited=false;
-        if(editedTrack.getPartOfAlbum() != t.getPartOfAlbum() )
-            isEdited=false;
-        if(editedTrack.getAlbumTrackNumber() != t.getAlbumTrackNumber())
-            isEdited=false;
-        if(editedTrack.getCostPrice() != t.getCostPrice())
-            isEdited=false;
-        if(editedTrack.getListPrice() != t.getListPrice())
-            isEdited=false;
-        if(editedTrack.getSalePrice() != t.getSalePrice())
-            isEdited=false;
-        if(editedTrack.getRemovalStatus() != t.getRemovalStatus())
-            isEdited=false;
-        if(!editedTrack.getRemovalDate().equals(t.getRemovalDate()))
-            isEdited=false;
-        if(!editedTrack.getAlbumId().equals(t.getAlbumId()))
-            isEdited=false;
-        if(!editedTrack.getArtistId().equals(t.getArtistId()))
-            isEdited=false;
-        if(!editedTrack.getSongwriterId().equals(t.getSongwriterId()))
-            isEdited=false;
-        if(!editedTrack.getGenreId().equals(t.getGenreId()))
-            isEdited=false;
-        if(!editedTrack.getCoverArtId().equals(t.getCoverArtId()))
-            isEdited=false;
-        
-        assertTrue(isEdited);
+        assertEquals(t,editedTrack);
     }
     
     @Test
     public void testCreate()
     {
         Date date = Calendar.getInstance().getTime();
-        short i = 1;
+        short status = 1;
         Track t = new Track();
         
         t.setTitle("hehe");
         t.setReleaseDate(date);
         t.setPlayLength("1:45");
         t.setDateEntered(date);
-        t.setPartOfAlbum(i);
+        t.setPartOfAlbum(status);
         t.setAlbumTrackNumber(1);
         t.setCostPrice(1.0);
         t.setListPrice(1.5);
         t.setSalePrice(0);
-        t.setRemovalStatus(i);
+        t.setRemovalStatus(status);
         t.setRemovalDate(date);
         t.setAlbumId(albumController.findAlbum(1));
         t.setArtistId(artistController.findArtist(1));
@@ -205,11 +269,194 @@ public class TrackArq {
         t.setCoverArtId(coverArtController.findCoverArt(1));      
         
         trackBacking.setTrack(t);
-        List<Track> listBefore = trackBacking.getAll();
         trackBacking.create();
-        List<Track> listAfter = trackBacking.getAll();
-        assertEquals(listBefore.size() + 1, listAfter.size() );
+        List<Track> list = trackBacking.getAll();
+        assertEquals(list.get(list.size()-1), t);
 
     }
     
+    @Test
+    public void testApprovedReviews()
+    {
+        Date date = Calendar.getInstance().getTime();
+        short status = 1;
+        Review review = new Review();
+        review.setDateEntered(date);
+        review.setRating(1);
+        review.setReviewContent("ahhahaha hohoho");
+        review.setApprovalStatus(status);
+        review.setTrackId(trackBacking.findTrackById(1));
+        review.setUserId(userController.findShopUser(1));
+        
+        try
+        {
+            reviewController.create(review);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        trackBacking.setTrack(trackBacking.findTrackById(1));
+        List<Review> approvedReviews = trackBacking.getApprovedReviews();
+
+        boolean isValid = false;
+        for(Review approvedReview:approvedReviews)
+        {
+            if(approvedReview.equals(review))
+                isValid = true;
+            
+        }
+        assertTrue(isValid);
+        
+    }
+    
+    @Test
+    public void testEditSales()
+    {      
+        Track t = trackBacking.findTrackById(1);
+        t.setSalePrice(0);
+        
+        trackBacking.setTrack(t);
+        trackBacking.edit();
+        Track editedTrack = trackBacking.findTrackById(1);
+        
+        assertEquals(t,editedTrack);
+    }
+    
+    @Test
+    public void testTrackSales()
+    {
+        Date date = Calendar.getInstance().getTime();
+        short status = 1;
+        short removalStatus = 0;
+        Track t = new Track();
+        
+        t.setTitle("hehe");
+        t.setReleaseDate(date);
+        t.setPlayLength("1:45");
+        t.setDateEntered(date);
+        t.setPartOfAlbum(status);
+        t.setAlbumTrackNumber(1);
+        t.setCostPrice(1.0);
+        t.setListPrice(1.5);
+        t.setSalePrice(0);
+        t.setRemovalStatus(removalStatus);
+        t.setRemovalDate(null);
+        t.setAlbumId(albumController.findAlbum(1));
+        t.setArtistId(artistController.findArtist(1));
+        t.setSongwriterId(songwriterController.findSongwriter(1));
+        t.setGenreId(genreController.findGenre(1));
+        t.setCoverArtId(coverArtController.findCoverArt(1));  
+        
+        trackBacking.setTrack(t);
+        trackBacking.create();
+        
+        List<Track> list = trackBacking.getAll();
+        
+        InvoiceTrack invT = new InvoiceTrack();
+        invT.setTrack(list.get(list.size()-1));
+        invT.setRemovalStatus(removalStatus);
+        invT.setRemovalDate(null);
+        invT.setInvoice(invoiceController.findInvoice(1));
+        invT.setFinalPrice(23.00);
+        
+        try
+        {
+            invoiceTrackController.create(invT);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        assertEquals(trackBacking.getTrackSales(list.get(list.size()-1).getId()), "23.00");    
+    
+    }
+    
+    @Test
+    public void testSaleTrack()
+    {
+        Track t1= trackBacking.findTrackById(1);
+        t1.setSalePrice(0.55);
+        trackBacking.setTrack(t1);
+        trackBacking.edit();
+        
+        Track t2= trackBacking.findTrackById(2);
+        t2.setSalePrice(0.69);
+        trackBacking.setTrack(t2);
+        trackBacking.edit();
+        
+        List<Track> saleTracks = trackBacking.getSaleTracks();
+        
+        assertEquals(saleTracks.size(),2);
+    }
+    
+    @Test
+    /**
+     *@author Evan G.
+     */
+    public void testGetPopularTracks(){
+        /*
+        Alright so for popular tracks, we get the most popular tracks of that week,
+        our local database does not have any invoices from this week, or anyweek of testing
+        so we need to create an invoice within this week (current date = March 31) and set the
+        invoice track final price to be something absurdly high, the invoice_track should  have two albums
+        that will be checked to test
+         */
+        short i = 0;
+        Invoice inv = new Invoice();
+        // only the date is important here as the invoice table is just used to
+        // find by date
+        inv.setSaleDate(Calendar.getInstance().getTime());
+        inv.setTotalNetValue(24);
+        inv.setPstTax(10);
+        inv.setGstTax(10);
+        inv.setHstTax(10);
+        inv.setTotalGrossValue(35);
+        inv.setRemovalStatus(i);
+        inv.setRemovalDate(null);
+        inv.setUserId(userController.findShopUser(1));
+
+        try {
+            invoiceController.create(inv);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        List<Invoice> list = invoiceBacking.getAll();
+        // get the last invoice
+        inv = list.get(list.size() - 1);
+
+        short rmsai = 0;
+        // create an invoice of an album
+        InvoiceTrack it = new InvoiceTrack();
+        it.setTrack(trackBacking.findTrackById(17));//Track: Title: Boomin
+        it.setInvoice(inv);
+        it.setRemovalDate(null);
+        it.setRemovalStatus(rmsai);
+        it.setFinalPrice(900.99); // should be highest
+
+        InvoiceTrack it2 = new InvoiceTrack();
+        it2.setTrack(trackBacking.findTrackById(63));//Track: Title: Rather be
+        it2.setInvoice(inv);
+        it2.setRemovalDate(null);
+        it2.setRemovalStatus(rmsai);
+        it2.setFinalPrice(850.89); // second highest
+
+        try {
+            invoiceTrackController.create(it2);
+            invoiceTrackController.create(it);
+        } catch (Exception ex) {
+            Logger.getLogger(AlbumArq.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        List<Track> expected = new ArrayList(); // expected highest selling tracks to be 14 and 6 since they have really high invoice album sales prices
+        expected.add(trackBacking.findTrackById(17));
+        expected.add(trackBacking.findTrackById(63));    
+        List<Track> actual = trackBacking.getPopularTracks().subList(0, 2);
+        
+        assertEquals(expected, actual);
+    }
+    
+    
+
 }

@@ -44,7 +44,7 @@ public class LoginFilter implements Filter{
                     .getContextPath();
             ((HttpServletResponse) response).sendRedirect(contextPath
                     + "/userconnection/login.xhtml");
-            context.log(contextPath + "/userconnection/registration.xhtml");
+            context.log(contextPath + "/userconnection/login.xhtml");
         }
         else
         {
@@ -56,6 +56,5 @@ public class LoginFilter implements Filter{
     @Override
     public void destroy() {
         // Nothing to do here
-    }
-    
+    }   
 }
