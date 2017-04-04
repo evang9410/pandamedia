@@ -27,6 +27,8 @@ public class UserActionController {
     }
 
     public ShopUser findUserByEmail(String email) {
+        if(email == null)
+            return null;
         Query query = em.createNamedQuery("ShopUser.findByEmail");
         query.setParameter("email", email);
         ShopUser user = null;
