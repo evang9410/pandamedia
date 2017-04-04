@@ -24,8 +24,8 @@
                     <div class="col-sm-2">
                         <h:form>
                             <h:commandLink action="#{albumBacking.albumPage(pop)}" styleClass="">
-                                <figure class="figure card-wrapper">
-                                    <img src="../resources/coverart/#{pop.coverArtId.imagePath}" class="figure-img img-fluid pop-albumart"/>
+                                <figure class="figure card-wrapper">    
+                                    <img src="#{request.contextPath}/resources/coverart/#{pop.coverArtId.imagePath}" class="figure-img img-fluid pop-albumart"/>
                                     <div class="latest-caption">
                                         <h5>#{pop.title}</h5>
                                         <h6>#{pop.artistId.name}</h6>
@@ -56,7 +56,7 @@
                             <h:form>
                                 <h:commandLink action="#{albumBacking.albumPage(ag)}" styleClass="">
                                     <figure class="figure card-wrapper">
-                                        <img src="../resources/coverart/#{ag.coverArtId.imagePath}" class="figure-img img-fluid albumart"/>
+                                        <img src="#{request.contextPath}/resources/coverart/#{ag.coverArtId.imagePath}" class="figure-img img-fluid albumart"/>
                                         <div class="latest-caption">
                                             <h5>#{ag.title}</h5>
                                             <h6>#{ag.artistId.name}</h6>

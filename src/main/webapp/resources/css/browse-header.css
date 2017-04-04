@@ -1,14 +1,30 @@
-.choice-header{
-    padding-top: 50px;
-    padding-left: 50px;
-}
-
-.pos-name h4{
-    font-family: "Poppins";
-    font-size: 24px!important;
-    font-weight: 700!important;
+.pos-name{
+    padding-left: 5em;
 }
 
 .pre-text{
+    font-family: "Poppins";
+    font-size: 22px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, .87);
+}
+
+li{
+    list-style: none;
+}
+
+.browse-toggle{
+    border: none;
+    color: white;
+    opacity: .87;
+    text-decoration: none;
     font-size: 18px;
+    font-family: sans-serif;
+}
+
+.browse-toggle:hover, .browse-toggle:focus{
+    background-color: rgb(255, 255, 255);
+    
+    color: black;
+    transition: 0.4s ease-in-out;
 }

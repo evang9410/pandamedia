@@ -8,21 +8,20 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway"></link>
 
     <ui:define name="Window title">Search results</ui:define>
-    <head>
-        <h:outputStylesheet library="css" name="search_page.css"/>
-    </head>
+    <ui:define name="css">
+        <h:outputStylesheet name="search_page.css" library="css"/>
+    </ui:define>
     <ui:define name="page-content">
-        <div class="container">
-            <div class="displaySearchResults">
+        <div class="container displaySearchResults">
                 <h2>#{Search.typeSearched}</h2>
                 <h:form>
                     <!--in case there are tracks in the list, else does not display anything -->
                     <div class="row">
                         <ui:repeat value="#{Search.trackResultsList}" var="t">
 
-                            <div class="col-xs-18 col-sm-6 col-md-3">
+                            <div class="col-xs-18 col-sm-6 col-md-3 card-wrap">
                                 <div class="thumbnail">
-                                    <img src="../resources/coverart/#{t.coverArtId.imagePath}"></img>
+                                    <img src="resources/coverart/#{t.coverArtId.imagePath}" class="img-cover"></img>
                                     <div class="caption">
                                         <h:commandLink action="#{trackBacking.trackPage(t)}"><h4>#{t.title}</h4></h:commandLink>
                                         <h:commandLink action="#{albumBacking.albumPage(t.albumId)}"><h5>#{t.albumId.title}</h5></h:commandLink>
@@ -37,10 +36,10 @@
                     <!--in case there are albums in the list, else does not display anything -->
                     <div class="row">
                         <ui:repeat value="#{Search.albumResultsList}" var="al">
-                            <div class="col-xs-18 col-sm-6 col-md-3">
+                            <div class="col-xs-18 col-sm-6 col-md-3 card-wrap">
                                 <div class="thumbnail">
                                     <h:commandLink action="#{albumBacking.albumPage(al)}">
-                                        <img src="../resources/coverart/#{al.coverArtId.imagePath}"></img>
+                                        <img src="resources/coverart/#{al.coverArtId.imagePath}" class="img-cover"></img>
                                     </h:commandLink>
                                     <div class="caption">
                                         <h:commandLink action="#{albumBacking.albumPage(al)}"><h4>#{al.title}</h4></h:commandLink>
@@ -56,17 +55,16 @@
                     <!--in case there are artists in the list, else does not display anything-->
                     <div class="row">
                         <ui:repeat value="#{Search.artistResultsList}" var="ar">
-                            <div class="col-xs-18 col-sm-6 col-md-3">
-                                <h:commandLink action="#{artistBacking.artistPage(ar)}">#{ar.name}</h:commandLink>
+                            <div class="col-xs-18 col-sm-6 col-md-3 artist-name-wrap">
+                                <h:commandLink class="artist-name" action="#{artistBacking.artistPage(ar)}">#{ar.name}</h:commandLink>
                             </div>
                         </ui:repeat>
                     </div>
                 </h:form>
 
-                <h5>#{Search.notFound}</h5>
+                <h6>#{Search.notFound}</h6>
             </div>
-        </div>
-        <hr/>
+        
     </ui:define>
 </ui:composition>
 
