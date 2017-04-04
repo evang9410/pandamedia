@@ -23,34 +23,33 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                        <b:carousel class="sale-car" style="width:50%; margin: 0 auto;" interval="2500">
-                            <!-- using a JTSL tag as this has to be rendered before the carosel is rendered -->
-                            <c:forEach items="#{albumBacking.popularAlbums}" var='sale'>
-                                <b:carouselItem>
-                                    <h:form>
-                                        <h:commandLink action="#{albumBacking.albumPage(sale)}">
-                                            <img src="../resources/coverart/#{sale.coverArtId.imagePath}" style="height:250px; width:250px; 
-                                                 display: block;margin-left: auto; margin-right: auto;"/>
-                                            <b:carouselCaption>
-                                                <h3>#{sale.title}</h3>
-                                                <h6>#{sale.recordingLabelId.name}</h6>
-                                            </b:carouselCaption>
-                                        </h:commandLink>
-                                    </h:form>
-                                </b:carouselItem>
+                    <b:carousel class="sale-car" style="width:50%; margin: 0 auto;" interval="2500">
+                        <!-- using a JTSL tag as this has to be rendered before the carosel is rendered -->
+                        <c:forEach items="#{albumBacking.popularAlbums}" var='sale'>
+                            <b:carouselItem>
+                                <h:form>
+                                    <h:commandLink action="#{albumBacking.albumPage(sale)}">
+                                        <img src="../resources/coverart/#{sale.coverArtId.imagePath}" style="height:250px; width:250px; 
+                                             display: block;margin-left: auto; margin-right: auto;"/>
+                                        <b:carouselCaption>
+                                            <h3>#{sale.title}</h3>
+                                            <h6>#{sale.recordingLabelId.name}</h6>
+                                        </b:carouselCaption>
+                                    </h:commandLink>
+                                </h:form>
+                            </b:carouselItem>
 
-                            </c:forEach>
-                        </b:carousel>
+                        </c:forEach>
+                    </b:carousel>
                 </div>
             </div>
             <hr/>
             <div class="row">
                 <h2 class="header">Tracks</h2>
             </div>
-            <div class="row">
+            <!--<div class="row">
                 <div class="col-md-12">
                         <b:carousel class="sale-car" style="width:50%; margin: 0 auto;" interval="2500">
-                            <!-- using a JTSL tag as this has to be rendered before the carosel is rendered -->
                             <c:forEach items="#{trackBacking.popularTracks}" var='tsale'>
                                 <b:carouselItem>
                                     <img src="../resources/coverart/#{tsale.coverArtId.imagePath}" style="height:250px; width:250px; 
@@ -64,6 +63,23 @@
                             </c:forEach>
                         </b:carousel>
                 </div>
+            </div>-->
+            <div class="row">
+                <h:form>
+                    <ui:repeat value="#{trackBacking.popularTracks}" var="tsale">
+                        <div class="col-xs-18 col-sm-6 col-md-3 card-wrap">
+                            <div class="thumbnail">
+                                <h:commandLink action="#{albumBacking.albumPage(al)}">
+                                    <img src="#{request.contextPath}/resources/coverart/#{tsale.coverArtId.imagePath}" class="img-cover"></img>
+                                </h:commandLink>
+                                <div class="caption">
+                                    <h:commandLink action="#{albumBacking.albumPage(al)}"><h4>#{tsale.title}</h4></h:commandLink>
+                                    <h:commandLink action="#{artistBacking.artistPage(al.artistId)}"><p>#{tsale.artistId.name}</p></h:commandLink>
+                                </div>
+                            </div>
+                        </div>
+                    </ui:repeat>
+                </h:form>
             </div>
         </div>
     </ui:define>

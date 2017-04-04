@@ -1,3 +1,7 @@
+.choice-header{
+    padding-top: 70px;
+}
+
 .pos-name{
     padding-left: 5em;
 }
@@ -14,17 +18,21 @@ li{
 }
 
 .browse-toggle{
-    border: none;
+    border-radius: 5px;
     color: white;
     opacity: .87;
     text-decoration: none;
     font-size: 18px;
     font-family: sans-serif;
+    padding: 7px;
+}
+
+.dropdown-menu{
+    border-color: rgba(255, 255, 255, .87);
 }
 
 .browse-toggle:hover, .browse-toggle:focus{
-    background-color: rgb(255, 255, 255);
-    
+    background-color: rgba(255, 255, 255, .87);
     color: black;
     transition: 0.4s ease-in-out;
 }

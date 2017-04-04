@@ -19,16 +19,17 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <title><ui:insert name="WindowTitle"></ui:insert></title>
     </h:head>
+    <f:view locale="#{ChangeLanguage.locale}">    
 
-    <h:body>
-        <f:view locale="#{ChangeLanguage.locale}">
         <ui:insert name="menu">
             <ui:include src="../sections/menu.xhtml" />
         </ui:insert>
-        <ui:insert name="page-content"/>
-        </f:view>
-    </h:body>
-    <ui:insert name="footer">
-        <ui:include src="../sections/footer.xhtml" />
-    </ui:insert>
+
+        <h:body style="-webkit-font-smoothing: antialiased;">
+            <ui:insert name="page-content"/>
+        </h:body>
+        <ui:insert name="footer">
+            <ui:include src="../sections/footer.xhtml" />
+        </ui:insert>
+    </f:view>
 </html>
