@@ -91,7 +91,7 @@
                                 <h:form>
                                     <h:commandLink action="#{albumBacking.albumPage(sugg)}" styleClass="btn">
                                         <figure class="figure card-wrapper">
-                                            <img src="resources/coverart/#{sugg.coverArtId.imagePath}" class="figure-img img-fluid" style="height:150px; width:150px;"/>
+                                            <img src="#{request.contextPath}/resources/coverart/#{sugg.coverArtId.imagePath}" class="figure-img img-fluid" style="height:150px; width:150px;"/>
                                             <div class="latest-caption">
                                                 <h4>#{sugg.title}</h4>
                                                 <h6>#{sugg.artistId.name}</h6>
