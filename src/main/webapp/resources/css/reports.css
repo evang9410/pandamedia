@@ -7,12 +7,30 @@
     word-wrap: break-word;
 }
 
-.glyphicon-arrow-right {
-    background-image: url(/images/icons/arrow-right.png) !important;
+.glyphicon-chevron-right {
+    content: url(../resources/icons/arrow-right.png);
+    height: 100%;
 }
+
+.glyphicon-chevron-left {
+    content: url(../resources/icons/arrow-left.png);
+    height: 100%;
+}
+
+.cal {
+    vertical-align: top;
+}
+
+.labels {
+    text-align: right;
+    vertical-align: text-bottom;
+    padding-top: 2px;
+}
+
+/*
 
 .calendars-center {
     margin: auto;
     width: 50%;
     
-}
+}*/
