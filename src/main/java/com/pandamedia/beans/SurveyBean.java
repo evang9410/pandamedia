@@ -44,6 +44,10 @@ public class SurveyBean implements Serializable {
         showOptions = true;
     }
     
+    /**
+     * 
+     * @return survey record from database
+     */
     public Survey getSurvey()
     {
         if(!fpsController.findFrontPageSettings(1).getSurveyId().equals(survey))
@@ -57,34 +61,66 @@ public class SurveyBean implements Serializable {
         return survey;
     }
        
+    /**
+     * 
+     * @return the choice selected by the user.
+     */
     public String getUserChoice() {
         return userChoice;
     }
 
+    /**
+     * 
+     * @param userChoice value to be set as user choice.
+     */
     public void setUserChoice(String userChoice) {
         this.userChoice = userChoice;
     }
 
+    /**
+     * 
+     * @return id of the current survey.
+     */
     public int getSurveyId() {
         return surveyId;
     }
 
+    /**
+     * 
+     * @param surveyId value to set as survey id.
+     */
     public void setSurveyId(int surveyId) {
         this.surveyId = surveyId;
     }
 
+    /**
+     * 
+     * @param survey survey object to be set.
+     */
     public void setSurvey(Survey survey) {
         this.survey = survey;
     }
 
+    /**
+     * 
+     * @return a list of survey answers (choices).
+     */
     public List<String> getAnswers() {
         return answers;
     }
 
+    /**
+     * 
+     * @param answers list of string values to set as survey answers.
+     */
     public void setAnswers(List<String> answers) {
         this.answers = answers;
     }
 
+    /**
+     * 
+     * @return true if the answers (choices) are to be visible.
+     */
     public boolean isShowOptions() {
         return showOptions;
     }
@@ -153,4 +189,26 @@ public class SurveyBean implements Serializable {
         answers.add(survey.getAnswerD());
     }
     
+    private int getPercentageVote(int numVote){
+        int total=getTotalVotes();
+        int vote = (numVote*100) / total;
+        System.out.println("PERCENT:"+vote+"NUMVOTE: "+numVote+" TOTAL:"+total);
+        return vote;
+    }
+    
+    public int getVotesA(){
+        return getPercentageVote(survey.getVotesA());
+    }
+    
+    public int getVotesB(){
+        return getPercentageVote(survey.getVotesB());
+    }
+    
+    public int getVotesC(){
+        return getPercentageVote(survey.getVotesC());
+    }
+    
+    public int getVotesD(){
+        return getPercentageVote(survey.getVotesD());
+    }
 }
