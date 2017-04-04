@@ -130,18 +130,8 @@ public class ShopUserManagerBean implements Serializable{
      */
     public String loadEditForClients(Integer id)
     {
-        this.user = userController.findShopUser(id);
-        
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("ClientFunctionality/editClients.xhtml");
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-        
-        return null;
+        this.user = userController.findShopUser(id);        
+        return "maneditclient";
     }
     
     /**
@@ -162,18 +152,8 @@ public class ShopUserManagerBean implements Serializable{
         }
         
         this.user = null;
-        this.filteredUsers = userController.findShopUserEntities();
-        
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/clients.xhtml");
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-        
-        return null;
+        this.filteredUsers = userController.findShopUserEntities();        
+        return "manclients";
     }
     
     /**
@@ -185,19 +165,8 @@ public class ShopUserManagerBean implements Serializable{
     public String back()
     {
         this.user = null;
-        this.filteredUsers = userController.findShopUserEntities();
-        
-        
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/clients.xhtml");
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-        
-        return null;
+        this.filteredUsers = userController.findShopUserEntities();        
+        return "manclients";
     }
     
     /**

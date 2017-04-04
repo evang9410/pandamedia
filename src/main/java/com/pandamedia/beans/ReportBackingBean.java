@@ -1,7 +1,6 @@
 package com.pandamedia.beans;
 
 import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
 import java.util.ArrayList;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -16,8 +15,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
@@ -42,16 +39,12 @@ import persistence.entities.Track_;
  * @author Erika Bourque
  */
 @Named("reports")
-@SessionScoped
+@RequestScoped
 public class ReportBackingBean implements Serializable {
     // TODO: change logging?
     // TODO: add checks for was it valid during report time and now is removed
-    // TODO: validate all values coming in are good ones
-    // TODO: remove subquery from zero methods?
-    // TODO: format date
-    // TODO: format money
-    // TODO: sales by track + album has null in input field
-    // TODO: should sales by artist/track/album have defaults?
+    // TODO: styling of calendars, missing arrows
+    // TODO: styling of report pages
     private static final Logger LOG = Logger.getLogger("ReportBackingBean.class");
 
     @PersistenceContext

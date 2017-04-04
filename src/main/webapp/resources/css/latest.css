@@ -16,6 +16,7 @@ body{
     border-radius: 2px;
 }
 .card-wrapper:hover {
+    background-color:#02b875;
 }
 .albumart{
     margin: 0 auto;
