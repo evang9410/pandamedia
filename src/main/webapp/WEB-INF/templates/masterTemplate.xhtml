@@ -8,8 +8,8 @@
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <h:outputStylesheet library="css" name="bootstrap.css"/>
-<!--        <h:outputStylesheet library="css" name="menu.css"/>-->
-<!--        <h:outputStylesheet library="css" name="mainpage.css"/>-->
+        <!--        <h:outputStylesheet library="css" name="menu.css"/>-->
+        <!--        <h:outputStylesheet library="css" name="mainpage.css"/>-->
         <ui:insert name="css"/>
         <link rel="icon" type="image/png" href="./resources/images/favicon.png"></link>
         <script src="https://use.fontawesome.com/b8bcb424f5.js"></script> 
@@ -24,8 +24,8 @@
             <ui:include src="../sections/menu.xhtml" />
         </ui:insert>
         <ui:insert name="page-content"/>
-        <ui:insert name="footer">
-            <ui:include src="../sections/footer.xhtml" />
-        </ui:insert>
     </h:body>
+    <ui:insert name="footer">
+        <ui:include src="../sections/footer.xhtml" />
+    </ui:insert>
 </html>

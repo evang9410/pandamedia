@@ -4,13 +4,61 @@
 */
 @import url('https://fonts.googleapis.com/css?family=Poppins');
 body{
-    font-family: "Poppins", sans-serif;
-    background-color:  #17171b;
+    background-color:  white;
 }
 
+#album-info{
+    padding: 0;
+    margin: 0;
+    background-color: #17171b;
+    width: 100%;
+    color: white;
+}
 
-.track-info{
-    margin-left: 2%;
+.track-info-wrapper{
+    padding-left: 20%;
+}
+
+#comment-section{
+    background-color: white;
+    padding: 0;
+    width: 100%;
+    padding-top: 3em;
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
+#info-track{
+    width: fit-content;
+    margin: 0;
+    padding: 0;
+}
+
+.user-id{
+    color: black;
+    font-weight: bold;
+}
+
+h3{
+    float: left;
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: white;
+    width: fit-content;
+}
+
+#add-to-cart{
+    padding-top: 200px;
+    float: left;
+}
+
+h3:hover{
+    color: #02b875;
+}
+
+.albumArt{
+    margin: 0;
+    padding: 0;
 }
 
 .review-wrapper{
@@ -26,15 +74,16 @@ body{
     color:black;
 }
 
-/* special thanks to Besnikhetemi from bootsnipp.com for the comment styling
-http://bootsnipp.com/snippets/rvbKr
-*/
 comment {
     overflow: hidden;
     padding: 0 0 1em;
     border-bottom: 1px solid #ddd;
     margin: 0 0 1em;
     *zoom: 1;
+}
+
+.text{
+    font-size: 16px;
 }
 
 .comment-img {

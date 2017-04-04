@@ -5,7 +5,8 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins');
 body{
     background-color: #17171b;
-    font-family: "Poppins", sans-serif;
+    font-family: sans-serif;
+    position: relative;
 }
 .header{
     color: white;
@@ -20,4 +21,10 @@ body{
     position: relative;
     left: auto;
     right: auto;
+}
+
+.onscont{
+    position: relative;
+    padding-top: 70px;
+    padding-bottom: 190px;
 }

@@ -1,7 +1,7 @@
-/* 
-    Created on : 16-Mar-2017, 1:11:14 PM
-    Author     : Evang
-*/
+.displaySearchResults{
+    position: relative;
+}
+
 h2{
     font-family: "Poppins", sans-serif;
     font-weight: bold;
@@ -29,8 +29,10 @@ body{
 }
 
 .card-wrapper{
+    margin: 0;
     background-color: #02b875;
-    padding: 15px;
+    padding: 15px; 
+    height: 200px;
     border-radius: 2px;
     text-align: center;
 }

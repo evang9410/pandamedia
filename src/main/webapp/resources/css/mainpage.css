@@ -1,9 +1,8 @@
 body{
-    position: absolute;
-    top: 0;
-    bottom: 0;
+    position: relative;
     width: 100%;
     background-color: #17171b;
+    padding-bottom: 190px;
 }
 
 h1{
@@ -63,6 +62,11 @@ h1{
 
 }
 
+.col-md-6{
+    margin: 0;
+    padding: 0;
+}
+
 .browse-item:hover{
     transition: ease-in-out 0.4s;
     filter: gray; /* IE6-9 */
@@ -102,7 +106,7 @@ h1{
     display: inline-block;
     width: 100%;
     
-    background: url(../resources/images/image3.jpg) black no-repeat center center; 
+    background: url(../resources/images/image-artist2.jpg) black no-repeat center center; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -133,4 +137,8 @@ h1{
 .container-fix{
     margin: 0;
     padding: 0;
+}
+
+.page-content-wrapper{
+    padding-top: 70px;
 }

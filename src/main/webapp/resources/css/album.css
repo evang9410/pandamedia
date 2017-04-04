@@ -11,13 +11,48 @@
     margin: 0 auto;
 }
 
+#alb-header{
+    width: 100%;
+    float: left;
+}
+
+.alb-art{
+    margin-left: 20%;
+    float: left;
+    width: 30%;
+    
+}
+
+#table-row{
+    padding: 0;
+    width: 60%;
+    margin-left: 20%;
+}
+
+#info-track{
+    color: white;
+}
+
+a{
+    color: white;
+    font-family: sans-serif;
+    font-size: 18px;
+}
+
+a:hover{
+    color: #02b875;
+}
+
+
 .albumArt{		
-    width: 100%;		
+    width: fit-content;		
     height: 100%;		
 }		
 .album-info{
-    font-family: "Poppins", sans-serif;
-    color: white;		
+    color: white;
+    float: left;
+    width: auto;
+    margin-right: 20%;
 }		
 .track_list{
     width: 50%;
@@ -26,14 +61,6 @@
 }		
 .bodyClass{		
     background-color: #17171b;		
-}
-
-.tracklist_container{
-    font-family: "Poppins", sans-serif;
-    width: 60vw;
-    height: 50vh;
-    margin: 0 auto; 
-    border-radius: 4px;
 }
 
 table th, td{
