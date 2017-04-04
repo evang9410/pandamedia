@@ -5,10 +5,10 @@
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <meta name="author" content="Erika Bourque"/>
     <h:outputStylesheet name="reports.css" library="css"/>
-    <h:form id="calendars">
+    <h:form id="calendars" styleClass="calendar-center">
         <h:panelGrid columns="2">
-            <p:outputLabel><h4>#{msgs.reportStart}</h4></p:outputLabel>
-            <p:outputLabel><h4>#{msgs.reportEnd}</h4></p:outputLabel>
+            <p:outputLabel style="text-align: center; width: 100%;"><h4>#{msgs.reportStart}</h4></p:outputLabel>
+            <p:outputLabel style="text-align: center; width: 100%;"><h4>#{msgs.reportEnd}</h4></p:outputLabel>
             
             <p:calendar styleClass="report-cal"
                 id="reportStartDate" 

@@ -10,3 +10,9 @@
 .glyphicon-arrow-right {
     background-image: url(/images/icons/arrow-right.png) !important;
 }
+
+.calendars-center {
+    margin: auto;
+    width: 50%;
+    
+}

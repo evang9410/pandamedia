@@ -17,12 +17,14 @@
         <f:view locale="#{ChangeLanguage.locale}">
             <h:outputStylesheet name="reports.css" library="css"/>
             <h1><h:outputText value="#{msgs.manReportTotalSalesTitle}"/></h1>
+            <div align="center">
             <pm:reportcalendars 
                 max="#{reportData.defaultEndDate}" 
                 start="#{reportData.startDate}" 
                 end="#{reportData.endDate}" 
                 updateTable="trackTotalTable albumTotalTable trackTable albumTable">
             </pm:reportcalendars>
+            </div>
             <br/>
             <p:dataTable styleClass="report-table" 
                          id="trackTotalTable" 

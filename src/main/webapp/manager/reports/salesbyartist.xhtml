@@ -16,6 +16,7 @@
         <f:view locale="#{ChangeLanguage.locale}">
             <h:outputStylesheet name="reports.css" library="css"/>
             <h1><h:outputText value="#{msgs.manReportSalesByArtist}"/></h1>
+            <div align="center">
             <h:form id="calendars">
                 <p:calendar 
                     id="reportStartDate" 
@@ -39,6 +40,7 @@
                 </p:inputText>
                 <p:commandButton id="search" update="trackTotalTable albumTotalTable trackTable albumTable" value="#{msgs.searchBtn}" />
             </h:form>
+            </div>
             <br/>
             <p:dataTable styleClass="report-table" 
                          id="trackTotalTable" 
