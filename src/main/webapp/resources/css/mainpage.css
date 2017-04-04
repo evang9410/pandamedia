@@ -62,12 +62,6 @@ h1{
 
 
 }
-
-.col-md-6{
-    margin: 0;
-    padding: 0;
-}
-
 .browse-item:hover{
     transition: ease-in-out 0.4s;
     filter: gray; /* IE6-9 */

@@ -4,8 +4,8 @@
 */
 @import url('https://fonts.googleapis.com/css?family=Poppins');
 .album-info-wrapper{
-    height: 30vh;
-    margin-top: 2%;
+    height: 35vh;
+    margin-top: 5%;
 }
 .album{
     margin: 0 auto;
@@ -49,10 +49,10 @@ a:hover{
     height: 100%;		
 }		
 .album-info{
+    margin-left:1%;
     color: white;
     float: left;
     width: auto;
-    margin-right: 20%;
 }		
 .track_list{
     width: 50%;
@@ -60,6 +60,7 @@ a:hover{
     display: table;
 }		
 .bodyClass{		
+    padding-top:70px;
     background-color: #17171b;		
 }
 

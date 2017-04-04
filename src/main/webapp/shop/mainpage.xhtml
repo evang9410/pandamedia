@@ -20,13 +20,15 @@
                     <li data-target="#carousel" data-slide-to="1"></li>
                     <li data-target="#carousel" data-slide-to="2"></li>
                 </ol>
+            </div>
 
-        <div id="carousel" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#carousel" data-slide-to="0" class="active"></li>
-                <li data-target="#carousel" data-slide-to="1"></li>
-                <li data-target="#carousel" data-slide-to="2"></li>
-            </ol>
+            <div id="carousel" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#carousel" data-slide-to="1"></li>
+                    <li data-target="#carousel" data-slide-to="2"></li>
+                </ol>
+            </div>
 
             <div class="carousel-inner">
                 <div class="item active">
@@ -73,7 +75,9 @@
                                 </h:commandLink>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                    </h:form>
+                    <div class="col-md-6">
+                        <h:form>
                             <h:commandLink action="#{browseChange.browseArtists()}" styleClass="browse-btn-link">
                                 <div class="browse-item" id="browse-artists">
                                     <div class="browse-caption">
@@ -81,25 +85,16 @@
                                     </div>
                                 </div>
                             </h:commandLink>
-                        </div>
-==== BASE ====
+                        </h:form>
                     </div>
-                    <div class="col-md-6">
-                        <h:commandLink action="#{browseChange.browseArtists()}" styleClass="browse-btn-link">
-                            <div class="browse-item" id="browse-artists">
-                                <div class="browse-caption">
-                                    <span id="browse-artist-caption">#{msgs.artists}</span>
-                                </div>
-                            </div>
-                        </h:commandLink>
-                    </div>
-                </h:form>
+
+                </div>
             </div>
             <div>
                 <h:panelGroup rendered="#{clientTracking.isTracking}">
                     <div class="row">
                         <div class="col-md-12">
-                        <h2 style="color:white;">#{msgs.suggested}</h2>
+                            <h2 style="color:white;">#{msgs.suggested}</h2>
                         </div>
                     </div>
                     <div class="row">

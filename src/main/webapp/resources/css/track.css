@@ -4,15 +4,18 @@
 */
 @import url('https://fonts.googleapis.com/css?family=Poppins');
 body{
+    
     background-color:  white;
 }
 
 #album-info{
-    padding: 0;
-    margin: 0;
+    padding-top: 70px;
+    
+    margin-top:4%;
     background-color: #17171b;
     width: 100%;
     color: white;
+    margin-bottom: 4%;
 }
 
 .track-info-wrapper{
@@ -30,8 +33,6 @@ body{
 
 #info-track{
     width: fit-content;
-    margin: 0;
-    padding: 0;
 }
 
 .user-id{
@@ -39,7 +40,7 @@ body{
     font-weight: bold;
 }
 
-h3{
+#artist-link{
     float: left;
     font-size: 22px;
     margin-bottom: 20px;
@@ -52,13 +53,8 @@ h3{
     float: left;
 }
 
-h3:hover{
+#artist-link:hover{
     color: #02b875;
-}
-
-.albumArt{
-    margin: 0;
-    padding: 0;
 }
 
 .review-wrapper{
@@ -73,8 +69,7 @@ h3:hover{
 .modalPseudoClass{
     color:black;
 }
-
-comment {
+.comment {
     overflow: hidden;
     padding: 0 0 1em;
     border-bottom: 1px solid #ddd;
