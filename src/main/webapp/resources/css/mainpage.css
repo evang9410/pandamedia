@@ -4,6 +4,7 @@ body{
     background-color: #17171b;
     font-family: "Poppins", sans-serif;
     padding-bottom: 190px;
+    overflow-x: hidden;
 }
 
 h1{
