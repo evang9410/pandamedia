@@ -38,7 +38,7 @@
                             value="#{reportData.endDate}">
                             <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/>-->
                         </p:calendar>
-                        
+
                         <p:outputLabel for="albumId" style="text-align: right;">#{msgs.albumIdLbl}</p:outputLabel>
                         <p:inputText  id="albumId" value="#{reportData.album}" converter="#{albumConverter}" required="true" />
                         <!--<p:ajax event="change" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
