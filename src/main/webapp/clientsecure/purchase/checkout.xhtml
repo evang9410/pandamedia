@@ -16,49 +16,54 @@
         <p:growl id="growl" showDetail="true" showSummary="false" />
         <div id="content">
             <div id="billingInfo">
+                <h3>#{msgs.billingTitle}</h3>
                 <b:panelGrid columns="1">
-                    <h:outputLabel>#{userAction.currUser.title} #{userAction.currUser.firstName} #{userAction.currUser.lastName}</h:outputLabel>                    
+                    <h:outputLabel>#{userAction.currUser.title} #{userAction.currUser.firstName} #{userAction.currUser.lastName}</h:outputLabel>
                     <h:outputLabel>#{userAction.currUser.streetAddress}</h:outputLabel>
                     <h:outputLabel>#{userAction.currUser.city}, #{userAction.currUser.provinceId.name} #{userAction.currUser.postalCode}</h:outputLabel>
                     <h:outputLabel>#{userAction.currUser.country}</h:outputLabel>
-                    <h:outputLabel>#{userAction.currUser.homePhone} #{userAction.currUser.cellPhone}</h:outputLabel>                  
-                </b:panelGrid>               
+                    <h:outputLabel>#{userAction.currUser.homePhone} #{userAction.currUser.cellPhone}</h:outputLabel>
+                </b:panelGrid>
             </div>
-            <div id="orderSummary">
-                <b:dataTable  rendered="true" var="track" value="#{cart.tracksFromCart}" >
-                    <f:facet name="header">#{msgs.trackLbl}</f:facet>
-                    <b:column>
-                        <f:facet name="header">#{msgs.titleHeader}</f:facet>
-                            #{track.title}
-                    </b:column>
-                    <b:column>
-                        <f:facet name="header">#{msgs.artistHeader}</f:facet>
-                            #{track.artistId.name}
-                    </b:column>
-                    <b:column>
-                        <f:facet name="header">#{msgs.priceHeader}</f:facet>
-                        <h:outputText value="#{track.listPrice - track.salePrice}">
-                            <f:convertNumber type="currency" />
-                        </h:outputText>
-                    </b:column>
-                </b:dataTable>
-                <b:dataTable rendered="true" value="#{cart.albumsFromCart}" var="album">
-                    <f:facet name="header">#{msgs.albumLbl}</f:facet>
-                    <b:column>
-                        <f:facet name="header">#{msgs.titleHeader}</f:facet>
-                            #{album.title}
-                    </b:column>
-                    <b:column>
-                        <f:facet name="header">#{msgs.artistHeader}</f:facet>
-                            #{album.artistId.name}
-                    </b:column>
-                    <b:column>
-                        <f:facet name="header">#{msgs.priceHeader}</f:facet>
-                        <h:outputText value="#{album.listPrice - album.salePrice}">
-                            <f:convertNumber type="currency" />
-                        </h:outputText>
-                    </b:column>                      
-                </b:dataTable>
+            <div id="purchaseDetails">
+                <b:panelGrid columns="1" rendered="#{not cart.tracksFromCart.isEmpty()}">
+                    <h3>#{msgs.trackLbl}</h3>
+                    <b:dataTable searching="false" paginated="false" var="track" value="#{cart.tracksFromCart}" >
+                        <b:column>
+                            <f:facet name="header">#{msgs.titleHeader}</f:facet>
+                                #{track.title}
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">#{msgs.artistHeader}</f:facet>
+                                #{track.artistId.name}
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">#{msgs.priceHeader}</f:facet>
+                            <h:outputText value="#{track.listPrice - track.salePrice}">
+                                <f:convertNumber type="currency" />
+                            </h:outputText>
+                        </b:column>
+                    </b:dataTable>
+                </b:panelGrid>
+                <b:panelGrid columns="1" rendered="#{not cart.albumsFromCart.isEmpty()}">
+                    <h3>#{msgs.albumLbl}</h3>
+                    <b:dataTable searching="false" paginated="false" value="#{cart.albumsFromCart}" var="album">
+                        <b:column>
+                            <f:facet name="header">#{msgs.titleHeader}</f:facet>
+                                #{album.title}
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">#{msgs.artistHeader}</f:facet>
+                                #{album.artistId.name}
+                        </b:column>
+                        <b:column>
+                            <f:facet name="header">#{msgs.priceHeader}</f:facet>
+                            <h:outputText value="#{album.listPrice - album.salePrice}">
+                                <f:convertNumber type="currency" />
+                            </h:outputText>
+                        </b:column>
+                    </b:dataTable>
+                </b:panelGrid>
                 <b:panelGrid columnClasses="labels, output" columns="2">
                     <h:outputLabel value="#{msgs.subtotalHeader}" />
                     <h:outputLabel value="#{cart.subTotal}">
@@ -87,13 +92,14 @@
                 </b:panelGrid>
             </div>
             <div id="creditCardDetails">
+                <h3>#{msgs.cardTitle}</h3>
                 <h:form id="credit">
                     <b:panelGrid columns="2" columnClasses="labels, input">
                         <h:outputLabel for="cardType" value="#{msgs.cardTypeLbl}" />
                         <b:selectOneMenu id="cardType" required="true" value="#{creditCard.cardType}">
                             <f:selectItem itemLabel="Visa" itemValue="Visa"/>
                             <f:selectItem itemLabel="MasterCard" itemValue="MasterCard"/>
-                             <!--TODO: make these images?--> 
+                            <!--TODO: make these images?-->
                         </b:selectOneMenu>
 
                         <h:outputLabel for="cardNum" value="#{msgs.cardNumLbl}" />
@@ -106,7 +112,7 @@
 
                         <h:outputLabel for="cardCode" value="#{msgs.cardCodeLbl}" />
                         <b:inputText id="cardCode" required="true" value="#{creditCard.cardCode}">
-                             <!--TODO make sure this is the right kind of validation--> 
+                            <!--TODO make sure this is the right kind of validation-->
                             <f:validateLongRange minimum="0" maximum="9999" />
                         </b:inputText>
 
