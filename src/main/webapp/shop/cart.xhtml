@@ -13,6 +13,7 @@
     </ui:define>
     <ui:define name="css">
         <h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
+        <h:outputStylesheet library="css" name="cart.css" />
     </ui:define>
     <ui:define name="page-content">        
         <p:growl globalOnly="true" id="growl" showDetail="false" showSummary="true" life="5000" />
@@ -40,8 +41,8 @@
                                     <td class="col-sm-9 col-md-8">
                                         <div class="media">
                                             <h:form>
-                                                <h:commandLink styleClass="thumbnail pull-left" action="#{albumBacking.albumPage(albums)}">
-                                                    <img class="media-object" src="../resources/coverart/#{albums.coverArtId.imagePath}" style="width: 150px; height: 150px;"/>
+                                                <h:commandLink styleClass="thumbnail pull-left albumart" action="#{albumBacking.albumPage(albums)}">
+                                                    <img class="media-object" src="#{request.contextPath}/resources/coverart/#{albums.coverArtId.imagePath}" style="width: 150px; height: 150px;"/>
                                                 </h:commandLink>
                                             </h:form>
 
@@ -91,8 +92,8 @@
                                     <td class="col-sm-9 col-md-8">
                                         <div class="media">
                                             <h:form>
-                                                <h:commandLink styleClass="thumbnail pull-left" action="#{trackBacking.trackPage(individual_tracks)}">
-                                                    <img class="media-object" src="../resources/coverart/#{individual_tracks.coverArtId.imagePath}" style="width: 90px; height: 90px;"/>
+                                                <h:commandLink styleClass="thumbnail pull-left albumart" action="#{trackBacking.trackPage(individual_tracks)}">
+                                                    <img class="media-object" src="#{request.contextPath}/resources/coverart/#{individual_tracks.coverArtId.imagePath}" style="width: 90px; height: 90px;"/>
                                                 </h:commandLink>
                                             </h:form>
 

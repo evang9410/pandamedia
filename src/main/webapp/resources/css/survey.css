@@ -1,0 +1,26 @@
+/* 
+    Created on : 31-Mar-2017, 10:29:39 PM
+    Author     : Evang
+*/
+.survey-wrapper{
+    height:15vh;
+    width:45vw;
+}
+.survey-block{
+    height:100%;
+    line-height: 100%;
+    width:25%;
+/*    background: pink;*/
+    display: inline-block;
+    float:left;
+    border: 1px solid white;
+    text-align: center;
+}
+
+.answer-text{
+    
+}
+
+.survey-selected{
+   background: blue;
+}

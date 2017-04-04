@@ -14,26 +14,27 @@
         <h:outputStylesheet name="track.css" library="css"/>
     </ui:define>
     <ui:define name="page-content">
-        <div class="container">
-            <div class="row" style="margin: 2% 0 2%;">
-                <div class="track-info-wrapper">
-                    <div class="col-md-4 col-sm-12">
-                        <img class="albumArt" src="../resources/coverart/#{trackBacking.track.coverArtId.imagePath}" style="width: 250px; height: 250px;"/>
-                    </div>
-                    <div class="col-md-6 col-sm-12" style="color:white
-                         ">
-                        <h2>#{trackBacking.track.artistId.name}</h2>
-                        <h3>#{trackBacking.track.title}</h3>
-                        <h:form>
-                            <b:commandButton ajax="false" iconAwesome="cart-plus" iconAlign="right"  look="success" value="#{trackBacking.track.listPrice}"
+        <h:form>
+            <div class="container" id="album-info">
+                <div class="row">
+                        <div class="col-md-3 col-sm-6 col-md-offset-3 col-sm-offset-3">
+                            <h:commandLink action="#{albumBacking.albumPage(trackBacking.track.albumId)}"><img class="albumArt" src="#{request.contextPath}/resources/coverart/#{trackBacking.track.coverArtId.imagePath}" style="width: 250px; height: 250px"/></h:commandLink>
+                        </div>
+                        <div class="col-md-5 col-sm-6">
+                            <h2>#{trackBacking.track.title}</h2>
+                            <h:commandLink action="#{artistBacking.artistPage(trackBacking.track.artistId)}"><h3 id="artist-link">#{trackBacking.track.artistId.name}</h3></h:commandLink>
+                            <br/><br/><br/><br/><br/><br/><br/>
+                            <b:commandButton id="add-to-cart" ajax="false" iconAwesome="cart-plus" iconAlign="right"  look="success" value="#{trackBacking.track.listPrice}"
                                              action="#{cart.addTrack(trackBacking.track)}">
-<!--                                <f:ajax render="j_idt14:shopping-cart-count"/>-->
-                            </b:commandButton>  
-                        </h:form>
-                    </div>
-                </div>
-            </div>            
 
+                                <!--                                <f:ajax render="j_idt14:shopping-cart-count"/>-->
+                            </b:commandButton>  
+                        </div>
+                   
+                </div>
+            </div>
+        </h:form>
+        <div class="container" id="comment-section" style="margin: 0;">
             <h:panelGroup rendered="#{userAction.isLogin()}">
                 <div class="row" style="margin-bottom: 2%;">
                     <div class="col-md-12">
@@ -45,14 +46,14 @@
                 <div class="row" style="margin-bottom: 2%">
                     <div class="col-md-12">
                         <h:form>
-                            <h:commandLink action="#{userAction.redirectUser(track)}" value="#{msgs.signinreview}"/>
+                            <h:commandLink action="#{userAction.redirectUser(track)}" value="Sign in to write a review" style="font-size: 18px;"/>
                         </h:form>
                     </div>
                 </div>
             </h:panelGroup>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6" style="width: 100%">
                     <section class="comments">
                         <ui:repeat value="#{trackBacking.approvedReviews}" var="review">
                             <article class="comment">
@@ -65,7 +66,7 @@
                                         <ui:repeat value="#{trackBacking.getStarsList(review.rating)}" var="stars">
                                             <i class="fa fa-star" aria-hidden="true" style="color:gold; font-size: 32px"></i>
                                         </ui:repeat>
-                                        by #{review.userId.firstName} on <h:outputText value="#{review.dateEntered.time}"> 
+                                        by <span class="user-id">#{review.userId.firstName}</span> on <h:outputText value="#{review.dateEntered.time}"> 
                                             <f:convertDateTime pattern="MMM dd, yyyy"/> 
                                         </h:outputText>                                
                                     </p>
@@ -76,58 +77,59 @@
                     </section>
                 </div>
             </div>
-        </div>
 
-        <b:modal id="write-review-modal" title="#{msgs.reviewtitle}" styleClass="modalPseudoClass">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-2">
-                        <img src="../resources/coverart/#{trackBacking.track.coverArtId.imagePath}" style="height: 150px; width: 150px;"/>
+
+            <b:modal id="write-review-modal" title="#{msgs.reviewtitle}" styleClass="modalPseudoClass">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <img src="../resources/coverart/#{trackBacking.track.coverArtId.imagePath}" style="height: 150px; width: 150px;"/>
+                        </div>
+                        <div class="col-md-4" style="text-align: left;">
+                            <h3>#{trackBacking.track.title}</h3>
+                            <h4>#{trackBacking.track.artistId.name}</h4>
+                            <h7>#{trackBacking.track.albumId.recordingLabelId.name}</h7>
+                        </div>
                     </div>
-                    <div class="col-md-4" style="text-align: left;">
-                        <h3>#{trackBacking.track.title}</h3>
-                        <h4>#{trackBacking.track.artistId.name}</h4>
-                        <h7>#{trackBacking.track.albumId.recordingLabelId.name}</h7>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="form-area">  
-                        <h:form role="form" id="review-form">
-                            <br style="clear:both"/>   
-                            <div class="form-group">
-                                <div class="rating" style="color:black">
-                                    <label>#{msgs.rating}: </label>
-                                    <h:selectOneRadio value="#{reviewBacking.review.rating}" validator="#{reviewBacking.validateRating}">
-                                        <f:selectItem itemValue="5" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
-                                        <f:selectItem itemValue="4" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
-                                        <f:selectItem itemValue="3" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
-                                        <f:selectItem itemValue="2" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
-                                        <f:selectItem itemValue="1" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
-                                    </h:selectOneRadio>
+                    <div class="col-md-5">
+                        <div class="form-area">  
+                            <h:form role="form" id="review-form">
+                                <br style="clear:both"/>   
+                                <div class="form-group">
+                                    <div class="rating" style="color:black">
+                                        <label>#{msgs.rating}: </label>
+                                        <h:selectOneRadio value="#{reviewBacking.review.rating}" validator="#{reviewBacking.validateRating}">
+                                            <f:selectItem itemValue="5" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
+                                            <f:selectItem itemValue="4" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
+                                            <f:selectItem itemValue="3" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
+                                            <f:selectItem itemValue="2" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
+                                            <f:selectItem itemValue="1" itemEscaped="false" itemLabel="&lt;i class=&quot;fa fa-star&quot; aria-hidden=&quot;true&quot;/&gt;"></f:selectItem>
+                                        </h:selectOneRadio>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <h:inputTextarea class="form-control" id="message"
-                                                 rows="7" a:maxlength="2000"
-                                                 value="#{reviewBacking.review.reviewContent}"
-                                                 validator="#{reviewBacking.validateReviewContent}"/>
-                            </div>
-                            <h:commandButton value="#{msgs.sumbitreview}" action="#{reviewBacking.submitReview(trackBacking.track, user.findUser(5))}" 
-                                             styleClass="btn btn-primary">
-                                <!--                                <f:ajax execute="@form" render="@form"/>-->
-                            </h:commandButton>
-                        </h:form>
+                                <div class="form-group">
+                                    <h:inputTextarea class="form-control" id="message"
+                                                     rows="7" a:maxlength="2000"
+                                                     value="#{reviewBacking.review.reviewContent}"
+                                                     validator="#{reviewBacking.validateReviewContent}"/>
+                                </div>
+                                <h:commandButton value="#{msgs.sumbitreview}" action="#{reviewBacking.submitReview(trackBacking.track, userAction.currUser)}" 
+                                                 styleClass="btn btn-primary">
+                                    <!--                                <f:ajax execute="@form" render="@form"/>-->
+                                </h:commandButton>
+                            </h:form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </b:modal>
+            </b:modal>
 
-        <p:outputPanel autoUpdate="true">
-            <p:dialog id="msgDialog" widgetVar="messageDialog" modal="true"
-                      visible="#{facesContext.validationFailed}">
-                <p:messages id="messagesInDialog" />
-            </p:dialog>
-        </p:outputPanel>
+            <p:outputPanel autoUpdate="true">
+                <p:dialog id="msgDialog" widgetVar="messageDialog" modal="true"
+                          visible="#{facesContext.validationFailed}">
+                    <p:messages id="messagesInDialog" />
+                </p:dialog>
+            </p:outputPanel></div>
+        <hr/>  
 
         <script>
             $(document).ready(function () {
