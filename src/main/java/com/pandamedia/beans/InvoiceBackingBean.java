@@ -236,18 +236,8 @@ public class InvoiceBackingBean implements Serializable{
      */
     public String loadEditForOrders(Integer id)
     {
-        this.invoice = invoiceController.findInvoice(id);
-               
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/editOrders.xhtml");
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-        
-        return null;
+        this.invoice = invoiceController.findInvoice(id);        
+        return "manordersedit";
     }
     
     /**
@@ -260,18 +250,8 @@ public class InvoiceBackingBean implements Serializable{
      */
     public String loadIndivTracks(Integer id)
     {
-        this.invoice = invoiceController.findInvoice(id);
-        
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/removeIndivTracks.xhtml");
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-        
-        return null;
+        this.invoice = invoiceController.findInvoice(id);        
+        return "manremoveindivtrack";
     }
     
     /**
@@ -374,16 +354,16 @@ public class InvoiceBackingBean implements Serializable{
         this.invoice = null;
         this.filteredInvoices = invoiceController.findInvoiceEntities();
         
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/orders.xhtml");
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
+//        try
+//        {
+//            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/orders.xhtml");
+//        }
+//        catch(Exception e)
+//        {
+//            System.out.println(e.getMessage());
+//        }
         
-        return null;
+        return "manorders";
     }
     
     /**
@@ -397,23 +377,20 @@ public class InvoiceBackingBean implements Serializable{
         this.invoice = null;
         this.filteredInvoices = invoiceController.findInvoiceEntities();
         
-        try
-        {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/orders.xhtml");
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
+//        try
+//        {
+//            FacesContext.getCurrentInstance().getExternalContext().redirect("/pandamedia/orders.xhtml");
+//        }
+//        catch(Exception e)
+//        {
+//            System.out.println(e.getMessage());
+//        }
         
-        return null;
+        return "manorders";
     }
     
     public void setInvoice(Invoice invoice)
     {
         this.invoice = invoice;
     }
-    
-    
-    
 }

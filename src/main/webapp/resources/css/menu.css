@@ -6,7 +6,7 @@
 }
 
 .cart-items{
-    padding-left:10px;
+    padding-left: 10px;
     display: inline;
 }
 
@@ -19,6 +19,9 @@
 }
 
 .nd{
+    top: 0;
+    width: 100%;
+    position: fixed;
     background-color: #17171b;
     border: none;
     border-radius: 0px;
@@ -104,6 +107,14 @@
     -moz-box-shadow: none;
     box-shadow: none;
 
+}
+
+.searchInput{
+    padding: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0;
+    
 }
 
 .fc:focus{

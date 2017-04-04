@@ -1,9 +1,10 @@
 body{
-    position: absolute;
-    top: 0;
-    bottom: 0;
+    position: relative;
     width: 100%;
     background-color: #17171b;
+    font-family: sans-serif;
+    padding-bottom: 190px;
+    overflow-x: hidden; 
 }
 
 h1{
@@ -62,7 +63,6 @@ h1{
 
 
 }
-
 .browse-item:hover{
     transition: ease-in-out 0.4s;
     filter: gray; /* IE6-9 */
@@ -102,7 +102,7 @@ h1{
     display: inline-block;
     width: 100%;
     
-    background: url(../resources/images/image3.jpg) black no-repeat center center; 
+    background: url(../resources/images/image-artist2.jpg) black no-repeat center center; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -134,3 +134,42 @@ h1{
     margin: 0;
     padding: 0;
 }
+.card-wrapper{
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 2px;
+}
+.card-wrapper:hover{
+    background-color: #02b875
+}
+
+.page-content-wrapper{
+    padding-top: 70px;
+}
+
+.img-cover{
+    width: 250px;
+    height: 250px;
+    margin: 15px;
+}
+
+
+.card-wrap{
+    text-align: center;
+    max-width: 300px;
+}
+
+
+.caption{
+    height: 13em;
+}
+
+#artist-name, h4{
+    color: black;
+}
+
+
+#artist-name:hover, h4:hover{
+    color: #02b875;
+}
+

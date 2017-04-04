@@ -145,6 +145,9 @@ public class BannerAdBackingBean implements Serializable {
         return this.advertisement;
     }
     
+    public String getAdPath(){
+        return fpsController.findFrontPageSettings(1).getAdAId().getAdPath();
+    }
     
     
 }
