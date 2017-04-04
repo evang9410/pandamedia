@@ -30,11 +30,15 @@ body{
 
 .card-wrapper{
     margin: 0;
-    background-color: #02b875;
+    background-color: #fff;
     padding: 15px; 
     height: 200px;
     border-radius: 2px;
     text-align: center;
+}
+
+.card-wrapper:hover{
+    background-color: #02b875;
 }
 
 .pop-albumart{

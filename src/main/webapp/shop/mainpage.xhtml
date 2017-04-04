@@ -61,7 +61,7 @@
                                 <h:commandLink action="#{browseChange.browseAlbums}" styleClass="browse-btn-link">
                                     <div class="browse-item" id="browse-albums">
                                         <div class="browse-caption">
-                                            <span id="browse-album-caption">Albums</span>
+                                            <span id="browse-album-caption">#{msgs.albumLbl}</span>
                                         </div>
                                     </div>
                                 </h:commandLink>
@@ -73,7 +73,7 @@
                             <h:commandLink action="#{browseChange.browseArtists()}" styleClass="browse-btn-link">
                                 <div class="browse-item" id="browse-artists">
                                     <div class="browse-caption">
-                                        <span id="browse-album-caption">#{msgs.albumLbl}</span>
+                                        <span id="browse-album-caption">#{msgs.artists}</span>
                                     </div>
                                 </div>
                             </h:commandLink>
@@ -83,7 +83,7 @@
                 </div>
             </div>
             <div class="row" style="text-align: center;">
-                <img src="resources/ads/#{bannerAdBacking.adPath}"/>
+                <img src="#{request.contextPath}/resources/ads/#{bannerAdBacking.adPath}"/>
             </div>
             <div>
                 <h:panelGroup rendered="#{clientTracking.isTracking}">
