@@ -179,7 +179,7 @@ public class CheckoutBackingBean implements Serializable {
         
         // Send email of invoice details
         // TODO: uncomment this
-//        emailer.sendInvoiceEmail(user.getEmail(), invoice);
+        emailer.sendInvoiceEmail(user.getEmail(), invoice);
         
         // Redirecting to invoice summary page
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("invoice", invoice);

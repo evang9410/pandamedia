@@ -1,18 +1,22 @@
 package com.pandamedia.beans.purchasing;
 
-import com.pandamedia.beans.UserBackingBean;
+import com.pandamedia.beans.UserActionBean;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import persistence.entities.Track;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import persistence.entities.Album;
+import persistence.entities.Invoice;
+import persistence.entities.InvoiceAlbum;
+import persistence.entities.InvoiceTrack;
 
 /**
  *
@@ -25,7 +29,7 @@ public class ShoppingCart implements Serializable {
     private List<Track> tracks;
     private UIViewRoot prevPage;
     @Inject
-    private UserBackingBean user;
+    private UserActionBean user;
 
     public ShoppingCart() {
         albums = new ArrayList<>();
@@ -154,5 +158,154 @@ public class ShoppingCart implements Serializable {
     public void clearCart() {
         albums = new ArrayList<>();
         tracks = new ArrayList<>();
+    }
+    
+    private List<FacesMessage> itemsPreviouslyPurchased()
+    {
+        List<FacesMessage> list = new ArrayList<>();
+        
+        if (!albums.isEmpty())
+        {
+            checkAlbums(list);
+        }
+        
+        if (!tracks.isEmpty())
+        {
+            checkTracks(list);
+        }
+        
+        return list;
+    }
+    
+    /**
+     * This method checks if the albums in the cart have already been 
+     * purchased by the logged in user, and creates a message for each 
+     * previously purchased album.
+     * 
+     * @author Erika Bourque
+     * @param list  The list to add the messages to
+     */
+    private void checkAlbums(List<FacesMessage> list)
+    {
+        List<Album> purchased = getPurchasedAlbums();
+               
+        // Comparing each album in cart to see if has already been purchased
+        for(Album a : albums)
+        {
+            if (purchased.contains(a))
+            {
+                // Adding message for purchased album
+                list.add(com.pandamedia.utilities.Messages.getMessage(
+                        "bundles.messages", "prevPurchasedAlbum", new Object[]{a.getTitle()}));
+            }
+        }
+    }
+    
+    /**
+     * This method checks if the tracks in the cart have already been 
+     * purchased by the logged in user, either individually or as part of an 
+     * album, and creates a message for each previously purchased track.
+     * 
+     * @author Erika Bourque
+     * @param list  The list to add the messages to
+     */
+    private void checkTracks(List<FacesMessage> list)
+    {
+        List<Track> purchasedTracks = getPurchasedTracks();
+        List<Album> purchasedAlbums = getPurchasedAlbums();
+        
+        // Comparing each track
+        for(Track t : tracks)
+        {
+            // Making sure track nor its album has not been purchased
+            if (purchasedTracks.contains(t) || purchasedAlbums.contains(t.getAlbumId()))
+            {
+                // Adding message for purchased track
+                list.add(com.pandamedia.utilities.Messages.getMessage(
+                        "bundles.messages", "prevPurchasedTrack", new Object[]{t.getTitle()}));
+            }
+        }
+    }
+    
+    /**
+     * This method retrieves all the user's purchased albums.
+     * 
+     * @author Erika Bourque
+     * @return  The list of purchased albums
+     */
+    private List<Album> getPurchasedAlbums()
+    {
+        List<Album> list = new ArrayList<>();
+        
+        // Getting all user's invoices
+        for(Invoice i : user.getCurrUser().getInvoiceList())
+        {
+            // Getting all user's invoice albums
+            for(InvoiceAlbum ia : i.getInvoiceAlbumList())
+            {
+                // Adding each album to purchased list
+                list.add(ia.getAlbum());
+            }
+        }
+        
+        return list;
+    }
+    
+    /**
+     * This method retrieves all the user's purchased tracks.
+     * 
+     * @author Erika Bourque
+     * @return  The list of purchased tracks
+     */
+    private List<Track> getPurchasedTracks()
+    {
+        List<Track> list = new ArrayList<>();
+        
+        // Getting all user's invoices
+        for(Invoice i : user.getCurrUser().getInvoiceList())
+        {
+            // Getting all user's invoice tracks
+            for(InvoiceTrack it : i.getInvoiceTrackList())
+            {
+                // Adding each track to purchased list
+                list.add(it.getTrack());
+            }
+        }
+        
+        return list;
+    }
+    
+    public String verifyCartContents()
+    {
+        // Remains null if warnings exist
+        String page = null;
+        
+        // Must make sure user is logged in before checking previous purchases
+        if (user.isLogin())
+        {
+            List<FacesMessage> warnings = itemsPreviouslyPurchased();
+            if (warnings.isEmpty())
+            {
+                // Redirect to finalization page
+                page = "finalization";
+            }
+            else
+            {
+                // Add warnings to cart page
+                FacesContext context = FacesContext.getCurrentInstance();
+                
+                for(FacesMessage msg : warnings)
+                {
+                    context.addMessage(null, msg);
+                }
+            }
+        }
+        else
+        {
+            // Force user to login
+            page = "login";
+        }
+        
+        return page;
     }
 }
