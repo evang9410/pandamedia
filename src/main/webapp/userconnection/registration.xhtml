@@ -8,7 +8,6 @@
     <h:head>
         <title>Registration</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <h:outputStylesheet library="css" name="bootstrap.css"/>
     </h:head>
     <h:body>
         <div class="container">
@@ -83,7 +82,7 @@
                             <h:message for="address1Input" style="color:red"/>
                         </div>
                         <div class="form-group">
-                            <h:inputText class="form-control input-sm" id="address2Input" value="temp"
+                            <h:inputText class="form-control input-sm" id="address2Input" value="#{userBean.shopUser.streetAddress2}"
                                          a:placeholder="#{msgs.address2Header}"/>
                         </div>
 
@@ -133,21 +132,14 @@
                                          a:placeholder="#{msgs.cellPhoneHeader}" required="false"/>
                             <h:message for="cellPhoneInput" style="color:red"/>
                         </div>
-                    </p:panel>
-                    <div class="row">
-                        <div class="col-xs-6 col-sm-6 col-md-6">
-                            <div class="form-group">
-                                <h:commandButton class="btn btn-info btn-block" id="loginBtn" value="#{msgs.loginHeader}" action="userconnection/login.xhtml" immediate="true"/>
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-sm-6 col-md-6">
+                    </p:panel>           
                             <div class="form-group">
                                 <h:commandButton class="btn btn-info btn-block" id="submitBtn" value="#{msgs.registerBtn}" action="#{userAction.register(temp.value)}"/>
                             </div>
-                        </div>                       
-                    </div>
                 </h:form>
             </div>
         </div>
+        <h:outputStylesheet library="css" name="style.css"/>
+        <h:outputStylesheet library="css" name="bootstrap.css"/>
     </h:body>
 </html>
