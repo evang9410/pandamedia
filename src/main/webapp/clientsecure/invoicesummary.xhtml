@@ -13,6 +13,7 @@
         <h:outputStylesheet name="checkout.css" library="css"/>
     </ui:define>
     <ui:define name="page-content">
+        <div class="container">
         <div id="content">
             <ui:fragment rendered="#{not invoiceSum.invoiceExists()}">
                 <h1>#{msgs.noInvoiceMsg}</h1>
@@ -106,6 +107,7 @@
                     </b:panelGrid>
                 </div>
             </ui:fragment>
+        </div>
         </div>
     </ui:define>
 </ui:composition>

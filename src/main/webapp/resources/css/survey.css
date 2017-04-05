@@ -1,26 +1,39 @@
 /* 
-    Created on : 31-Mar-2017, 10:29:39 PM
-    Author     : Evang
+    Author     : Hau Gilles Che
 */
-.survey-wrapper{
-    height:15vh;
-    width:45vw;
-}
-.survey-block{
-    height:100%;
-    line-height: 100%;
-    width:25%;
-/*    background: pink;*/
-    display: inline-block;
-    float:left;
-    border: 1px solid white;
-    text-align: center;
+
+#survey{
+    font-family: "Poppins", sans-serif;
+    color:white;
 }
 
-.answer-text{
-    
+.ui-widget{
+    background: #17171b;
+    font-family: "Poppins", sans-serif;
+    color:white;
+    max-width:100%;
 }
 
-.survey-selected{
-   background: blue;
+.ui-outputlabel{
+    background: #17171b;
+    font-family: "Poppins", sans-serif;
+    color:white;
+}
+
+.ui-progressbar{
+    max-width:100%;
+}
+.ui-widget-content{
+    background: #17171b;
+    border:0;
+}
+
+/*
+.ui-progressbar-value, .ui-progressbar-label{
+    color:white;
+}
+*/
+
+.ui-widget-content{
+    background:#17171b;
 }

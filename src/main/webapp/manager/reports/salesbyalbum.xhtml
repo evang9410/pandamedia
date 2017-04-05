@@ -14,33 +14,39 @@
 
     <ui:define name="page-content">
         <f:view locale="#{ChangeLanguage.locale}">
-                <h:outputStylesheet name="reports.css" library="css"/>
+            <h:outputStylesheet name="reports.css" library="css"/>
             <h1><h:outputText value="#{msgs.manReportSalesByAlbum}"/></h1>
             <div align="center">
-            <h:form id="calendars">
-                <p:calendar 
-                    id="reportStartDate" 
-                    mode="inline" 
-                    navigator="true" 
-                    maxdate="#{reportData.defaultEndDate}"
-                    value="#{reportData.startDate}">
-                    <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/>--> 
-                </p:calendar>
-                <p:calendar 
-                    id="reportEndDate" 
-                    mode="inline" 
-                    navigator="true" 
-                    maxdate="#{reportData.defaultEndDate}"
-                    value="#{reportData.endDate}">
-                    <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/>-->
-                </p:calendar>
-                <label for="albumId">#{msgs.albumIdLbl}</label>
-                <p:inputText  id="albumId" value="#{reportData.album}" converter="#{albumConverter}" required="true" />
-                <!--<p:ajax event="change" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
-                <!--            </p:inputText>-->
-                <!--            <p:watermark for="albumId" value="Search with a keyword" id="watermark" />-->
-                <p:commandButton id="search" update="totalTable reportTable" value="#{msgs.searchBtn}" />
-            </h:form>
+                <h:form id="calendars" styleClass="calendar-center">
+                    <h:panelGrid columns="2" style="vertical-align: top;" rowClasses="title, cal, labels">
+                        <p:outputLabel style="text-align: center; width: 100%;"><h4>#{msgs.reportStart}</h4></p:outputLabel>
+                        <p:outputLabel style="text-align: center; width: 100%;"><h4>#{msgs.reportEnd}</h4></p:outputLabel>
+
+                        <p:calendar 
+                            id="reportStartDate" 
+                            mode="inline" 
+                            navigator="true" 
+                            maxdate="#{reportData.defaultEndDate}"
+                            value="#{reportData.startDate}">
+                            <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/>--> 
+                        </p:calendar>
+                        <p:calendar 
+                            id="reportEndDate" 
+                            mode="inline" 
+                            navigator="true" 
+                            maxdate="#{reportData.defaultEndDate}"
+                            value="#{reportData.endDate}">
+                            <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/>-->
+                        </p:calendar>
+
+                        <p:outputLabel for="albumId" style="text-align: right;">#{msgs.albumIdLbl}</p:outputLabel>
+                        <p:inputText  id="albumId" value="#{reportData.album}" converter="#{albumConverter}" required="true" />
+                        <!--<p:ajax event="change" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
+                        <!--            </p:inputText>-->
+                        <!--            <p:watermark for="albumId" value="Search with a keyword" id="watermark" />-->
+                    </h:panelGrid>
+                    <p:commandButton id="search" update="totalTable reportTable" value="#{msgs.searchBtn}" />
+                </h:form>
             </div>
             <br/>
             <p:dataTable styleClass="report-table" 

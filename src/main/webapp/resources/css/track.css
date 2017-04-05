@@ -1,7 +1,3 @@
-/* 
-    Created on : 9-Mar-2017, 3:25:08 PM
-    Author     : Evang
-*/
 @import url('https://fonts.googleapis.com/css?family=Poppins');
 body{
     
@@ -9,13 +5,11 @@ body{
 }
 
 #album-info{
-    padding-top: 70px;
-    
-    margin-top:4%;
+    padding-top: 150px;
     background-color: #17171b;
     width: 100%;
     color: white;
-    margin-bottom: 4%;
+    padding-bottom: 4%;
 }
 
 .track-info-wrapper{
