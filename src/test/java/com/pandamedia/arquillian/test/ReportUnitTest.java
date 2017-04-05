@@ -43,9 +43,14 @@ import persistence.controllers.AlbumJpaController;
 import persistence.controllers.ArtistJpaController;
 import persistence.controllers.CoverArtJpaController;
 import persistence.controllers.GenreJpaController;
+import persistence.controllers.InvoiceAlbumJpaController;
 import persistence.controllers.InvoiceTrackJpaController;
+import persistence.controllers.RecordingLabelJpaController;
 import persistence.controllers.SongwriterJpaController;
 import persistence.controllers.TrackJpaController;
+import persistence.entities.Album;
+import persistence.entities.InvoiceAlbum;
+import persistence.entities.InvoiceAlbumPK;
 import persistence.entities.InvoiceTrack;
 import persistence.entities.InvoiceTrackPK;
 
@@ -62,41 +67,33 @@ public class ReportUnitTest {
     // AND the persistence XMLs, both needed to work
 //    @Resource(name = "java:app/jdbc/waldo2g4w17")
     @Resource(name = "java:app/jdbc/pandamedialocal")
-    private DataSource ds;
-    
+    private DataSource ds;    
     @Inject
     private ReportBackingBean reports;
-    
     @Inject
     private ShopUserJpaController userJpa;
-    
     @Inject
     private ProvinceJpaController provinceJpa;
-    
     @Inject
     private InvoiceJpaController invoiceJpa;
-    
     @Inject
     private InvoiceTrackJpaController invoiceTrackJpa;
-    
     @Inject
     private AlbumJpaController albumJpa;
-    
     @Inject
     private ArtistJpaController artistJpa;
-    
     @Inject
     private CoverArtJpaController coverJpa;
-    
     @Inject
     private GenreJpaController genreJpa;
-    
     @Inject
     private SongwriterJpaController songwriterJpa;
-    
     @Inject
     private TrackJpaController trackJpa;
-    
+    @Inject
+    private RecordingLabelJpaController recordingJpa;
+    @Inject
+    private InvoiceAlbumJpaController invoiceAlbumJpa;
     @Deployment
     public static WebArchive deploy() {
         // Use an alternative to the JUnit assert library called AssertJ
@@ -353,6 +350,7 @@ public class ReportUnitTest {
     }
     
     @Test
+    @Ignore
     public void getTopSellersTracksContainsTest() throws SQLException, Exception {
         // Set Up
         boolean isFound = false;
@@ -383,6 +381,7 @@ public class ReportUnitTest {
     }
     
     @Test
+    @Ignore
     public void getTopSellersTracksNotContainsTest() throws SQLException, Exception {
         // Set Up
         boolean isFound = false;
@@ -402,6 +401,68 @@ public class ReportUnitTest {
         for(Object[] obj : list)
         {
             if (obj[1].equals(track))
+            {
+                isFound = true;
+                break;
+            }
+        }
+        
+        // Assert
+        assertThat(!isFound);
+    }
+    
+    @Test
+    @Ignore
+    public void getTopSellersAlbumsContainsTest() throws SQLException, Exception {
+        // Set Up
+        boolean isFound = false;
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/01/15");        
+        ShopUser test = createTestUser();        
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Album album = createTestAlbum();
+        createNewInvoiceAlbum(invoice, album, 10.00);
+        
+        // Action
+        List<Object[]> list = reports.getTopSellersAlbums(start, end);
+        // obj[0] is amount sold, obj[1] is album
+        for(Object[] obj : list)
+        {
+            if (obj[1].equals(album))
+            {
+                isFound = true;
+                break;
+            }
+        }
+        
+        // Assert
+        assertThat(isFound);
+    }
+    
+    @Test
+    @Ignore
+    public void getTopSellersAlbumsNotContainsTest() throws SQLException, Exception {
+        // Set Up
+        boolean isFound = false;
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date outside start and end
+        Date saleDate = format.parse("2017/02/15");        
+        ShopUser test = createTestUser();        
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Album album = createTestAlbum();
+        createNewInvoiceAlbum(invoice, album, 10.00);
+        
+        // Action
+        List<Object[]> list = reports.getTopSellersAlbums(start, end);
+        // obj[0] is amount sold, obj[1] is album
+        for(Object[] obj : list)
+        {
+            if (obj[1].equals(album))
             {
                 isFound = true;
                 break;
@@ -513,5 +574,50 @@ public class ReportUnitTest {
         it.setInvoice(invoiceId);
         it.setTrack(trackId);
         invoiceTrackJpa.create(it);
+    }
+    
+    private Album createTestAlbum() throws Exception
+    {
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Album a = new Album();
+        
+        a.setTitle("Title");
+        a.setReleaseDate(format.parse("2016/12/31"));
+        a.setNumTracks(1);
+        a.setDateEntered(Calendar.getInstance().getTime());
+        a.setCostPrice(5.0);
+        a.setListPrice(6.0);
+        a.setArtistId(artistJpa.findArtist(1));
+        a.setCoverArtId(coverJpa.findCoverArt(1));
+        a.setGenreId(genreJpa.findGenre(1));
+        a.setRecordingLabelId(recordingJpa.findRecordingLabel(1));
+        albumJpa.create(a);
+        
+        return a;
+    }
+    
+    /**
+     * Invoice Albums must be customizable, as ids and final price are variable.
+     * 
+     * @param invoiceId
+     * @param trackId
+     * @param finalPrice
+     * @return              the invoice track
+     * @throws Exception 
+     */
+    private void createNewInvoiceAlbum(Invoice invoiceId, Album albumId, 
+            double finalPrice) throws Exception
+    {
+        InvoiceAlbum ia = new InvoiceAlbum();
+        InvoiceAlbumPK iapk = new InvoiceAlbumPK();
+        
+        iapk.setInvoiceId(invoiceId.getId());
+        iapk.setAlbumId(albumId.getId());
+        
+        ia.setInvoiceAlbumPK(iapk);
+        ia.setFinalPrice(finalPrice);
+        ia.setInvoice(invoiceId);
+        ia.setAlbum(albumId);
+        invoiceAlbumJpa.create(ia);
     }
 }
