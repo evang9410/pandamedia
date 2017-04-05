@@ -20,7 +20,7 @@
             </div>
             <div id="resultsDiv">
                 <p:panel id="resultsPanel" rendered="#{surveyBean.userAnswered}">
-                    <h4>Results</h4>
+                    <h4>#{msgs.surveyResultHeader}</h4>
                     <p:outputLabel for="votesA" value="#{surveyBean.survey.answerA}" id="answerALbl"/>
                     <p:progressBar value="#{surveyBean.votesA}" labelTemplate="#{surveyBean.survey.votesA}" displayOnly="true" id="votesA"/>
 
