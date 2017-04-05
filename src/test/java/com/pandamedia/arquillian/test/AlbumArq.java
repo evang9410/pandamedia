@@ -56,6 +56,7 @@ import persistence.entities.Track;
  *
  * @author Evan Glicakis
  */
+@Ignore
 @RunWith(Arquillian.class)
 public class AlbumArq {
 

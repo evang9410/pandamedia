@@ -33,6 +33,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import persistence.controllers.InvoiceJpaController;
@@ -50,6 +51,7 @@ import persistence.entities.Track;
  *
  * @author Naasir Jusab
  */
+@Ignore
 @RunWith(Arquillian.class)
 public class InvoiceArq {
     

@@ -30,6 +30,7 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import persistence.controllers.InvoiceJpaController;
@@ -44,6 +45,7 @@ import persistence.entities.Track;
  *
  * @author Naasir Jusab
  */
+@Ignore
 @RunWith(Arquillian.class)
 public class ShopUserArq {
     

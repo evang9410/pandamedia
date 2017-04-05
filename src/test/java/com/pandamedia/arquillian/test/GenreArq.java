@@ -30,6 +30,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import persistence.controllers.GenreJpaController;
@@ -43,6 +44,7 @@ import persistence.entities.Track;
  * @author Evan Glicakis
  * 
  */
+@Ignore
 @RunWith(Arquillian.class)
 public class GenreArq {
     @Resource(name = "java:app/jdbc/pandamedialocal")

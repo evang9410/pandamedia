@@ -36,6 +36,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import persistence.controllers.AlbumJpaController;
@@ -59,6 +60,7 @@ import persistence.entities.Track;
  *
  * @author Naasir Jusab
  */
+@Ignore
 @RunWith(Arquillian.class)
 public class TrackArq {
     
