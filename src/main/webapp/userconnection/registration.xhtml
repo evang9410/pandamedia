@@ -116,7 +116,7 @@
                                          required="true" a:placeholder="#{msgs.postalCodeHeader}*" requiredMessage="#{msgs.requiredFieldMsg}">
                                 <p:ajax update="postalCodeInput" event="blur"/>
                             </h:inputText>
-                                         
+
                             <h:message for="postalCodeInput" style="color:red"/>
                         </div>
 
@@ -133,9 +133,9 @@
                             <h:message for="cellPhoneInput" style="color:red"/>
                         </div>
                     </p:panel>           
-                            <div class="form-group">
-                                <h:commandButton class="btn btn-info btn-block" id="submitBtn" value="#{msgs.registerBtn}" action="#{userAction.register(temp.value)}"/>
-                            </div>
+                    <div class="form-group">
+                        <h:commandButton class="btn btn-info btn-block" id="submitBtn" value="#{msgs.registerBtn}" action="#{userAction.register(temp.value)}"/>
+                    </div>
                 </h:form>
             </div>
         </div>

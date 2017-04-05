@@ -16,6 +16,7 @@
         <h:outputStylesheet library="css" name="cart.css" />
     </ui:define>
     <ui:define name="page-content">        
+        <p:growl globalOnly="true" id="growl" showDetail="false" showSummary="true" life="5000" />
         <div class="container">
             <div class="row">
                 <h:panelGroup rendered="#{cart.isCartEmpty}">
@@ -140,7 +141,7 @@
                                 </td>
                                 <td>
                                     <h:form>
-                                        <b:commandButton look="success" value="Checkout" icon-awesome="credit-card" action="#{userAction.redirectUser('finalization')}"/>
+                                        <b:commandButton look="success" value="Checkout" icon-awesome="credit-card" action="#{cart.verifyCartContents()}" update="growl"/>
                                     </h:form>
                                 </td>
                             </tr>

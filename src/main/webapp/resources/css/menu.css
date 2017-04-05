@@ -109,6 +109,14 @@
 
 }
 
+.searchInput{
+    padding: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0;
+    
+}
+
 .fc:focus{
     border-color: #02b875;
     transition: ease-in-out 0.2s;
