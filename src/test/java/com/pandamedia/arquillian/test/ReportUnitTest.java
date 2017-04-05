@@ -99,9 +99,8 @@ public class ReportUnitTest {
     
     @Deployment
     public static WebArchive deploy() {
-
         // Use an alternative to the JUnit assert library called AssertJ
-        // Need to reference MySQL driver as it is not part of GlassFish
+        // Need to reference MySQL driver and jodd as it is not part of GlassFish
         final File[] dependencies = Maven
                 .resolver()
                 .loadPomFromFile("pom.xml")
@@ -130,10 +129,7 @@ public class ReportUnitTest {
                 .addAsResource(new File("src/test/resources-glassfish-remote/test-persistence.xml"), "META-INF/persistence.xml")
 //                .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
                 .addAsResource("createtestdatabase.sql")
-                .addAsLibraries(dependencies);
-
-//        System.out.println(webArchive.toString(true));
-        
+                .addAsLibraries(dependencies);        
         return webArchive;
     }
     
@@ -352,6 +348,66 @@ public class ReportUnitTest {
             }
         }
 
+        // Assert
+        assertThat(!isFound);
+    }
+    
+    @Test
+    public void getTopSellersTracksContainsTest() throws SQLException, Exception {
+        // Set Up
+        boolean isFound = false;
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/01/15");        
+        ShopUser test = createTestUser();        
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Track track = createTestTrack();
+        createNewInvoiceTrack(invoice, track, 10.00);
+        
+        // Action
+        List<Object[]> list = reports.getTopSellersTracks(start, end);
+        // obj[0] is amount sold, obj[1] is track
+        for(Object[] obj : list)
+        {
+            if (obj[1].equals(track))
+            {
+                isFound = true;
+                break;
+            }
+        }
+        
+        // Assert
+        assertThat(isFound);
+    }
+    
+    @Test
+    public void getTopSellersTracksNotContainsTest() throws SQLException, Exception {
+        // Set Up
+        boolean isFound = false;
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date outside start and end
+        Date saleDate = format.parse("2017/02/15");        
+        ShopUser test = createTestUser();        
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Track track = createTestTrack();
+        createNewInvoiceTrack(invoice, track, 10.00);
+        
+        // Action
+        List<Object[]> list = reports.getTopSellersTracks(start, end);
+        // obj[0] is amount sold, obj[1] is track
+        for(Object[] obj : list)
+        {
+            if (obj[1].equals(track))
+            {
+                isFound = true;
+                break;
+            }
+        }
+        
         // Assert
         assertThat(!isFound);
     }
