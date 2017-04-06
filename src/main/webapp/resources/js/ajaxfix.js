@@ -1,3 +1,4 @@
+
 jsf.ajax.addOnEvent(function(data) {
     if (data.status == "success") {
         fixViewState(data.responseXML);
@@ -71,3 +72,4 @@ function removeViewState(form) {
         }
     }
 }
+

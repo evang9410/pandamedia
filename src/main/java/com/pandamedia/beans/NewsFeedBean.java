@@ -6,7 +6,9 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import persistence.controllers.FrontPageSettingsJpaController;
 import persistence.controllers.NewsFeedActionController;
+import persistence.entities.FrontPageSettings;
 import persistence.entities.Newsfeed;
 
 /**
@@ -20,10 +22,14 @@ public class NewsFeedBean implements Serializable {
     @Inject
     private NewsFeedActionController newsFeedActionController;
     private Newsfeed newsFeed;
+    @Inject
+    private FrontPageSettingsJpaController fpsController;
     
     @PostConstruct
     public void init(){
-        newsFeed = newsFeedActionController.getCurrentNewsFeed();
+        //newsFeed = newsFeedActionController.getCurrentNewsFeed();
+        FrontPageSettings fps = fpsController.findFrontPageSettings(1);
+        newsFeed = fps.getNewsfeedId();
     }
     
     

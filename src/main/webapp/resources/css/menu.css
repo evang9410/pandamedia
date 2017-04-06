@@ -6,11 +6,22 @@
 }
 
 .cart-items{
-    padding-left:10px;
+    padding-left: 10px;
     display: inline;
 }
 
+#type-nav{
+    width: 12em;
+}
+
+#type-dropdown{
+    float: right;
+}
+
 .nd{
+    top: 0;
+    width: 100%;
+    position: fixed;
     background-color: #17171b;
     border: none;
     border-radius: 0px;
@@ -98,6 +109,14 @@
 
 }
 
+.searchInput{
+    padding: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0;
+    
+}
+
 .fc:focus{
     border-color: #02b875;
     transition: ease-in-out 0.2s;
@@ -133,7 +152,7 @@ img{
 
 .dropdown-menu{
     background-color: #17171b;
-    border: 2px solid white;
+    border: 2px solid rgba(255, 255, 255, 0.87);
 }
 
 .dropdown-menu > li > a{

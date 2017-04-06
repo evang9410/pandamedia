@@ -13,14 +13,13 @@ import persistence.controllers.TrackJpaController;
 import persistence.entities.Track;
 
 /**
- *
- * @author Erika Bourque
+ * This class will be used as the track converter for the primefaces selectOneMenu
+ * so that the manager can choose a track from the list of tracks.
+ * @author Naasir Jusab
  */
 @RequestScoped
 @Named
 public class TrackConverter implements Converter,Serializable {
-
-    // TODO: fix error msg
     
     @Inject
     TrackJpaController service;

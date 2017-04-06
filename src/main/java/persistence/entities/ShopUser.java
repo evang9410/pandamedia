@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package persistence.entities;
 
 import java.io.Serializable;
@@ -50,6 +46,15 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "ShopUser.findBySalt", query = "SELECT s FROM ShopUser s WHERE s.salt = :salt")
     , @NamedQuery(name = "ShopUser.findByIsManager", query = "SELECT s FROM ShopUser s WHERE s.isManager = :isManager")})
 public class ShopUser implements Serializable {
+
+    @Size(max = 255)
+    @Column(name = "street_address_2")
+    private String streetAddress2;
+    @Basic(optional = false)
+    @NotNull
+    @Lob
+    @Column(name = "hashed_pw")
+    private byte[] hashedPw;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -109,11 +114,6 @@ public class ShopUser implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "email")
     private String email;
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Column(name = "hashed_pw")
-    private byte[] hashedPw;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -320,7 +320,6 @@ public class ShopUser implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof ShopUser)) {
             return false;
         }
@@ -335,5 +334,12 @@ public class ShopUser implements Serializable {
     public String toString() {
         return "" + id + "";
     }
-    
+
+    public String getStreetAddress2() {
+        return streetAddress2;
+    }
+
+    public void setStreetAddress2(String streetAddress2) {
+        this.streetAddress2 = streetAddress2;
+    }    
 }

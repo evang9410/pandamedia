@@ -1,22 +1,54 @@
-/* 
-    Created on : 9-Mar-2017, 3:25:08 PM
-    Author     : Evang
-*/
-
+@import url('https://fonts.googleapis.com/css?family=Poppins');
 body{
-    background-color:  #3f3f3f;
-}
-.albumArt{		
-    width: 250px;		
-    height: 250px;		
-}
-.track-info-wrapper{
-    height: 45vh;
-    margin-top: 2%;
+    
+    background-color:  white;
 }
 
-.track-info{
-    margin-left: 2%;
+#album-info{
+    padding-top: 150px;
+    background-color: #17171b;
+    width: 100%;
+    color: white;
+    padding-bottom: 4%;
+}
+
+.track-info-wrapper{
+    padding-left: 20%;
+}
+
+#comment-section{
+    background-color: white;
+    padding: 0;
+    width: 100%;
+    padding-top: 3em;
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
+#info-track{
+    width: fit-content;
+}
+
+.user-id{
+    color: black;
+    font-weight: bold;
+}
+
+#artist-link{
+    float: left;
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: white;
+    width: fit-content;
+}
+
+#add-to-cart{
+    padding-top: 200px;
+    float: left;
+}
+
+#artist-link:hover{
+    color: #02b875;
 }
 
 .review-wrapper{
@@ -31,15 +63,16 @@ body{
 .modalPseudoClass{
     color:black;
 }
-/* special thanks to Besnikhetemi from bootsnipp.com for the comment styling
-http://bootsnipp.com/snippets/rvbKr
-*/
-comment {
+.comment {
     overflow: hidden;
     padding: 0 0 1em;
     border-bottom: 1px solid #ddd;
     margin: 0 0 1em;
     *zoom: 1;
+}
+
+.text{
+    font-size: 16px;
 }
 
 .comment-img {

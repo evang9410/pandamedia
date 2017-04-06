@@ -1,4 +1,14 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins');
+.footer-wrapper{
+    position: absolute;
+    background-color: white;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    width: 100%;
+    height: 190px;
+    left: 0;
+}
+
 .pad{
     padding-top: 2rem;
     padding-left: 2rem;
@@ -11,18 +21,17 @@
     padding-right: 1.5rem;
 }
 
-.row{
+.row2{
     text-align: center;
     margin-left: -4px;
     margin-right: -4px;
 }
 
-.col{
+.col2{
     width: 16.667%;
     margin-left: 4px;
     margin-right: 4px;
     float: left;
-    
     position: relative;
 }
 
@@ -93,16 +102,6 @@
     line-height: .8;
     color: rgba(0, 0, 0, .87);
     font-size: 20px;
-}
-
-.signature{
-    margin-top: 0;
-    margin-bottom: 10px;
-    margin-right: 3em;
-    font-family: "Segoe UI","Trebuchet MS","PT Sans","Helvetica Neue",HelveticaNeue-Light,Helvetica,Arial,sans-serif;
-    color: rgba(0, 0, 0, .4);
-    font-size: 16px;
-    float: right;
 }
 
 a:hover, a:focus{

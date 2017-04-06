@@ -7,19 +7,22 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import persistence.controllers.FrontPageSettingsJpaController;
 import persistence.controllers.SurveyActionController;
+import persistence.entities.FrontPageSettings;
 
 /**
- *
+ * This class will be used as the survey backing bean. It is used as a means
+ * of getting surveys and querying them.
  * @author Hau Gilles Che
  */
 @Named("surveyBean")
-@RequestScoped
+@SessionScoped
 public class SurveyBean implements Serializable {
+
     private int surveyId=1;
     private String userChoice;
     private Survey survey;
@@ -28,53 +31,96 @@ public class SurveyBean implements Serializable {
     private boolean showOptions;
     
     @Inject
-    private SurveyJpaController surveys;
+    private FrontPageSettingsJpaController fpsController;
     @Inject
-    private SurveyActionController surveyActionController;
+    private SurveyJpaController surveys;
    
-    
     @PostConstruct
-    public void init(){
-        survey = surveyActionController.getCurrentSurvey();
-        //survey=surveys.findSurvey(1);
-    
+    public void init()
+    {
+        survey = fpsController.findFrontPageSettings(1).getSurveyId();
         createAnswerList();
-        userAnswered=false;
-        showOptions=true;
-        
+        userAnswered = false;
+        showOptions = true;
     }
+    
+    /**
+     * 
+     * @return survey record from database
+     */
+    public Survey getSurvey()
+    {
+        if(!fpsController.findFrontPageSettings(1).getSurveyId().equals(survey))
+        {
+            survey = fpsController.findFrontPageSettings(1).getSurveyId();
+            createAnswerList();
+            userAnswered = false;
+            showOptions = true;
+        }
+        
+        return survey;
+    }
+       
+    /**
+     * 
+     * @return the choice selected by the user.
+     */
     public String getUserChoice() {
         return userChoice;
     }
 
+    /**
+     * 
+     * @param userChoice value to be set as user choice.
+     */
     public void setUserChoice(String userChoice) {
         this.userChoice = userChoice;
     }
 
+    /**
+     * 
+     * @return id of the current survey.
+     */
     public int getSurveyId() {
         return surveyId;
     }
 
+    /**
+     * 
+     * @param surveyId value to set as survey id.
+     */
     public void setSurveyId(int surveyId) {
         this.surveyId = surveyId;
     }
 
-    public Survey getSurvey() {
-        return survey;
-    }
-
+    /**
+     * 
+     * @param survey survey object to be set.
+     */
     public void setSurvey(Survey survey) {
         this.survey = survey;
     }
 
+    /**
+     * 
+     * @return a list of survey answers (choices).
+     */
     public List<String> getAnswers() {
         return answers;
     }
 
+    /**
+     * 
+     * @param answers list of string values to set as survey answers.
+     */
     public void setAnswers(List<String> answers) {
         this.answers = answers;
     }
 
+    /**
+     * 
+     * @return true if the answers (choices) are to be visible.
+     */
     public boolean isShowOptions() {
         return showOptions;
     }
@@ -143,4 +189,26 @@ public class SurveyBean implements Serializable {
         answers.add(survey.getAnswerD());
     }
     
+    private int getPercentageVote(int numVote){
+        int total=getTotalVotes();
+        int vote = (numVote*100) / total;
+        System.out.println("PERCENT:"+vote+"NUMVOTE: "+numVote+" TOTAL:"+total);
+        return vote;
+    }
+    
+    public int getVotesA(){
+        return getPercentageVote(survey.getVotesA());
+    }
+    
+    public int getVotesB(){
+        return getPercentageVote(survey.getVotesB());
+    }
+    
+    public int getVotesC(){
+        return getPercentageVote(survey.getVotesC());
+    }
+    
+    public int getVotesD(){
+        return getPercentageVote(survey.getVotesD());
+    }
 }
