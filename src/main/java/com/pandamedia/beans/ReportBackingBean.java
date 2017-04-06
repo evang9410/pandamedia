@@ -765,4 +765,192 @@ public class ReportBackingBean implements Serializable {
         TypedQuery<Object[]> typedQuery = em.createQuery(query);
         return typedQuery.getResultList();
     }
+    
+    /**
+     * This method returns a list of the invoice details for the specified
+     * client's tracks purchased in the time frame specified, in order of the sale date.  
+     * This includes the income, cost, and profit of the sale.
+     * 
+     * @author Erika Bourque
+     * @param startDate The report's start date
+     * @param endDate The report's end date
+     * @param user    The client desired for the report
+     * @return          The list of invoices
+     */
+    public List<Object[]> getSalesByClientTracks(Date startDate, Date endDate, ShopUser user)
+    {        
+        if (user == null)
+        {
+            String logMsg = "getSalesByClientTracks\tStart: " + startDate + "\tEnd: " + endDate + "\tClient: null";
+            LOG.log(Level.INFO, logMsg);
+            return null;
+        }
+        
+        String logMsg = "getSalesByClientTracks\tStart: " + startDate + "\tEnd: " + endDate + "\tClient: " + user.getId();
+        LOG.log(Level.INFO, logMsg);
+        
+        // Query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<InvoiceTrack> invoiceTrackRoot = query.from(InvoiceTrack.class);
+        Join invoiceJoin = invoiceTrackRoot.join(InvoiceTrack_.invoice);
+        Join trackJoin = invoiceTrackRoot.join(InvoiceTrack_.track);
+        query.multiselect(invoiceJoin,
+                trackJoin,
+                invoiceTrackRoot.get(InvoiceTrack_.finalPrice), 
+                invoiceTrackRoot.get(InvoiceTrack_.track).get(Track_.costPrice),
+                cb.diff(invoiceTrackRoot.get(InvoiceTrack_.finalPrice), trackJoin.get(Track_.costPrice)));
+        
+        // Where clause
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.userId), user));
+        predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+        query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+                
+        // Order by clause
+        query.orderBy(cb.desc(invoiceJoin.get(Invoice_.saleDate)));
+        
+        TypedQuery<Object[]> typedQuery = em.createQuery(query);
+        return typedQuery.getResultList();
+    }
+    
+    /**
+     * This method returns the total income, cost, and profit of all the 
+     * track sales within the time frame specified for a particular client.
+     * 
+     * @author Erika Bourque
+     * @param startDate The report's start date
+     * @param endDate The report's end date
+     * @param user    The client desired for the report
+     * @return          The list of totals
+     */
+    public List<Object[]> getSalesByClientTracksTotals(Date startDate, Date endDate, ShopUser user) {
+        if (user == null)
+        {
+            String logMsg = "getSalesByClientTracksTotals\tStart: " + startDate + "\tEnd: " + endDate + "\tClient: null";
+            LOG.log(Level.INFO, logMsg);
+            return null;
+        }
+        
+        String logMsg = "getSalesByClientTracksTotals\tStart: " + startDate + "\tEnd: " + endDate + "\tClient: " + user.getId();
+        LOG.log(Level.INFO, logMsg);
+        
+        // Query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<InvoiceTrack> invoiceTrackRoot = query.from(InvoiceTrack.class);
+        Join invoiceJoin = invoiceTrackRoot.join(InvoiceTrack_.invoice);
+
+        Expression<Double> finalSum = cb.sum(invoiceTrackRoot.get(InvoiceTrack_.finalPrice));
+        Expression<Double> costSum = cb.sum(invoiceTrackRoot.get(InvoiceTrack_.track).get(Track_.costPrice));
+
+        query.multiselect(finalSum,
+                costSum,
+                cb.diff(finalSum, costSum));
+        
+        // Where clause
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.userId), user));
+        predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+        query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+        
+        TypedQuery<Object[]> typedQuery = em.createQuery(query);
+        return typedQuery.getResultList();
+    }
+    
+    /**
+     * This method returns a list of the invoice details for the specified
+     * artist's albums purchased in the time frame specified, in order of the sale date.  
+     * This includes the income, cost, and profit of the sale.
+     * 
+     * @author Erika Bourque
+     * @param startDate The report's start date
+     * @param endDate The report's end date
+     * @param user    The user desired for the report
+     * @return          The list of invoices
+     */
+    public List<Object[]> getSalesByClientAlbums(Date startDate, Date endDate, ShopUser user)
+    {
+        if (user == null)
+        {
+            String logMsg = "getSalesByClientAlbums\tStart: " + startDate + "\tEnd: " + endDate + "\tClient: null";
+            LOG.log(Level.INFO, logMsg);
+            return null;
+        }
+        
+        String logMsg = "getSalesByClientAlbums\tStart: " + startDate + "\tEnd: " + endDate + "\tClient: " + user.getId();
+        LOG.log(Level.INFO, logMsg);
+        
+        // Query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<InvoiceAlbum> invoiceAlbumRoot = query.from(InvoiceAlbum.class);
+        Join invoiceJoin = invoiceAlbumRoot.join(InvoiceAlbum_.invoice);
+        Join albumJoin = invoiceAlbumRoot.join(InvoiceAlbum_.album);
+        query.multiselect(invoiceJoin,
+                albumJoin,
+                invoiceAlbumRoot.get(InvoiceAlbum_.finalPrice), 
+                invoiceAlbumRoot.get(InvoiceAlbum_.album).get(Album_.costPrice),
+                cb.diff(invoiceAlbumRoot.get(InvoiceAlbum_.finalPrice), albumJoin.get(Album_.costPrice)));
+        
+        // Where clause
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.userId), user));
+        predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+        query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+        
+        // Order by clause
+        query.orderBy(cb.desc(invoiceJoin.get(Invoice_.saleDate)));
+        
+        TypedQuery<Object[]> typedQuery = em.createQuery(query);
+        return typedQuery.getResultList();
+    }
+    
+    /**
+     * This method returns the total income, cost, and profit of all the 
+     * track sales within the time frame specified for a particular artist.
+     * 
+     * @author Erika Bourque
+     * @param startDate The report's start date
+     * @param endDate The report's end date
+     * @param user    The artist desired for the report
+     * @return          The list of totals
+     */
+    public List<Object[]> getSalesByClientAlbumsTotals(Date startDate, Date endDate, ShopUser user) {
+        if (user == null)
+        {
+            String logMsg = "getSalesByClientAlbumsTotals\tStart: " + startDate + "\tEnd: " + endDate + "\tClient: null";
+            LOG.log(Level.INFO, logMsg);
+            return null;
+        }
+        
+        String logMsg = "getSalesByClientAlbumsTotals\tStart: " + startDate + "\tEnd: " + endDate + "\tClient: " + user.getId();
+        LOG.log(Level.INFO, logMsg);
+        
+        // Query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<InvoiceAlbum> invoiceAlbumRoot = query.from(InvoiceAlbum.class);
+        Join invoiceJoin = invoiceAlbumRoot.join(InvoiceAlbum_.invoice);
+
+        Expression<Double> finalSum = cb.sum(invoiceAlbumRoot.get(InvoiceAlbum_.finalPrice));
+        Expression<Double> costSum = cb.sum(invoiceAlbumRoot.get(InvoiceAlbum_.album).get(Album_.costPrice));
+
+        query.multiselect(finalSum,
+                costSum,
+                cb.diff(finalSum, costSum));
+        
+        // Where clause
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.userId), user));
+        predicates.add(cb.between(invoiceJoin.get(Invoice_.saleDate).as(Date.class), startDate, endDate));
+        predicates.add(cb.equal(invoiceJoin.get(Invoice_.removalStatus), 0));
+        query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+        
+        TypedQuery<Object[]> typedQuery = em.createQuery(query);
+        return typedQuery.getResultList();
+    }
 }
