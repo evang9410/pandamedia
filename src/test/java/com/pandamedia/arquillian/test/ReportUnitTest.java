@@ -473,6 +473,258 @@ public class ReportUnitTest {
         assertThat(!isFound);
     }
     
+    @Test
+    @Ignore
+    public void getTotalSalesAlbumsContainsTest() throws SQLException, Exception {
+        // Set Up
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        double previousFinal = 1336.9100000000005;
+        double previousCost = 248.5;
+        double previousProfit = 1088.4100000000005;
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/01/15");        
+        ShopUser test = createTestUser();        
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Album album = createTestAlbum();
+        double albumCost = 5.00;
+        double albumFinal = 10.00;
+        double albumProfit = 5.00;
+        createNewInvoiceAlbum(invoice, album, albumFinal);
+        
+        // Action
+        List<Object[]> list = reports.getTotalSalesAlbums(start, end);
+        // First item in list contains data
+        Object[] array = list.get(0);
+        double totalFinal = (double)array[0];
+        double totalCost = (double)array[1];
+        double totalProfit = (double)array[2];
+        
+//        System.out.println("Total Sales Albums Totals: " + totalFinal + " " + totalCost + " " + totalProfit);
+        
+        // Assert
+        assertThat((totalFinal == albumFinal + previousFinal) && (totalCost == albumCost + previousCost) && (totalProfit == albumProfit + previousProfit));
+    }
+    
+    @Test
+    @Ignore
+    public void getTotalSalesAlbumsNotContainsTest() throws SQLException, Exception {
+        // Set Up
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        double previousFinal = 1336.9100000000005;
+        double previousCost = 248.5;
+        double previousProfit = 1088.4100000000005;
+        // Sale date outside start and end
+        Date saleDate = format.parse("2017/02/15");        
+        ShopUser test = createTestUser();        
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Album album = createTestAlbum();
+        double albumFinal = 10.00;
+        createNewInvoiceAlbum(invoice, album, albumFinal);
+        
+        // Action
+        List<Object[]> list = reports.getTotalSalesAlbums(start, end);
+        // First item in list contains data
+        Object[] array = list.get(0);
+        double totalFinal = (double)array[0];
+        double totalCost = (double)array[1];
+        double totalProfit = (double)array[2];
+        
+//        System.out.println("Total Sales Albums Totals: " + totalFinal + " " + totalCost + " " + totalProfit);
+        
+        // Assert
+        assertThat((totalFinal == previousFinal) && (totalCost == previousCost) && (totalProfit == previousProfit));
+    }
+    
+    @Test
+    @Ignore
+    public void getTotalSalesTracksContainsTest() throws SQLException, Exception {
+        // Set Up
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        double previousFinal = 513.1700000000001;
+        double previousCost = 45.5;
+        double previousProfit = 467.6700000000001;
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/01/15");        
+        ShopUser test = createTestUser();        
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Track track = createTestTrack();
+        double trackCost = 5.00;
+        double trackFinal = 10.00;
+        double trackProfit = 5.00;
+        createNewInvoiceTrack(invoice, track, trackFinal);
+        
+        // Action
+        List<Object[]> list = reports.getTotalSalesTracks(start, end);
+        // First item in list contains data
+        Object[] array = list.get(0);
+        double totalFinal = (double)array[0];
+        double totalCost = (double)array[1];
+        double totalProfit = (double)array[2];
+        
+//        System.out.println("Total Sales Tracks Totals: " + totalFinal + " " + totalCost + " " + totalProfit);
+        
+        // Assert
+        assertThat((totalFinal == trackFinal + previousFinal) && (totalCost == trackCost + previousCost) && (totalProfit == trackProfit + previousProfit));
+    }
+    
+    @Test
+    @Ignore
+    public void getTotalSalesTracksNotContainsTest() throws SQLException, Exception {
+        // Set Up
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        double previousFinal = 513.1700000000001;
+        double previousCost = 45.5;
+        double previousProfit = 467.6700000000001;
+        // Sale date outside start and end
+        Date saleDate = format.parse("2017/02/15");        
+        ShopUser test = createTestUser();        
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Track track = createTestTrack();
+        double trackFinal = 10.00;
+        createNewInvoiceTrack(invoice, track, trackFinal);
+        
+        // Action
+        List<Object[]> list = reports.getTotalSalesTracks(start, end);
+        // First item in list contains data
+        Object[] array = list.get(0);
+        double totalFinal = (double)array[0];
+        double totalCost = (double)array[1];
+        double totalProfit = (double)array[2];
+        
+//        System.out.println("Total Sales Tracks Totals: " + totalFinal + " " + totalCost + " " + totalProfit);
+        
+        // Assert
+        assertThat((totalFinal == previousFinal) && (totalCost == previousCost) && (totalProfit == previousProfit));
+    }
+    
+    @Test
+    public void getTotalSalesTracksDetailsContainsTest() throws SQLException, Exception {
+        // Set Up
+        boolean isFound = false;
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/01/15");        
+        ShopUser test = createTestUser();        
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Track track = createTestTrack();
+        createNewInvoiceTrack(invoice, track, 10.00);
+        
+        // Action
+        List<Object[]> list = reports.getTotalSalesTracksDetails(start, end);
+        // obj[1] is track, rest is other details
+        for(Object[] obj : list)
+        {
+            if (obj[1].equals(track))
+            {
+                isFound = true;
+                break;
+            }
+        }
+        
+        // Assert
+        assertThat(isFound);
+    }
+    
+    @Test
+    public void getTotalSalesTracksDetailsNotContainsTest() throws SQLException, Exception {
+        // Set Up
+        boolean isFound = false;
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date outside start and end
+        Date saleDate = format.parse("2017/02/15");        
+        ShopUser test = createTestUser();        
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Track track = createTestTrack();
+        createNewInvoiceTrack(invoice, track, 10.00);
+        
+        // Action
+        List<Object[]> list = reports.getTotalSalesTracksDetails(start, end);
+        // obj[1] is track, rest is other details
+        for(Object[] obj : list)
+        {
+            if (obj[1].equals(track))
+            {
+                isFound = true;
+                break;
+            }
+        }
+        
+        // Assert
+        assertThat(!isFound);
+    }
+    
+    @Test
+    public void getTotalSalesAlbumsDetailsContainsTest() throws SQLException, Exception {
+        // Set Up
+        boolean isFound = false;
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/01/15");        
+        ShopUser test = createTestUser();        
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Album album = createTestAlbum();
+        createNewInvoiceAlbum(invoice, album, 10.00);
+        
+        // Action
+        List<Object[]> list = reports.getTotalSalesAlbumsDetails(start, end);
+        // obj[0] is amount sold, obj[1] is album
+        for(Object[] obj : list)
+        {
+            if (obj[1].equals(album))
+            {
+                isFound = true;
+                break;
+            }
+        }
+        
+        // Assert
+        assertThat(isFound);
+    }
+    
+    @Test
+    public void getTotalSalesAlbumsDetailsNotContainsTest() throws SQLException, Exception {
+        // Set Up
+        boolean isFound = false;
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date outside start and end
+        Date saleDate = format.parse("2017/02/15");        
+        ShopUser test = createTestUser();        
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Album album = createTestAlbum();
+        createNewInvoiceAlbum(invoice, album, 10.00);
+        
+        // Action
+        List<Object[]> list = reports.getTotalSalesAlbumsDetails(start, end);
+        // obj[0] is amount sold, obj[1] is album
+        for(Object[] obj : list)
+        {
+            if (obj[1].equals(album))
+            {
+                isFound = true;
+                break;
+            }
+        }
+        
+        // Assert
+        assertThat(!isFound);
+    }
+    
     /**
      * Test user never has to be different, do not need to customize.
      * 
