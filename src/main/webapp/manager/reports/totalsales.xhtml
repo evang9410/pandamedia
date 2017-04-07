@@ -83,9 +83,7 @@
             <p:dataTable styleClass="report-table" 
                          id="trackTable" 
                          value="#{reports.getTotalSalesTracksDetails(reportData.startDate, reportData.endDate)}" 
-                         var="track" 
-                         paginator="true" 
-                         rows="10">
+                         var="track">
                 <f:facet name="header">
                     #{msgs.salesDetailTrackHeader}
                 </f:facet>
@@ -130,9 +128,7 @@
             <p:dataTable styleClass="report-table" 
                          id="albumTable" 
                          value="#{reports.getTotalSalesAlbumsDetails(reportData.startDate, reportData.endDate)}" 
-                         var="album" 
-                         paginator="true" 
-                         rows="10">
+                         var="album">
                 <f:facet name="header">
                     #{msgs.detailAlbumHeader}
                 </f:facet>

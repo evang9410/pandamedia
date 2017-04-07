@@ -6,17 +6,21 @@ import com.pandamedia.commands.ChangeLanguage;
 import com.pandamedia.converters.AlbumConverter;
 import com.pandamedia.filters.LoginFilter;
 import com.pandamedia.utilities.Messages;
-import persistence.controllers.InvoiceJpaController;
-import persistence.controllers.ProvinceJpaController;
-import persistence.controllers.ShopUserJpaController;
-import persistence.controllers.exceptions.RollbackFailureException;
-import persistence.entities.Invoice;
-import persistence.entities.ShopUser;
-import persistence.entities.Track;
-import java.util.Date;
-import java.text.SimpleDateFormat;
+import java.io.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.DateFormat;
-
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+import javax.annotation.Resource;
+import javax.inject.Inject;
+import javax.sql.DataSource;
+import static org.assertj.core.api.Assertions.assertThat;
+import org.assertj.core.data.Offset;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -24,50 +28,45 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import javax.annotation.Resource;
-import javax.inject.Inject;
-import javax.sql.DataSource;
-import java.io.*;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
-import org.junit.Ignore;
 import persistence.controllers.AlbumJpaController;
 import persistence.controllers.ArtistJpaController;
 import persistence.controllers.CoverArtJpaController;
 import persistence.controllers.GenreJpaController;
 import persistence.controllers.InvoiceAlbumJpaController;
+import persistence.controllers.InvoiceJpaController;
 import persistence.controllers.InvoiceTrackJpaController;
+import persistence.controllers.ProvinceJpaController;
 import persistence.controllers.RecordingLabelJpaController;
+import persistence.controllers.ShopUserJpaController;
 import persistence.controllers.SongwriterJpaController;
 import persistence.controllers.TrackJpaController;
+import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.Album;
+import persistence.entities.Invoice;
 import persistence.entities.InvoiceAlbum;
 import persistence.entities.InvoiceAlbumPK;
 import persistence.entities.InvoiceTrack;
 import persistence.entities.InvoiceTrackPK;
+import persistence.entities.ShopUser;
+import persistence.entities.Track;
 
 /**
- * TODO find a way to log, also find a way to get province correctly
- * 
+ * This class tests all the methods in the ReportBackingBean class.
+ *
  * @author Erika Bourque
  */
 @RunWith(Arquillian.class)
+@Ignore
 public class ReportUnitTest {
-//    private static final Logger LOG = Logger.getLogger("ShopUserJpaController.class");
 
     // TO TEST ON WALDO comment and uncomment the @Resources
     // AND the persistence XMLs, both needed to work
 //    @Resource(name = "java:app/jdbc/waldo2g4w17")
     @Resource(name = "java:app/jdbc/pandamedialocal")
-    private DataSource ds;    
+    private DataSource ds;
     @Inject
     private ReportBackingBean reports;
     @Inject
@@ -94,6 +93,7 @@ public class ReportUnitTest {
     private RecordingLabelJpaController recordingJpa;
     @Inject
     private InvoiceAlbumJpaController invoiceAlbumJpa;
+
     @Deployment
     public static WebArchive deploy() {
         // Use an alternative to the JUnit assert library called AssertJ
@@ -102,7 +102,7 @@ public class ReportUnitTest {
                 .resolver()
                 .loadPomFromFile("pom.xml")
                 .resolve(new String[]{
-                        "org.assertj:assertj-core", "org.jodd:jodd-mail"}).withoutTransitivity()
+            "org.assertj:assertj-core", "org.jodd:jodd-mail"}).withoutTransitivity()
                 .asFile();
 
         // For testing Arquillian prefers a resources.xml file over a
@@ -124,12 +124,12 @@ public class ReportUnitTest {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/glassfish-resources.xml"), "glassfish-resources.xml")
                 .addAsResource(new File("src/test/resources-glassfish-remote/test-persistence.xml"), "META-INF/persistence.xml")
-//                .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
+                //                .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
                 .addAsResource("createtestdatabase.sql")
-                .addAsLibraries(dependencies);        
+                .addAsLibraries(dependencies);
         return webArchive;
     }
-    
+
     /**
      * This routine is courtesy of Bartosz Majsak who also solved my Arquillian
      * remote server problem
@@ -137,7 +137,6 @@ public class ReportUnitTest {
     @Before
     public void seedDatabase() {
         final String seedCreateScript = loadAsString("createtestdatabase.sql");
-        //final String seedDataScript = loadAsString("inserttestingdata.sql");
 
         try (Connection connection = ds.getConnection()) {
             for (String statement : splitStatements(new StringReader(
@@ -145,16 +144,10 @@ public class ReportUnitTest {
                 connection.prepareStatement(statement).execute();
                 System.out.println("Statement successful: " + statement);
             }
-            
-//            for (String statement : splitStatements(new StringReader(
-//                    seedDataScript), ";")) {
-//                connection.prepareStatement(statement).execute();
-//            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed seeding database", e);
         }
-        //System.out.println("Seeding works");
     }
 
     /**
@@ -187,7 +180,6 @@ public class ReportUnitTest {
                     sqlStatement.setLength(0);
                 }
             }
-//            System.out.println(statements);
             return statements;
         } catch (IOException e) {
             throw new RuntimeException("Failed parsing sql", e);
@@ -198,13 +190,8 @@ public class ReportUnitTest {
         return line.startsWith("--") || line.startsWith("//")
                 || line.startsWith("/*");
     }
-    
-    /**
-     *
-     * @throws SQLException
-     */
+
     @Test
-    @Ignore
     public void getZeroUsersContainsTest() throws Exception {
         // Set Up
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
@@ -212,22 +199,17 @@ public class ReportUnitTest {
         Date end = format.parse("2017/02/01");
         // Sale date outside start and end
         Date saleDate = format.parse("2017/02/15");
-        ShopUser test = createTestUser();        
-        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
-        
+        ShopUser test = createTestUser();
+        createNewInvoice(saleDate, 10, 11, test);
+
         // Action
         List<ShopUser> list = reports.getZeroUsers(start, end);
 
         // Assert
-        assertThat(list.contains(test));
+        assertThat(list.contains(test)).isTrue();
     }
-    
-    /**
-     *
-     * @throws SQLException
-     */
+
     @Test
-    @Ignore
     public void getZeroUsersNotContainsTest() throws Exception {
         // Set Up
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
@@ -235,22 +217,17 @@ public class ReportUnitTest {
         Date end = format.parse("2017/02/01");
         // Sale date between start and end
         Date saleDate = format.parse("2017/01/15");
-        ShopUser test = createTestUser();        
+        ShopUser test = createTestUser();
         createNewInvoice(saleDate, 10, 11, test);
-        
+
         // Action
         List<ShopUser> list = reports.getZeroUsers(start, end);
 
         // Assert
-        assertThat(!list.contains(test));
+        assertThat(list.contains(test)).isFalse();
     }
-    
-    /**
-     *
-     * @throws SQLException
-     */
+
     @Test
-    @Ignore
     public void getZeroTracksContainsTest() throws SQLException, Exception {
         // Set Up
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
@@ -258,41 +235,39 @@ public class ReportUnitTest {
         Date end = format.parse("2017/02/01");
         // Sale date outside start and end
         Date saleDate = format.parse("2017/02/15");
-        ShopUser test = createTestUser();        
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Track track = createTestTrack();
         createNewInvoiceTrack(invoice, track, 10.00);
-        
+
         // Action
         List<Track> list = reports.getZeroTracks(start, end);
 
         // Assert
-        assertThat(list.contains(track));
+        assertThat(list.contains(track)).isTrue();
     }
-    
+
     @Test
-    @Ignore
     public void getZeroTracksNotContainsTest() throws SQLException, Exception {
         // Set Up
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
         // Sale date between start and end
-        Date saleDate = format.parse("2017/01/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/01/15");
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Track track = createTestTrack();
         createNewInvoiceTrack(invoice, track, 10.00);
-        
+
         // Action
         List<Track> list = reports.getZeroTracks(start, end);
 
         // Assert
-        assertThat(!list.contains(track));
+        assertThat(list.contains(track)).isFalse();
     }
-    
+
     @Test
-    @Ignore
     public void getTopClientsContainsTest() throws SQLException, Exception {
         // Set Up
         boolean isFound = false;
@@ -301,27 +276,24 @@ public class ReportUnitTest {
         Date end = format.parse("2017/02/01");
         // Sale date between start and end
         Date saleDate = format.parse("2017/01/15");
-        ShopUser test = createTestUser();        
+        ShopUser test = createTestUser();
         createNewInvoice(saleDate, 10, 11, test);
-        
+
         // Action
-        List<Object[]> list = reports.getTopClients(start, end);        
+        List<Object[]> list = reports.getTopClients(start, end);
         // obj[0] is amount sold, obj[1] is user
-        for(Object[] obj : list)
-        {
-            if (obj[1].equals(test))
-            {
+        for (Object[] obj : list) {
+            if (obj[1].equals(test)) {
                 isFound = true;
                 break;
             }
         }
 
         // Assert
-        assertThat(isFound);
+        assertThat(isFound).isTrue();
     }
-    
+
     @Test
-    @Ignore
     public void getTopClientsNotContainsTest() throws SQLException, Exception {
         // Set Up
         boolean isFound = false;
@@ -330,27 +302,24 @@ public class ReportUnitTest {
         Date end = format.parse("2017/02/01");
         // Sale date outside start and end
         Date saleDate = format.parse("2017/02/15");
-        ShopUser test = createTestUser();        
+        ShopUser test = createTestUser();
         createNewInvoice(saleDate, 10, 11, test);
-        
+
         // Action
-        List<Object[]> list = reports.getTopClients(start, end);        
+        List<Object[]> list = reports.getTopClients(start, end);
         // obj[0] is amount sold, obj[1] is user
-        for(Object[] obj : list)
-        {
-            if (obj[1].equals(test))
-            {
+        for (Object[] obj : list) {
+            if (obj[1].equals(test)) {
                 isFound = true;
                 break;
             }
         }
 
         // Assert
-        assertThat(!isFound);
+        assertThat(isFound).isFalse();
     }
-    
+
     @Test
-    @Ignore
     public void getTopSellersTracksContainsTest() throws SQLException, Exception {
         // Set Up
         boolean isFound = false;
@@ -358,30 +327,27 @@ public class ReportUnitTest {
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
         // Sale date between start and end
-        Date saleDate = format.parse("2017/01/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/01/15");
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Track track = createTestTrack();
         createNewInvoiceTrack(invoice, track, 10.00);
-        
+
         // Action
         List<Object[]> list = reports.getTopSellersTracks(start, end);
         // obj[0] is amount sold, obj[1] is track
-        for(Object[] obj : list)
-        {
-            if (obj[1].equals(track))
-            {
+        for (Object[] obj : list) {
+            if (obj[1].equals(track)) {
                 isFound = true;
                 break;
             }
         }
-        
+
         // Assert
-        assertThat(isFound);
+        assertThat(isFound).isTrue();
     }
-    
+
     @Test
-    @Ignore
     public void getTopSellersTracksNotContainsTest() throws SQLException, Exception {
         // Set Up
         boolean isFound = false;
@@ -389,30 +355,27 @@ public class ReportUnitTest {
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
         // Sale date outside start and end
-        Date saleDate = format.parse("2017/02/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/02/15");
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Track track = createTestTrack();
         createNewInvoiceTrack(invoice, track, 10.00);
-        
+
         // Action
         List<Object[]> list = reports.getTopSellersTracks(start, end);
         // obj[0] is amount sold, obj[1] is track
-        for(Object[] obj : list)
-        {
-            if (obj[1].equals(track))
-            {
+        for (Object[] obj : list) {
+            if (obj[1].equals(track)) {
                 isFound = true;
                 break;
             }
         }
-        
+
         // Assert
-        assertThat(!isFound);
+        assertThat(isFound).isFalse();
     }
-    
+
     @Test
-    @Ignore
     public void getTopSellersAlbumsContainsTest() throws SQLException, Exception {
         // Set Up
         boolean isFound = false;
@@ -420,30 +383,27 @@ public class ReportUnitTest {
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
         // Sale date between start and end
-        Date saleDate = format.parse("2017/01/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/01/15");
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Album album = createTestAlbum();
         createNewInvoiceAlbum(invoice, album, 10.00);
-        
+
         // Action
         List<Object[]> list = reports.getTopSellersAlbums(start, end);
         // obj[0] is amount sold, obj[1] is album
-        for(Object[] obj : list)
-        {
-            if (obj[1].equals(album))
-            {
+        for (Object[] obj : list) {
+            if (obj[1].equals(album)) {
                 isFound = true;
                 break;
             }
         }
-        
+
         // Assert
-        assertThat(isFound);
+        assertThat(isFound).isTrue();
     }
-    
+
     @Test
-    @Ignore
     public void getTopSellersAlbumsNotContainsTest() throws SQLException, Exception {
         // Set Up
         boolean isFound = false;
@@ -451,162 +411,127 @@ public class ReportUnitTest {
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
         // Sale date outside start and end
-        Date saleDate = format.parse("2017/02/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/02/15");
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Album album = createTestAlbum();
         createNewInvoiceAlbum(invoice, album, 10.00);
-        
+
         // Action
         List<Object[]> list = reports.getTopSellersAlbums(start, end);
         // obj[0] is amount sold, obj[1] is album
-        for(Object[] obj : list)
-        {
-            if (obj[1].equals(album))
-            {
+        for (Object[] obj : list) {
+            if (obj[1].equals(album)) {
                 isFound = true;
                 break;
             }
         }
-        
+
         // Assert
-        assertThat(!isFound);
+        assertThat(isFound).isFalse();
     }
-    
+
     @Test
-    @Ignore
     public void getTotalSalesAlbumsContainsTest() throws SQLException, Exception {
         // Set Up
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
-        double previousFinal = 1336.9100000000005;
-        double previousCost = 248.5;
-        double previousProfit = 1088.4100000000005;
         // Sale date between start and end
-        Date saleDate = format.parse("2017/01/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/01/15");
+        double previousFinal = 1336.9100000000005;
+        double albumFinal = 10.00;
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Album album = createTestAlbum();
-        double albumCost = 5.00;
-        double albumFinal = 10.00;
-        double albumProfit = 5.00;
         createNewInvoiceAlbum(invoice, album, albumFinal);
-        
+
         // Action
         List<Object[]> list = reports.getTotalSalesAlbums(start, end);
-        // First item in list contains data
+        // First item in list contains data, first item in array contains sum of final costs
         Object[] array = list.get(0);
-        double totalFinal = (double)array[0];
-        double totalCost = (double)array[1];
-        double totalProfit = (double)array[2];
-        
-//        System.out.println("Total Sales Albums Totals: " + totalFinal + " " + totalCost + " " + totalProfit);
-        
+        double totalFinal = (double) array[0];
+
         // Assert
-        assertThat((totalFinal == albumFinal + previousFinal) && (totalCost == albumCost + previousCost) && (totalProfit == albumProfit + previousProfit));
+        assertThat(totalFinal).isCloseTo(previousFinal + albumFinal, Offset.offset(0.001));
     }
-    
+
     @Test
-    @Ignore
     public void getTotalSalesAlbumsNotContainsTest() throws SQLException, Exception {
         // Set Up
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
-        double previousFinal = 1336.9100000000005;
-        double previousCost = 248.5;
-        double previousProfit = 1088.4100000000005;
         // Sale date outside start and end
-        Date saleDate = format.parse("2017/02/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/02/15");
+        double previousFinal = 1336.9100000000005;
+        double albumFinal = 10.00;
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Album album = createTestAlbum();
-        double albumFinal = 10.00;
         createNewInvoiceAlbum(invoice, album, albumFinal);
-        
+
         // Action
         List<Object[]> list = reports.getTotalSalesAlbums(start, end);
-        // First item in list contains data
+        // First item in list contains data, first item in array contains sum of final costs
         Object[] array = list.get(0);
-        double totalFinal = (double)array[0];
-        double totalCost = (double)array[1];
-        double totalProfit = (double)array[2];
-        
-//        System.out.println("Total Sales Albums Totals: " + totalFinal + " " + totalCost + " " + totalProfit);
-        
+        double totalFinal = (double) array[0];
+
         // Assert
-        assertThat((totalFinal == previousFinal) && (totalCost == previousCost) && (totalProfit == previousProfit));
+        assertThat(totalFinal).isCloseTo(previousFinal, Offset.offset(0.001));
     }
-    
+
     @Test
-    @Ignore
     public void getTotalSalesTracksContainsTest() throws SQLException, Exception {
         // Set Up
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
-        double previousFinal = 513.1700000000001;
-        double previousCost = 45.5;
-        double previousProfit = 467.6700000000001;
         // Sale date between start and end
-        Date saleDate = format.parse("2017/01/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/01/15");
+        double previousFinal = 513.1700000000001;
+        double trackFinal = 10.00;
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Track track = createTestTrack();
-        double trackCost = 5.00;
-        double trackFinal = 10.00;
-        double trackProfit = 5.00;
         createNewInvoiceTrack(invoice, track, trackFinal);
-        
+
         // Action
         List<Object[]> list = reports.getTotalSalesTracks(start, end);
-        // First item in list contains data
+        // First item in list contains data, first item in array contains sum of final costs
         Object[] array = list.get(0);
-        double totalFinal = (double)array[0];
-        double totalCost = (double)array[1];
-        double totalProfit = (double)array[2];
-        
-//        System.out.println("Total Sales Tracks Totals: " + totalFinal + " " + totalCost + " " + totalProfit);
-        
+        double totalFinal = (double) array[0];
+
         // Assert
-        assertThat((totalFinal == trackFinal + previousFinal) && (totalCost == trackCost + previousCost) && (totalProfit == trackProfit + previousProfit));
+        assertThat(totalFinal).isCloseTo(previousFinal + trackFinal, Offset.offset(0.001));
     }
-    
+
     @Test
-    @Ignore
     public void getTotalSalesTracksNotContainsTest() throws SQLException, Exception {
         // Set Up
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
-        double previousFinal = 513.1700000000001;
-        double previousCost = 45.5;
-        double previousProfit = 467.6700000000001;
         // Sale date outside start and end
-        Date saleDate = format.parse("2017/02/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/02/15");
+        double previousFinal = 513.1700000000001;
+        double trackFinal = 10.00;
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Track track = createTestTrack();
-        double trackFinal = 10.00;
         createNewInvoiceTrack(invoice, track, trackFinal);
-        
+
         // Action
         List<Object[]> list = reports.getTotalSalesTracks(start, end);
-        // First item in list contains data
+        // First item in list contains data, first item in array contains sum of final costs
         Object[] array = list.get(0);
-        double totalFinal = (double)array[0];
-        double totalCost = (double)array[1];
-        double totalProfit = (double)array[2];
-        
-//        System.out.println("Total Sales Tracks Totals: " + totalFinal + " " + totalCost + " " + totalProfit);
-        
+        double totalFinal = (double) array[0];
+
         // Assert
-        assertThat((totalFinal == previousFinal) && (totalCost == previousCost) && (totalProfit == previousProfit));
+        assertThat(totalFinal).isCloseTo(previousFinal, Offset.offset(0.001));
     }
-    
+
     @Test
-    @Ignore
     public void getTotalSalesTracksDetailsContainsTest() throws SQLException, Exception {
         // Set Up
         boolean isFound = false;
@@ -614,30 +539,27 @@ public class ReportUnitTest {
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
         // Sale date between start and end
-        Date saleDate = format.parse("2017/01/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/01/15");
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Track track = createTestTrack();
         createNewInvoiceTrack(invoice, track, 10.00);
-        
+
         // Action
         List<Object[]> list = reports.getTotalSalesTracksDetails(start, end);
         // obj[1] is track, rest is other details
-        for(Object[] obj : list)
-        {
-            if (obj[1].equals(track))
-            {
+        for (Object[] obj : list) {
+            if (obj[1].equals(track)) {
                 isFound = true;
                 break;
             }
         }
-        
+
         // Assert
-        assertThat(isFound);
+        assertThat(isFound).isTrue();
     }
-    
+
     @Test
-    @Ignore
     public void getTotalSalesTracksDetailsNotContainsTest() throws SQLException, Exception {
         // Set Up
         boolean isFound = false;
@@ -645,30 +567,27 @@ public class ReportUnitTest {
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
         // Sale date outside start and end
-        Date saleDate = format.parse("2017/02/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/02/15");
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Track track = createTestTrack();
         createNewInvoiceTrack(invoice, track, 10.00);
-        
+
         // Action
         List<Object[]> list = reports.getTotalSalesTracksDetails(start, end);
         // obj[1] is track, rest is other details
-        for(Object[] obj : list)
-        {
-            if (obj[1].equals(track))
-            {
+        for (Object[] obj : list) {
+            if (obj[1].equals(track)) {
                 isFound = true;
                 break;
             }
         }
-        
+
         // Assert
-        assertThat(!isFound);
+        assertThat(isFound).isFalse();
     }
-    
+
     @Test
-    @Ignore
     public void getTotalSalesAlbumsDetailsContainsTest() throws SQLException, Exception {
         // Set Up
         boolean isFound = false;
@@ -676,30 +595,27 @@ public class ReportUnitTest {
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
         // Sale date between start and end
-        Date saleDate = format.parse("2017/01/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/01/15");
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Album album = createTestAlbum();
         createNewInvoiceAlbum(invoice, album, 10.00);
-        
+
         // Action
         List<Object[]> list = reports.getTotalSalesAlbumsDetails(start, end);
         // obj[0] is amount sold, obj[1] is album
-        for(Object[] obj : list)
-        {
-            if (obj[1].equals(album))
-            {
+        for (Object[] obj : list) {
+            if (obj[1].equals(album)) {
                 isFound = true;
                 break;
             }
         }
-        
+
         // Assert
-        assertThat(isFound);
+        assertThat(isFound).isTrue();
     }
-    
+
     @Test
-    @Ignore
     public void getTotalSalesAlbumsDetailsNotContainsTest() throws SQLException, Exception {
         // Set Up
         boolean isFound = false;
@@ -707,30 +623,27 @@ public class ReportUnitTest {
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
         // Sale date outside start and end
-        Date saleDate = format.parse("2017/02/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/02/15");
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Album album = createTestAlbum();
         createNewInvoiceAlbum(invoice, album, 10.00);
-        
+
         // Action
         List<Object[]> list = reports.getTotalSalesAlbumsDetails(start, end);
         // obj[0] is amount sold, obj[1] is album
-        for(Object[] obj : list)
-        {
-            if (obj[1].equals(album))
-            {
+        for (Object[] obj : list) {
+            if (obj[1].equals(album)) {
                 isFound = true;
                 break;
             }
         }
-        
+
         // Assert
-        assertThat(!isFound);
+        assertThat(isFound).isFalse();
     }
-    
+
     @Test
-    @Ignore
     public void getSalesByAlbumDetailsContainsTest() throws SQLException, Exception {
         // Set Up
         boolean isFound = false;
@@ -738,30 +651,27 @@ public class ReportUnitTest {
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
         // Sale date between start and end
-        Date saleDate = format.parse("2017/01/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/01/15");
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Album album = albumJpa.findAlbum(1);
         createNewInvoiceAlbum(invoice, album, 10.00);
-        
+
         // Action
         List<Object[]> list = reports.getSalesByAlbum(start, end, album);
         // obj[0] has invoice
-        for(Object[] obj : list)
-        {
-            if (obj[0].equals(invoice))
-            {
+        for (Object[] obj : list) {
+            if (obj[0].equals(invoice)) {
                 isFound = true;
                 break;
             }
         }
-        
+
         // Assert
-        assertThat(isFound);
+        assertThat(isFound).isTrue();
     }
-    
+
     @Test
-    @Ignore
     public void getSalesByAlbumDetailsContainsNotTest() throws SQLException, Exception {
         // Set Up
         boolean isFound = false;
@@ -769,94 +679,78 @@ public class ReportUnitTest {
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
         // Sale date between start and end
-        Date saleDate = format.parse("2017/02/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/02/15");
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Album album = albumJpa.findAlbum(1);
         createNewInvoiceAlbum(invoice, album, 10.00);
-        
+
         // Action
         List<Object[]> list = reports.getSalesByAlbum(start, end, album);
         // obj[0] has invoice
-        for(Object[] obj : list)
-        {
-            if (obj[0].equals(invoice))
-            {
+        for (Object[] obj : list) {
+            if (obj[0].equals(invoice)) {
                 isFound = true;
                 break;
             }
         }
-        
+
         // Assert
-        assertThat(!isFound);
+        assertThat(isFound).isFalse();
     }
-    
+
     @Test
-    @Ignore
     public void getSalesByAlbumContainsTest() throws SQLException, Exception {
         // Set Up
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
         // Sale date between start and end
+        Date saleDate = format.parse("2017/01/15");
         double previousFinal = 95.76;
-        double previousCost = 42.0;
-        double previousProfit = 53.760000000000005;
-        // Sale date between start and end
-        Date saleDate = format.parse("2017/01/15");        
-        ShopUser test = createTestUser();        
+        double albumFinal = 10.00;
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Album album = albumJpa.findAlbum(1);
-        double albumCost = album.getCostPrice();
-        double albumFinal = 10.00;
-        double albumProfit = albumFinal - albumCost;
         createNewInvoiceAlbum(invoice, album, albumFinal);
-        
+
         // Action
         List<Object[]> list = reports.getSalesByAlbumTotals(start, end, album);
-        // First item in list contains data
+        // First item in list contains data, first item in array contains sum of final costs
         Object[] array = list.get(0);
-        double totalFinal = (double)array[0];
-        double totalCost = (double)array[1];
-        double totalProfit = (double)array[2];
-        
+        double totalFinal = (double) array[0];
+
         // Assert
-        assertThat((totalFinal == albumFinal + previousFinal) && (totalCost == albumCost + previousCost) && (totalProfit == albumProfit + previousProfit));
+        assertThat(totalFinal).isCloseTo(previousFinal + albumFinal, Offset.offset(0.001));
     }
-    
+
     @Test
-    @Ignore
     public void getSalesByAlbumContainsNotTest() throws SQLException, Exception {
         // Set Up
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
-        // Sale date between start and end
-        double previousFinal = 95.76;
-        double previousCost = 42.0;
-        double previousProfit = 53.760000000000005;
         // Sale date outside start and end
-        Date saleDate = format.parse("2017/02/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/02/15");
+        double previousFinal = 95.76;
+        double albumFinal = 10.00;
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Album album = albumJpa.findAlbum(1);
-        double albumFinal = 10.00;
+
         createNewInvoiceAlbum(invoice, album, albumFinal);
-        
+
         // Action
         List<Object[]> list = reports.getSalesByAlbumTotals(start, end, album);
-        // First item in list contains data
+        // First item in list contains data, first item in array contains sum of final costs
         Object[] array = list.get(0);
-        double totalFinal = (double)array[0];
-        double totalCost = (double)array[1];
-        double totalProfit = (double)array[2];
-        
+        double totalFinal = (double) array[0];
+
         // Assert
-        assertThat((totalFinal == previousFinal) && (totalCost == previousCost) && (totalProfit == previousProfit));
+        assertThat(totalFinal).isCloseTo(previousFinal, Offset.offset(0.001));
     }
 
     @Test
-    @Ignore
     public void getSalesByTrackDetailsContainsTest() throws SQLException, Exception {
         // Set Up
         boolean isFound = false;
@@ -864,30 +758,27 @@ public class ReportUnitTest {
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
         // Sale date between start and end
-        Date saleDate = format.parse("2017/01/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/01/15");
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Track track = trackJpa.findTrack(1);
         createNewInvoiceTrack(invoice, track, 10.00);
-        
+
         // Action
         List<Object[]> list = reports.getSalesByTrack(start, end, track);
         // obj[0] has invoice
-        for(Object[] obj : list)
-        {
-            if (obj[0].equals(invoice))
-            {
+        for (Object[] obj : list) {
+            if (obj[0].equals(invoice)) {
                 isFound = true;
                 break;
             }
         }
-        
+
         // Assert
-        assertThat(isFound);
+        assertThat(isFound).isTrue();
     }
-    
+
     @Test
-    @Ignore
     public void getSalesByTrackDetailsNotContainsTest() throws SQLException, Exception {
         // Set Up
         boolean isFound = false;
@@ -895,112 +786,508 @@ public class ReportUnitTest {
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
         // Sale date outside start and end
-        Date saleDate = format.parse("2017/02/15");        
-        ShopUser test = createTestUser();        
+        Date saleDate = format.parse("2017/02/15");
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Track track = trackJpa.findTrack(1);
         createNewInvoiceTrack(invoice, track, 10.00);
-        
+
         // Action
         List<Object[]> list = reports.getSalesByTrack(start, end, track);
         // obj[0] has invoice
-        for(Object[] obj : list)
-        {
-            if (obj[0].equals(invoice))
-            {
+        for (Object[] obj : list) {
+            if (obj[0].equals(invoice)) {
                 isFound = true;
                 break;
             }
         }
-        
+
         // Assert
-        assertThat(!isFound);
+        assertThat(isFound).isFalse();
     }
 
     @Test
-    @Ignore
     public void getSalesByTrackContainsTest() throws SQLException, Exception {
         // Set Up
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
         // Sale date between start and end
+        Date saleDate = format.parse("2017/01/15");
         double previousFinal = 2.38;
-        double previousCost = 0.5;
-        double previousProfit = 1.88;
-        // Sale date between start and end
-        Date saleDate = format.parse("2017/01/15");        
-        ShopUser test = createTestUser();        
+        double trackFinal = 10.00;
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Track track = trackJpa.findTrack(3);
-        double trackCost = track.getCostPrice();
-        double trackFinal = 10.00;
-        double trackProfit = trackFinal - trackCost;
         createNewInvoiceTrack(invoice, track, trackFinal);
-        
+
         // Action
         List<Object[]> list = reports.getSalesByTrackTotals(start, end, track);
-        // First item in list contains data
+        // First item in list contains data, first item in array contains sum of final costs
         Object[] array = list.get(0);
-        double totalFinal = (double)array[0];
-        double totalCost = (double)array[1];
-        double totalProfit = (double)array[2];
-        
-//        System.out.println("Sales by track totals: " + totalFinal + "\t" + totalCost + "\t" + totalProfit);
-        
+        double totalFinal = (double) array[0];
+
         // Assert
-        assertThat((totalFinal == trackFinal + previousFinal) && (totalCost == trackCost + previousCost) && (totalProfit == trackProfit + previousProfit));
+        assertThat(totalFinal).isCloseTo(previousFinal + trackFinal, Offset.offset(0.001));
     }
-    
+
     @Test
-    @Ignore
     public void getSalesByTrackNotContainsTest() throws SQLException, Exception {
         // Set Up
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         Date start = format.parse("2017/01/01");
         Date end = format.parse("2017/02/01");
         // Sale date between start and end
+        Date saleDate = format.parse("2017/02/15");
         double previousFinal = 2.38;
-        double previousCost = 0.5;
-        double previousProfit = 1.88;
-        // Sale date between start and end
-        Date saleDate = format.parse("2017/02/15");        
-        ShopUser test = createTestUser();        
+        double trackFinal = 10.00;
+        ShopUser test = createTestUser();
         Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
         Track track = trackJpa.findTrack(3);
-        double trackFinal = 10.00;
         createNewInvoiceTrack(invoice, track, trackFinal);
-        
+
         // Action
         List<Object[]> list = reports.getSalesByTrackTotals(start, end, track);
-        // First item in list contains data
+        // First item in list contains data, first item in array contains sum of final costs
         Object[] array = list.get(0);
-        double totalFinal = (double)array[0];
-        double totalCost = (double)array[1];
-        double totalProfit = (double)array[2];
-        
-//        System.out.println("Sales by track totals: " + totalFinal + "\t" + totalCost + "\t" + totalProfit);
-        
+        double totalFinal = (double) array[0];
+
         // Assert
-        assertThat((totalFinal == previousFinal) && (totalCost == previousCost) && (totalProfit == previousProfit));
-    }    
-    
-    // TODO: sales by artist track
-    // TODO: sales by artist track details
-    // TODO: sales by artist album
-    // TODO: sales by artist album details
-    // TODO: sales by client
-    // TODO: sales by client details
-    
+        assertThat(totalFinal).isCloseTo(previousFinal, Offset.offset(0.001));
+    }
+
+    @Test
+    public void getSalesByArtistAlbumContainsTest() throws SQLException, Exception {
+        // Set Up
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/01/15");
+        double previousFinal = 95.76;
+        double albumFinal = 10.00;
+        ShopUser test = createTestUser();
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Album album = albumJpa.findAlbum(1);
+        createNewInvoiceAlbum(invoice, album, albumFinal);
+
+        // Action
+        List<Object[]> list = reports.getSalesByArtistAlbumsTotals(start, end, artistJpa.findArtist(28));
+        // First item in list contains data, first item in array contains sum of final costs
+        Object[] array = list.get(0);
+        double totalFinal = (double) array[0];
+
+        // Assert
+        assertThat(totalFinal).isCloseTo(albumFinal + previousFinal, Offset.offset(0.001));
+    }
+
+    @Test
+    public void getSalesByArtistAlbumsContainsNotTest() throws SQLException, Exception {
+        // Set Up
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date outside start and end
+        Date saleDate = format.parse("2017/02/15");
+        double previousFinal = 95.76;
+        double albumFinal = 10.00;
+        ShopUser test = createTestUser();
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Album album = albumJpa.findAlbum(1);
+        createNewInvoiceAlbum(invoice, album, albumFinal);
+
+        // Action
+        List<Object[]> list = reports.getSalesByArtistAlbumsTotals(start, end, artistJpa.findArtist(28));
+        // First item in list contains data, first item in array contains sum of final costs
+        Object[] array = list.get(0);
+        double totalFinal = (double) array[0];
+
+        // Assert
+        assertThat(totalFinal).isCloseTo(previousFinal, Offset.offset(0.001));
+    }
+
+    @Test
+    public void getSalesByArtistAlbumDetailsContainsTest() throws SQLException, Exception {
+        // Set Up
+        boolean isFound = false;
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/01/15");
+        ShopUser test = createTestUser();
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Album album = albumJpa.findAlbum(1);
+        createNewInvoiceAlbum(invoice, album, 10.00);
+
+        // Action
+        List<Object[]> list = reports.getSalesByArtistAlbums(start, end, artistJpa.findArtist(28));
+        // obj[0] has invoice
+        for (Object[] obj : list) {
+            if (obj[0].equals(invoice)) {
+                isFound = true;
+                break;
+            }
+        }
+
+        // Assert
+        assertThat(isFound).isTrue();
+    }
+
+    @Test
+    public void getSalesByArtistAlbumDetailsContainsNotTest() throws SQLException, Exception {
+        // Set Up
+        boolean isFound = false;
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/02/15");
+        ShopUser test = createTestUser();
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Album album = albumJpa.findAlbum(1);
+        createNewInvoiceAlbum(invoice, album, 10.00);
+
+        // Action
+        List<Object[]> list = reports.getSalesByArtistAlbums(start, end, artistJpa.findArtist(28));
+        // obj[0] has invoice
+        for (Object[] obj : list) {
+            if (obj[0].equals(invoice)) {
+                isFound = true;
+                break;
+            }
+        }
+
+        // Assert
+        assertThat(isFound).isFalse();
+    }
+
+    @Test
+    public void getSalesByArtistTrackDetailsContainsTest() throws SQLException, Exception {
+        // Set Up
+        boolean isFound = false;
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/01/15");
+        ShopUser test = createTestUser();
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Track track = trackJpa.findTrack(3);
+        createNewInvoiceTrack(invoice, track, 10.00);
+
+        // Action
+        List<Object[]> list = reports.getSalesByArtistTracks(start, end, artistJpa.findArtist(27));
+        // obj[0] has invoice
+        for (Object[] obj : list) {
+            if (obj[0].equals(invoice)) {
+                isFound = true;
+                break;
+            }
+        }
+
+        // Assert
+        assertThat(isFound).isTrue();
+    }
+
+    @Test
+    public void getSalesByArtistTrackDetailsNotContainsTest() throws SQLException, Exception {
+        // Set Up
+        boolean isFound = false;
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date outside start and end
+        Date saleDate = format.parse("2017/02/15");
+        ShopUser test = createTestUser();
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Track track = trackJpa.findTrack(3);
+        createNewInvoiceTrack(invoice, track, 10.00);
+
+        // Action
+        List<Object[]> list = reports.getSalesByArtistTracks(start, end, artistJpa.findArtist(27));
+        // obj[0] has invoice
+        for (Object[] obj : list) {
+            if (obj[0].equals(invoice)) {
+                isFound = true;
+                break;
+            }
+        }
+
+        // Assert
+        assertThat(isFound).isFalse();
+    }
+
+    @Test
+    public void getSalesByArtistTrackContainsTest() throws SQLException, Exception {
+        // Set Up
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/01/15");
+        double previousFinal = 48.830000000000005;
+        double trackFinal = 10;
+        ShopUser test = createTestUser();
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Track track = trackJpa.findTrack(3);
+        createNewInvoiceTrack(invoice, track, trackFinal);
+
+        // Action
+        List<Object[]> list = reports.getSalesByArtistTracksTotals(start, end, artistJpa.findArtist(27));
+        // First item in list contains data, first item in array contains sum of final costs
+        Object[] array = list.get(0);
+        double totalFinal = (double) array[0];
+
+        // Assert
+        assertThat(totalFinal).isCloseTo(trackFinal + previousFinal, Offset.offset(0.001));
+    }
+
+    @Test
+    public void getSalesByArtistTrackNotContainsTest() throws SQLException, Exception {
+        // Set Up
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/02/15");
+        double previousFinal = 48.830000000000005;
+        double trackFinal = 10;
+        ShopUser test = createTestUser();
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Track track = trackJpa.findTrack(3);
+        createNewInvoiceTrack(invoice, track, trackFinal);
+
+        // Action
+        List<Object[]> list = reports.getSalesByArtistTracksTotals(start, end, artistJpa.findArtist(27));
+        // First item in list contains data, first item in array contains sum of final costs
+        Object[] array = list.get(0);
+        double totalFinal = (double) array[0];
+
+        // Assert
+        assertThat(totalFinal).isCloseTo(previousFinal, Offset.offset(0.001));;
+    }
+
+    @Test
+    public void getSalesByClientAlbumContainsTest() throws SQLException, Exception {
+        // Set Up
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/01/15");
+        double previousFinal = 38.91;
+        double albumFinal = 10.00;
+        ShopUser test = userJpa.findShopUser(586);
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Album album = albumJpa.findAlbum(1);
+        createNewInvoiceAlbum(invoice, album, albumFinal);
+
+        // Action
+        List<Object[]> list = reports.getSalesByClientAlbumsTotals(start, end, test);
+        // First item in list contains data, first item in array contains sum of final costs
+        Object[] array = list.get(0);
+        double totalFinal = (double) array[0];
+
+        // Assert
+        assertThat(totalFinal).isCloseTo(albumFinal + previousFinal, Offset.offset(0.001));;
+    }
+
+    @Test
+    public void getSalesByClientAlbumsNotContainsTest() throws SQLException, Exception {
+        // Set Up
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date outside start and end
+        Date saleDate = format.parse("2017/02/15");
+        double previousFinal = 38.91;
+        double albumFinal = 10.00;
+        ShopUser test = userJpa.findShopUser(586);
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Album album = albumJpa.findAlbum(1);
+        createNewInvoiceAlbum(invoice, album, albumFinal);
+
+        // Action
+        List<Object[]> list = reports.getSalesByClientAlbumsTotals(start, end, test);
+        // First item in list contains data, first item in array contains sum of final costs
+        Object[] array = list.get(0);
+        double totalFinal = (double) array[0];
+
+        // Assert
+        assertThat(totalFinal).isCloseTo(previousFinal, Offset.offset(0.001));;
+    }
+
+    @Test
+    public void getSalesByClientAlbumDetailsContainsTest() throws SQLException, Exception {
+        // Set Up
+        boolean isFound = false;
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/01/15");
+        ShopUser test = userJpa.findShopUser(586);
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Album album = albumJpa.findAlbum(1);
+        createNewInvoiceAlbum(invoice, album, 10.00);
+
+        // Action
+        List<Object[]> list = reports.getSalesByClientAlbums(start, end, test);
+        // obj[0] has invoice
+        for (Object[] obj : list) {
+            if (obj[0].equals(invoice)) {
+                isFound = true;
+                break;
+            }
+        }
+
+        // Assert
+        assertThat(isFound).isTrue();
+    }
+
+    @Test
+    public void getSalesByClientAlbumDetailsContainsNotTest() throws SQLException, Exception {
+        // Set Up
+        boolean isFound = false;
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/02/15");
+        ShopUser test = userJpa.findShopUser(586);
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Album album = albumJpa.findAlbum(1);
+        createNewInvoiceAlbum(invoice, album, 10.00);
+
+        // Action
+        List<Object[]> list = reports.getSalesByClientAlbums(start, end, test);
+        // obj[0] has invoice
+        for (Object[] obj : list) {
+            if (obj[0].equals(invoice)) {
+                isFound = true;
+                break;
+            }
+        }
+
+        // Assert
+        assertThat(isFound).isFalse();
+    }
+
+    @Test
+    public void getSalesByClientTrackDetailsContainsTest() throws SQLException, Exception {
+        // Set Up
+        boolean isFound = false;
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/01/15");
+        ShopUser test = userJpa.findShopUser(244);
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Track track = trackJpa.findTrack(1);
+        createNewInvoiceTrack(invoice, track, 10.00);
+
+        // Action
+        List<Object[]> list = reports.getSalesByClientTracks(start, end, test);
+        // obj[0] has invoice
+        for (Object[] obj : list) {
+            if (obj[0].equals(invoice)) {
+                isFound = true;
+                break;
+            }
+        }
+
+        // Assert
+        assertThat(isFound).isTrue();
+    }
+
+    @Test
+    public void getSalesByClientTrackDetailsNotContainsTest() throws SQLException, Exception {
+        // Set Up
+        boolean isFound = false;
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date outside start and end
+        Date saleDate = format.parse("2017/02/15");
+        ShopUser test = userJpa.findShopUser(244);
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Track track = trackJpa.findTrack(1);
+        createNewInvoiceTrack(invoice, track, 10.00);
+
+        // Action
+        List<Object[]> list = reports.getSalesByClientTracks(start, end, test);
+        // obj[0] has invoice
+        for (Object[] obj : list) {
+            if (obj[0].equals(invoice)) {
+                isFound = true;
+                break;
+            }
+        }
+
+        // Assert
+        assertThat(isFound).isFalse();
+    }
+
+    @Test
+    public void getSalesByClientTrackContainsTest() throws SQLException, Exception {
+        // Set Up
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/01/15");
+        double previousFinal = 7.34;
+        double trackFinal = 10.00;
+        ShopUser test = userJpa.findShopUser(244);
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Track track = trackJpa.findTrack(3);
+        createNewInvoiceTrack(invoice, track, trackFinal);
+
+        // Action
+        List<Object[]> list = reports.getSalesByClientTracksTotals(start, end, test);
+        // First item in list contains data, first item in array contains sum of final costs
+        Object[] array = list.get(0);
+        double totalFinal = (double) array[0];
+
+        // Assert
+        assertThat(totalFinal).isCloseTo(trackFinal + previousFinal, Offset.offset(0.001));;
+    }
+
+    @Test
+    public void getSalesByClientTrackNotContainsTest() throws SQLException, Exception {
+        // Set Up
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start = format.parse("2017/01/01");
+        Date end = format.parse("2017/02/01");
+        // Sale date between start and end
+        Date saleDate = format.parse("2017/02/15");
+        double previousFinal = 7.34;
+        double trackFinal = 10.00;
+        ShopUser test = userJpa.findShopUser(244);
+        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
+        Track track = trackJpa.findTrack(3);
+        createNewInvoiceTrack(invoice, track, trackFinal);
+
+        // Action
+        List<Object[]> list = reports.getSalesByClientTracksTotals(start, end, test);
+        // First item in list contains data, first item in array contains sum of final costs
+        Object[] array = list.get(0);
+        double totalFinal = (double) array[0];
+
+        // Assert
+        assertThat(totalFinal).isCloseTo(previousFinal, Offset.offset(0.001));;
+    }
+
     /**
      * Test user never has to be different, do not need to customize.
-     * 
+     *
      * @return the user
      */
-    private ShopUser createTestUser() throws Exception
-    {
+    private ShopUser createTestUser() throws Exception {
         ShopUser user = new ShopUser();
-        
+
         user.setTitle("Mr");
         user.setLastName("Marley");
         user.setFirstName("Bob");
@@ -1014,49 +1301,47 @@ public class ReportUnitTest {
         user.setSalt("cat");
         user.setProvinceId(provinceJpa.findProvinceEntities().get(0));
         userJpa.create(user);
-        
+
         return user;
     }
-    
+
     /**
      * Invoices must be customizable, as dates can vary.
-     * 
-     * @param saleDate          Sale date of invoice
-     * @param totalNetValue     net value of invoice
-     * @param totalGrossValue   gross value of invoice
-     * @param user              invoice's user
-     * @return                  the invoice
+     *
+     * @param saleDate Sale date of invoice
+     * @param totalNetValue net value of invoice
+     * @param totalGrossValue gross value of invoice
+     * @param user invoice's user
+     * @return the invoice
      */
-    private Invoice createNewInvoice(Date saleDate, double totalNetValue, 
-            double totalGrossValue, ShopUser user) throws Exception
-    {
+    private Invoice createNewInvoice(Date saleDate, double totalNetValue,
+            double totalGrossValue, ShopUser user) throws Exception {
         Invoice invoice = new Invoice();
-        
+
         invoice.setSaleDate(saleDate);
         invoice.setTotalNetValue(totalNetValue);
         invoice.setTotalGrossValue(totalGrossValue);
         invoice.setUserId(user);
         invoiceJpa.create(invoice);
-        
+
         return invoice;
     }
-    
+
     /**
      * Test track never has to be different, do not need to customize.
-     * 
-     * @return              the test track
-     * @throws Exception 
+     *
+     * @return the test track
+     * @throws Exception
      */
-    private Track createTestTrack() throws Exception
-    {
+    private Track createTestTrack() throws Exception {
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         Track t = new Track();
-        
+
         t.setTitle("Title");
         t.setReleaseDate(format.parse("2016/12/31"));
         t.setPlayLength("3:00");
         t.setAlbumTrackNumber(1);
-        t.setPartOfAlbum((short)1);
+        t.setPartOfAlbum((short) 1);
         t.setCostPrice(5.0);
         t.setListPrice(6.0);
         t.setAlbumId(albumJpa.findAlbum(1));
@@ -1066,40 +1351,38 @@ public class ReportUnitTest {
         t.setSongwriterId(songwriterJpa.findSongwriter(1));
         t.setDateEntered(Calendar.getInstance().getTime());
         trackJpa.create(t);
-        
+
         return t;
     }
-    
+
     /**
      * Invoice Tracks must be customizable, as ids and final price are variable.
-     * 
+     *
      * @param invoiceId
      * @param trackId
      * @param finalPrice
-     * @return              the invoice track
-     * @throws Exception 
+     * @return the invoice track
+     * @throws Exception
      */
-    private void createNewInvoiceTrack(Invoice invoiceId, Track trackId, 
-            double finalPrice) throws Exception
-    {
+    private void createNewInvoiceTrack(Invoice invoiceId, Track trackId,
+            double finalPrice) throws Exception {
         InvoiceTrack it = new InvoiceTrack();
         InvoiceTrackPK itpk = new InvoiceTrackPK();
-        
+
         itpk.setInvoiceId(invoiceId.getId());
         itpk.setTrackId(trackId.getId());
-        
+
         it.setInvoiceTrackPK(itpk);
         it.setFinalPrice(finalPrice);
         it.setInvoice(invoiceId);
         it.setTrack(trackId);
         invoiceTrackJpa.create(it);
     }
-    
-    private Album createTestAlbum() throws Exception
-    {
+
+    private Album createTestAlbum() throws Exception {
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         Album a = new Album();
-        
+
         a.setTitle("Title");
         a.setReleaseDate(format.parse("2016/12/31"));
         a.setNumTracks(1);
@@ -1111,28 +1394,27 @@ public class ReportUnitTest {
         a.setGenreId(genreJpa.findGenre(1));
         a.setRecordingLabelId(recordingJpa.findRecordingLabel(1));
         albumJpa.create(a);
-        
+
         return a;
     }
-    
+
     /**
      * Invoice Albums must be customizable, as ids and final price are variable.
-     * 
+     *
      * @param invoiceId
      * @param trackId
      * @param finalPrice
-     * @return              the invoice track
-     * @throws Exception 
+     * @return the invoice track
+     * @throws Exception
      */
-    private void createNewInvoiceAlbum(Invoice invoiceId, Album albumId, 
-            double finalPrice) throws Exception
-    {
+    private void createNewInvoiceAlbum(Invoice invoiceId, Album albumId,
+            double finalPrice) throws Exception {
         InvoiceAlbum ia = new InvoiceAlbum();
         InvoiceAlbumPK iapk = new InvoiceAlbumPK();
-        
+
         iapk.setInvoiceId(invoiceId.getId());
         iapk.setAlbumId(albumId.getId());
-        
+
         ia.setInvoiceAlbumPK(iapk);
         ia.setFinalPrice(finalPrice);
         ia.setInvoice(invoiceId);
