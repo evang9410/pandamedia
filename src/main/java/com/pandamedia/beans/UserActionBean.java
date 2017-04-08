@@ -143,9 +143,16 @@ public class UserActionBean implements Serializable {
                 try {
                     currUser = userRecord;
                     external.getSessionMap().put("user", userRecord);
+                    // Making user to redirect to manager side if it is a manager
                     // check to see if the user was being redirected from another
                     // page. If they have  not, they should be redirected to the mainpage
-                    if (prevPage != null) {
+                    if (currUser.getIsManager() == 1)
+                    {
+                        FacesContext.getCurrentInstance().getExternalContext()
+                                .redirect(FacesContext.getCurrentInstance().
+                                        getExternalContext().getRequestContextPath() + "/manager/manager_index.xhtml");
+                    }
+                    else if (prevPage != null) {
                         FacesContext.getCurrentInstance().setViewRoot(prevPage);
                         FacesContext.getCurrentInstance().renderResponse();
                     } else {
