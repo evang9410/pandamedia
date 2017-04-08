@@ -263,9 +263,14 @@ public class UserActionBean implements Serializable {
      * on. The variable is used to hold a view to where the user used to be
      * before they were redirected to the login page.
      */
-    public void setPrevPage() {
-        // TODO: use this everywhere somehow :O
+    public String setPrevPageLogin() {
         prevPage = FacesContext.getCurrentInstance().getViewRoot();
+        return "login";
+    }
+    
+    public String setPrevPageRegister() {
+        prevPage = FacesContext.getCurrentInstance().getViewRoot();
+        return "register";
     }
 
     /**

@@ -13,188 +13,186 @@
     <ui:define name="WindowTitle">#{msgs.manReportSalesByArtist}</ui:define>
 
     <ui:define name="page-content">
-        <f:view locale="#{ChangeLanguage.locale}">
-            <h:outputStylesheet name="reports.css" library="css"/>
-            <h1><h:outputText value="#{msgs.manReportSalesByArtist}"/></h1>
-            <div align="center">
-                <h:form id="calendars" styleClass="calendar-center">
-                    <h:panelGrid columns="2" style="vertical-align: top;" rowClasses="title, cal, labels">
-                        <p:outputLabel style="text-align: center; width: 100%;"><h4>#{msgs.reportStart}</h4></p:outputLabel>
-                        <p:outputLabel style="text-align: center; width: 100%;"><h4>#{msgs.reportEnd}</h4></p:outputLabel>
+        <h:outputStylesheet name="reports.css" library="css"/>
+        <h1><h:outputText value="#{msgs.manReportSalesByArtist}"/></h1>
+        <div align="center">
+            <h:form id="calendars" styleClass="calendar-center">
+                <h:panelGrid columns="2" style="vertical-align: top;" rowClasses="title, cal, labels">
+                    <p:outputLabel style="text-align: center; width: 100%;"><h4>#{msgs.reportStart}</h4></p:outputLabel>
+                    <p:outputLabel style="text-align: center; width: 100%;"><h4>#{msgs.reportEnd}</h4></p:outputLabel>
 
-                        <p:calendar 
-                            id="reportStartDate" 
-                            mode="inline" 
-                            navigator="true" 
-                            maxdate="#{reportData.defaultEndDate}"
-                            value="#{reportData.startDate}">
-                            <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>--> 
-                        </p:calendar>
-                        <p:calendar 
-                            id="reportEndDate" 
-                            mode="inline" 
-                            navigator="true" 
-                            maxdate="#{reportData.defaultEndDate}"
-                            value="#{reportData.endDate}">
-                            <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
-                        </p:calendar>
+                    <p:calendar 
+                        id="reportStartDate" 
+                        mode="inline" 
+                        navigator="true" 
+                        maxdate="#{reportData.defaultEndDate}"
+                        value="#{reportData.startDate}">
+                        <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>--> 
+                    </p:calendar>
+                    <p:calendar 
+                        id="reportEndDate" 
+                        mode="inline" 
+                        navigator="true" 
+                        maxdate="#{reportData.defaultEndDate}"
+                        value="#{reportData.endDate}">
+                        <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
+                    </p:calendar>
 
-                        <p:outputLabel for="artistId" style="text-align: right;">#{msgs.artistIdLbl}</p:outputLabel>
-                        <p:inputText id="artistId" value="#{reportData.artist}" converter="#{artistConverter}">
-                            <!--<p:ajax event="change" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
-                        </p:inputText>
-                    </h:panelGrid>
-                    <p:commandButton id="search" update="trackTotalTable albumTotalTable trackTable albumTable" value="#{msgs.searchBtn}" />
-                </h:form>
-            </div>
-            <br/>
-            <p:dataTable styleClass="report-table" 
-                         id="trackTotalTable" 
-                         value="#{reports.getSalesByArtistTracksTotals(reportData.startDate, reportData.endDate, reportData.artist)}" 
-                         var="trackTotal">
-                <f:facet name="header">
-                    #{msgs.totalSumTrackHeader}
-                </f:facet>
-                <p:column>
-                    <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>                
-                    <h:outputText value="#{trackTotal[0]}">                    
-                        <f:convertNumber type="currency" />
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
-                    <h:outputText value="#{trackTotal[1]}">                    
-                        <f:convertNumber type="currency" />
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.profitHeader}</f:facet>
-                    <h:outputText value="#{trackTotal[2]}">                    
-                        <f:convertNumber type="currency" />
-                    </h:outputText>
-                </p:column>
-            </p:dataTable>
-            <br/>
-            <p:dataTable styleClass="report-table" 
-                         id="albumTotalTable" 
-                         value="#{reports.getSalesByArtistAlbumsTotals(reportData.startDate, reportData.endDate, reportData.artist)}" 
-                         var="albumTotal">
-                <f:facet name="header">
-                    #{msgs.totalSumAlbumHeader}
-                </f:facet>
-                <p:column>
-                    <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
-                    <h:outputText value="#{albumTotal[0]}">                    
-                        <f:convertNumber type="currency" />
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
-                    <h:outputText value="#{albumTotal[1]}">                    
-                        <f:convertNumber type="currency" />
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.profitHeader}</f:facet>
-                    <h:outputText value="#{albumTotal[2]}">                    
-                        <f:convertNumber type="currency" />
-                    </h:outputText>
-                </p:column>
-            </p:dataTable>
-            <br/>
-            <p:dataTable  styleClass="report-table"
-                          id="trackTable" 
-                          value="#{reports.getSalesByArtistTracks(reportData.startDate, reportData.endDate, reportData.artist)}" 
-                          var="invoice" 
-                          paginator="true" 
-                          rows="10">
-                <f:facet name="header">
-                    #{msgs.salesDetailTrackHeader}
-                </f:facet>
-                <p:column>
-                    <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
-                    <h:outputText value="#{invoice[0].saleDate}">
-                        <f:convertDateTime pattern="MMMM dd yyyy" />
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.trackNumHeader}</f:facet>
-                        #{invoice[1].id}
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
-                    <h:outputText value="#{invoice[2]}">                    
-                        <f:convertNumber type="currency" />
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
-                    <h:outputText value="#{invoice[3]}">                    
-                        <f:convertNumber type="currency" />
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.profitHeader}</f:facet>
-                    <h:outputText value="#{invoice[4]}">                    
-                        <f:convertNumber type="currency" />
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>
-                        #{invoice[0].id}
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.userNumHeader}</f:facet>
-                        #{invoice[0].userId.id}
-                </p:column>
-            </p:dataTable>
-            <br/>
-            <p:dataTable styleClass="report-table" 
-                         id="albumTable" 
-                         value="#{reports.getSalesByArtistAlbums(reportData.startDate, reportData.endDate, reportData.artist)}" 
-                         var="invoice" 
-                         paginator="true" 
-                         rows="10">
-                <f:facet name="header">
-                    #{msgs.detailAlbumHeader}
-                </f:facet>
-                <p:column>
-                    <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
-                    <h:outputText value="#{invoice[0].saleDate}">
-                        <f:convertDateTime pattern="MMMM dd yyyy" />
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.albumNumHeader}</f:facet>
-                        #{invoice[1].id}
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
-                    <h:outputText value="#{invoice[2]}">                    
-                        <f:convertNumber type="currency" />
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
-                    <h:outputText value="#{invoice[3]}">                    
-                        <f:convertNumber type="currency" />
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.profitHeader}</f:facet>
-                    <h:outputText value="#{invoice[4]}">                    
-                        <f:convertNumber type="currency" />
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>
-                        #{invoice[0].id}
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.userNumHeader}</f:facet>
-                        #{invoice[0].userId.id}
-                </p:column>
-            </p:dataTable>
-        </f:view>
+                    <p:outputLabel for="artistId" style="text-align: right;">#{msgs.artistIdLbl}</p:outputLabel>
+                    <p:inputText id="artistId" value="#{reportData.artist}" converter="#{artistConverter}">
+                        <!--<p:ajax event="change" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
+                    </p:inputText>
+                </h:panelGrid>
+                <p:commandButton id="search" update="trackTotalTable albumTotalTable trackTable albumTable" value="#{msgs.searchBtn}" />
+            </h:form>
+        </div>
+        <br/>
+        <p:dataTable styleClass="report-table" 
+                     id="trackTotalTable" 
+                     value="#{reports.getSalesByArtistTracksTotals(reportData.startDate, reportData.endDate, reportData.artist)}" 
+                     var="trackTotal">
+            <f:facet name="header">
+                #{msgs.totalSumTrackHeader}
+            </f:facet>
+            <p:column>
+                <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>                
+                <h:outputText value="#{trackTotal[0]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
+                <h:outputText value="#{trackTotal[1]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.profitHeader}</f:facet>
+                <h:outputText value="#{trackTotal[2]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
+            </p:column>
+        </p:dataTable>
+        <br/>
+        <p:dataTable styleClass="report-table" 
+                     id="albumTotalTable" 
+                     value="#{reports.getSalesByArtistAlbumsTotals(reportData.startDate, reportData.endDate, reportData.artist)}" 
+                     var="albumTotal">
+            <f:facet name="header">
+                #{msgs.totalSumAlbumHeader}
+            </f:facet>
+            <p:column>
+                <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
+                <h:outputText value="#{albumTotal[0]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
+                <h:outputText value="#{albumTotal[1]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.profitHeader}</f:facet>
+                <h:outputText value="#{albumTotal[2]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
+            </p:column>
+        </p:dataTable>
+        <br/>
+        <p:dataTable  styleClass="report-table"
+                      id="trackTable" 
+                      value="#{reports.getSalesByArtistTracks(reportData.startDate, reportData.endDate, reportData.artist)}" 
+                      var="invoice" 
+                      paginator="true" 
+                      rows="10">
+            <f:facet name="header">
+                #{msgs.salesDetailTrackHeader}
+            </f:facet>
+            <p:column>
+                <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
+                <h:outputText value="#{invoice[0].saleDate}">
+                    <f:convertDateTime pattern="MMMM dd yyyy" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.trackNumHeader}</f:facet>
+                    #{invoice[1].id}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
+                <h:outputText value="#{invoice[2]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
+                <h:outputText value="#{invoice[3]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.profitHeader}</f:facet>
+                <h:outputText value="#{invoice[4]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>
+                    #{invoice[0].id}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.userNumHeader}</f:facet>
+                    #{invoice[0].userId.id}
+            </p:column>
+        </p:dataTable>
+        <br/>
+        <p:dataTable styleClass="report-table" 
+                     id="albumTable" 
+                     value="#{reports.getSalesByArtistAlbums(reportData.startDate, reportData.endDate, reportData.artist)}" 
+                     var="invoice" 
+                     paginator="true" 
+                     rows="10">
+            <f:facet name="header">
+                #{msgs.detailAlbumHeader}
+            </f:facet>
+            <p:column>
+                <f:facet name="header">#{msgs.saleDateHeader}</f:facet>
+                <h:outputText value="#{invoice[0].saleDate}">
+                    <f:convertDateTime pattern="MMMM dd yyyy" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.albumNumHeader}</f:facet>
+                    #{invoice[1].id}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
+                <h:outputText value="#{invoice[2]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
+                <h:outputText value="#{invoice[3]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.profitHeader}</f:facet>
+                <h:outputText value="#{invoice[4]}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>
+                    #{invoice[0].id}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.userNumHeader}</f:facet>
+                    #{invoice[0].userId.id}
+            </p:column>
+        </p:dataTable>
     </ui:define>
 </ui:composition>
