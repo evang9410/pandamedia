@@ -29,8 +29,8 @@
                         </h3>
                         <h5>#{albumBacking.album.recordingLabelId.name}</h5>
                         <div>
-                            <h:form>
-                                <b:commandButton ajax="false" icon-awesome="cart-plus" iconAlign="right" value=""
+                            <h:form id="addToCartForm">
+                                <b:commandButton id="addToCartBtn" ajax="false" icon-awesome="cart-plus" iconAlign="right" value=""
                                                  look="success" action="#{cart.addAlbum(albumBacking.album)}">
                                     <h:outputText value="#{albumBacking.album.listPrice - albumBacking.album.salePrice}">
                                         <f:convertNumber minFractionDigits="2"/>

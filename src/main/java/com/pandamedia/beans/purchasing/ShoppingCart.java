@@ -303,7 +303,7 @@ public class ShoppingCart implements Serializable {
         else
         {
             // Force user to login
-            page = "login";
+            page = user.setPrevPageLogin();
         }
         
         return page;
