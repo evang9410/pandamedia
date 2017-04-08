@@ -354,7 +354,7 @@ public class TrackBackingBean implements Serializable {
      */
     public List getStarsList(int rating) {
         List l = new ArrayList();
-        for (int i = 0; i <= rating; i++) {
+        for (int i = 1; i <= rating; i++) {
             l.add(i);
         }
         return l;

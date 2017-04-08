@@ -115,13 +115,17 @@
                     #{track[1].id}
             </p:column>
             <p:column>
+                <f:facet name="header">#{msgs.removeStatusHeader}</f:facet>
+                #{track[1].removalStatus}
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>
                     #{track[0].id}
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.userNumHeader}</f:facet>
                     #{track[0].userId.id}
-            </p:column>
+            </p:column>            
         </p:dataTable>
         <br/>
         <p:dataTable styleClass="report-table" 
@@ -158,6 +162,10 @@
             <p:column>
                 <f:facet name="header">#{msgs.albumNumHeader}</f:facet>
                     #{album[1].id}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.removeStatusHeader}</f:facet>
+                #{album[1].removalStatus}
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.invoiceNumHeader}</f:facet>

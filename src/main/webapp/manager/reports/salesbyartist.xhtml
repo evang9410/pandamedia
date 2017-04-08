@@ -121,6 +121,10 @@
                     #{invoice[1].id}
             </p:column>
             <p:column>
+                <f:facet name="header">#{msgs.removeStatusHeader}</f:facet>
+                #{invoice[1].removalStatus}
+            </p:column>
+            <p:column>
                 <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
                 <h:outputText value="#{invoice[2]}">                    
                     <f:convertNumber type="currency" />
@@ -166,6 +170,10 @@
             <p:column>
                 <f:facet name="header">#{msgs.albumNumHeader}</f:facet>
                     #{invoice[1].id}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.removeStatusHeader}</f:facet>
+                #{invoice[1].removalStatus}
             </p:column>
             <p:column>
                 <f:facet name="header">#{msgs.finalPriceHeader}</f:facet>
