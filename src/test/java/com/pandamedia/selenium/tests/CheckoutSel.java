@@ -4,6 +4,7 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 import java.util.Calendar;
 import java.util.Date;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  *
  * @author Erika Bourque
  */
+@Ignore
 public class CheckoutSel {
     private WebDriver driver;
     private WebDriverWait wait;
