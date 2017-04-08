@@ -60,7 +60,7 @@ import persistence.entities.Track;
  */
 @RunWith(Arquillian.class)
 @Ignore
-public class ReportUnitTest {
+public class ReportsTest {
 
     // TO TEST ON WALDO comment and uncomment the @Resources
     // AND the persistence XMLs, both needed to work
