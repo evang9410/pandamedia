@@ -134,7 +134,7 @@ public class UserActionBean implements Serializable {
                     userRecord.getSalt());
 
             if (!Arrays.equals(hashRecord, loginPwdHash)) {
-
+                System.out.println("BAD PASSWORD");
                 FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
                         "bundles.messages", "invalidEmailOrPwd", null);
                 FacesContext.getCurrentInstance().addMessage("loginForm", msg);

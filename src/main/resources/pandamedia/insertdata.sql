@@ -1,30 +1,30 @@
--- 1 - Genres
-LOAD DATA LOCAL INFILE 'C:\\pandamedia\\real\\genre.csv'
+-- Genres
+LOAD DATA LOCAL INFILE 'C:\\pandamedia\\datafiles\\genre.csv'
 INTO TABLE genre FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\r\n' (name);
 
--- 2 - Artists
-LOAD DATA LOCAL INFILE 'C:\\pandamedia\\real\\artist.csv'
+-- Artists
+LOAD DATA LOCAL INFILE 'C:\\pandamedia\\datafiles\\artist.csv'
 INTO TABLE artist FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\r\n' (name);
 
--- 3 - Recording Labels
-LOAD DATA LOCAL INFILE 'C:\\pandamedia\\real\\label.csv'
+-- Recording Labels
+LOAD DATA LOCAL INFILE 'C:\\pandamedia\\datafiles\\label.csv'
 INTO TABLE recording_label FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\r\n' (name);
 
--- 4 - Songwriters
-LOAD DATA LOCAL INFILE 'C:\\pandamedia\\real\\songwriter.csv'
+-- Songwriters
+LOAD DATA LOCAL INFILE 'C:\\pandamedia\\datafiles\\songwriter.csv'
 INTO TABLE songwriter FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\r\n' (name);
 
--- 5 - Cover art
-LOAD DATA LOCAL INFILE 'C:\\pandamedia\\real\\cover.csv'
+-- Cover art
+LOAD DATA LOCAL INFILE 'C:\\pandamedia\\datafiles\\cover.csv'
 INTO TABLE cover_art FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\r\n' (image_path);
 
--- 6 - Provinces
-LOAD DATA LOCAL INFILE 'C:\\pandamedia\\real\\province.csv'
+-- Provinces
+LOAD DATA LOCAL INFILE 'C:\\pandamedia\\datafiles\\province.csv'
 INTO TABLE province FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\r\n' (name,pst_rate,gst_rate,hst_rate);
 
@@ -51,7 +51,7 @@ CREATE TABLE temp_album
 	CHECK (sale_price < list_price)
 );
 
-LOAD DATA LOCAL INFILE 'C:\\pandamedia\\real\\album.csv'
+LOAD DATA LOCAL INFILE 'C:\\pandamedia\\datafiles\\album.csv'
 INTO TABLE temp_album FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\r\n' (title,release_date,artist_name,recording_label_name,cover_art_name,num_tracks,date_entered,cost_price,list_price,genre_name);
 
@@ -94,7 +94,7 @@ CREATE TABLE temp_track
 	CHECK (sale_price < list_price)
 );
 
-LOAD DATA LOCAL INFILE 'C:\\pandamedia\\real\\track.csv'
+LOAD DATA LOCAL INFILE 'C:\\pandamedia\\datafiles\\track.csv'
 INTO TABLE temp_track FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\r\n' (title,album_name,artist_name,genre_name,release_date,songwriter_name,play_length,
 	album_track_number,cost_price,list_price,cover_art_path,date_entered,part_of_album);
@@ -115,7 +115,40 @@ INSERT INTO track(title,date_entered,cost_price,list_price,release_date,play_len
 DROP TABLE temp_track;
 
 -- Newsfeed
-INSERT INTO newsfeed(url) VALUES ("http://rss.cbc.ca/lineup/politics.xml");
+INSERT INTO newsfeed(url) VALUES ("http://rss.cbc.ca/lineup/politics.xml"), ("https://www.reddit.com/r/aww/.rss"), ("http://rss.cnn.com/rss/cnn_showbiz.rss");
 
 -- Advertisement
-INSERT INTO advertisement(ad_path) VALUES ("carlll");
+INSERT INTO advertisement(ad_path) VALUES ("coca-cola.jpg"), ("marshall.jpg"), ("renationAd.jpeg");
+
+-- Users
+LOAD DATA LOCAL INFILE 'C:\\pandamedia\\datafiles\\user.csv'
+INTO TABLE shop_user FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n' (title,last_name,first_name,street_address,city,province_id,country,postal_code,home_phone,email,hashed_pw,salt,last_genre_searched);
+
+-- Invoice
+LOAD DATA LOCAL INFILE 'C:\\pandamedia\\datafiles\\invoice.csv'
+INTO TABLE invoice FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n' (user_id,sale_date,total_net_value,pst_tax,gst_tax,hst_tax,total_gross_value);
+
+-- Invoice Track
+LOAD DATA LOCAL INFILE 'C:\\pandamedia\\datafiles\\invoice_track.csv'
+INTO TABLE invoice_track FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n' (invoice_id,track_id,final_price);
+
+-- Invoice Album
+LOAD DATA LOCAL INFILE 'C:\\pandamedia\\datafiles\\invoice_album.csv'
+INTO TABLE invoice_album FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n' (invoice_id,album_id,final_price);
+
+-- Review
+LOAD DATA LOCAL INFILE 'C:\\pandamedia\\datafiles\\review.csv'
+INTO TABLE review FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n' (track_id,user_id,date_entered,rating,review_content,approval_status);
+
+-- Survey
+LOAD DATA LOCAL INFILE 'C:\\pandamedia\\datafiles\\survey.csv'
+INTO TABLE survey FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n' (question,answer_a,answer_b,answer_c,answer_d,votes_a,votes_b,votes_c,votes_d);
+
+-- Front Page Settings
+INSERT INTO front_page_settings(survey_id, newsfeed_id, ad_a_id) VALUES (1, 1, 1);

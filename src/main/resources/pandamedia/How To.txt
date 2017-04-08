@@ -1,7 +1,0 @@
--- put the entire pandamedia folder at the top of your C drive
--- run either command (depending on what data you want)
--- this will create the g4w17 user that'll work with the code as well, so we wont need to change the glassfish config for each person
-
-SOURCE C:/pandamedia/setuptest.sql
-
-SOURCE C:/pandamedia/setupreal.sql
