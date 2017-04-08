@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.pandamedia.commands;
 
 import java.io.Serializable;
@@ -19,24 +14,29 @@ import javax.inject.Named;
 @SessionScoped
 public class ChangeLanguage implements Serializable {
     
-    private Locale localValue;
+    private Locale localeValue;
     
     public String frenchAction() {
         FacesContext context = FacesContext.getCurrentInstance();
-        localValue = Locale.CANADA_FRENCH;
-        context.getViewRoot().setLocale(localValue);
+        localeValue = Locale.CANADA_FRENCH;
+        context.getViewRoot().setLocale(localeValue);
         return null;
     }
     public String englishAction() {
         FacesContext context = FacesContext.getCurrentInstance();
-        localValue = Locale.CANADA;
-        context.getViewRoot().setLocale(localValue);
+        localeValue = Locale.CANADA;
+        context.getViewRoot().setLocale(localeValue);
         return null;
     }
     
     public Locale getLocale()
     {
-        return localValue;
+        if (localeValue == null)
+        {
+            localeValue = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        }
+        
+        return localeValue;
     }
     
     

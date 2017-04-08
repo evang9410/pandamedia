@@ -94,7 +94,6 @@ public class UserActionBean implements Serializable {
                 FacesContext.getCurrentInstance().setViewRoot(prevPage);
                 FacesContext.getCurrentInstance().renderResponse();
             } else {
-                // TODO: fix so its not absolute path
                 FacesContext.getCurrentInstance().getExternalContext()
                                 .redirect(FacesContext.getCurrentInstance().
                                         getExternalContext().getRequestContextPath() + "/shop/mainpage.xhtml");
