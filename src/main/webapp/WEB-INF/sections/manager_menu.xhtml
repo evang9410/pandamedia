@@ -8,6 +8,7 @@
     <h:form>
         <b:navBar brand="PandaMedia" brandHref="#{request.contextPath}/manager/manager_index.xhtml">
             <b:navbarLinks pull="right">
+                <b:navCommandLink value="#{msgs.inventory}" action="manindex" />
                 <b:navCommandLink value="#{msgs.sales}" action="mansales" />
                 <b:navCommandLink value="#{msgs.clients}" action="manclients" />
                 <b:navCommandLink value="#{msgs.orders}" action="manorders" />
@@ -19,6 +20,7 @@
                     <b:navCommandLink value="#{msgs.manReportSalesByTrack}" action="reptrack" />
                     <b:navCommandLink value="#{msgs.manReportSalesByAlbum}" action="repalbum" />
                     <b:navCommandLink value="#{msgs.manReportSalesByArtist}" action="repartist" />
+                    <b:navCommandLink value="#{msgs.manReportSalesByClientTitle}" action="repclient" />
                     <b:navCommandLink value="#{msgs.manReportZeroTrackTitle}" action="repzerotracks" />
                     <b:navCommandLink value="#{msgs.manReportZeroUserTitle}" action="repzeroclients" />
                 </b:dropMenu>
