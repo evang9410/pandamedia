@@ -156,7 +156,11 @@ public class TrackBackingBean implements Serializable {
     public Track findTrackById(int id) {
         return trackController.findTrack(id);
     }
-
+    /**
+     * Gets the most popular tracks.
+     * @author Evan G. Ripped off from Erika's report and modified.
+     * @return 
+     */
     public List<Track> getPopularTracks() {
         Date startDate = new Date(); //get current date
         Calendar cal = Calendar.getInstance();
@@ -330,7 +334,7 @@ public class TrackBackingBean implements Serializable {
     /**
      * iterates through the reviews for a track and returns a list of the
      * approved ratings.
-     *
+     * @author Evan G.
      * @return
      */
     public List<Review> getApprovedReviews() {
@@ -348,13 +352,13 @@ public class TrackBackingBean implements Serializable {
      * will then iterate through with <ui:repeat> this is the safer way of doing
      * it rather than using
      * <c:forEach>
-     *
+     * @author Evan G.
      * @param rating
      * @return
      */
     public List getStarsList(int rating) {
         List l = new ArrayList();
-        for (int i = 0; i <= rating; i++) {
+        for (int i = 1; i <= rating; i++) {
             l.add(i);
         }
         return l;
@@ -455,7 +459,7 @@ public class TrackBackingBean implements Serializable {
     /**
      * Returns a list of tracks that are on sale. checks the database for tracks
      * that have a sale price that is not 0.
-     *
+     * @author Evan G.
      * @return
      */
     public List<Track> getSaleTracks() {

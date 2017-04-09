@@ -8,6 +8,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import persistence.entities.Album;
 import persistence.entities.Artist;
+import persistence.entities.ShopUser;
 import persistence.entities.Track;
 
 /**
@@ -24,6 +25,7 @@ public class ReportDataBean {
     private Artist artist;
     private Album album;
     private Track track;
+    private ShopUser client;
 
     public Artist getArtist() {
         return artist;
@@ -47,6 +49,14 @@ public class ReportDataBean {
 
     public void setTrack(Track track) {
         this.track = track;
+    }
+    
+    public ShopUser getClient() {
+        return client;
+    }
+
+    public void setClient(ShopUser client) {
+        this.client = client;
     }
     
     public Date getDefaultEndDate() {

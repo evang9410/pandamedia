@@ -50,26 +50,16 @@ public class CheckoutBackingBean implements Serializable {
     @Inject
     private EmailBean emailer;
 
-    private ShopUser user;
-    private double gst;
-    private double hst;
-    private double pst;
-    private double total;
-
     /**
      * This method calculates the taxes and total for the invoice after the cart
      * and user have been injected.
      *
      * @author Erika Bourque
      */
-    @PostConstruct
-    public void init() {
-        user = uab.getCurrUser();
-        gst = cart.getSubTotal() * user.getProvinceId().getGstRate();
-        pst = cart.getSubTotal() * user.getProvinceId().getPstRate();
-        hst = cart.getSubTotal() * user.getProvinceId().getHstRate();
-        total = cart.getSubTotal() + gst + pst + hst;
-    }
+//    @PostConstruct
+//    public void init() {
+//        user = uab.getCurrUser();
+//    }
 
     /**
      * This method creates a list of months in the form of SelectItems for use
@@ -122,7 +112,7 @@ public class CheckoutBackingBean implements Serializable {
      * @return the gst
      */
     public double getGst() {
-        return gst;
+        return cart.getSubTotal() * uab.getCurrUser().getProvinceId().getGstRate();
     }
 
     /**
@@ -132,7 +122,7 @@ public class CheckoutBackingBean implements Serializable {
      * @return the pst
      */
     public double getPst() {
-        return pst;
+        return cart.getSubTotal() * uab.getCurrUser().getProvinceId().getPstRate();
     }
 
     /**
@@ -142,7 +132,7 @@ public class CheckoutBackingBean implements Serializable {
      * @return the hst
      */
     public double getHst() {
-        return hst;
+        return cart.getSubTotal() * uab.getCurrUser().getProvinceId().getHstRate();
     }
 
     /**
@@ -152,7 +142,7 @@ public class CheckoutBackingBean implements Serializable {
      * @return the net total
      */
     public double getTotal() {
-        return total;
+        return cart.getSubTotal() + getGst() + getPst() + getHst();
     }
 
     /**
@@ -178,8 +168,7 @@ public class CheckoutBackingBean implements Serializable {
         cart.clearCart();
         
         // Send email of invoice details
-        // TODO: uncomment this
-        emailer.sendInvoiceEmail(user.getEmail(), invoice);
+        emailer.sendInvoiceEmail(uab.getCurrUser().getEmail(), invoice);
         
         // Redirecting to invoice summary page
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("invoice", invoice);
@@ -200,11 +189,11 @@ public class CheckoutBackingBean implements Serializable {
         // Setting the invoice details
         invoice.setSaleDate(Calendar.getInstance().getTime());
         invoice.setTotalGrossValue(cart.getSubTotal());
-        invoice.setGstTax(gst);
-        invoice.setHstTax(hst);
-        invoice.setPstTax(pst);
-        invoice.setTotalNetValue(total);
-        invoice.setUserId(user);
+        invoice.setGstTax(getGst());
+        invoice.setHstTax(getHst());
+        invoice.setPstTax(getPst());
+        invoice.setTotalNetValue(getTotal());
+        invoice.setUserId(uab.getCurrUser());
         
         return invoice;
     }

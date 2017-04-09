@@ -1,72 +1,61 @@
+
 package com.pandamedia.arquillian.test;
 
+import com.pandamedia.beans.InvoiceTrackBackingBean;
 import com.pandamedia.beans.ReportBackingBean;
-import com.pandamedia.beans.ReportDataBean;
 import com.pandamedia.commands.ChangeLanguage;
 import com.pandamedia.converters.AlbumConverter;
 import com.pandamedia.filters.LoginFilter;
 import com.pandamedia.utilities.Messages;
-import persistence.controllers.InvoiceJpaController;
-import persistence.controllers.ProvinceJpaController;
-import persistence.controllers.ShopUserJpaController;
-import persistence.controllers.exceptions.RollbackFailureException;
-import persistence.entities.Invoice;
-import persistence.entities.ShopUser;
-import persistence.entities.Track;
-import java.util.Date;
-import java.text.SimpleDateFormat;
-import java.text.DateFormat;
-
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+import javax.annotation.Resource;
+import javax.inject.Inject;
+import javax.sql.DataSource;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import javax.annotation.Resource;
-import javax.inject.Inject;
-import javax.sql.DataSource;
-import java.io.*;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import persistence.controllers.InvoiceJpaController;
+import persistence.controllers.InvoiceTrackJpaController;
+import persistence.controllers.ShopUserJpaController;
+import persistence.controllers.TrackJpaController;
+import persistence.controllers.exceptions.RollbackFailureException;
+import persistence.entities.InvoiceTrack;
+import persistence.entities.InvoiceTrackPK;
+import persistence.entities.Track;
 
 /**
- * TODO find a way to log, also find a way to get province correctly
- * 
- * @author Erika Bourque
+ *
+ * @author Naasir Jusab
  */
 @RunWith(Arquillian.class)
-public class ReportUnitTest {
-//    private static final Logger LOG = Logger.getLogger("ShopUserJpaController.class");
-
-    // TO TEST ON WALDO comment and uncomment the @Resources
-    // AND the persistence XMLs, both needed to work
-//    @Resource(name = "java:app/jdbc/waldo2g4w17")
+public class InvoiceTrackArq {
     @Resource(name = "java:app/jdbc/pandamedialocal")
     private DataSource ds;
-    
     @Inject
-    private ReportBackingBean reports;
-
+    private InvoiceTrackBackingBean invoiceTrackBacking;
     @Inject
-    private ReportDataBean dates;
-    
+    private InvoiceTrackJpaController invoiceTrackController;
     @Inject
-    private ShopUserJpaController userJpa;
-    
+    private TrackJpaController trackController;
     @Inject
-    private ProvinceJpaController provinceJpa;
-    
-    @Inject
-    private InvoiceJpaController invoiceJpa;
+    private InvoiceJpaController invoiceController;
     
     @Deployment
     public static WebArchive deploy() {
@@ -176,63 +165,57 @@ public class ReportUnitTest {
                 || line.startsWith("/*");
     }
     
-    /**
-     *
-     * @throws SQLException
-     */
+    
     @Test
-    public void findZeroShopUser() throws SQLException, Exception {
-        // Set Up
-        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-        Date start = format.parse("2017/01/01");
-        Date end = format.parse("2017/02/01");
-        Date saleDate = format.parse("2017/02/20");
+    public void testRemoveInvoiceTrack()
+    {
+        short removalStatus = 0;
+        InvoiceTrack invT = new InvoiceTrack();
+        invT.setTrack(trackController.findTrack(1));
+        invT.setRemovalStatus(removalStatus);
+        invT.setRemovalDate(null);
+        invT.setInvoice(invoiceController.findInvoice(1));
+        invT.setFinalPrice(23.00);
+        try
+        {
+            invoiceTrackController.create(invT);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        InvoiceTrackPK invPK = new InvoiceTrackPK();
+        invPK.setInvoiceId(1);
+        invPK.setTrackId(1);
+        invoiceTrackBacking.removeInvoiceTrack(invPK);
         
-        ShopUser test = createNewUser("Mr", "Marley", "Bob", "cats avenue", "catcity", 
-                "Canada", "A1A1A1", "1234567890", "bob@cat.com", "kitty".getBytes(), "cat");        
-        userJpa.create(test);
-        
-        Invoice invoice = createNewInvoice(saleDate, 10, 11, test);
-        invoiceJpa.create(invoice);
-        
-        List<ShopUser> list = reports.getZeroUsers(start, end);
-
-        assertThat(list.contains(test));
-//        assertThat(true);
+        assertEquals(invoiceTrackController.findInvoiceTrack(invPK).getRemovalStatus(), 1);
     }
     
-    private ShopUser createNewUser(String title, String lastName, String firstName, 
-            String streetAddress, String city, String country, String postalCode, 
-            String homePhone, String email, byte[] password, String salt)
+    @Test
+    public void testAddInvoiceTrack()
     {
-        ShopUser user = new ShopUser();
+        short removalStatus = 1;
+        InvoiceTrack invT = new InvoiceTrack();
+        invT.setTrack(trackController.findTrack(1));
+        invT.setRemovalStatus(removalStatus);
+        invT.setRemovalDate(null);
+        invT.setInvoice(invoiceController.findInvoice(1));
+        invT.setFinalPrice(23.00);
+        try
+        {
+            invoiceTrackController.create(invT);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        InvoiceTrackPK invPK = new InvoiceTrackPK();
+        invPK.setInvoiceId(1);
+        invPK.setTrackId(1);
+        invoiceTrackBacking.addInvoiceTrack(invPK);
         
-        user.setTitle(title);
-        user.setLastName(lastName);
-        user.setFirstName(firstName);
-        user.setStreetAddress(streetAddress);
-        user.setCity(city);
-        user.setCountry(country);
-        user.setPostalCode(postalCode);
-        user.setHomePhone(homePhone);
-        user.setEmail(email);
-        user.setHashedPw(password);
-        user.setSalt(salt);
-//        LOG.info(provinceJpa.findProvinceEntities().toString());
-        user.setProvinceId(provinceJpa.findProvinceEntities().get(0));
-        
-        return user;
+        assertEquals(invoiceTrackController.findInvoiceTrack(invPK).getRemovalStatus(), 0);
     }
     
-    private Invoice createNewInvoice(Date saleDate, double totalNetValue, double totalGrossValue, ShopUser user)
-    {
-        Invoice invoice = new Invoice();
-        
-        invoice.setSaleDate(saleDate);
-        invoice.setTotalNetValue(totalNetValue);
-        invoice.setTotalGrossValue(totalGrossValue);
-        invoice.setUserId(user);
-        
-        return invoice;
-    }
 }
