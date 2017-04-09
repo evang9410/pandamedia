@@ -30,7 +30,7 @@ public class RssFeedValidation implements Validator {
         if(!rssFeed.startsWith("https://") && !rssFeed.startsWith("http://"))
             throw new ValidatorException(new FacesMessage("RSS Feed is invalid"));
         
-        if(!rssFeed.endsWith(".xml"))
+        if(!rssFeed.endsWith(".xml") && !rssFeed.endsWith(".rss"))
             throw new ValidatorException(new FacesMessage("RSS Feed is invalid"));
                
     }

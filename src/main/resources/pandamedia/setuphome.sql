@@ -7,5 +7,4 @@ GRANT ALL ON g4w17.* TO g4w17@"localhost" IDENTIFIED BY "dG6D3EEk";
 USE g4w17;
 
 SOURCE C:/pandamedia/createtables.sql;
-SOURCE C:/pandamedia/insertrealdata.sql;
-SOURCE C:/pandamedia/insertgoodtestdata.sql;
+SOURCE C:/pandamedia/insertdata.sql;

@@ -8,6 +8,7 @@
     <h:form>
         <b:navBar brand="PandaMedia" brandHref="#{request.contextPath}/manager/manager_index.xhtml">
             <b:navbarLinks pull="right">
+                <b:navCommandLink value="#{msgs.inventory}" action="manindex" />
                 <b:navCommandLink value="#{msgs.sales}" action="mansales" />
                 <b:navCommandLink value="#{msgs.clients}" action="manclients" />
                 <b:navCommandLink value="#{msgs.orders}" action="manorders" />
