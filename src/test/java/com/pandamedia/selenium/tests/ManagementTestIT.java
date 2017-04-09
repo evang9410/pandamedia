@@ -19,7 +19,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  *
  * @author Naasir Jusab
  */
-public class ManagementTest {
+public class ManagementTestIT {
     
     private WebDriver driver;
     private WebDriverWait wait;
