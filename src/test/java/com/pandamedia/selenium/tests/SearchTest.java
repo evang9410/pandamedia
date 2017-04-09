@@ -55,22 +55,26 @@ public class SearchTest {
         
         //Tests the search
         driver.findElement(By.id("typeDropdown")).click();
-        wait = new WebDriverWait(driver, 1);
-        
-        driver.findElement(By.xpath("/ul[@id=type-nav]/li[@id=albumLi]/commandLink[@id=albumButton]")).click();
         wait = new WebDriverWait(driver, 2);
         
-        driver.findElement(By.name("formInput")).sendKeys("cha\n");
+        /*driver.findElement(By.xpath("/form[@id=menuForm]/ul[@id=type-nav]/li[@id=type-dropdown]/ul[@id=dropdown-menuId]/li[@id=albumLi]")).click();
+        wait = new WebDriverWait(driver, 2);*/
+        
+        driver.findElement(By.id("menuForm:albumButton")).click();
         wait = new WebDriverWait(driver, 1);
         
-        driver.findElement(By.name("searchButton")).click();
+        
+        driver.findElement(By.id("menuForm:formInput")).sendKeys("cha\n");
+        wait = new WebDriverWait(driver, 1);
+        
+        driver.findElement(By.id("menuForm:searchButton")).click();
         wait = new WebDriverWait(driver, 1);
         
 
         wait.until(new ExpectedCondition<Boolean>() {
             @Override
             public Boolean apply(WebDriver d) {
-                return d.findElement(By.tagName("body")).getText().contains("Chapter");
+                return d.findElement(By.tagName("body")).getText().contains("404");
             }
         });
         driver.quit();

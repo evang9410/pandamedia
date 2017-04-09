@@ -20,16 +20,23 @@
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <h:inputText id="date1" value="#{Search.paramDate1}" required="true"/>
+                        <h:inputText id="date1" value="#{Search.paramDate2}" required="true"/>
                         <h:message for="date1" style="color:red" />
                     </div>
                     <div class="col-md-3">
                         <h:inputText id="date2" value="#{Search.paramDate2}" required="false" />
                         <h:message for="date2" style="color:red" />
+
+                        <!-- TEST
+                        <p:inputMask id="dob" mask="9999/99/99" value="#{Search.parameters}" style="width:8em;" >
+                            <f:convertDateTime pattern="yyyy/MM/dd" />
+                        </p:inputMask>
+                        <p:watermark  value="YYYY/MM/DD" for="dob" />
+                        -->
                     </div>
                 </div>
                 <div class="row">
-                    <h:commandLink value="submit" action="#{Search.executeSearch()}"/>
+                    <h:commandButton action="#{Search.executeSearch()}" value="Submit"/>
                 </div>
             </div>
         </h:form>
