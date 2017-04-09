@@ -34,7 +34,7 @@ public class ShopFilter implements Filter{
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        context.log("In the filer");
+        context.log("Shop Filter");
         
         // Making sure that logged in user is not a manager
         if ((uab.isLogin()) && (uab.getCurrUser().getIsManager() == 1))
