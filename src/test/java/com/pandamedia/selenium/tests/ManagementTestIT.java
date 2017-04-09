@@ -19,7 +19,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  *
  * @author Naasir Jusab
  */
-public class ManagementTest {
+public class ManagementTestIT {
     
     private WebDriver driver;
     private WebDriverWait wait;
@@ -54,8 +54,7 @@ public class ManagementTest {
         
         //test the approve btn
         driver.findElement(By.id("reviewFormID:reviewTableID:0:approveBtn")).click();
-        
-        //delete this when the bug is fixed
+
         driver.findElement(By.id("reviewFormID:reviewTableID:0:approveBtn")).click();
         
         wait = new WebDriverWait(driver,10);
@@ -86,7 +85,7 @@ public class ManagementTest {
         //test the disapprove btn
         driver.findElement(By.id("reviewFormID:reviewTableID:0:disapproveBtn")).click();
         
-        //delete this when the bug is fixed
+
         driver.findElement(By.id("reviewFormID:reviewTableID:0:disapproveBtn")).click();
         
         wait = new WebDriverWait(driver,10);
@@ -183,8 +182,7 @@ public class ManagementTest {
         
         //test the disapprove btn
         driver.findElement(By.id("albumFormID:albumTable:0:removeAlbumBtn")).click();
-        
-        //delete this when the bug is fixed
+
         driver.findElement(By.id("albumFormID:albumTable:0:removeAlbumBtn")).click();
         
         wait = new WebDriverWait(driver,10);
