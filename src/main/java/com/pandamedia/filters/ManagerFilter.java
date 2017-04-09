@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Erika Bourque
  */
-@WebFilter(filterName = "LoginFilter", urlPatterns = {"/manager/*"})
+@WebFilter(filterName = "LoginFilter", urlPatterns = {"/manager/*", "/manager/reports/*"})
 public class ManagerFilter implements Filter{
     private static final Logger LOG = Logger.getLogger("ManagerFilter.class");
     private ServletContext context;
@@ -34,7 +34,7 @@ public class ManagerFilter implements Filter{
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        context.log("In the filer");
+        context.log("Manager Filter");
         
         // Making sure user is logged in and is a manager
         if ((uab.isLogin()) && (uab.getCurrUser().getIsManager() == 1))
