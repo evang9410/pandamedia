@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -57,7 +58,6 @@ import persistence.entities.Track;
  *
  * @author Evan Glicakis
  */
-@Ignore
 @RunWith(Arquillian.class)
 public class AlbumArq {
 
@@ -196,7 +196,7 @@ public class AlbumArq {
     public void testAddItem() {
         albumBacking.addItem(1);
         Album a = albumController.findAlbum(1);
-        assertEquals(a.getRemovalStatus(), 0);
+        assertThat(a.getRemovalStatus()).isEqualTo((short)0);
     }
 
     /**
@@ -206,7 +206,7 @@ public class AlbumArq {
     public void testRemoveItem() {
         albumBacking.removeItem(1);
         Album a = albumController.findAlbum(1);
-        assertEquals(a.getRemovalStatus(), 1);
+                assertThat(a.getRemovalStatus()).isEqualTo((short)1);
     }
 
     @Test
@@ -236,7 +236,7 @@ public class AlbumArq {
         albumBacking.edit();
         Album editedAlbum = albumController.findAlbum(1);
 
-        assertEquals(a, editedAlbum);
+          assertThat(a).isEqualTo(editedAlbum);
     }
 
     @Test
@@ -254,7 +254,7 @@ public class AlbumArq {
         albumBacking.edit();
         // get albums sales should be of size 2
         List<Album> sales = albumBacking.getSaleAlbums();
-        assertEquals(2, sales.size());
+        assertThat(2).isEqualTo(sales.size());
     }
 
     @Test
@@ -263,7 +263,7 @@ public class AlbumArq {
         //there are 4 albums of the punk rock genre in the database.
         albumBacking.setGenreString("Punk");
         List<Album> genreAlbums = albumBacking.getAlbumFromGenre();
-        assertEquals(4, genreAlbums.size());
+        assertThat(4).isEqualTo(genreAlbums.size());
     }
 
     @Test
@@ -276,7 +276,7 @@ public class AlbumArq {
         albumBacking.setAlbum(a);
         albumBacking.edit();
         List latest = albumBacking.getLatestAlbums();
-        assertEquals(latest.get(0), a);
+        assertThat(latest.get(0)).isEqualTo(a);
     }
 
     @Test
@@ -285,14 +285,14 @@ public class AlbumArq {
         Artist artist = artistController.findArtist(1);
         List artsitAlbums = albumBacking.albumsFromArtist(artist);
         //should be one (1) album.
-        assertEquals(1, artsitAlbums.size());
+        assertThat(artsitAlbums.size()).isEqualTo(1);
     }
 
     @Test
     public void testGetAlbumSales() {
         // total sales of album with id = 1 (.5 the gray chaper) is $668.30
         String amount = albumBacking.getAlbumSales(1);
-        assertEquals(amount, "668.30");
+        assertThat(amount).isEqualTo("668.30");
     }
 
     @Test
@@ -357,7 +357,7 @@ public class AlbumArq {
         
         List<Album> actual = albumBacking.getPopularAlbums().subList(0, 2);
         
-        assertEquals(expected, actual);
+        assertThat(expected).isEqualTo(actual);
 
     }
 }

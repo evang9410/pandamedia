@@ -51,7 +51,6 @@ import persistence.entities.Track;
  * @author Erika Bourque
  */
 @RunWith(Arquillian.class)
-@Ignore
 public class CheckoutTest {
     // TO TEST ON WALDO comment and uncomment the @Resources
     // AND the persistence XMLs, both needed to work
@@ -192,7 +191,6 @@ public class CheckoutTest {
     }
     
     @Test
-    @Ignore
     public void finalizeAlbumTest() throws Exception
     {
         // Set up
@@ -219,7 +217,6 @@ public class CheckoutTest {
     }
     
     @Test
-    @Ignore
     public void finalizeTrackTest() throws Exception
     {
         // Set up

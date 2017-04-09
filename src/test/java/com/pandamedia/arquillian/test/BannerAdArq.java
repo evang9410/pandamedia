@@ -29,6 +29,7 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -47,7 +48,6 @@ import persistence.entities.Track;
  *
  * @author Naasir Jusab
  */
-@Ignore
 @RunWith(Arquillian.class)
 public class BannerAdArq {
     
@@ -167,12 +167,13 @@ public class BannerAdArq {
     public void testSave()
     {
         Advertisement ad = new Advertisement();
-        ad.setAdPath("hehe");
+        ad.setAdPath("hohohohohoho");
         bannerBacking.setAd(ad);
         bannerBacking.save();
         
         List<Advertisement> list = bannerBacking.getAll();
-        assertEquals(list.get(list.size()-1), ad);
+        
+        assertThat(list.get(list.size()-1)).isEqualTo(ad);
             
     }
     
@@ -199,7 +200,7 @@ public class BannerAdArq {
         }
         
         
-        assertTrue(isRemoved);
+        assertThat(isRemoved).isTrue();
     }
     
     @Test
@@ -209,7 +210,7 @@ public class BannerAdArq {
         FrontPageSettings fps = fpsController.findFrontPageSettings(1);
         Advertisement ad = bannerBacking.findAdvertisementById(1);
         
-        assertEquals(fps.getAdAId(), ad);
+        assertThat(fps.getAdAId()).isEqualTo(ad);
         
     }
 }
