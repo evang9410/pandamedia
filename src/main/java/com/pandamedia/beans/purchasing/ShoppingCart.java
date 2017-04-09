@@ -47,15 +47,17 @@ public class ShoppingCart implements Serializable {
     }
 
     /**
-     * gets the tracks from the cart. There has to be a more efficient way to
-     * sort this list. Maybe a hashmap?
-     *
+     * gets the tracks from the cart. 
      * @return
      */
     public List<Track> getTracksFromCart() {
         return tracks;
     }
-
+    /**
+     * Calculates the sub total of the tracks and albums costs.
+     * @author Erika, Evan
+     * @return 
+     */
     public double getSubTotal() {
         double subtotal = 0;
         for (Album a : albums) {
@@ -70,6 +72,7 @@ public class ShoppingCart implements Serializable {
     /**
      * returns the amount of items in the cart, to be used by the navigation bar
      * to display the amount of items currently in the cart.
+     * @author Evan
      *
      * @return
      */

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.pandamedia.beans;
 
 import java.io.Serializable;
@@ -43,6 +38,14 @@ public class ClientTrackingBean implements Serializable{
     private String genreString;
     private boolean isTracking = false;
     
+    /**
+     * Returns a list of albums based on the users session.
+     * If the user is not logged in, then the information regarding what albums to display
+     * is stored in a cookied named "suggested" otherwise we take the users last_searched_genre
+     * from the database.
+     * @return Album List
+     * @author Evan G.
+     */
     public List<Album> trackClient(){
         String genre = "";
         if(uab.isLogin()){
@@ -58,11 +61,21 @@ public class ClientTrackingBean implements Serializable{
         }
         
     } 
-
+    /**
+     * Used to determine if the client is currently being tracked. Used to render
+     * the view of the suggested albums.
+     * @return 
+     */
     public boolean isIsTracking() {
         return isTracking;
     }  
-        
+    /**
+     * Persist tracking is a method used when clicking on an album or track page
+     * to persist the users last searched genre in the database if they're logged in
+     * or to store it in a cookie if the users is not logged in.
+     * @param g
+     * @author Evan G.
+     */    
     public void peristTracking(Genre g){
         if(uab.isLogin()){
             System.out.println("USER LOGGED IN -- PERSISTING");
@@ -82,7 +95,11 @@ public class ClientTrackingBean implements Serializable{
             isTracking = true;
         }
     }
-    
+    /**
+     * Reads the cookie with the set name and returns its value.
+     * @param name
+     * @return 
+     */
     public String readCookie(String name) {
         Cookie cookie =(Cookie)FacesContext.getCurrentInstance()
                 .getExternalContext().getRequestCookieMap().get(name);
@@ -94,7 +111,11 @@ public class ClientTrackingBean implements Serializable{
         }
         return value;
     }
-    
+    /**
+     * Writes a single cookie given the key => value pair.
+     * @param key
+     * @param value 
+     */
     public void writeCookie(String key, String value) {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, Object> properties = new HashMap<>();
