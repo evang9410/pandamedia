@@ -62,4 +62,9 @@
         <param-value>/WEB-INF/pandamedia.taglib.xml</param-value>
     </context-param>
     
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/404.xhtml</location>
+    </error-page>
+    
 </web-app>
