@@ -1,6 +1,9 @@
 package com.pandamedia.commands;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -31,6 +34,10 @@ public class UserSearch implements Serializable {
     //Stores the last type researched by user
     private String typeSearched;
     private String parameters;
+    private Date date1;
+    private Date date2;
+    private String paramDate1;
+    private String paramDate2;
 
     @Inject
     private SearchDropdown sd;
@@ -83,9 +90,9 @@ public class UserSearch implements Serializable {
      *
      * @return
      */
-    public String executeSearch() {
+    public String executeSearch() throws Exception{
         //If nothing entered, does not execute
-        if (!parameters.isEmpty()) {
+        
             String str = sd.getType();
             typeSearched = str;
             reset();
@@ -104,8 +111,7 @@ public class UserSearch implements Serializable {
                     break;
             }
             return "search";
-        }
-        return null;
+
     }
 
     private Track searchTracks() {
@@ -152,17 +158,81 @@ public class UserSearch implements Serializable {
         return null;
     }
 
-    private void searchDate() {
+    private void searchDate() throws Exception{
         //Creates query that returns a list of tracks with a release date relevant to "parameters"
+        /*if (!paramDate1.isEmpty() && paramDate2.isEmpty()) {
+            String q1= "SELECT a FROM Album a WHERE a.releaseDate > :from";
+            TypedQuery<Album> query1 = em.createQuery(q1, Album.class);
+
+            query1.setParameter("from", "%" + paramDate1 + "%");
+            if (errorCheck(query1)) {
+                albumResultsList = query1.getResultList();
+            }
+            String q2 = "SELECT a FROM Track a WHERE a.releaseDate > :from";
+            TypedQuery<Track> query2 = em.createQuery(q2, Track.class);
+
+            query2.setParameter("from", "%" + paramDate1 + "%");
+            if (errorCheck(query2)) {
+                System.out.println("Kapoue!");
+                trackResultsList = query2.getResultList();
+            }
+        }*/
+        /*if (!paramDate1.isEmpty() && !paramDate2.isEmpty()) {*/
+            /*try{
+                date1 = new SimpleDateFormat("yyyy/MM/dd").parse(paramDate1);  
+                date2 = new SimpleDateFormat("yyyy/MM/dd").parse(paramDate2);  
+            }
+            catch(Exception ex){
+                System.out.println("!Error while parsing!");
+                date1 = new SimpleDateFormat("yyyy/MM/dd").parse("0000/00/00");  
+                date2 = new SimpleDateFormat("yyyy/MM/dd").parse("0000/00/00");
+            }
+            
+            String q1= "SELECT a FROM Album a WHERE a.releaseDate > :from AND a.releaseDate < :until";
+            TypedQuery<Album> query1 = em.createQuery(q1, Album.class);
+
+            query1.setParameter("from", "%" + date1 + "%");
+            query1.setParameter("until", "%" + date2+ "%");
+            if (errorCheck(query1)) {
+                albumResultsList = query1.getResultList();
+            }
+            String q2 = "SELECT a FROM Track a WHERE a.releaseDate > :from AND a.releaseDate < :until";
+            TypedQuery<Track> query2 = em.createQuery(q2, Track.class);
+           
+
+            query2.setParameter("from", "%" + date1 + "%");
+            query2.setParameter("until", "%" + date2 + "%");
+            System.out.println("Kapoue!");
+            if (errorCheck(query2)) {
+                trackResultsList = query2.getResultList();
+            }
+        /*}*/
+        
     }
 
     /*Getters and Setters*/
+    public String getParameters() {
+        return this.parameters;
+    }
+
     public void setParameters(String key) {
         this.parameters = key;
     }
 
-    public String getParameters() {
-        return this.parameters;
+    public void setParamDate1(String par1) {
+        this.paramDate2 = par1;
+    }
+
+    public String getParamDate1() {
+        return this.paramDate1;
+    }
+
+    public void setParamDate2(String par2) {
+        this.paramDate2 = par2;
+    }
+
+    public String getParamDate2() {
+        return this.paramDate2;
     }
 
     public List getTrackResultsList() {

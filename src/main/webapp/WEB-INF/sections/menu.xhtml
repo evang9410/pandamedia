@@ -26,23 +26,23 @@
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <h:form>
+                <h:form id="menuForm">
                     <ul class="nav navbar-nav nn" id="type-nav">
                         <li class="dropdown" id="type-dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">#{searchDropdown.toDisplay}<span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" id="typeDropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">#{searchDropdown.toDisplay}<span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><h:commandLink action="#{searchDropdown.setType('albums')}">#{msgs.albums}</h:commandLink></li>
-                                <li><h:commandLink action="#{searchDropdown.setType('artists')}">#{msgs.artists}</h:commandLink></li>
-                                <li><h:commandLink action="#{searchDropdown.setType('tracks')}">#{msgs.tracks}</h:commandLink></li>
-                                <li><h:commandLink action="#{searchDropdown.setType('date')}">#{msgs.date}</h:commandLink></li>
+                                <li id="albumLi"><h:commandLink id="albumButton" action="#{searchDropdown.setType('albums')}">#{msgs.albums}</h:commandLink></li>
+                                <li id="artistLi"><h:commandLink id="artistButton" action="#{searchDropdown.setType('artists')}">#{msgs.artists}</h:commandLink></li>
+                                <li id="trackLi"><h:commandLink id="trackButton" action="#{searchDropdown.setType('tracks')}">#{msgs.tracks}</h:commandLink></li>
+                                <li id="dateLi"><h:commandLink id="dateButton" action="#{searchDropdown.setType('date')}">#{msgs.date}</h:commandLink></li>
                             </ul>
                         </li>
                     </ul>
                     <div class="navbar-form navbar-left">
                         <div class="form-group fg">
-                            <h:inputText class="form-control fc searchInput" a:placeholder="#{msgs.searchPlaceholder}" value="#{Search.parameters}"></h:inputText>
+                            <h:inputText class="form-control fc searchInput" id="formInput" a:placeholder="#{msgs.searchPlaceholder}" value="#{Search.parameters}"></h:inputText>
                         </div>
-                        <h:commandLink class="btn btn-search sb" action="#{Search.executeSearch()}"><i class="fa fa-search" style="font-size: 18px" aria-hidden="true"/></h:commandLink>
+                        <h:commandLink class="btn btn-search sb" id="searchButton" action="#{Search.executeSearch()}"><i class="fa fa-search" style="font-size: 18px" aria-hidden="true"/></h:commandLink>
                     </div>
                     <ul class="nav navbar-nav nn navbar-right">
                         <li jsf:id="shopping-cart-count"><h:commandLink styleClass="cart-link" action="#{cart.setPrevPage()}">

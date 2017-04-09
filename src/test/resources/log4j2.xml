@@ -22,5 +22,4 @@ about itself-->
             <appender-ref ref="console-log" />
         </Root>
     </Loggers>
-
 </Configuration>
