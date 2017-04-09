@@ -29,6 +29,14 @@ public class ManagementTest {
     {
         ChromeDriverManager.getInstance().setup();
         driver = new ChromeDriver();
+        
+        driver.get("http://localhost:8080/pandamedia/userconnection/login.xhtml");
+        
+        wait = new WebDriverWait(driver,10);
+        
+        driver.findElement(By.id("loginForm:emailInput")).sendKeys("m@m.com");
+        driver.findElement(By.id("loginForm:passwordInput")).sendKeys("m");
+        driver.findElement(By.id("loginForm:loginBtn")).click();
     }
     
 //    @After
@@ -40,13 +48,7 @@ public class ManagementTest {
     public void testApproveReviews() throws Exception 
     {
 
-        driver.get("http://localhost:8080/pandamedia/manager/reviews.xhtml");
-        
-        wait = new WebDriverWait(driver,10);
-        
-        driver.findElement(By.id("loginForm:emailInput")).sendKeys("m@m.com");
-        driver.findElement(By.id("loginForm:passwordInput")).sendKeys("m");
-        driver.findElement(By.id("loginForm:loginBtn")).click();
+       
         driver.get("http://localhost:8080/pandamedia/manager/reviews.xhtml");
         wait = new WebDriverWait(driver,10);
         
@@ -74,12 +76,7 @@ public class ManagementTest {
     @Test
     public void testDisapproveReviews() throws Exception 
     {
-        driver.get("http://localhost:8080/pandamedia/manager/manager_index.xhtml");
-        wait = new WebDriverWait(driver,10);
-        driver.findElement(By.id("loginForm:emailInput")).sendKeys("m@m.com");
-        driver.findElement(By.id("loginForm:passwordInput")).sendKeys("m");
-        driver.findElement(By.id("loginForm:loginBtn")).click();
-
+       
         driver.get("http://localhost:8080/pandamedia/manager/reviews.xhtml");
         
         
@@ -111,12 +108,7 @@ public class ManagementTest {
     @Test
     public void testEditAlbum() throws Exception
     {
-        
-        driver.get("http://localhost:8080/pandamedia/manager/manager_index.xhtml");
-        wait = new WebDriverWait(driver,10);
-        driver.findElement(By.id("loginForm:emailInput")).sendKeys("m@m.com");
-        driver.findElement(By.id("loginForm:passwordInput")).sendKeys("m");
-        driver.findElement(By.id("loginForm:loginBtn")).click();
+   
         driver.get("http://localhost:8080/pandamedia/manager/manager_index.xhtml");
         
         
@@ -186,10 +178,7 @@ public class ManagementTest {
     {
 
         driver.get("http://localhost:8080/pandamedia/manager/manager_index.xhtml");
-        driver.findElement(By.id("loginForm:emailInput")).sendKeys("m@m.com");
-        driver.findElement(By.id("loginForm:passwordInput")).sendKeys("m");
-        driver.findElement(By.id("loginForm:loginBtn")).click();
-        
+
         wait = new WebDriverWait(driver,10);
         
         //test the disapprove btn
