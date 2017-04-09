@@ -1,6 +1,7 @@
 package com.pandamedia.selenium;
 
 import io.github.bonigarcia.wdm.ChromeDriverManager;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -32,7 +33,11 @@ public class LoginFilterSel {
         
         wait.until(ExpectedConditions.titleIs(com.pandamedia.utilities.
                 Messages.getString("bundles.messages", "loginHeader", null)));
-        
+    }
+    
+    @After
+    public void tearDown()
+    {
         driver.quit();
     }
 }

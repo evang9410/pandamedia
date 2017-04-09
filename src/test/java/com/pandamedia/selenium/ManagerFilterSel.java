@@ -1,6 +1,7 @@
 package com.pandamedia.selenium;
 
 import io.github.bonigarcia.wdm.ChromeDriverManager;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -27,12 +28,19 @@ public class ManagerFilterSel {
     @Test
     public void testManagerFilter() throws Exception
     {
-        driver.get("http://localhost:8080/pandamedia/manager/manager_index.xhtml");
+        driver.get("http://waldo2.dawsoncollege.qc.ca:8080/g4w17/");
+        wait = new WebDriverWait(driver, 10);
+        driver.get("http://waldo2.dawsoncollege.qc.ca:8080/g4w17/manager/manager_index.xhtml");
         wait = new WebDriverWait(driver,10);
         
-        wait.until(ExpectedConditions.titleIs(com.pandamedia.utilities.
-                Messages.getString("bundles.messages", "loginHeader", null)));
-        
+        wait.until(ExpectedConditions.titleIs("Login"));
+//        wait.until(ExpectedConditions.titleIs(com.pandamedia.utilities.
+//                Messages.getString("bundles.messages", "loginHeader", null)));        
+    }
+    
+    @After
+    public void tearDown()
+    {
         driver.quit();
     }
 }
