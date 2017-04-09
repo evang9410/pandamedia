@@ -288,7 +288,7 @@ public class ShoppingCart implements Serializable {
     public String verifyCartContents()
     {   
         //set the prev page in the user action bean so they get redirected once they log in.
-        user.setPrevPage();
+        user.setPrevPageLogin();
         // Remains null if warnings exist
         String page = null;
         

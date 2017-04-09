@@ -18,7 +18,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  *
  * @author Evan Glicakis
  */
-public class ReviewTest {
+public class ReviewTestIT {
 
     private WebDriver driver;
     private WebDriverWait wait;

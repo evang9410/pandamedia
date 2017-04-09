@@ -35,7 +35,7 @@ public class CheckoutFilter implements Filter{
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        context.log("In the filer");
+        context.log("Checkout Filter");
         
         // Making sure cart is not empty
         if (cart.getIsCartEmpty())

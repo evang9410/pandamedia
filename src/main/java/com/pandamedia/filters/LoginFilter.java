@@ -34,7 +34,7 @@ public class LoginFilter implements Filter{
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        context.log("In the filer");
+        context.log("Login Filter");
         
         // Making sure user is not null or not persisted to db
         if (!uab.isLogin())

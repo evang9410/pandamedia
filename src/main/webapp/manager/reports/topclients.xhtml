@@ -28,9 +28,7 @@
         <p:dataTable styleClass="report-table" 
                      id="reportTable" 
                      value="#{reports.getTopClients(reportData.startDate, reportData.endDate)}" 
-                     var="userVar" 
-                     paginator="true" 
-                     rows="10">
+                     var="userVar">
             <f:facet name="header">
                 #{msgs.detailClientHeader}
             </f:facet>
