@@ -3,6 +3,7 @@ package com.pandamedia.arquillian.test;
 import com.pandamedia.beans.AlbumBackingBean;
 import com.pandamedia.beans.InvoiceBackingBean;
 import com.pandamedia.beans.ReportBackingBean;
+import com.pandamedia.beans.purchasing.ShoppingCart;
 import com.pandamedia.commands.ChangeLanguage;
 import com.pandamedia.converters.AlbumConverter;
 import com.pandamedia.filters.LoginFilter;
@@ -56,6 +57,7 @@ import persistence.entities.Track;
  *
  * @author Evan Glicakis
  */
+@Ignore
 @RunWith(Arquillian.class)
 public class AlbumArq {
 
@@ -84,14 +86,13 @@ public class AlbumArq {
 
     @Deployment
     public static WebArchive deploy() {
-
         // Use an alternative to the JUnit assert library called AssertJ
-        // Need to reference MySQL driver as it is not part of GlassFish
+        // Need to reference MySQL driver and jodd as it is not part of GlassFish
         final File[] dependencies = Maven
                 .resolver()
                 .loadPomFromFile("pom.xml")
-                .resolve(
-                        "org.assertj:assertj-core").withoutTransitivity()
+                .resolve(new String[]{
+                        "org.assertj:assertj-core", "org.jodd:jodd-mail"}).withoutTransitivity()
                 .asFile();
 
         // For testing Arquillian prefers a resources.xml file over a
@@ -109,14 +110,13 @@ public class AlbumArq {
                 .addPackage(ShopUserJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(Track.class.getPackage())
+                .addPackage(ShoppingCart.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/glassfish-resources.xml"), "glassfish-resources.xml")
                 .addAsResource(new File("src/test/resources-glassfish-remote/test-persistence.xml"), "META-INF/persistence.xml")
-                //                .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
+//                .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
                 .addAsResource("createtestdatabase.sql")
-                .addAsLibraries(dependencies);
-
-//        System.out.println(webArchive.toString(true));
+                .addAsLibraries(dependencies);        
         return webArchive;
     }
 

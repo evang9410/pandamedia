@@ -94,7 +94,6 @@ public class UserActionBean implements Serializable {
                 FacesContext.getCurrentInstance().setViewRoot(prevPage);
                 FacesContext.getCurrentInstance().renderResponse();
             } else {
-                // TODO: fix so its not absolute path
                 FacesContext.getCurrentInstance().getExternalContext()
                                 .redirect(FacesContext.getCurrentInstance().
                                         getExternalContext().getRequestContextPath() + "/shop/mainpage.xhtml");
@@ -135,7 +134,7 @@ public class UserActionBean implements Serializable {
                     userRecord.getSalt());
 
             if (!Arrays.equals(hashRecord, loginPwdHash)) {
-
+                System.out.println("BAD PASSWORD");
                 FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
                         "bundles.messages", "invalidEmailOrPwd", null);
                 FacesContext.getCurrentInstance().addMessage("loginForm", msg);
@@ -144,9 +143,16 @@ public class UserActionBean implements Serializable {
                 try {
                     currUser = userRecord;
                     external.getSessionMap().put("user", userRecord);
+                    // Making user to redirect to manager side if it is a manager
                     // check to see if the user was being redirected from another
                     // page. If they have  not, they should be redirected to the mainpage
-                    if (prevPage != null) {
+                    if (currUser.getIsManager() == 1)
+                    {
+                        FacesContext.getCurrentInstance().getExternalContext()
+                                .redirect(FacesContext.getCurrentInstance().
+                                        getExternalContext().getRequestContextPath() + "/manager/manager_index.xhtml");
+                    }
+                    else if (prevPage != null) {
                         FacesContext.getCurrentInstance().setViewRoot(prevPage);
                         FacesContext.getCurrentInstance().renderResponse();
                     } else {
@@ -264,9 +270,14 @@ public class UserActionBean implements Serializable {
      * on. The variable is used to hold a view to where the user used to be
      * before they were redirected to the login page.
      */
-    public void setPrevPage() {
-        // TODO: use this everywhere somehow :O
+    public String setPrevPageLogin() {
         prevPage = FacesContext.getCurrentInstance().getViewRoot();
+        return "login";
+    }
+    
+    public String setPrevPageRegister() {
+        prevPage = FacesContext.getCurrentInstance().getViewRoot();
+        return "register";
     }
 
     /**

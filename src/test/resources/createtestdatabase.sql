@@ -36,7 +36,7 @@ CREATE TABLE `advertisement` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `advertisement` WRITE;
-INSERT INTO `advertisement` VALUES (1,'carlll');
+INSERT INTO `advertisement` VALUES (1,'coca-cola.jpg'),(2,'marshall.jpg'),(3,'renationAd.jpeg');
 UNLOCK TABLES;
 
 CREATE TABLE `artist` (
@@ -98,7 +98,7 @@ CREATE TABLE `newsfeed` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `newsfeed` WRITE;
-INSERT INTO `newsfeed` VALUES (1,'http://rss.cbc.ca/lineup/politics.xml');
+INSERT INTO `newsfeed` VALUES (1,'http://rss.cbc.ca/lineup/politics.xml'),(2,'https://www.reddit.com/r/aww/.rss'),(3,'http://rss.cnn.com/rss/cnn_showbiz.rss');
 UNLOCK TABLES;
 
 CREATE TABLE `province` (

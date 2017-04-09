@@ -42,7 +42,6 @@ public class ShopFilter implements Filter{
             context.log("User is a manager. id = " + uab.getCurrUser().getId());
             String contextPath = ((HttpServletRequest) request)
                     .getContextPath();
-            // TODO: change this to new management location once moved
             ((HttpServletResponse) response).sendRedirect(contextPath
                     + "/manager/manager_index.xhtml");
             context.log(contextPath + "/manager/manager_index.xhtml");            

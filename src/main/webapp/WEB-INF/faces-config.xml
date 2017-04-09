@@ -230,5 +230,10 @@
             <to-view-id>/manager/reports/zerotracks.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>repclient</from-outcome>
+            <to-view-id>/manager/reports/salesbyclient.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>   
 </faces-config>
