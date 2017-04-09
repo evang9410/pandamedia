@@ -83,6 +83,7 @@ public class AlbumBackingBean implements Serializable{
      * This method will return an album if it exists already. Otherwise, it will
      * return a new album.
      * @return album object
+     * @author Evan G.
      */
     public Album getAlbum(){
         if(album == null){
@@ -140,9 +141,12 @@ public class AlbumBackingBean implements Serializable{
     
     
     /**
-     * sets the album variable and returns the string of the url to the album page
+     * sets the album variable and returns the string of the url to the album page.
+     * persists the client tracking, either sets the users last seached genre or
+     * writes the genre to a cookie.
      * @param a
      * @return 
+     * @author Evan G.
      */
     public String albumPage(Album a){
         this.album = a;
@@ -155,6 +159,7 @@ public class AlbumBackingBean implements Serializable{
      * Returns a list of albums that are on sale.
      * Where in the database the sale_price column is not equal to 0
      * @return 
+     * @author Evan G.
      */
     public List<Album> getSaleAlbums(){
         String q = "SELECT a FROM Album a WHERE a.salePrice != 0";
@@ -168,6 +173,7 @@ public class AlbumBackingBean implements Serializable{
     /**
      * Gets the top selling albums of the current week.
      * @return 
+     * @author Evan G. Ripped from Erika's report backing bean and modified.
      */
     public List<Album> getPopularAlbums(){
         Date startDate = new Date(); //get current date
@@ -209,8 +215,11 @@ public class AlbumBackingBean implements Serializable{
     
     /**
      * Finds the album from its id.
-     * @param id of the album
+     * This method does not seem to be used since we changed the way we go from
+     * page to album page. Done through server navigation as opposed to
+     * view params.
      * @return album object
+     * @author Evan G.
      */
     public Album findAlbumById(){
         //album = albumController.findAlbum(id); // questionable, do I set just the album variable and return void?
@@ -227,6 +236,7 @@ public class AlbumBackingBean implements Serializable{
     /**
      * returns a list of the latest (5) released albums/recently added to the database.
      * @return 
+     * @author Evan G.
      */
     public List<Album> getLatestAlbums(){
         String q = "SELECT a FROM Album a ORDER BY a.releaseDate DESC";
@@ -236,7 +246,12 @@ public class AlbumBackingBean implements Serializable{
     }
     /**
      * Searches the database with the genre key term returns a list of albums.
+     * It uses a global variable called genreString to get the albums specific
+     * to that key.
+     * TODO: Check if this code is being used. or if it has been turned into a zombie
+     * from clienttracking.
      * @return 
+     * @author Evan G
      */
     public List<Album> getAlbumFromGenre(){
         System.out.println(genreString);
@@ -254,6 +269,7 @@ public class AlbumBackingBean implements Serializable{
      * based on the genre of the current album.
      * @param genre
      * @return 
+     * @author Evan G.
      */
     public List<Album> getSuggestedAlbums(String genre){
         genreString = genre;
@@ -265,7 +281,12 @@ public class AlbumBackingBean implements Serializable{
         }
         return list;
     }
-    
+    /**
+     * Gets a list of albums from an specified artist object.
+     * @author Evan G.
+     * @param a
+     * @return 
+     */
     public List<Album> albumsFromArtist(Artist a){
         if(a != null){
             String q = "SELECT a FROM Album a WHERE a.artistId.id = :artist_id";
@@ -275,7 +296,12 @@ public class AlbumBackingBean implements Serializable{
         }
         return null;
     }
-    
+    /**
+     * private helper method used by the getAlbumsFromGenre method, its purpose is
+     * to return the genre id of the genre name as a string.
+     * @param genre
+     * @return id -- genre_id
+     */
     private int getGenreId(String genre){
         String q = "SELECT g FROM Genre g WHERE g.name = :name";
         TypedQuery<Genre> query = em.createQuery(q, Genre.class);
