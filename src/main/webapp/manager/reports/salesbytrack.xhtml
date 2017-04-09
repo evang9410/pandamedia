@@ -25,7 +25,6 @@
                         navigator="true" 
                         maxdate="#{reportData.defaultEndDate}"
                         value="#{reportData.startDate}">
-                        <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate track" immediate="true" update="reportTable"/>--> 
                     </p:calendar>
                     <p:calendar 
                         id="reportEndDate" 
@@ -33,12 +32,10 @@
                         navigator="true" 
                         maxdate="#{reportData.defaultEndDate}"
                         value="#{reportData.endDate}">
-                        <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate track" immediate="true" update="reportTable"/>-->
                     </p:calendar>
 
                     <p:outputLabel for="trackId" style="text-align: right;">#{msgs.trackIdLbl}</p:outputLabel>
                     <p:inputText id="trackId" value="#{reportData.track}" converter="#{trackConverter}">
-                        <!--<p:ajax event="change" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
                     </p:inputText>
                 </h:panelGrid>
                 <p:commandButton id="search" update="totalTable reportTable" value="#{msgs.searchBtn}" />
@@ -75,9 +72,7 @@
         <p:dataTable styleClass="report-table" 
                      id="reportTable" 
                      value="#{reports.getSalesByTrack(reportData.startDate, reportData.endDate, reportData.track)}" 
-                     var="invoice" 
-                     paginator="true" 
-                     rows="10">
+                     var="invoice">
             <f:facet name="header">
                 #{msgs.detailHeader}
             </f:facet>
