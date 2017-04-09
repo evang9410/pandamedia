@@ -141,8 +141,8 @@
                                     </h:form>
                                 </td>
                                 <td>
-                                    <h:form>
-                                        <b:commandButton look="success" value="Checkout" icon-awesome="credit-card" action="#{cart.verifyCartContents()}" update="growl"/>
+                                    <h:form id="checkoutForm">
+                                        <b:commandButton id="checkoutBtn" look="success" value="Checkout" icon-awesome="credit-card" action="#{cart.verifyCartContents()}" update="growl"/>
                                     </h:form>
                                 </td>
                             </tr>
