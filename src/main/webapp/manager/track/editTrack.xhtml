@@ -70,7 +70,7 @@
                     <f:selectItems value="#{coverArtBacking.all}" var="coverArt" itemLabel="#{coverArt.imagePath}" itemValue="#{coverArt}"/>
                 </p:selectOneMenu>
             </p:panelGrid>
-            <p:commandButton ajax="false" action="#{trackBacking.edit()}" value="#{msgs.edit}"/>
+            <p:commandButton id="editTrackBtn" ajax="false" action="#{trackBacking.edit()}" value="#{msgs.edit}"/>
             <p:commandButton ajax="false" action="#{trackBacking.back()}" value="#{msgs.back}" immediate="true"/>
         </h:form>
         <p:outputPanel autoUpdate="true">

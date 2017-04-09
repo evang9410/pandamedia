@@ -1,5 +1,4 @@
-
-package com.pandamedia.selenium.tests;
+package com.pandamedia.selenium;
 
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import java.util.Calendar;

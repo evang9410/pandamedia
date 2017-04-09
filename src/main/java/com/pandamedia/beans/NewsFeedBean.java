@@ -49,6 +49,7 @@ public class NewsFeedBean implements Serializable {
     */
 
     public Newsfeed getNewsFeed() {
+        System.out.println("Newsfeed: " + newsFeed.getUrl());
         return newsFeed;
     }
 
