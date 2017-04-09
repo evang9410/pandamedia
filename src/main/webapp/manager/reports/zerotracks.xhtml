@@ -28,9 +28,7 @@
         <p:dataTable styleClass="report-table" 
                      id="reportTable" 
                      value="#{reports.getZeroTracks(reportData.startDate, reportData.endDate)}" 
-                     var="track" 
-                     paginator="true" 
-                     rows="10">
+                     var="track">
             <f:facet name="header">
                 #{msgs.detailTrackHeader}
             </f:facet>

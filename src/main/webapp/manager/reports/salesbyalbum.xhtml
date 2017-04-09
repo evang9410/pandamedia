@@ -27,7 +27,6 @@
                         navigator="true" 
                         maxdate="#{reportData.defaultEndDate}"
                         value="#{reportData.startDate}">
-                        <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/>--> 
                     </p:calendar>
                     <p:calendar 
                         id="reportEndDate" 
@@ -35,14 +34,10 @@
                         navigator="true" 
                         maxdate="#{reportData.defaultEndDate}"
                         value="#{reportData.endDate}">
-                        <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate album" immediate="true" update="reportTable"/>-->
                     </p:calendar>
 
                     <p:outputLabel for="albumId" style="text-align: right;">#{msgs.albumIdLbl}</p:outputLabel>
                     <p:inputText  id="albumId" value="#{reportData.album}" converter="#{albumConverter}" required="true" />
-                    <!--<p:ajax event="change" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
-                    <!--            </p:inputText>-->
-                    <!--            <p:watermark for="albumId" value="Search with a keyword" id="watermark" />-->
                 </h:panelGrid>
                 <p:commandButton id="search" update="totalTable reportTable" value="#{msgs.searchBtn}" />
             </h:form>
@@ -78,9 +73,7 @@
         <p:dataTable styleClass="report-table" 
                      id="reportTable" 
                      value="#{reports.getSalesByAlbum(reportData.startDate, reportData.endDate, reportData.album)}" 
-                     var="invoice" 
-                     paginator="true" 
-                     rows="10">
+                     var="invoice">
             <f:facet name="header">
                 #{msgs.detailHeader}
             </f:facet>

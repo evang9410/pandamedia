@@ -27,7 +27,6 @@
                         navigator="true" 
                         maxdate="#{reportData.defaultEndDate}"
                         value="#{reportData.startDate}">
-                        <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>--> 
                     </p:calendar>
                     <p:calendar 
                         id="reportEndDate" 
@@ -35,12 +34,10 @@
                         navigator="true" 
                         maxdate="#{reportData.defaultEndDate}"
                         value="#{reportData.endDate}">
-                        <!--<p:ajax event="dateSelect" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
                     </p:calendar>
 
                     <p:outputLabel for="clientId" style="text-align: right;">#{msgs.clientIdLbl}</p:outputLabel>
                     <p:inputText id="clientId" value="#{reportData.client}" converter="#{userConverter}">
-                        <!--<p:ajax event="change" process="reportStartDate reportEndDate artistId" immediate="true" update="trackTable albumTable"/>-->
                     </p:inputText>
                 </h:panelGrid>
                 <p:commandButton id="search" update="trackTotalTable albumTotalTable trackTable albumTable" value="#{msgs.searchBtn}" />
@@ -104,9 +101,7 @@
         <p:dataTable  styleClass="report-table"
                       id="trackTable" 
                       value="#{reports.getSalesByClientTracks(reportData.startDate, reportData.endDate, reportData.client)}" 
-                      var="invoice" 
-                      paginator="true" 
-                      rows="10">
+                      var="invoice">
             <f:facet name="header">
                 #{msgs.salesDetailTrackHeader}
             </f:facet>
@@ -155,9 +150,7 @@
         <p:dataTable styleClass="report-table" 
                      id="albumTable" 
                      value="#{reports.getSalesByClientAlbums(reportData.startDate, reportData.endDate, reportData.client)}" 
-                     var="invoice" 
-                     paginator="true" 
-                     rows="10">
+                     var="invoice">
             <f:facet name="header">
                 #{msgs.detailAlbumHeader}
             </f:facet>
