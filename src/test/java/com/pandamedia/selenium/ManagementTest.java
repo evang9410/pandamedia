@@ -1,3 +1,5 @@
+package com.pandamedia.selenium;
+
 //
 //package com.pandamedia.selenium.tests;
 //

@@ -1,7 +1,8 @@
-package com.pandamedia.selenium.tests;
+package com.pandamedia.selenium;
 
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,7 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  *
  * @author Erika Bourque
  */
-public class ManagerFilterSel {
+public class LoginFilterSel {
     private WebDriver driver;
     private WebDriverWait wait;
     
@@ -24,12 +25,14 @@ public class ManagerFilterSel {
     }
     
     @Test
-    public void testFilter() throws Exception
+    public void testLoginFilter() throws Exception
     {
-        driver.get("http://localhost:8080/pandamedia/manager/manager_index.xhtml");
+        driver.get("http://localhost:8080/pandamedia/clientsecure/downloads.xhtml");
         wait = new WebDriverWait(driver,10);
         
         wait.until(ExpectedConditions.titleIs(com.pandamedia.utilities.
                 Messages.getString("bundles.messages", "loginHeader", null)));
+        
+        driver.quit();
     }
 }

@@ -34,7 +34,7 @@ public class ManagerFilter implements Filter{
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        context.log("In the filer");
+        context.log("In the filter");
         
         // Making sure user is logged in and is a manager
         if ((uab.isLogin()) && (uab.getCurrUser().getIsManager() == 1))
