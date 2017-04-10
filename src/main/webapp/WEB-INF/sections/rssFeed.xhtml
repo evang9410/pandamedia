@@ -6,10 +6,10 @@
                 xmlns:p="http://primefaces.org/ui">
     <h:head>
         <h:outputStylesheet library="css" name="rss-feed.css"/>
+        <meta name="author" content="Hau Gilles Che"/>
     </h:head>
     <div class="rssFeed">
         <p:feedReader value="#{newsFeedBean.newsFeed.url}" var="feed">
-            <!--<p:feedReader value="http://rss.cbc.ca/lineup/politics.xml" var="feed">-->
             <h:outputText value="#{feed.title}" style="font-family: 'Poppins'; font-weight: 700;display:block"/>
             <h:outputText value="#{feed.description.value}" escape="false"/>
             <p:separator />

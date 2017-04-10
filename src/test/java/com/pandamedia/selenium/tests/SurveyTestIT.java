@@ -10,7 +10,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
- *
+ * Test not working, selenium cannot seem to be able to find the radio 
+ * buttons of the survey.
  * @author Hau Gilles Che
  */
 public class SurveyTestIT {
@@ -25,16 +26,16 @@ public class SurveyTestIT {
     
     @Test
     public void testSurvey() throws Exception{
-        driver.get("http://localhost:8080/pandamedia/mainpage.xhtml");
+        driver.get("http://localhost:8080/pandamedia/shop/mainpage.xhtml");
         wait=new WebDriverWait(driver,10);
         
-        driver.findElement(By.xpath("//div[contains(@id,'surveyFormDiv')]/div[1]/div/div/div/div/div/div/input")).click();
+        driver.findElement(By.id("browse-survey")).click();
         driver.findElement(By.id("j_idt96:submitBtn")).click();
         wait = new WebDriverWait(driver,10);
         wait.until(new ExpectedCondition<Boolean>(){
             @Override
             public Boolean apply(WebDriver d){
-                return false;
+                return d.findElement(By.id("resultsHeader")).getText().contains("Results");
             }
         });
     }
