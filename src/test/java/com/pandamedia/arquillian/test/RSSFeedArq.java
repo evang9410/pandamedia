@@ -22,6 +22,7 @@ import java.util.Scanner;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -35,6 +36,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import persistence.controllers.FrontPageSettingsJpaController;
+import persistence.controllers.NewsfeedJpaController;
 import persistence.controllers.ShopUserJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.Advertisement;
@@ -46,7 +48,6 @@ import persistence.entities.Track;
  *
  * @author Naasir Jusab
  */
-@Ignore
 @RunWith(Arquillian.class)
 public class RSSFeedArq {
     
@@ -56,6 +57,8 @@ public class RSSFeedArq {
     private RSSFeedBackingBean feedBacking;
     @Inject
     private FrontPageSettingsJpaController fpsController;
+    @Inject
+    private NewsfeedJpaController newsFeedController;
     
     @Deployment
     public static WebArchive deploy() {
@@ -171,8 +174,7 @@ public class RSSFeedArq {
         feedBacking.save();
         
         List<Newsfeed> list = feedBacking.getAll();
-        assertEquals(list.get(list.size()-1), news);
-            
+        assertThat(list.get(list.size()-1)).isEqualTo(newsFeedController.findNewsfeed(list.get(list.size()-1).getId()));         
     }
     
     @Test
@@ -197,8 +199,7 @@ public class RSSFeedArq {
                 isRemoved=false;
         }
         
-        
-        assertTrue(isRemoved);
+        assertThat(isRemoved).isTrue();
     }
     
     @Test
@@ -208,7 +209,7 @@ public class RSSFeedArq {
         FrontPageSettings fps = fpsController.findFrontPageSettings(1);
         Newsfeed news = feedBacking.findNewsFeedById(1);
         
-        assertEquals(fps.getNewsfeedId(), news);
+        assertThat(fps.getNewsfeedId()).isEqualTo(news);
         
     }
     

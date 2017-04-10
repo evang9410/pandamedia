@@ -35,6 +35,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import persistence.controllers.AdvertisementJpaController;
 import persistence.controllers.FrontPageSettingsJpaController;
 import persistence.controllers.ShopUserJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
@@ -57,7 +58,8 @@ public class BannerAdArq {
     private BannerAdBackingBean bannerBacking;
     @Inject
     private FrontPageSettingsJpaController fpsController;
-    
+    @Inject
+    private AdvertisementJpaController adController;
     @Deployment
     public static WebArchive deploy() {
         // Use an alternative to the JUnit assert library called AssertJ
@@ -173,7 +175,7 @@ public class BannerAdArq {
         
         List<Advertisement> list = bannerBacking.getAll();
         
-        assertThat(list.get(list.size()-1)).isEqualTo(ad);
+        assertThat(list.get(list.size()-1)).isEqualTo(adController.findAdvertisement(list.get(list.size()-1).getId()));
             
     }
     

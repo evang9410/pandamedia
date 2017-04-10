@@ -93,8 +93,9 @@ public class BannerAdBackingBean implements Serializable {
      */
     public String remove(Integer id)
     {
+        //it is used on the front page don't change it unless you select another one
         if(fpsController.findFrontPageSettings(1).getAdAId().equals(advertisementController.findAdvertisement(id)))
-            throw new ValidatorException( new FacesMessage("This ad is used in the front page, select another one to delete this"));
+            return null;
         try
         {
             advertisementController.destroy(id);

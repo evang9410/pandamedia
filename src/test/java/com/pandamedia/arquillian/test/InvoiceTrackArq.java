@@ -3,6 +3,7 @@ package com.pandamedia.arquillian.test;
 
 import com.pandamedia.beans.InvoiceTrackBackingBean;
 import com.pandamedia.beans.ReportBackingBean;
+import com.pandamedia.beans.purchasing.ShoppingCart;
 import com.pandamedia.commands.ChangeLanguage;
 import com.pandamedia.converters.AlbumConverter;
 import com.pandamedia.filters.LoginFilter;
@@ -21,6 +22,7 @@ import java.util.Scanner;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -66,7 +68,7 @@ public class InvoiceTrackArq {
                 .resolver()
                 .loadPomFromFile("pom.xml")
                 .resolve(
-                        "org.assertj:assertj-core").withoutTransitivity()
+                        "org.assertj:assertj-core","org.jodd:jodd-mail").withoutTransitivity()
                 .asFile();
 
         // For testing Arquillian prefers a resources.xml file over a
@@ -84,6 +86,7 @@ public class InvoiceTrackArq {
                 .addPackage(ShopUserJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(Track.class.getPackage())                
+                .addPackage(ShoppingCart.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/glassfish-resources.xml"), "glassfish-resources.xml")
                 .addAsResource(new File("src/test/resources-glassfish-remote/test-persistence.xml"), "META-INF/persistence.xml")
@@ -188,8 +191,7 @@ public class InvoiceTrackArq {
         invPK.setInvoiceId(1);
         invPK.setTrackId(1);
         invoiceTrackBacking.removeInvoiceTrack(invPK);
-        
-        assertEquals(invoiceTrackController.findInvoiceTrack(invPK).getRemovalStatus(), 1);
+        assertThat(invoiceTrackController.findInvoiceTrack(invPK).getRemovalStatus()).isEqualTo((short)1);
     }
     
     @Test
@@ -214,8 +216,7 @@ public class InvoiceTrackArq {
         invPK.setInvoiceId(1);
         invPK.setTrackId(1);
         invoiceTrackBacking.addInvoiceTrack(invPK);
-        
-        assertEquals(invoiceTrackController.findInvoiceTrack(invPK).getRemovalStatus(), 0);
+        assertThat(invoiceTrackController.findInvoiceTrack(invPK).getRemovalStatus()).isEqualTo((short)0);
     }
     
 }

@@ -28,6 +28,7 @@ import java.util.Scanner;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -43,12 +44,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import persistence.controllers.FrontPageSettingsJpaController;
 import persistence.controllers.ShopUserJpaController;
+import persistence.controllers.SurveyJpaController;
 import persistence.controllers.exceptions.RollbackFailureException;
 import persistence.entities.FrontPageSettings;
 import persistence.entities.Survey;
 import persistence.entities.Track;
 
-@Ignore
 @RunWith(Arquillian.class)
 public class ManagerSurveyArq {
     
@@ -58,6 +59,8 @@ public class ManagerSurveyArq {
     private ManagerSurveyBean managerSurveyBacking;
     @Inject
     private FrontPageSettingsJpaController fpsController;
+    @Inject
+    private SurveyJpaController surveyController;
     
     @Deployment
     public static WebArchive deploy() {
@@ -181,7 +184,7 @@ public class ManagerSurveyArq {
         managerSurveyBacking.save();
         
         List<Survey> list = managerSurveyBacking.getAll();
-        assertEquals(list.get(list.size()-1), survey);
+        assertThat(list.get(list.size()-1)).isEqualTo(surveyController.findSurvey(list.get(list.size()-1).getId()));
             
     }
     
@@ -215,7 +218,7 @@ public class ManagerSurveyArq {
         }
         
         
-        assertTrue(isRemoved);
+        assertThat(isRemoved).isTrue();
     }
     
     @Test
@@ -225,7 +228,7 @@ public class ManagerSurveyArq {
         FrontPageSettings fps = fpsController.findFrontPageSettings(1);
         Survey survey = managerSurveyBacking.findSurveyById(1);
         
-        assertEquals(fps.getSurveyId(), survey);
+        assertThat(fps.getSurveyId()).isEqualTo(survey);
         
     }
     

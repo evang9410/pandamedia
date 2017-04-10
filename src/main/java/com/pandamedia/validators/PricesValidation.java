@@ -21,12 +21,22 @@ public class PricesValidation implements Validator{
     public void validate(FacesContext context, UIComponent component,
             Object value) {
         if (value == null) 
-           throw new ValidatorException(new FacesMessage("Prices cannot be null")); 
+        {
+            FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "priceCannotBeNull", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+        }
 
         Double price = (Double) value;
         
         if(price < 0 )
-            throw new ValidatorException(new FacesMessage("Cannot be negative"));
+        {
+            FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "priceCannotBeNegative", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+        }
 
                
     }
