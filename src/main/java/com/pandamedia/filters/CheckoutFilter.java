@@ -46,9 +46,11 @@ public class CheckoutFilter implements Filter{
                     + "/shop/cart.xhtml");
             context.log(contextPath + "/shop/cart.xhtml");
         }
-
+        else
+        {
+            context.log("Cart is not empty.");
             chain.doFilter(request, response);
-        
+        }
     }
 
     @Override

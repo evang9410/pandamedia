@@ -23,7 +23,12 @@ public class NumberValidation implements Validator{
     public void validate(FacesContext context, UIComponent component,
             Object value) {
         if (value == null) 
-           throw new ValidatorException(new FacesMessage("Album Track Number cannot be null")); 
+        {
+           FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "numCannotBeNull", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+        }
         
         InputText partOfAlbumText = (InputText)component.findComponent("partOfAlbum");
         
@@ -33,13 +38,23 @@ public class NumberValidation implements Validator{
         if(partOfAlbumValue == 1)
         {
             if(albumTrackNumber <= 0 )
-                throw new ValidatorException(new FacesMessage("Cannot be less or equal to 0"));
+            {
+                  FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "numNotNegative", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+            }
         }
         
         else
         {
             if(albumTrackNumber != 0)
-                throw new ValidatorException(new FacesMessage("Cannot have track # if it is not part of an album"));
+            {
+                            FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "numNotTrackNumber", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+            }
         }
 
                

@@ -24,7 +24,12 @@ public class EmailValidation implements Validator {
         EmailAddress email = new EmailAddress((String) value);
 
         if (!email.isValid()) 
-            throw new ValidatorException(new FacesMessage("Invalid email"));
+        {
+            FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "emailInvalid", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+        }
     }
         
     

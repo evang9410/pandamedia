@@ -22,6 +22,7 @@ import java.util.Scanner;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -44,7 +45,6 @@ import persistence.entities.Track;
  *
  * @author Naasir Jusab
  */
-@Ignore
 @RunWith(Arquillian.class)
 public class ReviewArq {
     @Resource(name = "java:app/jdbc/pandamedialocal")
@@ -176,8 +176,7 @@ public class ReviewArq {
                 isRemoved = false;
         }
         
-        assertTrue(isRemoved);
-        
+        assertThat(isRemoved).isTrue();
     
     }
     
@@ -188,7 +187,7 @@ public class ReviewArq {
         reviewBacking.approve(1);
         Review review = reviewBacking.findReviewById(1);
         
-        assertEquals(review.getApprovalStatus(), 1);
+        assertThat(review.getApprovalStatus()).isEqualTo((short)1);
     }
     
     @Test
@@ -198,7 +197,7 @@ public class ReviewArq {
         reviewBacking.disapprove(1);
         Review review = reviewBacking.findReviewById(1);
         
-        assertEquals(review.getApprovalStatus(), 0);
+        assertThat(review.getApprovalStatus()).isEqualTo((short)0);
     }
     
     @Test
@@ -211,8 +210,8 @@ public class ReviewArq {
         reviewBacking.submitReview(trackController.findTrack(1), userController.findShopUser(1));
         List<Review> list = reviewBacking.getAll();
         System.out.println(list.get(list.size()-1).getReviewContent());
-        assertEquals(list.get(list.size()-1).getReviewContent(), "this track is baloney");
         
+        assertThat(list.get(list.size()-1).getReviewContent()).isEqualTo("this track is baloney");
     }
     
 }
