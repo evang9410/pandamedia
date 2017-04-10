@@ -2,9 +2,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>#{msgs.errorHead}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -12,23 +10,25 @@
         <h:outputStylesheet library="css" name="bootstrap.css"/>
     </h:head>
     <h:body>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h2 style="color:white;">
-                        #{msgs.oops}
-                    </h2>
+        <f:view locale="#{ChangeLanguage.locale}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 style="color:white;">
+                            #{msgs.oops}
+                        </h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h:link outcome="main">
+                            <h3 style="color:white;">
+                                #{msgs.back}
+                            </h3>
+                        </h:link>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <h:link outcome="main">
-                    <h3 style="color:white;">
-                        Click here to go back to the shop!
-                    </h3>
-                    </h:link>
-                </div>
-            </div>
-        </div>
+        </f:view>
     </h:body>
 </html>

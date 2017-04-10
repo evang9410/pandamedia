@@ -41,8 +41,6 @@ import persistence.entities.Track_;
 @Named("reports")
 @RequestScoped
 public class ReportBackingBean implements Serializable {
-    // TODO: change logging?
-    // TODO: add checks for was it valid during report time and now is removed
     private static final Logger LOG = Logger.getLogger("ReportBackingBean.class");
 
     @PersistenceContext

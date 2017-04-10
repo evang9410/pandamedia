@@ -10,7 +10,7 @@
     <meta name="author" content="Evangelo Glicakis, Erika Bourque" />
     
     <ui:define name="WindowTitle">
-        Cart | Pandamedia
+        #{msgs.cartHeader} | Pandamedia
     </ui:define>
     <ui:define name="css">
         <h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
@@ -21,7 +21,7 @@
         <div class="container">
             <div class="row">
                 <h:panelGroup rendered="#{cart.isCartEmpty}">
-                    <h4>Shopping cart is empty</h4>
+                    <h4>#{msgs.cartEmpty}</h4>
                 </h:panelGroup>
             </div>
             <div class="row">
@@ -29,10 +29,10 @@
                     <table jsf:id= "cart" class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Product</th>
+                                <th>#{msgs.product}</th>
                                 <th></th>
-                                <th class="text-center">Price</th>
-                                <th class="text-center">Total</th>
+                                <th class="text-center">#{msgs.priceHeader}</th>
+                                <th class="text-center">#{msgs.totalHeader}</th>
                                 <th> </th>
                             </tr>
                         </thead>
@@ -74,8 +74,8 @@
                                 <!-- track listings -->
                                 <tr>
                                     <th></th>
-                                    <th>track #</th>
-                                    <th>track title</th>
+                                    <th>#{msgs.trackNumHeader}</th>
+                                    <th>#{msgs.title}</th>
                                     <th></th>
                                     <th></th>
                                 </tr>
@@ -121,7 +121,7 @@
                                 <td>   </td>
                                 <td>   </td>
                                 <td>   </td>
-                                <td><h5>Subtotal</h5>
+                                <td><h5>#{msgs.subtotalHeader}</h5>
                                 </td>
                                 <td class="text-right">
                                     <h5>
@@ -137,12 +137,12 @@
                                 <td>   </td>
                                 <td>
                                     <h:form>
-                                        <b:commandButton look="default" value="Continue Shopping" action="#{cart.continueShopping()}"/>
+                                        <b:commandButton look="default" value="#{msgs.continueShop}" action="#{cart.continueShopping()}"/>
                                     </h:form>
                                 </td>
                                 <td>
                                     <h:form id="checkoutForm">
-                                        <b:commandButton id="checkoutBtn" look="success" value="Checkout" icon-awesome="credit-card" action="#{cart.verifyCartContents()}" update="growl"/>
+                                        <b:commandButton id="checkoutBtn" look="success" value="#{msgs.checkoutBtn}" icon-awesome="credit-card" action="#{cart.verifyCartContents()}" update="growl"/>
                                     </h:form>
                                 </td>
                             </tr>

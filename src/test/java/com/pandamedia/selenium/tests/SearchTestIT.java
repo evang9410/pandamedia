@@ -13,7 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  *
  * @author Pierre Azelart
  */
-public class SearchTest {
+public class SearchTestIT {
 
     private WebDriver driver;
     private WebDriverWait wait;

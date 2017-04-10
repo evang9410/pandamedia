@@ -248,7 +248,7 @@ public class AlbumBackingBean implements Serializable{
      * Searches the database with the genre key term returns a list of albums.
      * It uses a global variable called genreString to get the albums specific
      * to that key.
-     * TODO: Check if this code is being used. or if it has been turned into a zombie
+     * 
      * from clienttracking.
      * @return 
      * @author Evan G
