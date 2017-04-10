@@ -1,7 +1,6 @@
 package com.pandamedia.filters;
 
 import com.pandamedia.beans.purchasing.ShoppingCart;
-import com.pandamedia.beans.UserActionBean;
 import java.io.IOException;
 import java.util.logging.Logger;
 import javax.inject.Inject;
