@@ -43,11 +43,15 @@ public class SearchDropdown implements Serializable{
         return type;
     }
 
-    public void setType(String type) {
+    public String setType(String type) {
         this.type = type;
         
         //Updates the diplayed type to match selected language
         setToDisplay(type);
+        if(type.equals("date")){
+            return "advanced_search";
+        }
+        return null;
     }
 
     public String getToDisplay() {
