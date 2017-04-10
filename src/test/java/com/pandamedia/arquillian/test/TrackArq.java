@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -61,7 +62,6 @@ import persistence.entities.Track;
  *
  * @author Naasir Jusab
  */
-@Ignore
 @RunWith(Arquillian.class)
 public class TrackArq {
     
@@ -202,7 +202,9 @@ public class TrackArq {
     {
         trackBacking.addItem(1);
         Track track = trackBacking.findTrackById(1);
-        assertEquals(track.getRemovalStatus(),0);
+
+        assertThat(track.getRemovalStatus()).isEqualTo((short)0);
+
     }
     
     @Test
@@ -241,7 +243,7 @@ public class TrackArq {
         trackBacking.edit();
         Track editedTrack = trackBacking.findTrackById(1);
         
-        assertEquals(t,editedTrack);
+        assertThat(t).isEqualTo(editedTrack);
     }
     
     @Test
@@ -271,8 +273,8 @@ public class TrackArq {
         trackBacking.setTrack(t);
         trackBacking.create();
         List<Track> list = trackBacking.getAll();
-        assertEquals(list.get(list.size()-1), t);
-
+        
+        assertThat(list.get(list.size()-1)).isEqualTo(t);
     }
     
     @Test

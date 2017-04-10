@@ -70,12 +70,9 @@ public class ManagerSurveyBean implements Serializable {
      * @return null should make it stay on the same page
      */
     public String remove(Integer id) {
-
-        if (fpsController.findFrontPageSettings(1).getSurveyId().equals(surveyController.findSurvey(id))) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("You can't delete a survey on the home page"));
-            return null;
-        }
+            //it is used on the front page don't change it unless you select another one
+        if (fpsController.findFrontPageSettings(1).getSurveyId().equals(surveyController.findSurvey(id))) 
+        return null;
         try {
             surveyController.destroy(id);
         } catch (Exception e) {

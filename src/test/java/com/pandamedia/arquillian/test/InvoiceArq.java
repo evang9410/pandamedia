@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -52,7 +53,6 @@ import persistence.entities.Track;
  *
  * @author Naasir Jusab
  */
-@Ignore
 @RunWith(Arquillian.class)
 public class InvoiceArq {
     
@@ -183,7 +183,7 @@ public class InvoiceArq {
     {
         invoiceBacking.addItem(1);
         Invoice invoice = invoiceBacking.findInvoiceById(1);
-        assertEquals(invoice.getRemovalStatus(),0);
+        assertThat(invoice.getRemovalStatus()).isEqualTo((short) 0);
     }
     
     @Test
@@ -191,7 +191,7 @@ public class InvoiceArq {
     {
         invoiceBacking.removeItem(1);
         Invoice invoice = invoiceBacking.findInvoiceById(1);
-        assertEquals(invoice.getRemovalStatus(),1);
+        assertThat(invoice.getRemovalStatus()).isEqualTo((short) 1);
     }
     
     @Test
@@ -235,7 +235,7 @@ public class InvoiceArq {
             System.out.println(ex.getMessage());
         }
         invoiceBacking.setInvoice(inv);
-        assertEquals(invoiceBacking.loadTable().get(0),invT);   
+        assertThat(invT).isEqualTo(invoiceBacking.loadTable().get(0));
     }
     
     @Test
@@ -310,8 +310,7 @@ public class InvoiceArq {
         }
         
         userActionBean.setUser(list.get(list.size()-1));
-        System.out.println("dodo" + invoiceBacking.loadDownloadsTable().size());
-        assertEquals(invoiceBacking.loadDownloadsTable().get(0), trackController.findTrack(1));
+        assertThat(invoiceBacking.loadDownloadsTable().get(0)).isEqualTo(trackController.findTrack(1));
         
     }
     
@@ -336,7 +335,7 @@ public class InvoiceArq {
        
        Invoice editedInv = invoiceBacking.findInvoiceById(1);
        
-       assertEquals(inv,editedInv);
+       assertThat(inv).isEqualTo(editedInv);
        
     }
     

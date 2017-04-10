@@ -29,18 +29,33 @@ public class RemovalDateValidation implements Validator{
         if(removalStatus == 1)
         {
             if (value == null) 
-               throw new ValidatorException(new FacesMessage("Date cannot be null"));   
+            {
+            FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "dateCannotBeNull", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+            }
 
             Date date = (Date)value;
             Date todaysDate =(Date) Calendar.getInstance().getTime();
             if(date.after(todaysDate))
-                throw new ValidatorException(new FacesMessage("Date cannot be in the future"));
+            {
+                FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "dateCannotBeFuture", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+            }
         }
         
         else
         {
             if(value != null)
-                throw new ValidatorException(new FacesMessage("Date has to be null"));   
+            {
+                FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "dateHasToBeNull", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+            }
         }
                
     }

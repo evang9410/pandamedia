@@ -26,11 +26,21 @@ public class SalePriceValidation implements Validator {
     public void validate(FacesContext context, UIComponent component,
             Object value) {
         if (value == null) 
-           throw new ValidatorException(new FacesMessage("Sale price cannot be null"));         
+        {
+             FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "salePriceCannotBeNull", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+        }
         
         Double salePrice = (Double) value;
         if(salePrice < 0)
-            throw new ValidatorException(new FacesMessage("Sale price cannot be negative"));
+        {
+             FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "salePriceCannotBeNegative", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+        }
         
         String id = component.getId();
         Double listPrice;
@@ -50,7 +60,12 @@ public class SalePriceValidation implements Validator {
         }
         
         if(salePrice >= listPrice)
-            throw new ValidatorException(new FacesMessage("Sale price cannot be greater or equal to list price"));
+        {
+             FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "salePriceCannotBeGreaterThanList", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+        }
         
     }
     

@@ -124,7 +124,7 @@
                     <f:facet name="header">
                         <h:outputText value="#{msgs.options}"/>
                     </f:facet>
-                    <p:commandButton ajax="true" value="#{msgs.del}" action="#{managerSurveyBean.remove(item.id)}" update=":surveyFormID:surveyTableID"/>
+                    <p:commandButton  value="#{msgs.del}" action="#{managerSurveyBean.remove(item.id)}" update=":surveyFormID:surveyTableID"/>
                     <p:commandButton value="#{msgs.select}" action="#{managerSurveyBean.select(item.id)}" update=":surveyFormID:surveyTableID"/>
                 </p:column>
             </p:dataTable>

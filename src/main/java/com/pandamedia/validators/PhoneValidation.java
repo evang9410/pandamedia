@@ -24,7 +24,12 @@ public class PhoneValidation implements Validator {
         String cellNum = (String) value;
         if (cellNum != null && cellNum.length() != 0)
          if(!cellNum.matches("^\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{3})[-. )]*(\\d{3})[-. ]*(\\d{4})(?: *x(\\d+))?\\s*$"))
-            throw new ValidatorException(new FacesMessage("Invalid number"));
+         {
+             FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "phoneCannotNull", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+         }
         
                
     }

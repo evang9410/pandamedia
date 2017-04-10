@@ -22,6 +22,7 @@ import java.util.Scanner;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -45,7 +46,6 @@ import persistence.entities.Track;
  * @author Evan Glicakis
  * 
  */
-@Ignore
 @RunWith(Arquillian.class)
 public class GenreArq {
     @Resource(name = "java:app/jdbc/pandamedialocal")
@@ -171,7 +171,7 @@ public class GenreArq {
         expected.add("Punk");
         expected.add("Rap");
         expected.add("Rock");
-        assertEquals(actual.size(), expected.size());
+        assertThat(actual.size()).isEqualTo(expected.size());
     }
     
 }

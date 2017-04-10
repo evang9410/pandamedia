@@ -23,6 +23,7 @@ import java.util.Scanner;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -46,7 +47,6 @@ import persistence.entities.Track;
  *
  * @author Naasir Jusab
  */
-@Ignore
 @RunWith(Arquillian.class)
 public class ShopUserArq {
     
@@ -191,9 +191,7 @@ public class ShopUserArq {
         
          ShopUser editedUser = userBacking.findUserById(1);
         
-        assertEquals(user,editedUser);
-        
-        
+         assertThat(user).isEqualTo(editedUser);
     }
     
     @Test
@@ -212,6 +210,8 @@ public class ShopUserArq {
         user.setHomePhone("514-505 7070");
         user.setEmail("loho@hot.co");
         user.setProvinceId(provinceController.findProvince(1));
+        user.setHashedPw(new byte[] {1,1,1});
+        user.setSalt("hehe");
         
        try
        {
@@ -244,9 +244,8 @@ public class ShopUserArq {
        {
            System.out.println(e.getMessage());
        }
-            
-       assertEquals(userBacking.getClientTotalPurchase(list.get(list.size()-1).getId()),"35.00");
-       
+        
+       assertThat(userBacking.getClientTotalPurchase(list.get(list.size()-1).getId())).isEqualTo("35.00");
     }
     
 

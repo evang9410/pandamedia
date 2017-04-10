@@ -22,12 +22,22 @@ public class PlayLengthValidation implements Validator {
     public void validate(FacesContext context, UIComponent component,
             Object value) {
         if (value == null) 
-           throw new ValidatorException(new FacesMessage("Play Length cannot be null"));         
+        {
+            FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "playLengthCannotBeNull", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+        }
         
         String playLength = (String) value;
         int colon = playLength.indexOf(":");
         if(colon == -1)
-            throw new ValidatorException(new FacesMessage("Invalid play length"));
+        {
+            FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "playLengthInvalid", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+        }
         
         String firstPart = playLength.substring(0,colon);
         String secondPart = playLength.substring(colon+1);
@@ -39,7 +49,10 @@ public class PlayLengthValidation implements Validator {
         }
         catch(Exception e)
         {
-            throw new ValidatorException(new FacesMessage("Invalid play length"));
+            FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "playLengthInvalid", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
         }
     }
     

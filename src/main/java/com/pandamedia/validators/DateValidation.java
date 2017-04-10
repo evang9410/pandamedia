@@ -24,12 +24,22 @@ public class DateValidation implements Validator {
     public void validate(FacesContext context, UIComponent component,
             Object value) {
         if (value == null) 
-           throw new ValidatorException(new FacesMessage("Date cannot be null"));         
+        {
+             FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "dateCannotBeNull", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+        }  
         
         Date date = (Date)value;
         Date todaysDate =(Date) Calendar.getInstance().getTime();
         if(date.after(todaysDate))
-            throw new ValidatorException(new FacesMessage("Date cannot be in the future"));
+        {
+            FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "dateCannotBeFuture", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+        }
                
     }
     

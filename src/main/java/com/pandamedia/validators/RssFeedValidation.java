@@ -23,15 +23,27 @@ public class RssFeedValidation implements Validator {
     public void validate(FacesContext context, UIComponent component,
             Object value) {
         if (value == null) 
-           throw new ValidatorException(new FacesMessage("Url cannot be null"));         
+        {
+            FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "feedCannotBeNull", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+        }
         
         String rssFeed = (String) value;
         
         if(!rssFeed.startsWith("https://") && !rssFeed.startsWith("http://"))
-            throw new ValidatorException(new FacesMessage("RSS Feed is invalid"));
+        {
+            FacesMessage message = com.pandamedia.utilities.Messages.getMessage(
+                    "bundles.messages", "feedIsInvalid", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+        }
         
         if(!rssFeed.endsWith(".xml") && !rssFeed.endsWith(".rss"))
             throw new ValidatorException(new FacesMessage("RSS Feed is invalid"));
+        
+        
                
     }
     

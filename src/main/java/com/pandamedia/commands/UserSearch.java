@@ -1,5 +1,8 @@
 package com.pandamedia.commands;
 
+import com.pandamedia.beans.AlbumBackingBean;
+import com.pandamedia.beans.ArtistBackingBean;
+import com.pandamedia.beans.TrackBackingBean;
 import java.io.Serializable;
 import java.util.Date;
 import java.text.DateFormat;
@@ -39,6 +42,12 @@ public class UserSearch implements Serializable {
     private String paramDate1;
     private String paramDate2;
 
+    @Inject
+    private AlbumBackingBean albb;
+    @Inject
+    private ArtistBackingBean arbb;
+    @Inject
+    private TrackBackingBean tbb;
     @Inject
     private SearchDropdown sd;
 
@@ -80,10 +89,6 @@ public class UserSearch implements Serializable {
         }
     }
 
-    private boolean isResultSingle(TypedQuery query) {
-        return query.getResultList().size() == 1;
-    }
-
     /**
      * Called when search button is pressed. Executes the correct search
      * function depending on selected type
@@ -108,11 +113,25 @@ public class UserSearch implements Serializable {
                 searchDate();
                 break;
         }
+        try {
+            if (trackResultsList.size() == 1) {
+                return tbb.trackPage(trackResultsList.get(0));
+            }
+
+            if (albumResultsList.size() == 1) {
+                return albb.albumPage(albumResultsList.get(0));
+            }
+            if (artistResultsList.size() == 1) {
+                return arbb.artistPage(artistResultsList.get(0));
+            }
+        } catch (NullPointerException ex) {
+
+        }
         return "search";
 
     }
 
-    private Track searchTracks() {
+    private void searchTracks() {
         //Creates query that returns a list of tracks with a name relevant to "parameters"
         String q = "SELECT t FROM Track t WHERE t.title LIKE :var";
         TypedQuery<Track> query = em.createQuery(q, Track.class);
@@ -120,40 +139,28 @@ public class UserSearch implements Serializable {
 
         if (errorCheck(query)) {
             trackResultsList = query.getResultList();
-            if (isResultSingle(query)) {
-                return trackResultsList.get(0);
-            }
         }
-        return null;
     }
 
-    private Album searchAlbums() {
+    private void searchAlbums() {
         //Creates query that returns a list of albums with a name relevant to "parameters"
         String q = "SELECT a FROM Album a WHERE a.title LIKE :var";
         TypedQuery<Album> query = em.createQuery(q, Album.class);
         query.setParameter("var", "%" + parameters + "%");
         if (errorCheck(query)) {
             albumResultsList = query.getResultList();
-            if (isResultSingle(query)) {
-                return albumResultsList.get(0);
-            }
         }
-        return null;
 
     }
 
-    private Artist searchArtists() {
+    private void searchArtists() {
         //Creates query that returns a list of artists with a name relevant to "parameters"
         String q = "SELECT a FROM Artist a WHERE a.name LIKE :var";
         TypedQuery<Artist> query = em.createQuery(q, Artist.class);
         query.setParameter("var", "%" + parameters + "%");
         if (errorCheck(query)) {
             artistResultsList = query.getResultList();
-            if (isResultSingle(query)) {
-                return artistResultsList.get(0);
-            }
         }
-        return null;
     }
 
     private void searchDate() throws Exception {
@@ -186,7 +193,7 @@ public class UserSearch implements Serializable {
                     date2 = df.parse(paramDate2);
                 } catch (Exception ex) {
                     System.out.println("!Error while parsing!");
-                   // date1 = (Date) new SimpleDateFormat("yyyy/MM/dd").parse("0000/00/00");
+                    // date1 = (Date) new SimpleDateFormat("yyyy/MM/dd").parse("0000/00/00");
                     //date2 = (Date) new SimpleDateFormat("yyyy/MM/dd").parse("0000/00/00");
                 }
 
@@ -202,7 +209,7 @@ public class UserSearch implements Serializable {
                 TypedQuery<Track> query2 = em.createQuery(q2, Track.class);
 
                 query2.setParameter("from", date1);
-                query2.setParameter("until", date2 );
+                query2.setParameter("until", date2);
                 System.out.println("Kapoue!");
                 if (errorCheck(query2)) {
                     trackResultsList = query2.getResultList();
@@ -218,7 +225,7 @@ public class UserSearch implements Serializable {
 
     public void setParameters(String parameters) {
         this.parameters = parameters;
-        
+
     }
 
     public String getParamDate1() {
