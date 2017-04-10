@@ -186,8 +186,8 @@ public class UserSearch implements Serializable {
                     date2 = df.parse(paramDate2);
                 } catch (Exception ex) {
                     System.out.println("!Error while parsing!");
-                    date1 = (Date) new SimpleDateFormat("yyyy/MM/dd").parse("0000/00/00");
-                    date2 = (Date) new SimpleDateFormat("yyyy/MM/dd").parse("0000/00/00");
+                   // date1 = (Date) new SimpleDateFormat("yyyy/MM/dd").parse("0000/00/00");
+                    //date2 = (Date) new SimpleDateFormat("yyyy/MM/dd").parse("0000/00/00");
                 }
 
                 String q1 = "SELECT a FROM Album a WHERE a.releaseDate > :from AND a.releaseDate < :until";
@@ -209,7 +209,6 @@ public class UserSearch implements Serializable {
                 }
             }
         }
-        System.out.println("Parameters null");
     }
 
     /*Getters and Setters*/
@@ -228,11 +227,9 @@ public class UserSearch implements Serializable {
 
     public void setParamDate1(String paramDate1) {
         this.paramDate1 = paramDate1;
-        System.out.println("Easy set easy life");
     }
 
     public String getParamDate2() {
-        System.out.println("GET ME SENPAI");
         return paramDate2;
     }
 

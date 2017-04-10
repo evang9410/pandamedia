@@ -13,29 +13,26 @@
         <h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
     </ui:define>
     <ui:define name="page-content">
-        <h:form>
-            <div class="container">
-                <div class="row">
+        <h:form id="formDates">
+            <div class="container search-form">
+                <div class="row title">
                     <h4>Select a range of dates</h4>
                 </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <h:inputText id="date1" value="#{Search.paramDate1}" required="true"/>
+                <div class="row input">
+                    <div class="col-md-6">
+                        <p:inputMask id="date1" value="#{Search.paramDate1}" required="true" placeholder="mm/dd/yyyy" mask="99/99/9999">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </p:inputMask>
                         <h:message for="date1" style="color:red" />
                     </div>
-                    <div class="col-md-3">
-                        <h:inputText id="date2" value="#{Search.paramDate2}" required="false" />
-                        <h:message for="date2" style="color:red" />
-
-                        <!-- TEST
-                        <p:inputMask id="dob" mask="9999/99/99" value="#{Search.parameters}" style="width:8em;" >
-                            <f:convertDateTime pattern="yyyy/MM/dd" />
+                    <div class="col-md-6">
+                        <p:inputMask id="date2" value="#{Search.paramDate2}" required="true" placeholder="mm/dd/yyyy" mask="99/99/9999">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
                         </p:inputMask>
-                        <p:watermark  value="YYYY/MM/DD" for="dob" />
-                        -->
+                        <h:message for="date2" style="color:red" />
                     </div>
                 </div>
-                <div class="row">
+                <div class="row submit-button">
                     <h:commandButton action="#{Search.executeSearch()}" value="Submit"/>
                 </div>
             </div>
