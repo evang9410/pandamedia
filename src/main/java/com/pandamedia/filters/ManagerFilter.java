@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * Prevents access to the manager site for users that are not logged in and/or
+ * are not managers.
+ * 
  * @author Erika Bourque
  */
 @WebFilter(filterName = "LoginFilter", urlPatterns = {"/manager/*", "/manager/reports/*"})

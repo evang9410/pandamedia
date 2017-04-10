@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * Prevents access to pages in the purchase folder for clients that 
+ * have an empty shopping cart.
+ * 
  * @author Erika Bourque
  */
 @WebFilter(filterName = "CheckoutFilter", urlPatterns = {"/clientsecure/purchase/*"})
