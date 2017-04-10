@@ -1,6 +1,6 @@
 Group 4
 
-Pierre Azelart
+<p>Pierre Azelart</p>
 Erika Bourque
 Hau Gilles Che
 Evangelo Glicakis
