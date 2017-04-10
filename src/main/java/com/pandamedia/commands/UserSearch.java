@@ -218,6 +218,7 @@ public class UserSearch implements Serializable {
 
     public void setParameters(String parameters) {
         this.parameters = parameters;
+        
     }
 
     public String getParamDate1() {
@@ -226,9 +227,11 @@ public class UserSearch implements Serializable {
 
     public void setParamDate1(String paramDate1) {
         this.paramDate1 = paramDate1;
+        System.out.println("Easy set easy life");
     }
 
     public String getParamDate2() {
+        System.out.println("GET ME SENPAI");
         return paramDate2;
     }
 
