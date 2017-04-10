@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * Prevents access to pages in the clientsecure folder for users that are not
+ * logged in.
+ * 
  * @author Erika Bourque
  */
 @WebFilter(filterName = "LoginFilter", urlPatterns = {"/clientsecure/*"})

@@ -12,7 +12,9 @@ import persistence.entities.ShopUser;
 import persistence.entities.Track;
 
 /**
- *
+ * This class provides getters and setters for the fields related to 
+ * the report backing bean.
+ * 
  * @author Erika Bourque
  */
 @Named("reportData")
@@ -59,10 +61,21 @@ public class ReportDataBean {
         this.client = client;
     }
     
+    /**
+     * For reports, the default end date is the current date.
+     * 
+     * @return  the default end date
+     */
     public Date getDefaultEndDate() {
         return Calendar.getInstance().getTime();
     }
 
+    /**
+     * For reports, the default start date is 30 days
+     * before the current date.
+     * 
+     * @return  the default start date
+     */
     public Date getDefaultStartDate() {
         Calendar start = Calendar.getInstance();
         start.add(Calendar.DAY_OF_YEAR, -30);

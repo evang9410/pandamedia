@@ -16,7 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * Prevents access to the shopping site for managers that are signed in.
+ * 
  * @author Erika Bourque
  */
 @WebFilter(filterName = "ShopFilter", urlPatterns = {"/shop/*"})

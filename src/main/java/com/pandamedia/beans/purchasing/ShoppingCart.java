@@ -19,8 +19,10 @@ import persistence.entities.InvoiceAlbum;
 import persistence.entities.InvoiceTrack;
 
 /**
- *
- * @author Evang
+ * This class represents a shopping cart for a customer.
+ * 
+ * @author Evangelo Glicakis
+ * @author Erika Bourque
  */
 @Named("cart")
 @SessionScoped
@@ -40,6 +42,8 @@ public class ShoppingCart implements Serializable {
      * Gathers the shopping cart album objects and returns them as a list to be
      * displayed in the cart.
      *
+     * @author Evangelo Glicakis
+     * @author Erika Bourque
      * @return
      */
     public List<Album> getAlbumsFromCart() {
@@ -47,7 +51,10 @@ public class ShoppingCart implements Serializable {
     }
 
     /**
-     * gets the tracks from the cart. 
+     * gets the tracks from the cart.
+     * 
+     * @author Evangelo Glicakis
+     * @author Erika Bourque
      * @return
      */
     public List<Track> getTracksFromCart() {
@@ -55,7 +62,9 @@ public class ShoppingCart implements Serializable {
     }
     /**
      * Calculates the sub total of the tracks and albums costs.
-     * @author Erika, Evan
+     * 
+     * @author Evangelo Glicakis
+     * @author Erika Bourque
      * @return 
      */
     public double getSubTotal() {
@@ -72,8 +81,8 @@ public class ShoppingCart implements Serializable {
     /**
      * returns the amount of items in the cart, to be used by the navigation bar
      * to display the amount of items currently in the cart.
-     * @author Evan
-     *
+     * 
+     * @author Evangelo Glicakis
      * @return
      */
     public String getCartCount() {
@@ -85,14 +94,32 @@ public class ShoppingCart implements Serializable {
         }
     }
 
+    /**
+     * Checks if both album list and track list are empty.
+     * 
+     * @author Evangelo Glicakis
+     * @return 
+     */
     public boolean getIsCartEmpty() {
         return (albums.size() + tracks.size()) == 0;
     }
 
+    /**
+     * Removes a particular album from the album list.
+     * 
+     * @author Evangelo Glicakis
+     * @param a 
+     */
     public void removeAlbumFromCart(Album a) {
         albums.remove(a);
     }
 
+    /**
+     * Removes a particular track from the track list.
+     * 
+     * @author Evangelo Glicakis
+     * @param t 
+     */
     public void removeTrackFromCart(Track t) {
         tracks.remove(t);
     }
@@ -101,6 +128,7 @@ public class ShoppingCart implements Serializable {
      * Sets the UIViewRoot object, to be called when the shopping cart icon in
      * the navigation bar is clicked is clicked.
      *
+     * @author Evangelo Glicakis
      * @return
      */
     public String setPrevPage() {
@@ -112,7 +140,8 @@ public class ShoppingCart implements Serializable {
      * returns the user to the location of the ui where the prevPage object is
      * holding. If the prevPage is null or not defined, return them to the
      * mainpage.
-     * @author Evan
+     * 
+     * @author Evangelo Glicakis
      */
     public void continueShopping() throws IOException {
         if (prevPage != null) {
@@ -126,6 +155,13 @@ public class ShoppingCart implements Serializable {
 
     }
 
+    /**
+     * Adds an album to the album list if it not already in
+     * the list.
+     * 
+     * @author Evangelo Glicakis
+     * @param album 
+     */
     public void addAlbum(Album album) {
         if (!albums.contains(album)) {
             albums.add(album);
@@ -135,7 +171,9 @@ public class ShoppingCart implements Serializable {
      * Adds track to the shopping cart.
      * If the user adds all the tracks of an album it adds the album automatically
      * to the album list
-     * @author Evan
+     * Checks if the track is already in the track list.
+     * 
+     * @author Evangelo Glicakis
      * @param track 
      */
     public void addTrack(Track track) {
@@ -165,11 +203,23 @@ public class ShoppingCart implements Serializable {
 
     }
 
+    /**
+     * Empties both lists of all items.
+     * 
+     * @author Erika Bourque
+     */
     public void clearCart() {
         albums = new ArrayList<>();
         tracks = new ArrayList<>();
     }
     
+    /**
+     * This method verifies the album and track lists to
+     * see if any have already been purchased by the user.
+     * 
+     * @author Erika Bourque
+     * @return  The list of FacesMessages for all previous purchased items.
+     */
     private List<FacesMessage> itemsPreviouslyPurchased()
     {
         List<FacesMessage> list = new ArrayList<>();

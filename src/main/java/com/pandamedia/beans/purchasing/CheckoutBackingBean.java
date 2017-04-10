@@ -51,17 +51,6 @@ public class CheckoutBackingBean implements Serializable {
     private EmailBean emailer;
 
     /**
-     * This method calculates the taxes and total for the invoice after the cart
-     * and user have been injected.
-     *
-     * @author Erika Bourque
-     */
-//    @PostConstruct
-//    public void init() {
-//        user = uab.getCurrUser();
-//    }
-
-    /**
      * This method creates a list of months in the form of SelectItems for use
      * in the select one menu tag.
      *
