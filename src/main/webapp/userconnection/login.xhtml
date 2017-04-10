@@ -9,6 +9,7 @@
     <h:head>
         <title>#{msgs.loginHeader}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="author" content="Hau Gilles Che"/>
         <h:outputStylesheet library="css" name="bootstrap.css"/>
         <h:outputStylesheet library="css" name="login.css"/>
     </h:head>
@@ -23,7 +24,6 @@
             </div>
             <div class="panel-body">
                 <h:form id="loginForm">
-                    <!--<p:panel id="loginPanel" header="#{msgs.loginHeader}" class="panel-title">-->
                         <div class="form-group">
                             <h:inputText class="form-control input-sm" id="emailInput" 
                                          value="#{userBean.shopUser.email}" 
@@ -42,7 +42,6 @@
                             <h:message for="passwordInput" style="color:red"/>
                         </div>
                         <h:message for="loginForm" style="color:red"/>
-                    <!--</p:panel>-->
 
 
 
