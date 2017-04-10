@@ -165,36 +165,14 @@ public class UserSearch implements Serializable {
 
     private void searchDate() throws Exception {
         //Creates query that returns a list of tracks with a release date relevant to "parameters"
-        /*if (!paramDate1.isEmpty() && paramDate2.isEmpty()) {
-            String q1= "SELECT a FROM Album a WHERE a.releaseDate > :from";
-            TypedQuery<Album> query1 = em.createQuery(q1, Album.class);
 
-            query1.setParameter("from", "%" + paramDate1 + "%");
-            if (errorCheck(query1)) {
-                albumResultsList = query1.getResultList();
-            }
-            String q2 = "SELECT a FROM Track a WHERE a.releaseDate > :from";
-            TypedQuery<Track> query2 = em.createQuery(q2, Track.class);
-
-            query2.setParameter("from", "%" + paramDate1 + "%");
-            if (errorCheck(query2)) {
-                System.out.println("Kapoue!");
-                trackResultsList = query2.getResultList();
-            }
-        }*/
-
-        System.out.println(paramDate1);
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         if (paramDate1 != null && paramDate2 != null) {
             if (!paramDate1.isEmpty() && !paramDate2.isEmpty()) {
-                System.out.println("c'est pas");
                 try {
                     date1 = df.parse(paramDate1);
                     date2 = df.parse(paramDate2);
                 } catch (Exception ex) {
-                    System.out.println("!Error while parsing!");
-                    // date1 = (Date) new SimpleDateFormat("yyyy/MM/dd").parse("0000/00/00");
-                    //date2 = (Date) new SimpleDateFormat("yyyy/MM/dd").parse("0000/00/00");
                 }
 
                 String q1 = "SELECT a FROM Album a WHERE a.releaseDate > :from AND a.releaseDate < :until";
@@ -210,7 +188,6 @@ public class UserSearch implements Serializable {
 
                 query2.setParameter("from", date1);
                 query2.setParameter("until", date2);
-                System.out.println("Kapoue!");
                 if (errorCheck(query2)) {
                     trackResultsList = query2.getResultList();
                 }

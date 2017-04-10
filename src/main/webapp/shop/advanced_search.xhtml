@@ -16,19 +16,15 @@
         <h:form id="formDates">
             <div class="container search-form">
                 <div class="row title">
-                    <h4>Select a range of dates</h4>
+                    <h4>#{msgs.advancedLabel}</h4>
                 </div>
                 <div class="row input">
                     <div class="col-md-6">
-                        <p:inputMask id="date1" value="#{Search.paramDate1}" required="true" placeholder="mm/dd/yyyy" mask="99/99/9999">
-                            <f:convertDateTime pattern="MM/dd/yyyy" />
-                        </p:inputMask>
+                        <p:inputMask id="date1" value="#{Search.paramDate1}" required="true" placeholder="mm/dd/yyyy" mask="99/99/9999"/>
                         <h:message for="date1" style="color:red" />
                     </div>
                     <div class="col-md-6">
-                        <p:inputMask id="date2" value="#{Search.paramDate2}" required="true" placeholder="mm/dd/yyyy" mask="99/99/9999">
-                            <f:convertDateTime pattern="MM/dd/yyyy" />
-                        </p:inputMask>
+                        <p:inputMask id="date2" value="#{Search.paramDate2}" required="true" placeholder="mm/dd/yyyy" mask="99/99/9999"/>
                         <h:message for="date2" style="color:red" />
                     </div>
                 </div>
