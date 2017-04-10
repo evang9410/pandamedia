@@ -38,7 +38,7 @@
             <h:panelGroup rendered="#{userAction.isLogin()}">
                 <div class="row" style="margin-bottom: 2%;">
                     <div class="col-md-12">
-                        <b:button value="Write review" look="primary" onclick="$('.modalPseudoClass').modal();return false;" size="lg"/>
+                        <b:button value="#{msgs.addreview}" look="primary" onclick="$('.modalPseudoClass').modal();return false;" size="lg"/>
                     </div>
                 </div>
             </h:panelGroup>
@@ -46,7 +46,7 @@
                 <div class="row" style="margin-bottom: 2%">
                     <div class="col-md-12">
                         <h:form>
-                            <h:commandLink action="#{userAction.redirectUser(track)}" value="Sign in to write a review" style="font-size: 18px;"/>
+                            <h:commandLink action="#{userAction.redirectUser(track)}" value="#{msgs.signinreview}" style="font-size: 18px;"/>
                         </h:form>
                     </div>
                 </div>

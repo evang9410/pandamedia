@@ -12,23 +12,25 @@
         <h:outputStylesheet library="css" name="bootstrap.css"/>
     </h:head>
     <h:body>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h2 style="color:white;">
-                        #{msgs.oops}
-                    </h2>
+        <f:view locale="#{ChangeLanguage.locale}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 style="color:white;">
+                            #{msgs.oops}
+                        </h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h:link outcome="main">
+                            <h3 style="color:white;">
+                                #{msgs.back}
+                            </h3>
+                        </h:link>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <h:link outcome="main">
-                    <h3 style="color:white;">
-                        Click here to go back to the shop!
-                    </h3>
-                    </h:link>
-                </div>
-            </div>
-        </div>
+        </f:view>
     </h:body>
 </html>

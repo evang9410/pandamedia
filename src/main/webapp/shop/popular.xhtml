@@ -6,7 +6,7 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html">
     <ui:define name="WindowTitle">
-        Popular | Pandamedia
+        #{msgs.popular} | Pandamedia
     </ui:define>
     <ui:define name="css">
         <h:outputStylesheet library="css" name="onsale.css"/>
@@ -15,11 +15,11 @@
         <div class = "container onscont">
             <div class="row">
                 <div class="header">
-                    <h1>Popular</h1>
+                    <h1>#{msgs.popular}</h1>
                 </div>
             </div>
             <div class="row">
-                <h2 class="header">Albums</h2>
+                <h2 class="header">#{msgs.albumHeader}</h2>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -45,7 +45,7 @@
             </div>
             <hr/>
             <div class="row">
-                <h2 class="header">Tracks</h2>
+                <h2 class="header">#{msgs.tracks}</h2>
             </div>
             <!--<div class="row">
                 <div class="col-md-12">
