@@ -1,7 +1,7 @@
 Group 4
 
 <p>Pierre Azelart</p>
-Erika Bourque
-Hau Gilles Che
-Evangelo Glicakis
-Naasir Jusab
+<p>Erika Bourque</p>
+<p>Hau Gilles Che</p>
+<p>Evangelo Glicakis</p>
+<p>Naasir Jusab</p>
