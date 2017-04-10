@@ -1,7 +1,8 @@
 package com.pandamedia.commands;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
@@ -176,13 +177,13 @@ public class UserSearch implements Serializable {
         }*/
 
         System.out.println(paramDate1);
-        
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         if (paramDate1 != null && paramDate2 != null) {
             if (!paramDate1.isEmpty() && !paramDate2.isEmpty()) {
                 System.out.println("c'est pas");
                 try {
-                    date1 = (Date) new SimpleDateFormat("yyyy/MM/dd").parse(paramDate1);
-                    date2 = (Date) new SimpleDateFormat("yyyy/MM/dd").parse(paramDate2);
+                    date1 = df.parse(paramDate1);
+                    date2 = df.parse(paramDate2);
                 } catch (Exception ex) {
                     System.out.println("!Error while parsing!");
                     date1 = (Date) new SimpleDateFormat("yyyy/MM/dd").parse("0000/00/00");
@@ -192,16 +193,16 @@ public class UserSearch implements Serializable {
                 String q1 = "SELECT a FROM Album a WHERE a.releaseDate > :from AND a.releaseDate < :until";
                 TypedQuery<Album> query1 = em.createQuery(q1, Album.class);
 
-                query1.setParameter("from", "%" + date1 + "%");
-                query1.setParameter("until", "%" + date2 + "%");
+                query1.setParameter("from", date1);
+                query1.setParameter("until", date2);
                 if (errorCheck(query1)) {
                     albumResultsList = query1.getResultList();
                 }
                 String q2 = "SELECT a FROM Track a WHERE a.releaseDate > :from AND a.releaseDate < :until";
                 TypedQuery<Track> query2 = em.createQuery(q2, Track.class);
 
-                query2.setParameter("from", "%" + date1 + "%");
-                query2.setParameter("until", "%" + date2 + "%");
+                query2.setParameter("from", date1);
+                query2.setParameter("until", date2 );
                 System.out.println("Kapoue!");
                 if (errorCheck(query2)) {
                     trackResultsList = query2.getResultList();
