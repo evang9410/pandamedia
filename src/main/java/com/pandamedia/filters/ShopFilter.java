@@ -34,7 +34,7 @@ public class ShopFilter implements Filter{
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        context.log("In the filer");
+        context.log("Shop Filter");
         
         // Making sure that logged in user is not a manager
         if ((uab.isLogin()) && (uab.getCurrUser().getIsManager() == 1))
@@ -42,7 +42,6 @@ public class ShopFilter implements Filter{
             context.log("User is a manager. id = " + uab.getCurrUser().getId());
             String contextPath = ((HttpServletRequest) request)
                     .getContextPath();
-            // TODO: change this to new management location once moved
             ((HttpServletResponse) response).sendRedirect(contextPath
                     + "/manager/manager_index.xhtml");
             context.log(contextPath + "/manager/manager_index.xhtml");            

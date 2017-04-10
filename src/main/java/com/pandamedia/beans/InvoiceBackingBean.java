@@ -283,6 +283,13 @@ public class InvoiceBackingBean implements Serializable{
         
         
     }
+    /**
+     * Gets a list of all the tracks that the cilent has purchaed.
+     * This includes the albums that they have purchased, they are just returned as
+     * tracks.
+     * @author Nassir, Evan -- did the ogTracks part.
+     * @return 
+     */
     public List<Track> loadDownloadsTable()
     {
         List<Track> ogTracks;
@@ -321,7 +328,6 @@ public class InvoiceBackingBean implements Serializable{
         albumQ.select(albumRoot);
         
         // Where clause
-        
         List<Predicate> predicates2 = new ArrayList<>();
         predicates2.add(cb2.equal(clientJoin2.get(ShopUser_.id),uab.getCurrUser().getId()));
         albumQ.where(cb2.and(predicates2.toArray(new Predicate[predicates2.size()])));

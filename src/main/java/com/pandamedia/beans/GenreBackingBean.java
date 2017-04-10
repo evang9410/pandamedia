@@ -37,7 +37,12 @@ public class GenreBackingBean implements Serializable {
         }
         return genre;
     }
-    
+    /**
+     * Used to get a list of strings of all the genre names in the database
+     * used by the browse albums page to have a list of all the available genres.
+     * @author Evan G.
+     * @return 
+     */
     public List<String> getAllGenresNames(){
         String q = "SELECT g.name FROM Genre g";
         TypedQuery query = em.createQuery(q, Genre.class);

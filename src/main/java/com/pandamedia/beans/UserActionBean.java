@@ -81,7 +81,9 @@ public class UserActionBean implements Serializable {
      *
      * @param province Id of the province chosen by the user.
      */
-    public void register(String province) {
+    public String register(String province) {
+        String pageRedirect = null;
+        
         ShopUser user = userBean.getShopUser();
         setFields(user);
         int provinceId = Integer.parseInt(province);
@@ -94,10 +96,7 @@ public class UserActionBean implements Serializable {
                 FacesContext.getCurrentInstance().setViewRoot(prevPage);
                 FacesContext.getCurrentInstance().renderResponse();
             } else {
-                // TODO: fix so its not absolute path
-                FacesContext.getCurrentInstance().getExternalContext()
-                                .redirect(FacesContext.getCurrentInstance().
-                                        getExternalContext().getRequestContextPath() + "/shop/mainpage.xhtml");
+                pageRedirect = "main";
             }
 
         } catch (IOException ioe) {
@@ -112,12 +111,17 @@ public class UserActionBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(
                     "registrationForm:emailInput", msg);
         }
+        return pageRedirect;
     }
 
     /**
      * Responsible for login in a user.
+     * 
+     * @author Hau Gilles Che
+     * @author Erika Bourque
      */
-    public void login() throws IOException {
+    public String login() throws IOException {
+        String pageRedirect = null;
         currUser = userBean.getShopUser();
         ShopUser userRecord = userActionController.findUserByEmail(
                 currUser.getEmail());
@@ -135,71 +139,53 @@ public class UserActionBean implements Serializable {
                     userRecord.getSalt());
 
             if (!Arrays.equals(hashRecord, loginPwdHash)) {
-
+                System.out.println("BAD PASSWORD");
                 FacesMessage msg = com.pandamedia.utilities.Messages.getMessage(
                         "bundles.messages", "invalidEmailOrPwd", null);
                 FacesContext.getCurrentInstance().addMessage("loginForm", msg);
                 currUser = null;
             } else {
-                try {
-                    currUser = userRecord;
-                    external.getSessionMap().put("user", userRecord);
-                    // check to see if the user was being redirected from another
-                    // page. If they have  not, they should be redirected to the mainpage
-                    if (prevPage != null) {
-                        FacesContext.getCurrentInstance().setViewRoot(prevPage);
-                        FacesContext.getCurrentInstance().renderResponse();
-                    } else {
-                        FacesContext.getCurrentInstance().getExternalContext()
-                                .redirect(FacesContext.getCurrentInstance().
-                                        getExternalContext().getRequestContextPath() + "/shop/mainpage.xhtml");
-                    }
-
-                } catch (IOException ioe) {
-                    Logger.getLogger(UserActionBean.class.getName())
-                            .log(Level.WARNING, "Error when redirecting: {0}",
-                                    ioe.getMessage());
+                currUser = userRecord;
+                external.getSessionMap().put("user", userRecord);
+                // Making user to redirect to manager side if it is a manager
+                // check to see if the user was being redirected from another
+                // page. If they have  not, they should be redirected to the mainpage
+                if (currUser.getIsManager() == 1) {
+                    pageRedirect = "manindex";
+                } else if (prevPage != null) {
+                    FacesContext.getCurrentInstance().setViewRoot(prevPage);
+                    FacesContext.getCurrentInstance().renderResponse();
+                } else {
+                    pageRedirect = "main";
                 }
             }
         }
-
+        return pageRedirect;
     }
 
     /**
      * Responsible for login out users.
+     *
+     * @author Hau Gilles Che
+     * @author Erika Bourque
      */
-    public void logout() {
+    public String logout() {
+        String pageRedirect = null;
         //for security purposes, if an admin logout, redirects to index
         if (currUser.getIsManager() == 1) {
             currUser = null;
-            try {
-                FacesContext.getCurrentInstance().getExternalContext()
-                        .redirect(FacesContext.getCurrentInstance().
-                                getExternalContext().getRequestContextPath() + "/shop/mainpage.xhtml");
-            } catch (IOException ioe) {
-                Logger.getLogger(UserActionBean.class.getName())
-                        .log(Level.WARNING, "Error when redirecting: {0}",
-                                ioe.getMessage());
-            }
+            pageRedirect = "main";
         }
         UIViewRoot currentPage = FacesContext.getCurrentInstance().getViewRoot();
         System.out.println(currentPage.getViewId());
         if (currentPage.getViewId().startsWith("/clientsecure/")) {
-            try {
-                FacesContext.getCurrentInstance().getExternalContext()
-                                .redirect(FacesContext.getCurrentInstance().
-                                        getExternalContext().getRequestContextPath() + "/shop/mainpage.xhtml");
-            } catch (Exception e) {
-                Logger.getLogger(UserActionBean.class.getName())
-                        .log(Level.WARNING, "Error when redirecting: {0}",
-                                e.getMessage());
-            }
+            pageRedirect = "main";
 
         }
         currUser = null;
         // destroy user object from session map.
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", null);
-
+        return pageRedirect;
     }
 
     /**
@@ -262,11 +248,27 @@ public class UserActionBean implements Serializable {
     /**
      * Sets the previous page variable to the page that the user is currently
      * on. The variable is used to hold a view to where the user used to be
-     * before they were redirected to the login page.
+     * before they were redirected to the login page. Returns the string for the
+     * login nav rule.
+     *
+     * @author Erika Bourque
      */
-    public void setPrevPage() {
-        // TODO: use this everywhere somehow :O
+    public String setPrevPageLogin() {
         prevPage = FacesContext.getCurrentInstance().getViewRoot();
+        return "login";
+    }
+
+    /**
+     * Sets the previous page variable to the page that the user is currently
+     * on. The variable is used to hold a view to where the user used to be
+     * before they were redirected to the login page. Returns the string for the
+     * registration nav rule.
+     *
+     * @author Erika Bourque
+     */
+    public String setPrevPageRegister() {
+        prevPage = FacesContext.getCurrentInstance().getViewRoot();
+        return "register";
     }
 
     /**

@@ -47,15 +47,17 @@ public class ShoppingCart implements Serializable {
     }
 
     /**
-     * gets the tracks from the cart. There has to be a more efficient way to
-     * sort this list. Maybe a hashmap?
-     *
+     * gets the tracks from the cart. 
      * @return
      */
     public List<Track> getTracksFromCart() {
         return tracks;
     }
-
+    /**
+     * Calculates the sub total of the tracks and albums costs.
+     * @author Erika, Evan
+     * @return 
+     */
     public double getSubTotal() {
         double subtotal = 0;
         for (Album a : albums) {
@@ -70,6 +72,7 @@ public class ShoppingCart implements Serializable {
     /**
      * returns the amount of items in the cart, to be used by the navigation bar
      * to display the amount of items currently in the cart.
+     * @author Evan
      *
      * @return
      */
@@ -109,6 +112,7 @@ public class ShoppingCart implements Serializable {
      * returns the user to the location of the ui where the prevPage object is
      * holding. If the prevPage is null or not defined, return them to the
      * mainpage.
+     * @author Evan
      */
     public void continueShopping() throws IOException {
         if (prevPage != null) {
@@ -127,7 +131,13 @@ public class ShoppingCart implements Serializable {
             albums.add(album);
         }
     }
-
+    /**
+     * Adds track to the shopping cart.
+     * If the user adds all the tracks of an album it adds the album automatically
+     * to the album list
+     * @author Evan
+     * @param track 
+     */
     public void addTrack(Track track) {
         // if the user already has the album of the track they are trying to add,
         // do not add the track. Super dirty and gross, sorry.
@@ -276,7 +286,9 @@ public class ShoppingCart implements Serializable {
     }
     
     public String verifyCartContents()
-    {
+    {   
+        //set the prev page in the user action bean so they get redirected once they log in.
+        user.setPrevPageLogin();
         // Remains null if warnings exist
         String page = null;
         

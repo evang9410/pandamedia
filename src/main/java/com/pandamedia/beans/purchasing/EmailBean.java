@@ -67,8 +67,6 @@ public class EmailBean {
      */
     private String buildMessage()
     {
-        // TODO: make sure email tables work
-        // TODO: add title and footer to email?
         LOG.info("Building email.");
         StringBuilder builder = new StringBuilder();
         

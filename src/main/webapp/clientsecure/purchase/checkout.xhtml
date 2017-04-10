@@ -100,7 +100,6 @@
                             <b:selectOneMenu id="cardType" required="true" value="#{creditCard.cardType}">
                                 <f:selectItem itemLabel="Visa" itemValue="Visa"/>
                                 <f:selectItem itemLabel="MasterCard" itemValue="MasterCard"/>
-                                <!--TODO: make these images?-->
                             </b:selectOneMenu>
 
                             <h:outputLabel for="cardNum" value="#{msgs.cardNumLbl}" />
@@ -113,7 +112,6 @@
 
                             <h:outputLabel for="cardCode" value="#{msgs.cardCodeLbl}" />
                             <b:inputText id="cardCode" required="true" value="#{creditCard.cardCode}">
-                                <!--TODO make sure this is the right kind of validation-->
                                 <f:validateLongRange minimum="0" maximum="9999" />
                             </b:inputText>
 

@@ -14,98 +14,94 @@
     <ui:define name="WindowTitle">#{msgs.manReportZeroTrackTitle}</ui:define>
 
     <ui:define name="page-content">
-        <f:view locale="#{ChangeLanguage.locale}">
-            <h:outputStylesheet name="reports.css" library="css"/>
-            <h1><h:outputText value="#{msgs.manReportZeroTrackTitle}"/></h1>
-            <div align="center">
+        <h:outputStylesheet name="reports.css" library="css"/>
+        <h1><h:outputText value="#{msgs.manReportZeroTrackTitle}"/></h1>
+        <div align="center">
             <pm:reportcalendars 
                 max="#{reportData.defaultEndDate}" 
                 start="#{reportData.startDate}" 
                 end="#{reportData.endDate}" 
                 updateTable="reportTable">
             </pm:reportcalendars>
-            </div>
-            <br/>
-            <p:dataTable styleClass="report-table" 
-                         id="reportTable" 
-                         value="#{reports.getZeroTracks(reportData.startDate, reportData.endDate)}" 
-                         var="track" 
-                         paginator="true" 
-                         rows="10">
-                <f:facet name="header">
-                    #{msgs.detailTrackHeader}
-                </f:facet>
-                <p:column>
-                    <f:facet name="header">#{msgs.idHeader}</f:facet>
-                        #{track.id}
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.titleHeader}</f:facet>
-                        #{track.title}
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.albumHeader}</f:facet>
-                        #{track.albumId.title}
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.artistHeader}</f:facet>
-                        #{track.artistId.name}
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.songwriterHeader}</f:facet>
-                        #{track.songwriterId.name}
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.genreHeader}</f:facet>
-                        #{track.genreId.name}
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.releaseDateHeader}</f:facet>
-                    <h:outputText value="#{track.releaseDate}">
-                        <f:convertDateTime pattern="MMMM dd yyyy" />
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.playLengthHeader}</f:facet>
-                        #{track.playLength}
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.albumTrackNumHeader}</f:facet>
-                        #{track.albumTrackNumber}
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.coverArtHeader}</f:facet>
-                        #{track.coverArtId.imagePath}
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.dateEnteredHeader}</f:facet>
-                    <h:outputText value="#{track.dateEntered}">
-                        <f:convertDateTime pattern="MMMM dd yyyy" />
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.partOfAlbumHeader}</f:facet>
-                        #{track.partOfAlbum}
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
-                    <h:outputText value="#{track.costPrice}">                    
-                        <f:convertNumber type="currency" />
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.listPriceHeader}</f:facet>
-                    <h:outputText value="#{track.listPrice}">                    
-                        <f:convertNumber type="currency" />
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">#{msgs.salePriceHeader}</f:facet>
-                    <h:outputText value="#{track.salePrice}">                    
-                        <f:convertNumber type="currency" />
-                    </h:outputText>
-                </p:column>
-            </p:dataTable>
-        </f:view>
+        </div>
+        <br/>
+        <p:dataTable styleClass="report-table" 
+                     id="reportTable" 
+                     value="#{reports.getZeroTracks(reportData.startDate, reportData.endDate)}" 
+                     var="track">
+            <f:facet name="header">
+                #{msgs.detailTrackHeader}
+            </f:facet>
+            <p:column>
+                <f:facet name="header">#{msgs.idHeader}</f:facet>
+                    #{track.id}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.titleHeader}</f:facet>
+                    #{track.title}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.albumHeader}</f:facet>
+                    #{track.albumId.title}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.artistHeader}</f:facet>
+                    #{track.artistId.name}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.songwriterHeader}</f:facet>
+                    #{track.songwriterId.name}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.genreHeader}</f:facet>
+                    #{track.genreId.name}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.releaseDateHeader}</f:facet>
+                <h:outputText value="#{track.releaseDate}">
+                    <f:convertDateTime pattern="MMMM dd yyyy" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.playLengthHeader}</f:facet>
+                    #{track.playLength}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.albumTrackNumHeader}</f:facet>
+                    #{track.albumTrackNumber}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.coverArtHeader}</f:facet>
+                    #{track.coverArtId.imagePath}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.dateEnteredHeader}</f:facet>
+                <h:outputText value="#{track.dateEntered}">
+                    <f:convertDateTime pattern="MMMM dd yyyy" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.partOfAlbumHeader}</f:facet>
+                    #{track.partOfAlbum}
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.costPriceHeader}</f:facet>
+                <h:outputText value="#{track.costPrice}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.listPriceHeader}</f:facet>
+                <h:outputText value="#{track.listPrice}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{msgs.salePriceHeader}</f:facet>
+                <h:outputText value="#{track.salePrice}">                    
+                    <f:convertNumber type="currency" />
+                </h:outputText>
+            </p:column>
+        </p:dataTable>
     </ui:define>
 </ui:composition>

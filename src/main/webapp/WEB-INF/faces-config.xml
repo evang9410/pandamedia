@@ -76,10 +76,12 @@
         <navigation-case>
             <from-outcome>login</from-outcome>
             <to-view-id>/userconnection/login.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>register</from-outcome>
             <to-view-id>/userconnection/registration.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
         
         <!-- Client Secure pages navigation rules -->
@@ -228,6 +230,11 @@
         <navigation-case>
             <from-outcome>repzerotracks</from-outcome>
             <to-view-id>/manager/reports/zerotracks.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>repclient</from-outcome>
+            <to-view-id>/manager/reports/salesbyclient.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>   

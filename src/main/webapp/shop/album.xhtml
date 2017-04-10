@@ -6,6 +6,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:b="http://bootsfaces.net/ui">
+    <meta name="author" content="Evan G"/>
     <ui:define name="WindowTitle">
         #{albumBacking.album.title} | Pandamedia
     </ui:define>
@@ -87,7 +88,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <h2 id="suggested-header">Suggested Albums</h2>
+                    <h2 id="suggested-header">#{msgs.suggested} #{msgs.albumLbl}</h2>
                 </div>
                 <div class="row">
                     <ui:repeat value="#{albumBacking.getSuggestedAlbums(albumBacking.album.genreId.name)}" var="suggested">
